@@ -1,0 +1,8 @@
+node_modules
+
+# Render outputs: the ProRes masters are ~170 MB each and the PNG sequences
+# are regenerable in ~30s. The two alpha WebMs are small and genuinely useful,
+# so they stay tracked.
+renders/*.mov
+renders/frames*/
+snapshots/

@@ -1,0 +1,35 @@
+{
+  "category": "logo-reveal",
+  "duration_s": 3.5,
+  "fps": 30,
+  "canvas": { "w": 1920, "h": 1080, "aspect": "16:9" },
+  "style": "Fast and kinetic, brand-native. Reuses the website's own motion language rather than inventing a new one: words rise from behind their own baseline (the site's .gw-line reveal), the brand gradient sweeps across the wordmark exactly as it does on logo hover, and the lockup takes one small overshoot hit as the bloom lands. No agency shimmer, no lens flare, nothing the brand doesn't already do.",
+  "palette": ["#3366FF", "#7A5CFF", "#FF2DB3", "#FF6B5E", "#6B7280", "#868D97"],
+  "font": "Poppins (local latin subsets, 800 wordmark / 600 descriptor)",
+  "beats": [0.0, 0.55, 0.8, 1.3],
+  "export": "alpha-overlay",
+
+  "asset_needs": [],
+
+  "block": null,
+  "customize": {
+    "note": "Hand-authored rather than reusing logo-outro. That block stages a raster or SVG logo file; this logo is live type — Poppins ExtraBold with the gradient painted through it — so building it as text keeps it resolution-independent, keeps the gradient identical to the site's, and avoids baking a bitmap into a vector-crisp sting."
+  },
+
+  "content": {
+    "logo": "live type: GOOD WORK. — Poppins 800, brand gradient via background-clip:text",
+    "tagline": "Creative agency",
+    "url": "goodwork.agency"
+  },
+
+  "motion": [
+    { "at": 0.0, "what": "GOOD rises from behind its own baseline, mask-clipped" },
+    { "at": 0.12, "what": "WORK. follows on the stagger" },
+    { "at": 0.3, "what": "brand gradient sweeps across the wordmark, 0% -> 100%" },
+    { "at": 0.55, "what": "lockup takes a 3.5% overshoot hit" },
+    { "at": 0.58, "what": "brand-colour bloom blooms behind, then settles" },
+    { "at": 0.8, "what": "CREATIVE AGENCY rises in silver beneath" },
+    { "at": 1.3, "what": "silver sheen sweeps the descriptor, as it does on hover" },
+    { "at": 1.6, "what": "hold to 3.5s — a sting is cut into, so it ends held, not exited" }
+  ]
+}

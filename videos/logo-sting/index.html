@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>GOOD WORK. — logo sting</title>
+    <!-- Vendored, not CDN: a render must not depend on the network, and the
+         egress proxy blocks jsdelivr outright. -->
+    <script src="./assets/gsap.min.js"></script>
+    <style>
+      /* Local subsets, not a webfont CDN — a render must not depend on the network. */
+      @font-face {
+        font-family: "PoppinsGW";
+        font-weight: 800;
+        font-style: normal;
+        font-display: block;
+        src: url("./assets/fonts/poppins-latin-800-normal.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "PoppinsGW";
+        font-weight: 600;
+        font-style: normal;
+        font-display: block;
+        src: url("./assets/fonts/poppins-latin-600-normal.woff2") format("woff2");
+      }
+
+      :root {
+        --gw-blue: #3366ff;
+        --gw-violet: #7a5cff;
+        --gw-magenta: #ff2db3;
+        --gw-coral: #ff6b5e;
+        --gw-gradient: linear-gradient(
+          90deg,
+          var(--gw-blue) 0%,
+          var(--gw-violet) 32%,
+          var(--gw-magenta) 68%,
+          var(--gw-coral) 100%
+        );
+        /* On-light silver, matching src/styles.css --gw-silver. */
+        --gw-silver: linear-gradient(
+          100deg,
+          #6b7280 0%,
+          #4e555f 14%,
+          #868d97 34%,
+          #545b65 52%,
+          #7c838d 72%,
+          #4e555f 100%
+        );
+        /* A sting is dropped over footage, and most footage is dark — where
+           the on-light silver above is invisible. Same inversion the brand
+           pack ships. Selected by the `onDark` composition variable. */
+        --gw-silver-ondark: linear-gradient(
+          100deg,
+          #c3c9d2 0%,
+          #8d949e 14%,
+          #eef1f5 34%,
+          #949ba5 52%,
+          #d3d9e1 72%,
+          #98a0aa 100%
+        );
+      }
+
+      body.on-dark .descriptor {
+        background: var(--gw-silver-ondark);
+        background-size: 220% 100%;
+        background-position: 0% 50%;
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Transparent all the way down — this renders to an alpha overlay, so
+         nothing may paint a background, including the html element. */
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      body {
+        font-family: "PoppinsGW", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .lockup {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1;
+      }
+
+      /* The bloom sits behind the type. On transparent it composites as soft
+         coloured light rather than a panel, which is what an overlay wants. */
+      .bloom {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1500px;
+        height: 700px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0;
+        background: radial-gradient(
+          closest-side,
+          rgba(122, 92, 255, 0.55),
+          rgba(255, 45, 179, 0.3) 55%,
+          rgba(255, 107, 94, 0) 100%
+        );
+      }
+
+      /* Each line is its own clipped window; the type inside travels up
+         through it. Same reveal the website uses for its headlines.
+         Padding widens the visible box so letter-spacing and ascenders aren't
+         clipped sideways, and the negative margin keeps layout unchanged. */
+      /* Padding is in px, not em: the mask inherits the 16px body size, so an
+         em here would resolve against that rather than the 230px/62px type
+         inside it, and the trailing letter-space would still be clipped. */
+      .mask {
+        display: block;
+        overflow: hidden;
+        padding: 30px 0 26px 0;
+        margin: -30px 0 -26px 0;
+      }
+
+      .mask--desc {
+        padding: 14px 28px 12px 0;
+        margin: -14px -28px -12px 0;
+      }
+
+      /* The gradient lives on the element that owns the text — one element,
+         one continuous ramp across "GOOD WORK.", exactly as in the site's nav.
+         Splitting it into per-word spans gives each word its own rainbow and
+         reads visibly off-brand. */
+      .wordmark {
+        position: relative;
+        display: block;
+        white-space: nowrap;
+        font-size: 230px;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        line-height: 0.92;
+        background: var(--gw-gradient);
+        /* Resting state is the canonical logo: the ramp spans the wordmark
+           exactly once, blue through to coral. The sweep animates INTO this,
+           never away from it — the held frame is the real mark. */
+        background-size: 100% 100%;
+        background-position: 0% 50%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .descriptor {
+        display: block;
+        margin-top: 0.42em;
+        margin-right: -0.34em;
+        font-size: 62px;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+        background: var(--gw-silver);
+        background-size: 220% 100%;
+        background-position: 0% 50%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="3.5"
+      data-width="1920"
+      data-height="1080"
+      data-composition-variables='{"onDark": false}'
+    >
+      <section id="sting" class="clip" data-start="0" data-duration="3.5" data-track-index="1">
+        <div class="lockup" id="lockup">
+          <div class="bloom" id="bloom"></div>
+
+          <!-- A reveal mask clips its child on purpose — that is the effect. -->
+          <span class="mask" data-layout-allow-overflow="true"
+            ><span class="wordmark" id="wordmark">GOOD WORK.</span></span
+          >
+
+          <span class="mask mask--desc" data-layout-allow-overflow="true"
+            ><span class="descriptor" id="descriptor">Creative agency</span></span
+          >
+        </div>
+      </section>
+    </div>
+
+    <script>
+      // Render the dark-footage variant with:
+      //   hyperframes render . --format mov --variables '{"onDark":true}'
+      // Reading a declared variable is deterministic; the default is false.
+      const gwVars =
+        (window.__hyperframes && window.__hyperframes.getVariables
+          ? window.__hyperframes.getVariables()
+          : null) || {};
+      if (gwVars.onDark === true) document.body.classList.add("on-dark");
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // The wordmark rises from behind its own baseline.
+      tl.fromTo(
+        "#wordmark",
+        { yPercent: 130 },
+        { yPercent: 0, duration: 0.62, ease: "power3.out" },
+        0,
+      );
+
+      // The gradient arrives: it starts zoomed in on the coral end and
+      // resolves down onto the wordmark until the full blue-to-coral ramp
+      // sits exactly across it. Ends on the canonical mark, not past it.
+      tl.fromTo(
+        "#wordmark",
+        { backgroundSize: "220% 100%", backgroundPosition: "100% 50%" },
+        {
+          backgroundSize: "100% 100%",
+          backgroundPosition: "0% 50%",
+          duration: 1.0,
+          ease: "power2.inOut",
+        },
+        0.3,
+      );
+
+      // One small overshoot as the piece lands. Clamped back to 1 so nothing
+      // is left mid-spring on the held tail.
+      tl.fromTo(
+        "#lockup",
+        { scale: 1 },
+        { scale: 1.035, duration: 0.2, ease: "power2.out" },
+        0.55,
+      );
+      tl.to("#lockup", { scale: 1, duration: 0.28, ease: "power2.inOut" }, 0.75);
+
+      // Bloom in, then settle to a low hold.
+      tl.fromTo(
+        "#bloom",
+        { opacity: 0, scale: 0.82 },
+        { opacity: 0.6, scale: 1, duration: 0.32, ease: "power2.out" },
+        0.58,
+      );
+      tl.to("#bloom", { opacity: 0.24, duration: 0.6, ease: "sine.inOut" }, 0.9);
+
+      // Descriptor rises through its own mask.
+      tl.fromTo(
+        "#descriptor",
+        { yPercent: 145, autoAlpha: 0 },
+        { yPercent: 0, autoAlpha: 1, duration: 0.5, ease: "power3.out" },
+        0.8,
+      );
+
+      // Silver catches the light, then settles on its own resting position —
+      // same reasoning as the wordmark: the sweep lands on the mark.
+      tl.fromTo(
+        "#descriptor",
+        { backgroundPosition: "100% 50%" },
+        { backgroundPosition: "0% 50%", duration: 0.8, ease: "sine.inOut" },
+        1.3,
+      );
+
+      // A sting gets cut into, so it ends held rather than animating out.
+      tl.seek(0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
