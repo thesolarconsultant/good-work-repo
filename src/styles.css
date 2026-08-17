@@ -60,7 +60,10 @@ button{font-family:inherit;}
 .gw-stack-lg{margin-top:2rem;}
 
 /* ---- Logo (solid colour default, gradient as enhancement) ---- */
-.gw-logo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1;}
+/* align-items:center centres the descriptor under the wordmark, which is the
+   wider of the two lines. The descriptor's negative right margin cancels its
+   trailing letter-space, so the visible ink centres rather than the box. */
+.gw-logo{display:inline-flex;flex-direction:column;align-items:center;line-height:1;}
 .gw-logo__wordmark{margin:0;font-weight:var(--gw-extrabold);letter-spacing:-0.06em;line-height:0.92;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--gw-blue);}
 /* Descriptor sits on the wordmark's left edge. The trailing letter-space is
    pulled back so both lines end up optically flush. */
