@@ -34,8 +34,8 @@ export default function ContentConsole() {
           <p className="gw-label" style={{ marginBottom: 14 }}>The Content Console</p>
           <h1 className="gw-h1">Your business,<br />never quiet<span className="gw-dot"></span></h1>
           <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 18 }}>
-            One screen that writes, schedules and publishes everything a business puts out — blogs, social,
-            email, WhatsApp — then pushes it live on its own. Built and running for two clients today.
+            One screen that plans, writes and publishes everything a business puts out — blogs, social, email,
+            WhatsApp — then pushes it live on its own. Built and running for The Solar Consultant and 8energy.
           </p>
           <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
             <Link to="/contact" className="gw-button">Get this for your business</Link>
@@ -79,9 +79,9 @@ export default function ContentConsole() {
           <p className="gw-label" style={{ marginBottom: 10 }}>Part one</p>
           <h2 className="gw-h2" style={{ marginBottom: 8 }}>The console</h2>
           <p className="gw-body gw-max-copy gw-text-muted" style={{ marginBottom: 8 }}>
-            The screens a client uses every week. The Solar Consultant's console runs inside their staff portal,
-            next to the CRM it feeds; 8energy's is a standalone Studio on their own subdomain — the screenshots
-            below are that Studio, running on their real content.
+            The screens a client uses every week. The screenshots are The Solar Consultant's console — the
+            fullest build, shown here on their own live backlog — with 8energy's Studio where it makes the same
+            point in fewer moves.
           </p>
           {CONSOLE_SECTIONS.map((s) => <Section key={s.id} s={s} />)}
         </div>
