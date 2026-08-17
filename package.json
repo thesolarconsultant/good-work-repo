@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "preview:file": "VITE_HASH_ROUTER=1 vite build --base ./ && node scripts/build-preview.mjs",
     "images": "node scripts/optimise-images.mjs",
+    "logo": "node scripts/build-logo.mjs",
     "og": "node scripts/build-og.mjs",
     "sitemap": "node scripts/build-sitemap.mjs"
   },

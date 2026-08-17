@@ -18,6 +18,7 @@ npm run dev
 | `npm run preview:file` | One self-contained HTML file in `preview/`, for sending a preview to someone with no server |
 | `npm run lint` | Oxlint |
 | `npm run images` | Regenerate responsive image derivatives — **run this after adding a screenshot** |
+| `npm run logo` | Regenerate the logo artwork in `brand/` for printers, suppliers and socials |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` |
 
