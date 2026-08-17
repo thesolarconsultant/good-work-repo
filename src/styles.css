@@ -148,20 +148,15 @@ button{font-family:inherit;}
 .gw-pick__name{display:block;font-size:0.95rem;font-weight:var(--gw-semibold);line-height:1.4;}
 .gw-pick--active .gw-pick__name{font-weight:var(--gw-bold);}
 .gw-pick__note{display:block;font-size:0.85rem;line-height:1.6;color:var(--gw-grey-700);margin-top:4px;}
-.gw-pick__billing{display:inline-block;margin-top:8px;font-size:0.66rem;font-weight:var(--gw-semibold);letter-spacing:0.14em;text-transform:uppercase;color:var(--gw-grey-700);border:1px solid var(--gw-grey-300);border-radius:999px;padding:2px 9px;}
-.gw-pick__price{flex-shrink:0;text-align:right;font-size:0.88rem;font-weight:var(--gw-semibold);white-space:nowrap;}
-.gw-pick__price small{display:block;font-size:0.75rem;font-weight:var(--gw-medium);color:var(--gw-grey-700);margin-top:3px;}
+.gw-pick__billing{flex-shrink:0;align-self:flex-start;font-size:0.64rem;font-weight:var(--gw-semibold);letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;color:var(--gw-grey-700);border:1px solid var(--gw-grey-300);border-radius:999px;padding:3px 10px;}
+.gw-pick--active .gw-pick__billing{border-color:var(--gw-black);color:var(--gw-black);}
 @media(max-width:560px){
   .gw-pick{flex-wrap:wrap;}
-  .gw-pick__price{width:100%;text-align:left;padding-left:30px;}
-  .gw-pick__price small{display:inline;margin-left:6px;}
+  .gw-pick__billing{margin-left:30px;}
 }
 
 .gw-total{position:sticky;bottom:16px;margin-top:28px;padding:clamp(1.25rem,3vw,1.6rem);border-radius:var(--gw-radius-lg);background:var(--gw-black);color:var(--gw-white);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-.gw-total__figures{margin:0;font-size:1.3rem;font-weight:var(--gw-extrabold);letter-spacing:-0.02em;}
-.gw-total__figures small{font-size:0.7rem;font-weight:var(--gw-medium);letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
-.gw-total__plus{margin:0 0.5rem;color:rgba(255,255,255,0.4);}
-.gw-total__poa{margin:6px 0 0;font-size:0.76rem;color:rgba(255,255,255,0.6);}
+.gw-total__figures{margin:0;font-size:1.05rem;font-weight:var(--gw-bold);letter-spacing:-0.01em;}
 
 /* ---- Contact form ---- */
 .gw-field{display:flex;flex-direction:column;gap:6px;margin-bottom:1.1rem;}

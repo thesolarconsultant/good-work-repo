@@ -1,19 +1,8 @@
 import Footer from "../components/Footer";
 import ServiceSelector from "../components/ServiceSelector";
-import { CONSOLE_MODULES } from "../data/services";
+import { SERVICES } from "../data/services";
 
-const BILLING = [
-  {
-    mark: "01",
-    title: "Paid once — the build",
-    desc: "Anything we design, write or build for you: the website, the brand, the contracts, the apps and systems. You own the result. There's no lock-in and nothing stops working if you never spend another pound with us.",
-  },
-  {
-    mark: "02",
-    title: "Paid monthly — the running",
-    desc: "Anything that has to keep working after launch: content going out, ads being managed, bots and agents answering, systems hosted, watched and updated. Priced monthly because the work is monthly — no minimum term.",
-  },
-];
+const CONSOLE_MODULES = SERVICES.filter((s) => s.category === "Content Console" && s.id !== "console");
 
 const PROCESS = [
   { mark: "01", title: "Understand", desc: "A call to work out how you actually win jobs today, where enquiries come from, and what's leaking. No questionnaire, no discovery invoice." },
@@ -27,7 +16,7 @@ export default function Services() {
     <>
       <header className="gw-section--tight" style={{ paddingTop: "clamp(2.5rem,6vw,4rem)" }}>
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 14 }}>Services &amp; pricing</p>
+          <p className="gw-label" style={{ marginBottom: 14 }}>Services</p>
           <h1 className="gw-h1">Brand. Websites.<br />Systems<span className="gw-dot"></span></h1>
           <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 18 }}>
             Everything a business needs to look and work better — built properly, and kept running after launch.
@@ -38,29 +27,6 @@ export default function Services() {
 
       <hr className="gw-rule--gradient" style={{ border: 0 }} />
 
-      <section className="gw-section">
-        <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>How it's priced</p>
-          <h2 className="gw-h2">Two kinds of cost. Nothing hidden.</h2>
-          <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 8 }}>
-            Every service below is either something we build once, something we run for you monthly, or a build
-            with a running cost attached. Each one is labelled, so you can see exactly what you're committing to
-            before you speak to us.
-          </p>
-          <div style={{ marginTop: 20 }}>
-            {BILLING.map((b) => (
-              <div className="gw-addon" key={b.mark}>
-                <div className="gw-addon-mark">{b.mark}</div>
-                <div className="gw-addon-body">
-                  <strong>{b.title}</strong>
-                  <span>{b.desc}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <ServiceSelector />
 
       <section className="gw-section gw-dark">
@@ -68,7 +34,7 @@ export default function Services() {
           <div className="gw-approved" style={{ marginBottom: 28 }}>
             <div className="gw-stamp"><div className="gw-stamp__centre">GOOD<br />WORK.</div></div>
             <div>
-              <p className="gw-label">Build + monthly</p>
+              <p className="gw-label">A closer look</p>
               <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
             </div>
           </div>
@@ -83,7 +49,7 @@ export default function Services() {
           </p>
           <ul className="gw-features gw-features--detail">
             {CONSOLE_MODULES.map((m) => (
-              <li key={m.name}>
+              <li key={m.id}>
                 <strong>{m.name}</strong>
                 <span>{m.note}</span>
               </li>
@@ -97,7 +63,7 @@ export default function Services() {
           <p className="gw-label" style={{ marginBottom: 10 }}>How it runs</p>
           <h2 className="gw-h2">What actually happens</h2>
           <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 8 }}>
-            Four steps, no agency theatre. You'll know the price and the scope before we start building.
+            Four steps, no agency theatre. You'll know the scope and the price before we start building.
           </p>
           <div style={{ marginTop: 20 }}>
             {PROCESS.map((p) => (
