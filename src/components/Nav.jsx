@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 const LINKS = [
   { to: "/", label: "Home" },
   { to: "/work", label: "Work" },
+  { to: "/content-console", label: "Content Console" },
   { to: "/services", label: "Services" },
 ];
 
