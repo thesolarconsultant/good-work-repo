@@ -17,7 +17,8 @@ const jsName = files.find((f) => f.endsWith('.js'));
 
 const mime = {
   woff2: 'font/woff2', woff: 'font/woff', png: 'image/png',
-  svg: 'image/svg+xml', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp',
+  svg: 'image/svg+xml', jpg: 'image/jpeg', jpeg: 'image/jpeg',
+  webp: 'image/webp', avif: 'image/avif',
 };
 const dataUri = (path) => {
   const ext = path.split('.').pop().toLowerCase();
@@ -42,18 +43,35 @@ const escapeUnicode = (s, wrap) =>
 css = escapeUnicode(css, (hex) => `\\${hex} `);
 let js = escapeUnicode(readFileSync(join(dist, 'assets', jsName), 'utf8'), (hex) => `\\u${hex.padStart(4, '0')}`);
 
-// Images served from public/ are referenced by absolute path ("/case-studies/x.jpg"),
+// Images served from public/ are referenced by absolute path ("/derived/x.webp"),
 // which has nothing to resolve against in a single file — inline those too.
-for (const dir of readdirSync(dist, { withFileTypes: true })) {
-  if (!dir.isDirectory() || dir.name === 'assets') continue;
-  for (const file of readdirSync(join(dist, dir.name))) {
-    const ref = `/${dir.name}/${file}`;
-    if (!js.includes(ref)) continue;
-    js = js.split(ref).join(dataUri(join(dist, dir.name, file)));
+//
+// The 2160px source JPEGs are skipped deliberately: this build sets
+// VITE_HASH_ROUTER, which makes <Shot> render the WebP derivative instead, so
+// the originals only survive in the bundle as image-manifest keys. Inlining
+// them would add megabytes of base64 that nothing ever displays.
+const SKIP_DIRS = new Set(['assets', 'case-studies', 'console']);
+
+const walk = (dir, prefix) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    const ref = `${prefix}/${entry.name}`;
+    if (entry.isDirectory()) {
+      walk(path, ref);
+      continue;
+    }
+    const ext = entry.name.split('.').pop().toLowerCase();
+    if (!mime[ext] || !js.includes(ref)) continue;
+    js = js.split(ref).join(dataUri(path));
   }
+};
+
+for (const dir of readdirSync(dist, { withFileTypes: true })) {
+  if (!dir.isDirectory() || SKIP_DIRS.has(dir.name)) continue;
+  walk(join(dist, dir.name), `/${dir.name}`);
 }
 
-const html = `<title>GOOD WORK. Services</title>
+const html = `<title>GOOD WORK. — Brand, websites and systems</title>
 <style>${css}</style>
 <div id="root"></div>
 <script type="module">${js}</script>

@@ -1,0 +1,653 @@
+/* =========================================================
+   GOOD WORK. — MOTION LAYER
+
+   Brand colours, type and spacing are untouched; this file only
+   adds behaviour. Every animation here is transform/opacity only
+   (compositor-friendly), and the block at the bottom switches the
+   whole lot off for prefers-reduced-motion.
+   ========================================================= */
+
+:root {
+  --gw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gw-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --gw-reveal-duration: 820ms;
+  --gw-nav-height: 68px;
+}
+
+/* ---------------------------------------------------------
+   1. Scroll reveal
+   --------------------------------------------------------- */
+[data-gw-reveal] {
+  transition:
+    opacity var(--gw-reveal-duration) var(--gw-ease-out),
+    transform var(--gw-reveal-duration) var(--gw-ease-out),
+    clip-path var(--gw-reveal-duration) var(--gw-ease-out),
+    filter var(--gw-reveal-duration) var(--gw-ease-out);
+  transition-delay: var(--gw-reveal-delay, 0ms);
+}
+
+[data-gw-reveal][data-gw-visible="false"] { opacity: 0; }
+[data-gw-reveal="rise"][data-gw-visible="false"]  { transform: translate3d(0, 26px, 0); }
+[data-gw-reveal="left"][data-gw-visible="false"]  { transform: translate3d(-32px, 0, 0); }
+[data-gw-reveal="right"][data-gw-visible="false"] { transform: translate3d(32px, 0, 0); }
+[data-gw-reveal="scale"][data-gw-visible="false"] { transform: scale(0.955); }
+
+/* On a narrow screen the sideways variants become vertical ones. A 32px lateral
+   offset on a 390px viewport both reads badly and pushes the document wider
+   than the screen, which is where stray horizontal scrollbars come from. */
+@media (max-width: 860px) {
+  [data-gw-reveal="left"][data-gw-visible="false"],
+  [data-gw-reveal="right"][data-gw-visible="false"] { transform: translate3d(0, 26px, 0); }
+}
+
+/* Images wipe in behind a clip, and settle from a slight overscale.
+ *
+ * The clip goes on the inner frame, never on the observed <figure> itself:
+ * an element clipped to zero area reports an intersection ratio of 0, so
+ * clipping the observed element means the observer can never see it come
+ * into view and the image stays hidden for good. */
+[data-gw-reveal="mask"] .gw-shot__frame {
+  clip-path: inset(0 0 0 0 round var(--gw-radius-lg));
+  transition: clip-path var(--gw-reveal-duration) var(--gw-ease-out);
+  transition-delay: var(--gw-reveal-delay, 0ms);
+}
+[data-gw-reveal="mask"][data-gw-visible="false"] { opacity: 1; }
+[data-gw-reveal="mask"][data-gw-visible="false"] .gw-shot__frame {
+  clip-path: inset(0 0 100% 0 round var(--gw-radius-lg));
+}
+[data-gw-reveal="mask"] .gw-shot__frame img { transition: transform 1100ms var(--gw-ease-out); }
+[data-gw-reveal="mask"][data-gw-visible="false"] .gw-shot__frame img { transform: scale(1.06); }
+
+/* Headlines rise out from behind their own baseline. */
+.gw-lines { display: block; }
+.gw-line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.gw-line > span {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 900ms var(--gw-ease-out);
+  transition-delay: var(--gw-line-delay, 0ms);
+}
+[data-gw-visible="true"] .gw-line > span,
+.gw-lines--in .gw-line > span { transform: translate3d(0, 0, 0); }
+
+/* ---------------------------------------------------------
+   2. Scroll progress bar
+   --------------------------------------------------------- */
+.gw-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 200;
+  pointer-events: none;
+  background: transparent;
+}
+.gw-progress__bar {
+  height: 100%;
+  background: var(--gw-gradient);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------
+   3. Buttons — magnetic lean + gradient sheen
+   --------------------------------------------------------- */
+.gw-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translate3d(var(--gw-magnet-x, 0), var(--gw-magnet-y, 0), 0);
+  transition:
+    transform 420ms var(--gw-ease-spring),
+    background-color var(--gw-transition),
+    color var(--gw-transition),
+    border-color var(--gw-transition);
+}
+/* The sheen is the brand gradient, swept across on hover. */
+.gw-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gw-gradient);
+  transform: translate3d(-101%, 0, 0);
+  transition: transform 520ms var(--gw-ease-out);
+}
+.gw-button:hover::before,
+.gw-button:focus-visible::before { transform: translate3d(0, 0, 0); }
+.gw-button:hover { color: var(--gw-white); }
+
+.gw-button__label { position: relative; }
+.gw-button__arrow {
+  display: inline-block;
+  transition: transform 380ms var(--gw-ease-spring);
+}
+.gw-button:hover .gw-button__arrow { transform: translateX(4px); }
+
+.gw-button--outline:hover { background: transparent; border-color: transparent; color: var(--gw-white); }
+.gw-button--light { background: var(--gw-white); color: var(--gw-black); }
+.gw-button--light:hover { color: var(--gw-white); }
+
+/* ---------------------------------------------------------
+   4. Pointer glow (cards and dark panels)
+   --------------------------------------------------------- */
+.gw-glow { position: relative; isolation: isolate; }
+.gw-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: var(--gw-glow-opacity, 0);
+  transition: opacity 420ms var(--gw-ease-out);
+  background: radial-gradient(
+    260px circle at var(--gw-glow-x, 50%) var(--gw-glow-y, 50%),
+    rgba(51, 102, 255, 0.13),
+    rgba(255, 45, 179, 0.09) 42%,
+    transparent 68%
+  );
+}
+.gw-dark .gw-glow::after {
+  background: radial-gradient(
+    300px circle at var(--gw-glow-x, 50%) var(--gw-glow-y, 50%),
+    rgba(122, 92, 255, 0.3),
+    rgba(255, 45, 179, 0.16) 45%,
+    transparent 70%
+  );
+}
+
+/* Cards lift, and their top edge picks up the gradient. */
+.gw-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 480ms var(--gw-ease-out),
+    border-color 480ms var(--gw-ease-out),
+    box-shadow 480ms var(--gw-ease-out);
+}
+.gw-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--gw-gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 560ms var(--gw-ease-out);
+}
+.gw-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gw-grey-300);
+  box-shadow: 0 18px 44px -28px rgba(17, 17, 17, 0.42);
+}
+.gw-card:hover::before { transform: scaleX(1); }
+
+/* ---------------------------------------------------------
+   5. Work cards
+   --------------------------------------------------------- */
+.gw-work-card { position: relative; overflow: hidden; isolation: isolate; }
+.gw-work-card__media-wrap { overflow: hidden; position: relative; }
+.gw-work-card__shot { transition: transform 900ms var(--gw-ease-out); }
+.gw-work-card:hover .gw-work-card__shot { transform: scale(1.045); }
+.gw-work-card__scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: var(--gw-gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 620ms var(--gw-ease-out);
+}
+.gw-work-card:hover .gw-work-card__scrim { transform: scaleX(1); }
+.gw-work-card__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.72rem;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.gw-work-card__go span { transition: transform 380ms var(--gw-ease-spring); }
+.gw-work-card:hover .gw-work-card__go span { transform: translateX(5px); }
+
+/* ---------------------------------------------------------
+   6. Screenshots
+   --------------------------------------------------------- */
+.gw-shot__frame {
+  overflow: hidden;
+  border-radius: var(--gw-radius-lg);
+  transform: translate3d(0, var(--gw-parallax, 0px), 0);
+}
+.gw-shot__frame img { width: 100%; height: auto; }
+
+/* ---------------------------------------------------------
+   7. Marquee
+   --------------------------------------------------------- */
+.gw-marquee {
+  overflow: hidden;
+  padding-block: 1.1rem;
+  border-block: 1px solid var(--gw-grey-200);
+  /* Fade the ends so the loop never visibly cuts. */
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.gw-dark .gw-marquee { border-color: rgba(255, 255, 255, 0.14); }
+.gw-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: gw-marquee var(--gw-marquee-duration, 38s) linear infinite;
+  animation-direction: var(--gw-marquee-direction, normal);
+}
+.gw-marquee:hover .gw-marquee__track { animation-play-state: paused; }
+.gw-marquee__group { display: flex; flex-shrink: 0; }
+.gw-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding-right: 1.6rem;
+  font-size: clamp(0.95rem, 2.4vw, 1.35rem);
+  font-weight: var(--gw-bold);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.gw-marquee__sep {
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: var(--gw-gradient);
+  flex-shrink: 0;
+}
+@keyframes gw-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+/* Reduced motion: a static, swipeable strip instead of a loop. */
+.gw-marquee[data-gw-static="true"] { overflow-x: auto; }
+.gw-marquee[data-gw-static="true"] .gw-marquee__track { animation: none; }
+.gw-marquee[data-gw-static="true"] .gw-marquee__group:last-child { display: none; }
+
+/* ---------------------------------------------------------
+   8. The stamp
+   --------------------------------------------------------- */
+/* Capped against the viewport so it stays a signature on a phone rather than
+   eating half the screen. */
+.gw-stamp {
+  position: relative;
+  width: min(var(--gw-stamp-size, 128px), 30vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+@media (min-width: 861px) { .gw-stamp { width: var(--gw-stamp-size, 128px); } }
+.gw-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  padding: 2px;
+  background: var(--gw-gradient);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.gw-stamp__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: gw-spin 32s linear infinite;
+}
+.gw-stamp__ring-text {
+  font-family: var(--gw-font-primary);
+  font-size: 8.6px;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.14em;
+  fill: var(--gw-grey-700);
+}
+.gw-dark .gw-stamp__ring-text { fill: rgba(255, 255, 255, 0.55); }
+.gw-stamp__centre {
+  position: relative;
+  text-align: center;
+  font-weight: var(--gw-extrabold);
+  font-size: 0.8rem;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--gw-magenta);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .gw-stamp__centre {
+    background: var(--gw-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+@keyframes gw-spin { to { transform: rotate(360deg); } }
+
+/* ---------------------------------------------------------
+   9. Hero aurora — four brand colours, drifting slowly
+   --------------------------------------------------------- */
+.gw-hero { position: relative; overflow: clip; }
+.gw-aurora {
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 130%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(70px);
+  opacity: 0.42;
+}
+.gw-aurora span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  animation: gw-drift 22s var(--gw-ease) infinite alternate;
+}
+.gw-aurora span:nth-child(1) { width: 38vw; height: 38vw; left: 2%;  top: 22%; background: rgba(51, 102, 255, 0.5);  animation-duration: 19s; }
+.gw-aurora span:nth-child(2) { width: 30vw; height: 30vw; left: 30%; top: 34%; background: rgba(122, 92, 255, 0.45); animation-duration: 25s; animation-delay: -6s; }
+.gw-aurora span:nth-child(3) { width: 26vw; height: 26vw; left: 58%; top: 18%; background: rgba(255, 45, 179, 0.34); animation-duration: 21s; animation-delay: -11s; }
+.gw-aurora span:nth-child(4) { width: 22vw; height: 22vw; left: 76%; top: 40%; background: rgba(255, 107, 94, 0.34); animation-duration: 27s; animation-delay: -3s; }
+@keyframes gw-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(4vw, -6vh, 0) scale(1.16); }
+}
+.gw-dark .gw-aurora { opacity: 0.38; }
+
+.gw-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .gw-hero__grid { grid-template-columns: 1fr; }
+  /* The stamp reads as a signature under the copy on a phone, not a sidebar. */
+  .gw-hero__stamp { justify-self: start; }
+}
+
+/* A word of the headline carrying the brand gradient. */
+.gw-grad {
+  font-style: normal;
+  background: var(--gw-gradient);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gw-slide-gradient 11s linear infinite;
+}
+
+/* A slow pulse on the eyebrow dot — the site's quietest sign of life. */
+.gw-pulse { display: inline-flex; align-items: center; gap: 0.6rem; }
+.gw-pulse::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gw-coral);
+  animation: gw-pulse 2.6s var(--gw-ease) infinite;
+}
+@keyframes gw-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(255, 107, 94, 0.5); }
+  70%      { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 0 8px rgba(255, 107, 94, 0); }
+}
+
+.gw-card__mark {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 0.72rem;
+  font-weight: var(--gw-extrabold);
+  letter-spacing: 0.18em;
+  color: var(--gw-magenta);
+}
+
+/* Work cards on the dark section. */
+.gw-work-card--dark { border-color: rgba(255, 255, 255, 0.15); background: #161616; }
+.gw-work-card--dark .gw-work-card__tag { color: rgba(255, 255, 255, 0.5); }
+.gw-work-card--dark .gw-body { color: var(--gw-white); }
+.gw-work-card--dark:hover { border-color: rgba(255, 255, 255, 0.3); }
+/* The screenshot sits flush inside the card, so it drops the standalone frame. */
+.gw-work-card__figure .gw-shot__frame { border: 0; border-radius: 0; background: transparent; }
+.gw-work-card__figure img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+
+/* A hairline of grain stops the big dark panels looking like flat ink. */
+.gw-dark { position: relative; }
+.gw-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+.gw-dark > * { position: relative; z-index: 1; }
+
+/* ---------------------------------------------------------
+   10. The gradient rule, animated
+   --------------------------------------------------------- */
+.gw-rule--gradient {
+  background: var(--gw-gradient);
+  background-size: 200% 100%;
+  animation: gw-slide-gradient 9s linear infinite;
+}
+@keyframes gw-slide-gradient {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+
+/* The wordmark's gradient breathes on hover rather than sitting static. */
+.gw-logo__wordmark { background-size: 200% 100%; transition: background-position 900ms var(--gw-ease-out); }
+.gw-logo:hover .gw-logo__wordmark { background-position: 100% 50%; }
+
+/* ---------------------------------------------------------
+   11. Nav
+   --------------------------------------------------------- */
+.gw-nav {
+  transition:
+    transform 480ms var(--gw-ease-out),
+    background-color 320ms var(--gw-ease-out),
+    box-shadow 320ms var(--gw-ease-out),
+    border-color 320ms var(--gw-ease-out);
+}
+.gw-nav--scrolled { box-shadow: 0 10px 30px -26px rgba(17, 17, 17, 0.5); }
+/* Out of the way when reading down, back the moment you scroll up. */
+.gw-nav--hidden { transform: translate3d(0, -105%, 0); }
+
+.gw-nav__link { position: relative; padding-bottom: 3px; }
+.gw-nav__link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: var(--gw-gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 380ms var(--gw-ease-out);
+}
+.gw-nav__link:hover::after,
+.gw-nav__link--active::after { transform: scaleX(1); }
+.gw-nav__link:hover { opacity: 1; }
+/* The gradient underline replaces the old solid border. */
+.gw-nav__link--active { border-bottom: 0; padding-bottom: 3px; }
+
+.gw-nav__cta { position: relative; overflow: hidden; isolation: isolate; }
+.gw-nav__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gw-gradient);
+  transform: translate3d(-101%, 0, 0);
+  transition: transform 460ms var(--gw-ease-out);
+}
+.gw-nav__cta:hover::before { transform: translate3d(0, 0, 0); }
+
+/* Hamburger that becomes a cross. */
+.gw-nav__toggle span {
+  transition: transform 380ms var(--gw-ease-spring), opacity 240ms linear;
+  transform-origin: center;
+}
+.gw-nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.gw-nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0.2); }
+.gw-nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ---- Mobile drawer ---- */
+.gw-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--gw-nav-height) + 2rem) var(--gw-page-padding) max(2rem, env(safe-area-inset-bottom));
+  background: var(--gw-white);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 380ms var(--gw-ease-out), visibility 0s linear 380ms;
+}
+.gw-drawer--open { visibility: visible; opacity: 1; transition-delay: 0s; }
+.gw-drawer__link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  font-size: clamp(1.9rem, 9vw, 2.8rem);
+  font-weight: var(--gw-extrabold);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  border-bottom: 1px solid var(--gw-grey-200);
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 460ms var(--gw-ease-out), transform 460ms var(--gw-ease-out);
+}
+.gw-drawer--open .gw-drawer__link { opacity: 1; transform: none; }
+.gw-drawer--open .gw-drawer__link:nth-child(1) { transition-delay: 90ms; }
+.gw-drawer--open .gw-drawer__link:nth-child(2) { transition-delay: 150ms; }
+.gw-drawer--open .gw-drawer__link:nth-child(3) { transition-delay: 210ms; }
+.gw-drawer--open .gw-drawer__link:nth-child(4) { transition-delay: 270ms; }
+.gw-drawer--open .gw-drawer__link:nth-child(5) { transition-delay: 330ms; }
+.gw-drawer__index {
+  font-size: 0.7rem;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.18em;
+  color: var(--gw-grey-700);
+}
+.gw-drawer__link--active { background: var(--gw-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.gw-drawer__foot {
+  margin-top: 2.5rem;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 460ms var(--gw-ease-out) 390ms, transform 460ms var(--gw-ease-out) 390ms;
+}
+.gw-drawer--open .gw-drawer__foot { opacity: 1; transform: none; }
+body[data-gw-locked="true"] { overflow: hidden; }
+
+/* ---------------------------------------------------------
+   12. Service selector
+   --------------------------------------------------------- */
+.gw-pick {
+  transition:
+    border-color 300ms var(--gw-ease-out),
+    background-color 300ms var(--gw-ease-out),
+    transform 300ms var(--gw-ease-out);
+}
+.gw-pick:hover { transform: translateX(3px); }
+.gw-pick--active { border-color: var(--gw-black); }
+.gw-filter { transition: background-color 260ms var(--gw-ease-out), color 260ms var(--gw-ease-out), border-color 260ms var(--gw-ease-out), transform 260ms var(--gw-ease-out); }
+.gw-filter:hover { transform: translateY(-2px); }
+
+.gw-total {
+  transition:
+    transform 520ms var(--gw-ease-spring),
+    opacity 380ms var(--gw-ease-out),
+    box-shadow 420ms var(--gw-ease-out);
+}
+/* Tucked away until the list is what's on screen — see ServiceSelector. */
+.gw-total[data-gw-pinned="false"] {
+  transform: translate3d(0, calc(100% + 24px), 0);
+  opacity: 0;
+  pointer-events: none;
+}
+.gw-total--armed { box-shadow: 0 22px 50px -30px rgba(17, 17, 17, 0.8); }
+.gw-total__count { display: inline-block; transition: transform 380ms var(--gw-ease-spring); }
+.gw-total__count--bump { transform: scale(1.35); }
+
+/* ---------------------------------------------------------
+   12b. Form sent — the ring closes, then the tick draws
+   --------------------------------------------------------- */
+.gw-sent { animation: gw-route-in 460ms var(--gw-ease-out) both; }
+.gw-sent__ring {
+  stroke-dasharray: 107;
+  stroke-dashoffset: 107;
+  animation: gw-draw 620ms var(--gw-ease-out) 80ms forwards;
+}
+.gw-sent__check {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: gw-draw 380ms var(--gw-ease-out) 560ms forwards;
+}
+@keyframes gw-draw { to { stroke-dashoffset: 0; } }
+
+/* ---------------------------------------------------------
+   13. Route transitions
+   --------------------------------------------------------- */
+.gw-route { animation: gw-route-in 420ms var(--gw-ease-out) both; }
+@keyframes gw-route-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+/* Holds the page height steady while a lazily-loaded route arrives. */
+.gw-route-loading { min-height: 70vh; }
+
+/* Anchored sections have to clear the fixed nav. */
+[id] { scroll-margin-top: calc(var(--gw-nav-height) + 1.5rem); }
+
+/* ---------------------------------------------------------
+   14. Focus, skip link and other unglamorous essentials
+   --------------------------------------------------------- */
+.gw-skip {
+  position: absolute;
+  left: var(--gw-page-padding);
+  top: 0;
+  z-index: 300;
+  transform: translateY(-120%);
+  padding: 0.75rem 1.1rem;
+  background: var(--gw-black);
+  color: var(--gw-white);
+  font-size: 0.82rem;
+  font-weight: var(--gw-semibold);
+  border-radius: 0 0 var(--gw-radius-sm) var(--gw-radius-sm);
+  transition: transform 240ms var(--gw-ease-out);
+}
+.gw-skip:focus-visible { transform: translateY(0); }
+
+:where(a, button, input, select, textarea, label, [tabindex]):focus-visible {
+  outline: 2px solid var(--gw-blue);
+  outline-offset: 3px;
+  border-radius: var(--gw-radius-sm);
+}
+.gw-dark :where(a, button):focus-visible { outline-color: var(--gw-white); }
+
+/* ---------------------------------------------------------
+   15. Reduced motion — the off switch
+   --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-gw-reveal] { opacity: 1 !important; transform: none !important; }
+  [data-gw-reveal] .gw-shot__frame { clip-path: none !important; }
+  .gw-line > span { transform: none !important; }
+  .gw-stamp__ring, .gw-aurora span, .gw-marquee__track, .gw-rule--gradient { animation: none !important; }
+  .gw-shot__frame { transform: none !important; }
+  .gw-route, .gw-sent { animation: none !important; }
+  .gw-sent__ring, .gw-sent__check { stroke-dashoffset: 0 !important; animation: none !important; }
+  html { scroll-behavior: auto !important; }
+}

@@ -1,0 +1,170 @@
+{
+  "/case-studies/8energy-calculator.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/8energy-calculator",
+    "flat": "/derived/case-studies/8energy-calculator-960.webp"
+  },
+  "/case-studies/8energy-home.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/8energy-home",
+    "flat": "/derived/case-studies/8energy-home-960.webp"
+  },
+  "/case-studies/8energy-software.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/8energy-software",
+    "flat": "/derived/case-studies/8energy-software-960.webp"
+  },
+  "/case-studies/8energy-solar.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/8energy-solar",
+    "flat": "/derived/case-studies/8energy-solar-960.webp"
+  },
+  "/case-studies/tsc-blog.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/tsc-blog",
+    "flat": "/derived/case-studies/tsc-blog-960.webp"
+  },
+  "/case-studies/tsc-home.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/tsc-home",
+    "flat": "/derived/case-studies/tsc-home-960.webp"
+  },
+  "/case-studies/tsc-installers.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/tsc-installers",
+    "flat": "/derived/case-studies/tsc-installers-960.webp"
+  },
+  "/console/studio-blog-editor.jpg": {
+    "width": 2160,
+    "height": 1425,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/studio-blog-editor",
+    "flat": "/derived/console/studio-blog-editor-960.webp"
+  },
+  "/console/studio-blogs.jpg": {
+    "width": 2160,
+    "height": 1425,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/studio-blogs",
+    "flat": "/derived/console/studio-blogs-960.webp"
+  },
+  "/console/studio-emails.jpg": {
+    "width": 2160,
+    "height": 1425,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/studio-emails",
+    "flat": "/derived/console/studio-emails-960.webp"
+  },
+  "/console/studio-login.jpg": {
+    "width": 2160,
+    "height": 1425,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/studio-login",
+    "flat": "/derived/console/studio-login-960.webp"
+  },
+  "/console/tsc-console-categories.jpg": {
+    "width": 2160,
+    "height": 1500,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/tsc-console-categories",
+    "flat": "/derived/console/tsc-console-categories-960.webp"
+  },
+  "/console/tsc-console-email.jpg": {
+    "width": 2160,
+    "height": 960,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/tsc-console-email",
+    "flat": "/derived/console/tsc-console-email-960.webp"
+  },
+  "/console/tsc-console-pipeline.jpg": {
+    "width": 2160,
+    "height": 1500,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/console/tsc-console-pipeline",
+    "flat": "/derived/console/tsc-console-pipeline-960.webp"
+  }
+}

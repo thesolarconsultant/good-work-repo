@@ -1,6 +1,11 @@
-import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import Footer from "../components/Footer";
+import Headline from "../components/Headline";
+import Reveal from "../components/Reveal";
+import Seo from "../components/Seo";
+import { SITE_URL } from "../lib/site";
 import ServiceSelector from "../components/ServiceSelector";
+import Stamp from "../components/Stamp";
 import { SERVICES } from "../data/services";
 
 const CONSOLE_MODULES = SERVICES.filter((s) => s.category === "Content Console" && s.id !== "console");
@@ -12,17 +17,44 @@ const PROCESS = [
   { mark: "04", title: "Improve", desc: "Where there's a monthly element, the work continues after launch: content going out, ads managed, systems watched, and a report you can read in two minutes." },
 ];
 
+const SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  name: "GOOD WORK. services",
+  url: `${SITE_URL}/services`,
+  provider: { "@id": `${SITE_URL}/#organisation` },
+  itemListElement: SERVICES.map((s) => ({
+    "@type": "Offer",
+    itemOffered: { "@type": "Service", name: s.name, description: s.note, category: s.category },
+  })),
+};
+
 export default function Services() {
   return (
     <>
-      <header className="gw-section--tight" style={{ paddingTop: "clamp(2.5rem,6vw,4rem)" }}>
+      <Seo
+        title="Services"
+        description="Brand identity, hand-built websites, CRM, booking, quoting, automation and the Content Console. Pick what you need and we'll scope it at a fixed price."
+        schema={SCHEMA}
+      />
+
+      <header className="gw-section--tight gw-hero" style={{ paddingTop: "clamp(2.5rem,6vw,4rem)" }}>
+        <div className="gw-aurora" aria-hidden="true">
+          <span /><span /><span /><span />
+        </div>
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 14 }}>Services</p>
-          <h1 className="gw-h1">Brand. Websites.<br />Systems<span className="gw-dot"></span></h1>
-          <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 18 }}>
-            Everything a business needs to look and work better — built properly, and kept running after launch.
-            Take one thing or the lot.
-          </p>
+          <p className="gw-label gw-pulse">Services</p>
+          <Headline
+            onMount
+            className="gw-h1 gw-stack-md"
+            lines={["Brand. Websites.", <>Systems<span className="gw-dot" /></>]}
+          />
+          <Reveal variant="rise" delay={240}>
+            <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-md">
+              Everything a business needs to look and work better — built properly, and kept
+              running after launch. Take one thing or the lot.
+            </p>
+          </Reveal>
         </div>
       </header>
 
@@ -32,52 +64,66 @@ export default function Services() {
 
       <section className="gw-section gw-dark">
         <div className="gw-container">
-          <div className="gw-approved" style={{ marginBottom: 28 }}>
-            <div className="gw-stamp"><div className="gw-stamp__centre">GOOD<br />WORK.</div></div>
-            <div>
-              <p className="gw-label">A closer look</p>
-              <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
+          <Reveal variant="rise">
+            <div className="gw-approved" style={{ marginBottom: 28 }}>
+              <Stamp size={120} />
+              <div>
+                <p className="gw-label">A closer look</p>
+                <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
+              </div>
             </div>
-          </div>
-          <p className="gw-body-large gw-max-copy" style={{ marginBottom: 16 }}>
-            One dashboard that keeps a business looking active, without anyone sitting down to write it.
-          </p>
-          <p className="gw-body gw-max-copy" style={{ marginBottom: 8 }}>
-            Most small businesses go quiet online not because they don't see the point, but because writing posts
-            comes last after a full day on site. The Console does the drafting from what you've already told us
-            about the business — you review it, change what you want, and schedule it. Ten minutes a week instead
-            of an agency retainer.
-          </p>
+            <p className="gw-body-large gw-max-copy" style={{ marginBottom: 16 }}>
+              One dashboard that keeps a business looking active, without anyone sitting down to
+              write it.
+            </p>
+            <p className="gw-body gw-max-copy" style={{ marginBottom: 8 }}>
+              Most small businesses go quiet online not because they don't see the point, but
+              because writing posts comes last after a full day on site. The Console does the
+              drafting from what you've already told us about the business — you review it, change
+              what you want, and schedule it. Ten minutes a week instead of an agency retainer.
+            </p>
+          </Reveal>
           <ul className="gw-features gw-features--detail">
-            {CONSOLE_MODULES.map((m) => (
-              <li key={m.id}>
-                <strong>{m.name}</strong>
-                <span>{m.note}</span>
-              </li>
+            {CONSOLE_MODULES.map((m, i) => (
+              <Reveal key={m.id} variant="rise" delay={Math.min(i * 70, 280)} asChild>
+                <li>
+                  <strong>{m.name}</strong>
+                  <span>{m.note}</span>
+                </li>
+              </Reveal>
             ))}
           </ul>
-          <Link to="/content-console" className="gw-button" style={{ marginTop: 32, background: "var(--gw-white)", color: "var(--gw-black)" }}>
-            See the full Content Console →
-          </Link>
+          <Reveal variant="rise">
+            <div className="gw-actions gw-stack-lg">
+              <Button to="/content-console" variant="light" arrow>
+                See the full Content Console
+              </Button>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="gw-section">
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>How it runs</p>
-          <h2 className="gw-h2">What actually happens</h2>
-          <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 8 }}>
-            Four steps, no agency theatre. You'll know the scope and the price before we start building.
-          </p>
-          <div style={{ marginTop: 20 }}>
-            {PROCESS.map((p) => (
-              <div className="gw-addon" key={p.mark}>
-                <div className="gw-addon-mark">{p.mark}</div>
-                <div className="gw-addon-body">
-                  <strong>{p.title}</strong>
-                  <span>{p.desc}</span>
+          <Reveal variant="rise">
+            <p className="gw-label">How it runs</p>
+            <h2 className="gw-h2 gw-stack-sm">What actually happens</h2>
+            <p className="gw-body gw-max-copy gw-text-muted gw-stack-sm">
+              Four steps, no agency theatre. You'll know the scope and the price before we start
+              building.
+            </p>
+          </Reveal>
+          <div className="gw-stack-lg">
+            {PROCESS.map((p, i) => (
+              <Reveal key={p.mark} variant="left" delay={i * 90} asChild>
+                <div className="gw-addon">
+                  <div className="gw-addon-mark">{p.mark}</div>
+                  <div className="gw-addon-body">
+                    <strong>{p.title}</strong>
+                    <span>{p.desc}</span>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

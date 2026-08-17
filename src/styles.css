@@ -23,7 +23,10 @@
   --gw-transition: 240ms var(--gw-ease);
 }
 *,*::before,*::after{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+/* clip (not hidden) so this never becomes a scroll container — position:sticky
+   keeps working, but no decorative transform can drag out a sideways scrollbar. */
+html{scroll-behavior:smooth;overflow-x:clip;}
+body{overflow-x:clip;}
 body{margin:0;background:var(--gw-white);color:var(--gw-black);font-family:var(--gw-font-primary);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
 img{display:block;max-width:100%;}
 a{color:inherit;text-decoration:none;}
@@ -32,6 +35,25 @@ button{font-family:inherit;}
 .gw-container{width:min(calc(100% - (var(--gw-page-padding)*2)),var(--gw-container));margin-inline:auto;}
 .gw-section{padding-block:clamp(3rem,7vw,6rem);}
 .gw-section--tight{padding-block:clamp(2rem,4vw,3.5rem);}
+
+/* ---- Layout utilities ----
+   Grids live here rather than in inline styles so they can actually
+   collapse on a phone. */
+.gw-grid{display:grid;gap:clamp(1rem,2.5vw,1.5rem);}
+.gw-grid--2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.gw-grid--split{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:start;}
+@media(max-width:720px){
+  .gw-grid--2,.gw-grid--split{grid-template-columns:1fr;}
+}
+.gw-actions{display:flex;flex-wrap:wrap;gap:14px;}
+@media(max-width:420px){
+  /* Full-width stacked CTAs beat two cramped half-buttons on a small phone. */
+  .gw-actions{flex-direction:column;align-items:stretch;}
+  .gw-actions .gw-button{width:100%;}
+}
+.gw-stack-sm{margin-top:0.625rem;}
+.gw-stack-md{margin-top:1.125rem;}
+.gw-stack-lg{margin-top:2rem;}
 
 /* ---- Logo (solid colour default, gradient as enhancement) ---- */
 .gw-logo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1;}
@@ -43,26 +65,28 @@ button{font-family:inherit;}
 .gw-logo--hero .gw-logo__wordmark{font-size:clamp(2.4rem,8vw,4rem);}
 
 /* ---- Nav ---- */
-.gw-nav{position:sticky;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(17,17,17,0.08);}
-.gw-nav__inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;}
+.gw-nav{position:fixed;top:0;left:0;right:0;z-index:160;background:rgba(255,255,255,0.9);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid rgba(17,17,17,0.08);}
+.gw-nav__inner{min-height:var(--gw-nav-height);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+/* The nav is fixed, so every page starts below it. */
+.gw-page{padding-top:var(--gw-nav-height);}
 .gw-nav__links{display:flex;align-items:center;gap:1.75rem;}
 .gw-nav__link{font-size:0.82rem;font-weight:var(--gw-medium);letter-spacing:0.02em;color:var(--gw-black);}
-.gw-nav__link:hover{opacity:0.55;}
-.gw-nav__link--active{font-weight:var(--gw-semibold);border-bottom:2px solid var(--gw-magenta);padding-bottom:2px;}
-.gw-nav__cta{font-size:0.8rem;font-weight:var(--gw-semibold);letter-spacing:0.05em;text-transform:uppercase;padding:0.55rem 1rem;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);}
-.gw-nav__toggle{display:none;background:none;border:0;cursor:pointer;padding:6px;}
-.gw-nav__toggle span{display:block;width:22px;height:2px;background:var(--gw-black);margin:4px 0;}
-.gw-nav__mobile{display:none;flex-direction:column;gap:0;border-top:1px solid var(--gw-grey-200);background:var(--gw-white);}
-.gw-nav__mobile a{padding:16px var(--gw-page-padding);font-size:0.95rem;font-weight:var(--gw-medium);border-bottom:1px solid var(--gw-grey-200);}
-.gw-nav__mobile--open{display:flex;}
-@media(max-width:720px){
+.gw-nav__link--active{font-weight:var(--gw-semibold);}
+.gw-nav__cta{font-size:0.8rem;font-weight:var(--gw-semibold);letter-spacing:0.05em;text-transform:uppercase;padding:0.6rem 1.05rem;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);}
+/* 44px minimum touch target, per WCAG 2.2 target size. */
+.gw-nav__toggle{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;padding:0;margin-right:-10px;}
+.gw-nav__toggle span{display:block;width:22px;height:2px;background:var(--gw-black);margin:4px auto;}
+@media(max-width:820px){
   .gw-nav__links--desktop{display:none;}
   .gw-nav__toggle{display:block;}
 }
 
 /* ---- Typography ---- */
 .gw-label{font-size:0.72rem;font-weight:var(--gw-semibold);letter-spacing:0.24em;text-transform:uppercase;color:var(--gw-grey-700);}
-.gw-h1{margin:0;font-size:clamp(2.2rem,6.5vw,4rem);font-weight:var(--gw-extrabold);letter-spacing:-0.04em;line-height:1.02;}
+/* Scales with the viewport rather than bottoming out at a fixed minimum —
+   at 390px the old 2.2rem floor pushed "look and work better." off the edge
+   and orphaned the full stop onto its own line. */
+.gw-h1{margin:0;font-size:clamp(1.95rem,7.8vw,4rem);font-weight:var(--gw-extrabold);letter-spacing:-0.04em;line-height:1.02;text-wrap:balance;}
 .gw-h2{margin:0;font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:var(--gw-bold);letter-spacing:-0.02em;line-height:1.08;}
 .gw-h3{margin:0;font-size:clamp(1.2rem,2.4vw,1.5rem);font-weight:var(--gw-bold);letter-spacing:-0.01em;}
 .gw-body{font-size:1rem;line-height:1.65;}
@@ -86,6 +110,7 @@ button{font-family:inherit;}
 .gw-features li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gw-magenta);border-radius:50%;}
 @media(max-width:520px){.gw-features{grid-template-columns:1fr;}}
 .gw-includes-prev{font-size:0.78rem;color:var(--gw-grey-700);margin:12px 0 0;font-style:italic;}
+.gw-features--single{grid-template-columns:1fr;margin-top:0;}
 /* Feature lists with an explanation under each item */
 .gw-features--detail{gap:16px 32px;margin-top:20px;}
 .gw-features--detail li{font-size:inherit;}
@@ -96,10 +121,8 @@ button{font-family:inherit;}
 @media(max-width:720px){.gw-features--detail{grid-template-columns:1fr;}}
 
 /* ---- Buttons ---- */
-.gw-button{display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;min-height:48px;padding:0.85rem 1.3rem;border:0;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);font-size:0.82rem;font-weight:var(--gw-semibold);letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:transform var(--gw-transition);}
-.gw-button:hover{transform:translateY(-2px);}
+.gw-button{display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;min-height:48px;padding:0.85rem 1.3rem;border:0;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);font-size:0.82rem;font-weight:var(--gw-semibold);letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;text-align:center;}
 .gw-button--outline{border:1px solid var(--gw-black);background:transparent;color:var(--gw-black);}
-.gw-button--outline:hover{background:var(--gw-black);color:var(--gw-white);}
 
 /* ---- Work grid ---- */
 .gw-work-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.75rem);}
@@ -118,13 +141,7 @@ button{font-family:inherit;}
 .gw-dark .gw-h2,.gw-dark .gw-h3{color:var(--gw-white);}
 .gw-dark .gw-features li{color:var(--gw-white);}
 
-/* ---- Stamp ---- */
-.gw-stamp{position:relative;width:96px;aspect-ratio:1;display:grid;place-items:center;border-radius:50%;flex-shrink:0;}
-.gw-stamp::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:var(--gw-gradient);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
-.gw-stamp__centre{text-align:center;font-weight:var(--gw-extrabold);font-size:0.85rem;line-height:0.9;letter-spacing:-0.04em;color:var(--gw-magenta);}
-@supports (background-clip:text) or (-webkit-background-clip:text){
-  .gw-stamp__centre{background:var(--gw-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
-}
+/* ---- Stamp ---- (visuals and rotation live in styles/motion.css) */
 .gw-approved{display:flex;align-items:center;gap:var(--gw-space-5);flex-wrap:wrap;}
 
 /* ---- Addons ---- */
@@ -151,13 +168,33 @@ button{font-family:inherit;}
 .gw-pick__note{display:block;font-size:0.85rem;line-height:1.6;color:var(--gw-grey-700);margin-top:4px;}
 .gw-pick__billing{flex-shrink:0;align-self:flex-start;font-size:0.64rem;font-weight:var(--gw-semibold);letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap;color:var(--gw-grey-700);border:1px solid var(--gw-grey-300);border-radius:999px;padding:3px 10px;}
 .gw-pick--active .gw-pick__billing{border-color:var(--gw-black);color:var(--gw-black);}
+/* On a phone the billing pill has to drop below the copy. flex-wrap alone
+   never did it — .gw-pick__body has min-width:0, so it just kept shrinking and
+   squeezed the service name into three words a line. Grid makes the two rows
+   explicit. */
 @media(max-width:560px){
-  .gw-pick{flex-wrap:wrap;}
-  .gw-pick__billing{margin-left:30px;}
+  .gw-pick{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;row-gap:10px;align-items:start;}
+  .gw-pick__box{grid-column:1;grid-row:1;}
+  .gw-pick__body{grid-column:2;grid-row:1;}
+  .gw-pick__billing{grid-column:2;grid-row:2;justify-self:start;}
 }
 
-.gw-total{position:sticky;bottom:16px;margin-top:28px;padding:clamp(1.25rem,3vw,1.6rem);border-radius:var(--gw-radius-lg);background:var(--gw-black);color:var(--gw-white);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.gw-pick-group{margin-bottom:24px;}
+.gw-pick-list{display:flex;flex-direction:column;gap:8px;}
+
+.gw-total{position:sticky;bottom:max(16px,env(safe-area-inset-bottom));margin-top:28px;padding:clamp(1.25rem,3vw,1.6rem);border-radius:var(--gw-radius-lg);background:var(--gw-black);color:var(--gw-white);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .gw-total__figures{margin:0;font-size:1.05rem;font-weight:var(--gw-bold);letter-spacing:-0.01em;}
+.gw-total__label{color:rgba(255,255,255,0.5);margin:0 0 4px;}
+.gw-total__actions{display:flex;align-items:center;gap:12px;}
+.gw-total__clear{background:none;border:0;color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:var(--gw-semibold);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;padding:0.6rem 0.2rem;}
+.gw-total__clear:hover{color:var(--gw-white);}
+/* Inert until something's ticked — visibly there, but not a live target. */
+.gw-button[data-gw-inactive="true"]{background:rgba(255,255,255,0.18);color:rgba(255,255,255,0.5);pointer-events:none;}
+@media(max-width:520px){
+  .gw-total{flex-direction:column;align-items:stretch;}
+  .gw-total__actions{justify-content:space-between;}
+  .gw-total__actions .gw-button{flex:1;}
+}
 
 /* ---- Case studies ---- */
 .gw-case-head{display:flex;align-items:flex-start;gap:var(--gw-space-5);flex-wrap:wrap;}
@@ -165,12 +202,16 @@ button{font-family:inherit;}
 .gw-case-site{margin:8px 0 0;font-size:0.85rem;font-weight:var(--gw-medium);color:var(--gw-grey-700);}
 
 .gw-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0;padding:24px 0;border-block:1px solid var(--gw-grey-200);}
+.gw-facts--pair{grid-template-columns:1fr 1fr;margin:24px 0;}
+.gw-dark .gw-facts{border-color:rgba(255,255,255,0.16);}
+.gw-dark .gw-fact__label{color:rgba(255,255,255,0.6);}
 .gw-fact__figure{display:block;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:var(--gw-extrabold);letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;}
 .gw-fact__label{display:block;margin-top:8px;font-size:0.78rem;line-height:1.4;color:var(--gw-grey-700);}
 @media(max-width:640px){.gw-facts{grid-template-columns:1fr 1fr;}}
 
 .gw-shot{margin:0;}
-.gw-shot img{display:block;width:100%;height:auto;border:1px solid var(--gw-grey-200);border-radius:var(--gw-radius-lg);background:var(--gw-grey-100);}
+.gw-shot__frame{border:1px solid var(--gw-grey-200);background:var(--gw-grey-100);}
+.gw-shot img{display:block;width:100%;height:auto;}
 .gw-shot figcaption{margin-top:10px;font-size:0.82rem;line-height:1.5;color:var(--gw-grey-700);}
 .gw-shot--lead{margin-bottom:40px;}
 .gw-shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2.5vw,1.75rem);margin-top:40px;}
@@ -192,8 +233,8 @@ button{font-family:inherit;}
 .gw-console-section:not(:has(.gw-console-shot)) .gw-console-copy{max-width:70ch;}
 @media(max-width:860px){.gw-console-section{grid-template-columns:1fr;}}
 
-.gw-console-shot img{border-color:var(--gw-grey-300);}
-.gw-dark .gw-console-shot img{border-color:rgba(255,255,255,0.18);}
+.gw-console-shot .gw-shot__frame{border-color:var(--gw-grey-300);}
+.gw-dark .gw-console-shot .gw-shot__frame{border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);}
 .gw-dark .gw-shot figcaption{color:rgba(255,255,255,0.55);}
 
 .gw-why{margin-top:16px;padding-left:16px;border-left:2px solid var(--gw-magenta);}
@@ -205,6 +246,25 @@ button{font-family:inherit;}
 .gw-field label{font-size:0.78rem;font-weight:var(--gw-semibold);letter-spacing:0.04em;}
 .gw-field input,.gw-field textarea,.gw-field select{font-family:inherit;font-size:0.95rem;padding:0.75rem 0.9rem;border:1px solid var(--gw-grey-300);border-radius:var(--gw-radius-sm);background:var(--gw-white);width:100%;}
 .gw-field input:focus,.gw-field textarea:focus,.gw-field select:focus{outline:2px solid var(--gw-blue);outline-offset:1px;}
+.gw-field textarea{resize:vertical;min-height:120px;}
+.gw-field [aria-invalid="true"]{border-color:var(--gw-coral);}
+.gw-field__error{margin:2px 0 0;font-size:0.8rem;color:#C93B2F;}
+/* Off-screen rather than display:none — bots skip what's obviously hidden. */
+.gw-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+
+.gw-contact-aside{display:flex;flex-direction:column;gap:16px;}
+.gw-link{color:var(--gw-blue);text-decoration:underline;text-underline-offset:3px;}
+.gw-link:hover{color:var(--gw-magenta);}
+
+.gw-sent{text-align:center;padding-block:clamp(2rem,5vw,3rem);}
+.gw-sent__tick{width:76px;margin:0 auto 18px;}
+.gw-sent__tick svg{width:100%;height:auto;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.gw-sent__ring{stroke:var(--gw-grey-300);stroke-width:2;}
+.gw-sent__check{stroke:var(--gw-magenta);stroke-width:3;}
+
+.gw-footer__fine{margin:24px 0 0;font-size:0.78rem;color:rgba(255,255,255,0.45);}
+.gw-footer__fine a{color:rgba(255,255,255,0.7);text-decoration:underline;text-underline-offset:3px;}
+.gw-footer__fine a:hover{color:var(--gw-white);}
 
 /* ---- Footer ---- */
 .gw-footer{padding-block:clamp(3.5rem,7vw,6rem) clamp(2rem,4vw,3rem);background:var(--gw-black);color:var(--gw-white);}
@@ -213,5 +273,5 @@ button{font-family:inherit;}
 .gw-footer__links{display:flex;gap:1.5rem;flex-wrap:wrap;}
 .gw-footer__links a{font-size:0.82rem;color:rgba(255,255,255,0.65);}
 .gw-footer__links a:hover{color:var(--gw-white);}
-
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto !important;transition-duration:0.01ms !important;}}
+/* Clears the home indicator on iOS when the footer is the last thing on screen. */
+.gw-footer{padding-bottom:max(clamp(2rem,4vw,3rem),env(safe-area-inset-bottom));}

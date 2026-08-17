@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-
+import Button from "../components/Button";
+import Headline from "../components/Headline";
+import GlowCard from "../components/GlowCard";
+import Marquee from "../components/Marquee";
+import Reveal from "../components/Reveal";
+import Seo from "../components/Seo";
+import { SITE_URL } from "../lib/site";
+import Shot from "../components/Shot";
+import Stamp from "../components/Stamp";
 import { CASE_STUDIES } from "../data/caseStudies";
 
 const WORK = CASE_STUDIES.map((cs) => ({
@@ -12,41 +20,100 @@ const WORK = CASE_STUDIES.map((cs) => ({
 }));
 
 const DISCIPLINES = [
-  { title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
-  { title: "Web", desc: "Websites and digital experiences built around one job: commercial outcomes." },
-  { title: "Creative", desc: "Campaigns, content and advertising that actually gets looked at." },
-  { title: "Systems", desc: "CRM, booking, quoting and content infrastructure that runs without you." },
+  { mark: "01", title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
+  { mark: "02", title: "Web", desc: "Websites and digital experiences built around one job: commercial outcomes." },
+  { mark: "03", title: "Creative", desc: "Campaigns, content and advertising that actually gets looked at." },
+  { mark: "04", title: "Systems", desc: "CRM, booking, quoting and content infrastructure that runs without you." },
 ];
+
+const TICKER = [
+  "Brand identity",
+  "Websites",
+  "Content Console",
+  "Open CRM",
+  "Booking systems",
+  "Meta ads",
+  "AI agents",
+  "Quoting apps",
+  "WhatsApp automation",
+];
+
+const SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "GOOD WORK.",
+  url: SITE_URL,
+  publisher: { "@id": `${SITE_URL}/#organisation` },
+};
 
 export default function Home() {
   return (
     <>
-      <header className="gw-section" style={{ paddingTop: "clamp(3.5rem,9vw,7rem)" }}>
+      <Seo
+        title="GOOD WORK. — Brand, websites and systems for UK businesses"
+        description="A creative agency that makes businesses look and work better. Brand identity, hand-built websites, and the systems that keep enquiries, content and quoting running after launch."
+        schema={SCHEMA}
+      />
+
+      <header className="gw-section gw-hero" style={{ paddingTop: "clamp(3rem,8vw,6rem)" }}>
+        <div className="gw-aurora" aria-hidden="true">
+          <span /><span /><span /><span />
+        </div>
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 18 }}>Brand · Web · Systems</p>
-          <h1 className="gw-h1">We make businesses<br />look and work better<span className="gw-dot"></span></h1>
-          <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 20 }}>
-            Good businesses get let down by weak websites, disconnected systems and inconsistent marketing. We fix that — properly, once, then keep it running.
-          </p>
-          <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-            <Link to="/work" className="gw-button">View our work</Link>
-            <Link to="/services" className="gw-button gw-button--outline">See services</Link>
+          <div className="gw-hero__grid">
+            <div>
+              <Reveal variant="fade">
+                <p className="gw-label gw-pulse">Brand · Web · Systems</p>
+              </Reveal>
+              <Headline
+                onMount
+                className="gw-h1 gw-stack-md"
+                lines={[
+                  "We make businesses",
+                  <>
+                    look and <em className="gw-grad">work better</em>
+                    <span className="gw-dot" />
+                  </>,
+                ]}
+              />
+              <Reveal variant="rise" delay={260}>
+                <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-lg">
+                  Good businesses get let down by weak websites, disconnected systems and
+                  inconsistent marketing. We fix that — properly, once, then keep it running.
+                </p>
+              </Reveal>
+              <Reveal variant="rise" delay={380}>
+                <div className="gw-actions gw-stack-lg">
+                  <Button to="/work" arrow>View our work</Button>
+                  <Button to="/services" variant="outline">See services</Button>
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal variant="scale" delay={420} className="gw-hero__stamp">
+              <Stamp size={168} />
+            </Reveal>
           </div>
         </div>
       </header>
 
-      <hr className="gw-rule--gradient" style={{ border: 0 }} />
+      <Marquee items={TICKER} />
 
       <section className="gw-section">
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>What we do</p>
-          <h2 className="gw-h2">Four disciplines. One standard.</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 32 }}>
-            {DISCIPLINES.map((d) => (
-              <div className="gw-card" key={d.title}>
-                <h3 className="gw-h3">{d.title}</h3>
-                <p className="gw-body gw-text-muted" style={{ marginTop: 10 }}>{d.desc}</p>
-              </div>
+          <Reveal variant="rise">
+            <p className="gw-label">What we do</p>
+            <h2 className="gw-h2 gw-stack-sm">Four disciplines. One standard.</h2>
+          </Reveal>
+          <div className="gw-grid gw-grid--2 gw-stack-lg">
+            {DISCIPLINES.map((d, i) => (
+              <Reveal key={d.title} variant="rise" delay={i * 90} asChild>
+                <GlowCard>
+                  <span className="gw-card__mark" aria-hidden="true">{d.mark}</span>
+                  <h3 className="gw-h3">{d.title}</h3>
+                  <p className="gw-body gw-text-muted gw-stack-sm">{d.desc}</p>
+                </GlowCard>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -54,37 +121,61 @@ export default function Home() {
 
       <section className="gw-section gw-dark">
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>Selected work</p>
-          <h2 className="gw-h2">Recent projects</h2>
-          <div className="gw-work-grid" style={{ marginTop: 32 }}>
-            {WORK.map((w) => (
-              <Link to={w.to} className="gw-work-card" key={w.name} style={{ borderColor: "rgba(255,255,255,0.15)", background: "#161616" }}>
-                <img className="gw-work-card__shot" src={w.shot} alt={`${w.name} website`} loading="lazy" />
-                <div className="gw-work-card__body">
-                  <span className="gw-work-card__tag" style={{ color: "rgba(255,255,255,0.5)" }}>{w.tag}</span>
-                  <p className="gw-body" style={{ color: "var(--gw-white)" }}>{w.desc}</p>
-                </div>
-              </Link>
+          <Reveal variant="rise">
+            <p className="gw-label">Selected work</p>
+            <h2 className="gw-h2 gw-stack-sm">Recent projects</h2>
+          </Reveal>
+          <div className="gw-work-grid gw-stack-lg">
+            {WORK.map((w, i) => (
+              <Reveal key={w.name} variant="rise" delay={i * 110} asChild>
+                <Link to={w.to} className="gw-work-card gw-work-card--dark">
+                  <div className="gw-work-card__media-wrap">
+                    <Shot
+                      src={w.shot}
+                      alt={`${w.name} website`}
+                      sizes="(max-width: 640px) 100vw, 520px"
+                      parallax={false}
+                      reveal={false}
+                      className="gw-work-card__figure"
+                    />
+                    <span className="gw-work-card__scrim" aria-hidden="true" />
+                  </div>
+                  <div className="gw-work-card__body">
+                    <span className="gw-work-card__tag">{w.tag}</span>
+                    <p className="gw-body">{w.desc}</p>
+                    <span className="gw-work-card__go">
+                      Read the case study <span aria-hidden="true">→</span>
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
             ))}
           </div>
-          <Link to="/case-studies" className="gw-button" style={{ marginTop: 32, background: "var(--gw-white)", color: "var(--gw-black)" }}>
-            Read the case studies
-          </Link>
+          <Reveal variant="rise">
+            <Button to="/case-studies" variant="light" className="gw-stack-lg" arrow>
+              Read the case studies
+            </Button>
+          </Reveal>
         </div>
       </section>
 
       <section className="gw-section">
         <div className="gw-container">
-          <div className="gw-approved" style={{ marginBottom: 28 }}>
-            <div className="gw-stamp"><div className="gw-stamp__centre">GOOD<br />WORK.</div></div>
-            <div>
-              <p className="gw-label">How we work</p>
-              <h2 className="gw-h2">Understand. Think. Make. Improve.</h2>
+          <Reveal variant="rise">
+            <div className="gw-approved">
+              <Stamp size={120} />
+              <div>
+                <p className="gw-label">How we work</p>
+                <h2 className="gw-h2 gw-stack-sm">Understand. Think. Make. Improve.</h2>
+              </div>
             </div>
-          </div>
-          <p className="gw-body-large gw-max-copy gw-text-muted">
-            No unnecessary agency process. We work out what matters, then we make it better — and keep making it better once it's live.
-          </p>
+          </Reveal>
+          <Reveal variant="rise" delay={120}>
+            <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-lg">
+              No unnecessary agency process. We work out what matters, then we make it better —
+              and keep making it better once it's live.
+            </p>
+          </Reveal>
         </div>
       </section>
 
