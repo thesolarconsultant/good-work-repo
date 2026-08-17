@@ -64,8 +64,11 @@ export default function Nav() {
     <>
       <nav className={navClass} aria-label="Primary">
         <div className="gw-container gw-nav__inner">
-          <Link to="/" className="gw-logo" aria-label="GOOD WORK. — home">
+          <Link to="/" className="gw-logo" aria-label="GOOD WORK., creative agency — home">
             <p className="gw-logo__wordmark">GOOD WORK.</p>
+            {/* Sentence case in the markup, uppercased in CSS — screen readers
+                can spell out a genuinely capitalised string letter by letter. */}
+            <span className="gw-logo__descriptor">Creative agency</span>
           </Link>
 
           <div className="gw-nav__links gw-nav__links--desktop">

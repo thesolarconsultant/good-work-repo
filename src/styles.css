@@ -14,6 +14,10 @@
   --gw-grey-100: #F4F4F4;
   --gw-white: #FFFFFF;
   --gw-gradient: linear-gradient(90deg, var(--gw-blue) 0%, var(--gw-violet) 32%, var(--gw-magenta) 68%, var(--gw-coral) 100%);
+  /* Brushed silver for the logo descriptor. The stops stay in a deliberately
+     dark band (3.3:1 to 7.5:1 on white): a true pale silver looks right on a
+     mood board and disappears at 10px on a screen. */
+  --gw-silver: linear-gradient(100deg, #6B7280 0%, #4E555F 14%, #868D97 34%, #545B65 52%, #7C838D 72%, #4E555F 100%);
   --gw-font-primary: "Poppins","Helvetica Neue",Helvetica,Arial,sans-serif;
   --gw-extrabold:800; --gw-bold:700; --gw-semibold:600; --gw-medium:500; --gw-regular:400;
   --gw-space-4:1rem; --gw-space-5:1.5rem; --gw-space-6:2rem; --gw-space-7:3rem; --gw-space-8:4rem;
@@ -58,9 +62,14 @@ button{font-family:inherit;}
 /* ---- Logo (solid colour default, gradient as enhancement) ---- */
 .gw-logo{display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1;}
 .gw-logo__wordmark{margin:0;font-weight:var(--gw-extrabold);letter-spacing:-0.06em;line-height:0.92;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--gw-blue);}
-.gw-logo__descriptor{margin-top:0.5rem;color:var(--gw-black);font-size:0.6rem;font-weight:var(--gw-semibold);letter-spacing:0.3em;text-transform:uppercase;}
+/* Descriptor sits on the wordmark's left edge. The trailing letter-space is
+   pulled back so both lines end up optically flush. */
+.gw-logo__descriptor{display:block;margin:0.42rem 0 0;margin-right:-0.34em;color:#5F666F;font-size:0.6rem;line-height:1;font-weight:var(--gw-semibold);letter-spacing:0.34em;text-transform:uppercase;white-space:nowrap;}
 @supports (background-clip:text) or (-webkit-background-clip:text){
   .gw-logo__wordmark{background:var(--gw-gradient); -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
+  /* Brushed silver: light/dark stops across the line read as a metal sheen
+     rather than flat grey. Solid #6E747E above is the fallback. */
+  .gw-logo__descriptor{background:var(--gw-silver);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;}
 }
 .gw-logo--hero .gw-logo__wordmark{font-size:clamp(2.4rem,8vw,4rem);}
 

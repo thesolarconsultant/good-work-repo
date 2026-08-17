@@ -11,7 +11,8 @@
   --gw-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --gw-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
   --gw-reveal-duration: 820ms;
-  --gw-nav-height: 68px;
+  /* Two-line logo: wordmark plus the silver descriptor under it. */
+  --gw-nav-height: 78px;
 }
 
 /* ---------------------------------------------------------
@@ -438,9 +439,12 @@
   to   { background-position: 200% 50%; }
 }
 
-/* The wordmark's gradient breathes on hover rather than sitting static. */
+/* The wordmark's gradient breathes on hover rather than sitting static, and
+   the silver descriptor catches the light with it. */
 .gw-logo__wordmark { background-size: 200% 100%; transition: background-position 900ms var(--gw-ease-out); }
 .gw-logo:hover .gw-logo__wordmark { background-position: 100% 50%; }
+.gw-logo__descriptor { transition: background-position 900ms var(--gw-ease-out); }
+.gw-logo:hover .gw-logo__descriptor { background-position: 100% 50%; }
 
 /* ---------------------------------------------------------
    11. Nav
