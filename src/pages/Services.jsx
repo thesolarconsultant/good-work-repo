@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import ServiceSelector from "../components/ServiceSelector";
 import { SERVICES } from "../data/services";
@@ -55,6 +56,9 @@ export default function Services() {
               </li>
             ))}
           </ul>
+          <Link to="/content-console" className="gw-button" style={{ marginTop: 32, background: "var(--gw-white)", color: "var(--gw-black)" }}>
+            See the full Content Console →
+          </Link>
         </div>
       </section>
 

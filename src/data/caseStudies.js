@@ -23,10 +23,12 @@ export const CASE_STUDIES = [
       { title: "Creative generated from code", desc: "Six render pipelines produce static ads, animated ads, brand carousels, video covers, social previews and OG images from the same brand system. New campaign, no new design round." },
       { title: "Content and email engine", desc: "A content engine with drafts and roadmaps, plus a set of branded email templates covering booking, discovery calls and reminders." },
       { title: "Pitch decks inside the product", desc: "Customer and installer decks live as routes on the site, so a presentation is a link — always current, never a stale PDF attachment." },
+      { title: "The portal — where the business actually runs", desc: "A separate application behind the site with three sides to it: 28 admin screens (CRM pipeline, deal engine, quote review, procurement, installer vetting, surveys, pricing, analytics), 19 client screens (their journey, system design, energy calculator, quotes, documents, install tracker) and 16 installer screens (onboarding, opportunities, submitting quotes, project and survey portals). 106 data entities and 120 backend functions underneath." },
+      { title: "The Content Console, built in", desc: "The content operation lives inside that portal rather than in a separate tool — backlog, drafting, review and published pipelines for blogs, plus social copy packs, email templates and approved WhatsApp templates, sitting next to the CRM they feed." },
     ],
     facts: [
       { figure: "20", label: "routes, prerendered" },
-      { figure: "2", label: "audiences, one codebase" },
+      { figure: "63", label: "portal screens across 3 roles" },
       { figure: "6", label: "automated creative pipelines" },
       { figure: "4", label: "lead + tracking endpoints" },
     ],
@@ -35,7 +37,7 @@ export const CASE_STUDIES = [
       { src: "/case-studies/tsc-installers.jpg", caption: "The installer side of the business — its own landing page and application journey." },
       { src: "/case-studies/tsc-blog.jpg", caption: "The blog, built for search: prerendered, structured and on-brand." },
     ],
-    services: ["Website", "Full brand identity & logo", "Quick quoting & contracting app", "Meta ads", "GA4 setup", "Content Console"],
+    services: ["Website", "Full brand identity & logo", "Quick quoting & contracting app", "Open CRM", "Meta ads", "GA4 setup", "Content Console"],
   },
   {
     id: "8energy",

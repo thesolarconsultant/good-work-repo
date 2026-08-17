@@ -183,6 +183,23 @@ button{font-family:inherit;}
 .gw-chip{font-size:0.78rem;font-weight:var(--gw-medium);padding:0.45rem 0.85rem;border:1px solid var(--gw-grey-300);border-radius:999px;color:var(--gw-black);}
 .gw-chip:hover{background:var(--gw-black);color:var(--gw-white);border-color:var(--gw-black);}
 
+/* ---- Content Console showcase ---- */
+.gw-console-section{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(1.5rem,4vw,3rem);align-items:center;padding-block:clamp(2rem,5vw,3.5rem);border-top:1px solid var(--gw-grey-200);}
+.gw-console-section:first-of-type{border-top:0;}
+.gw-dark .gw-console-section{border-color:rgba(255,255,255,0.14);}
+.gw-console-section:has(.gw-console-shot) .gw-console-copy{grid-column:1;}
+.gw-console-section:not(:has(.gw-console-shot)){grid-template-columns:1fr;}
+.gw-console-section:not(:has(.gw-console-shot)) .gw-console-copy{max-width:70ch;}
+@media(max-width:860px){.gw-console-section{grid-template-columns:1fr;}}
+
+.gw-console-shot img{border-color:var(--gw-grey-300);}
+.gw-dark .gw-console-shot img{border-color:rgba(255,255,255,0.18);}
+.gw-dark .gw-shot figcaption{color:rgba(255,255,255,0.55);}
+
+.gw-why{margin-top:16px;padding-left:16px;border-left:2px solid var(--gw-magenta);}
+.gw-why__label{display:block;font-size:0.66rem;font-weight:var(--gw-semibold);letter-spacing:0.16em;text-transform:uppercase;color:var(--gw-magenta);margin-bottom:6px;}
+.gw-why .gw-body{font-size:0.95rem;}
+
 /* ---- Contact form ---- */
 .gw-field{display:flex;flex-direction:column;gap:6px;margin-bottom:1.1rem;}
 .gw-field label{font-size:0.78rem;font-weight:var(--gw-semibold);letter-spacing:0.04em;}
