@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
-const WORK = [
-  { to: "/work#tsc", name: "The Solar Consultant", tag: "Brand · Web", desc: "Independent solar advisory — full brand system and site.", gradient: "linear-gradient(135deg,#3366FF,#7A5CFF)" },
-  { to: "/work#8energy", name: "8energy", tag: "Web · Systems", desc: "Home energy technology brand — animated site build.", gradient: "linear-gradient(135deg,#7A5CFF,#FF2DB3)" },
-  { to: "/work#harding", name: "Harding Waste Co.", tag: "Brand · Web", desc: "Waste management brand identity and website.", gradient: "linear-gradient(135deg,#FF2DB3,#FF6B5E)" },
-  { to: "/work#ama", name: "AMA Scaffolding", tag: "Creative", desc: "Branded animated assets for a growing scaffolding contractor.", gradient: "linear-gradient(135deg,#3366FF,#FF6B5E)" },
-];
+import { CASE_STUDIES } from "../data/caseStudies";
+
+const WORK = CASE_STUDIES.map((cs) => ({
+  to: `/case-studies#${cs.id}`,
+  name: cs.name,
+  tag: cs.tag,
+  desc: cs.lede,
+  shot: cs.shots[0].src,
+}));
 
 const DISCIPLINES = [
   { title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
@@ -56,7 +59,7 @@ export default function Home() {
           <div className="gw-work-grid" style={{ marginTop: 32 }}>
             {WORK.map((w) => (
               <Link to={w.to} className="gw-work-card" key={w.name} style={{ borderColor: "rgba(255,255,255,0.15)", background: "#161616" }}>
-                <div className="gw-work-card__media" style={{ background: w.gradient }}>{w.name}</div>
+                <img className="gw-work-card__shot" src={w.shot} alt={`${w.name} website`} loading="lazy" />
                 <div className="gw-work-card__body">
                   <span className="gw-work-card__tag" style={{ color: "rgba(255,255,255,0.5)" }}>{w.tag}</span>
                   <p className="gw-body" style={{ color: "var(--gw-white)" }}>{w.desc}</p>
@@ -64,8 +67,8 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <Link to="/work" className="gw-button" style={{ marginTop: 32, background: "var(--gw-white)", color: "var(--gw-black)" }}>
-            View all work
+          <Link to="/case-studies" className="gw-button" style={{ marginTop: 32, background: "var(--gw-white)", color: "var(--gw-black)" }}>
+            Read the case studies
           </Link>
         </div>
       </section>

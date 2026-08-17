@@ -2,6 +2,7 @@ import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Work from "./pages/Work";
+import CaseStudies from "./pages/CaseStudies";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/work" element={<Work />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>

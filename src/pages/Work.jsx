@@ -1,49 +1,6 @@
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-
-const CASE_STUDIES = [
-  {
-    id: "tsc",
-    name: "The Solar Consultant",
-    tag: "Brand · Web · Ads",
-    gradient: "linear-gradient(135deg,#3366FF,#7A5CFF)",
-    paragraphs: [
-      "An independent UK solar advisory business positioned against the installer-led sales model — charging homeowners an advisory fee, designing systems from real consumption data, and matching them with vetted installers.",
-      "Full brand identity, typography and motion system, plus a single clean funnel from free roof scan through to paid advisory report.",
-    ],
-    mediaFirst: true,
-  },
-  {
-    id: "8energy",
-    name: "8energy",
-    tag: "Web · Systems",
-    gradient: "linear-gradient(135deg,#7A5CFF,#FF2DB3)",
-    paragraphs: [
-      "A UK home energy technology brand covering solar, batteries, heat pumps and air conditioning. Built with scroll-triggered motion, live count-up statistics and a physics-based draggable logo carousel.",
-      "Includes a reusable multi-step lead capture form designed to qualify enquiries before they reach the sales team.",
-    ],
-    mediaFirst: false,
-  },
-  {
-    id: "harding",
-    name: "Harding Waste Co.",
-    tag: "Brand · Web",
-    gradient: "linear-gradient(135deg,#FF2DB3,#FF6B5E)",
-    paragraphs: [
-      "A full brand and website build for a waste management company, built around a petrol and brass palette to feel more industrial and considered than the category norm.",
-    ],
-    mediaFirst: true,
-  },
-  {
-    id: "ama",
-    name: "AMA Scaffolding",
-    tag: "Creative",
-    gradient: "linear-gradient(135deg,#3366FF,#FF6B5E)",
-    paragraphs: [
-      "Branded, animated content assets for an Epping-based scaffolding contractor — built to travel well on social and stand out from the usual trade-page look.",
-    ],
-    mediaFirst: false,
-  },
-];
+import { CASE_STUDIES } from "../data/caseStudies";
 
 export default function Work() {
   return (
@@ -53,8 +10,11 @@ export default function Work() {
           <p className="gw-label" style={{ marginBottom: 14 }}>Selected work</p>
           <h1 className="gw-h1">Recent projects</h1>
           <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 16 }}>
-            A mix of brand, web and systems work across trades, energy and independent service businesses.
+            Brand, web and systems work for two UK energy businesses — both live, both still running.
           </p>
+          <Link to="/case-studies" className="gw-button" style={{ marginTop: 28 }}>
+            Read the case studies →
+          </Link>
         </div>
       </header>
 
@@ -62,25 +22,26 @@ export default function Work() {
         <div key={cs.id}>
           <section className="gw-section" id={cs.id}>
             <div className="gw-container">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "center" }}>
-                <div
-                  className="gw-work-card__media"
-                  style={{
-                    order: cs.mediaFirst ? 1 : 2,
-                    background: cs.gradient,
-                    aspectRatio: "16/10",
-                    borderRadius: "var(--gw-radius-lg)",
-                    fontSize: "1.6rem",
-                  }}
-                >
-                  {cs.name}
-                </div>
-                <div style={{ order: cs.mediaFirst ? 2 : 1 }}>
+              <div className="gw-case-body" style={{ alignItems: "center" }}>
+                <figure className="gw-shot" style={{ order: i % 2 === 0 ? 1 : 2 }}>
+                  <img src={cs.shots[0].src} alt={`${cs.name} homepage`} loading="lazy" />
+                </figure>
+                <div style={{ order: i % 2 === 0 ? 2 : 1 }}>
                   <span className="gw-work-card__tag">{cs.tag}</span>
                   <h2 className="gw-h2" style={{ marginTop: 6 }}>{cs.name}</h2>
-                  {cs.paragraphs.map((p, idx) => (
-                    <p className="gw-body gw-text-muted" style={{ marginTop: idx === 0 ? 14 : 10 }} key={idx}>{p}</p>
-                  ))}
+                  <p className="gw-case-site">{cs.site}</p>
+                  <p className="gw-body gw-text-muted" style={{ marginTop: 14 }}>{cs.lede}</p>
+                  <div className="gw-facts" style={{ gridTemplateColumns: "1fr 1fr", margin: "24px 0" }}>
+                    {cs.facts.slice(0, 2).map((f) => (
+                      <div className="gw-fact" key={f.label}>
+                        <span className="gw-fact__figure">{f.figure}</span>
+                        <span className="gw-fact__label">{f.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link to={`/case-studies#${cs.id}`} className="gw-button gw-button--outline">
+                    See the full case study →
+                  </Link>
                 </div>
               </div>
             </div>

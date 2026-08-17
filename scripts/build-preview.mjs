@@ -15,7 +15,15 @@ const files = readdirSync(join(dist, 'assets'));
 const cssName = files.find((f) => f.endsWith('.css'));
 const jsName = files.find((f) => f.endsWith('.js'));
 
-const mime = { woff2: 'font/woff2', woff: 'font/woff', png: 'image/png', svg: 'image/svg+xml' };
+const mime = {
+  woff2: 'font/woff2', woff: 'font/woff', png: 'image/png',
+  svg: 'image/svg+xml', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp',
+};
+const dataUri = (path) => {
+  const ext = path.split('.').pop().toLowerCase();
+  return `data:${mime[ext]};base64,${readFileSync(path).toString('base64')}`;
+};
+
 let css = readFileSync(join(dist, 'assets', cssName), 'utf8');
 
 css = css.replace(/url\(\.\/([A-Za-z0-9._-]+)\)/g, (m, file) => {
@@ -32,7 +40,18 @@ const escapeUnicode = (s, wrap) =>
   s.replace(/[^\u0000-\u007F]/g, (c) => wrap(c.codePointAt(0).toString(16)));
 
 css = escapeUnicode(css, (hex) => `\\${hex} `);
-const js = escapeUnicode(readFileSync(join(dist, 'assets', jsName), 'utf8'), (hex) => `\\u${hex.padStart(4, '0')}`);
+let js = escapeUnicode(readFileSync(join(dist, 'assets', jsName), 'utf8'), (hex) => `\\u${hex.padStart(4, '0')}`);
+
+// Images served from public/ are referenced by absolute path ("/case-studies/x.jpg"),
+// which has nothing to resolve against in a single file — inline those too.
+for (const dir of readdirSync(dist, { withFileTypes: true })) {
+  if (!dir.isDirectory() || dir.name === 'assets') continue;
+  for (const file of readdirSync(join(dist, dir.name))) {
+    const ref = `/${dir.name}/${file}`;
+    if (!js.includes(ref)) continue;
+    js = js.split(ref).join(dataUri(join(dist, dir.name, file)));
+  }
+}
 
 const html = `<title>GOOD WORK. Services</title>
 <style>${css}</style>
