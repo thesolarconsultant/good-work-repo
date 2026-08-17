@@ -597,6 +597,67 @@ body[data-gw-locked="true"] { overflow: hidden; }
 @keyframes gw-draw { to { stroke-dashoffset: 0; } }
 
 /* ---------------------------------------------------------
+   12c. Live B-roll panel (Higgsfield)
+   --------------------------------------------------------- */
+.gw-broll {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--gw-radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+}
+.gw-broll__head .gw-body { color: rgba(255, 255, 255, 0.72); max-width: 62ch; }
+
+.gw-broll__presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+.gw-broll__preset {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--gw-radius-sm);
+  background: transparent;
+  color: var(--gw-white);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 280ms var(--gw-ease-out), background-color 280ms var(--gw-ease-out), transform 280ms var(--gw-ease-out);
+}
+.gw-broll__preset:hover:not(:disabled) { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.4); }
+.gw-broll__preset--active { border-color: transparent; background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 1px var(--gw-magenta); }
+.gw-broll__preset:disabled { opacity: 0.5; cursor: not-allowed; }
+.gw-broll__preset-label { font-size: 0.95rem; font-weight: var(--gw-semibold); }
+.gw-broll__preset-note { font-size: 0.82rem; line-height: 1.5; color: rgba(255, 255, 255, 0.6); }
+
+.gw-broll__actions { display: flex; align-items: center; gap: 14px; margin-top: 1.5rem; flex-wrap: wrap; }
+.gw-broll__actions .gw-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.gw-broll__spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--gw-magenta);
+  animation: gw-spin 800ms linear infinite;
+}
+
+.gw-broll__status { margin: 1rem 0 0; font-size: 0.88rem; line-height: 1.6; color: rgba(255, 255, 255, 0.66); min-height: 1.4em; }
+.gw-broll__video { display: block; width: 100%; margin-top: 1.25rem; border-radius: var(--gw-radius-lg); background: #000; }
+
+/* Reduced motion still needs a visible "something is happening" cue, so the
+   spinner becomes a pulse rather than disappearing entirely. */
+@media (prefers-reduced-motion: reduce) {
+  .gw-broll__spinner { animation: gw-broll-pulse 1.6s steps(2, end) infinite !important; }
+  @keyframes gw-broll-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+}
+
+/* ---------------------------------------------------------
    13. Route transitions
    --------------------------------------------------------- */
 .gw-route { animation: gw-route-in 420ms var(--gw-ease-out) both; }

@@ -82,6 +82,53 @@ The site URL is in `src/lib/site.js` and can be overridden at build time with
 `VITE_SITE_URL`. If the domain changes, update it there and in
 `public/robots.txt`, then re-run `npm run sitemap` and `npm run og`.
 
+### Higgsfield — live B-roll
+
+`/content-console` can generate a real clip on demand, using the same brand
+style file the page describes. It's the one claim on that page we can
+demonstrate rather than assert.
+
+**It is off until you deploy it.** `BrollStudio` asks `/api/broll` for the
+preset list on mount; if that 404s (function not deployed) or 503s (no
+credentials) it renders nothing, and the page is exactly as it is today.
+
+To turn it on:
+
+1. Set `HF_CREDENTIALS` (`KEY_ID:KEY_SECRET`, from the Higgsfield dashboard)
+   and `SITE_URL` in the hosting platform's environment settings. **Never** use
+   a `VITE_` prefix — Vite inlines those into the public bundle.
+2. Deploy `api/broll.js`. It's a Web-standard handler (`Request` → `Response`),
+   so it runs as-is on Netlify Functions v2, Cloudflare Workers and Vercel Edge.
+   For a Vercel Node function, wrap it:
+   ```js
+   import handler from "./broll.js";
+   export default async (req, res) => {
+     const r = await handler(new Request(`https://${req.headers.host}${req.url}`, {
+       method: req.method,
+       headers: req.headers,
+       body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+     }));
+     res.status(r.status).json(await r.json());
+   };
+   ```
+3. Replace the `seedImage` on each preset in `api/broll.js` with real client
+   stills. They currently point at site screenshots, which animate badly —
+   they're there so the wiring can be tested, not so it looks good.
+
+Two things worth knowing before it goes live:
+
+- **Every click costs money.** A public endpoint that generates video is a free
+  video generator for anyone who finds it, billed to you. The function only
+  accepts a preset id — never arbitrary prompt text — and throttles per IP, but
+  that throttle is per-instance memory and won't survive cold starts or span
+  concurrent instances. **Set a hard spend cap on the Higgsfield account.** That
+  is the control that actually protects the bill; the code is defence in depth.
+- Higgsfield fetches the seed image itself, so it needs a public absolute URL.
+  The panel cannot work against localhost.
+
+Prompts live server-side in `api/broll.js`, including `BRAND_STYLE`, which is
+prepended to every preset. Retune that constant and every clip changes with it.
+
 ### Contact form
 
 `src/pages/Contact.jsx` validates and then **does not submit anywhere** — it

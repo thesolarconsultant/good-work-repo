@@ -1,3 +1,4 @@
+import BrollStudio from "../components/BrollStudio";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
@@ -152,7 +153,13 @@ export default function ContentConsole() {
             </p>
           </Reveal>
           {ENGINE_SECTIONS.map((s) => (
-            <Section key={s.id} s={s} dark />
+            <div key={s.id}>
+              <Section s={s} dark />
+              {/* The branded-video section is the one claim on this page we can
+                  demonstrate rather than describe. Renders nothing unless the
+                  Higgsfield function is deployed — see api/broll.js. */}
+              {s.id === "broll" && <BrollStudio />}
+            </div>
           ))}
         </div>
       </section>
