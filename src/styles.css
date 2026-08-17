@@ -86,6 +86,14 @@ button{font-family:inherit;}
 .gw-features li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gw-magenta);border-radius:50%;}
 @media(max-width:520px){.gw-features{grid-template-columns:1fr;}}
 .gw-includes-prev{font-size:0.78rem;color:var(--gw-grey-700);margin:12px 0 0;font-style:italic;}
+/* Feature lists with an explanation under each item */
+.gw-features--detail{gap:16px 32px;margin-top:20px;}
+.gw-features--detail li{font-size:inherit;}
+.gw-features--detail li::before{top:7px;}
+.gw-features--detail li strong{display:block;font-size:0.92rem;font-weight:var(--gw-semibold);margin-bottom:3px;}
+.gw-features--detail li span{display:block;font-size:0.85rem;line-height:1.6;color:var(--gw-grey-700);}
+.gw-dark .gw-features--detail li span{color:rgba(255,255,255,0.66);}
+@media(max-width:720px){.gw-features--detail{grid-template-columns:1fr;}}
 
 /* ---- Buttons ---- */
 .gw-button{display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;min-height:48px;padding:0.85rem 1.3rem;border:0;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);font-size:0.82rem;font-weight:var(--gw-semibold);letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;transition:transform var(--gw-transition);}
@@ -122,8 +130,38 @@ button{font-family:inherit;}
 .gw-addon{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--gw-grey-200);}
 .gw-addon:last-child{border-bottom:none;}
 .gw-addon-mark{font-weight:var(--gw-extrabold);font-size:0.85rem;color:var(--gw-magenta);flex-shrink:0;width:26px;}
+.gw-addon-body{flex:1;}
 .gw-addon-body strong{font-size:0.95rem;display:block;margin-bottom:3px;font-weight:var(--gw-semibold);}
 .gw-addon-body span{font-size:0.88rem;color:var(--gw-grey-700);}
+
+/* ---- Service picker ---- */
+.gw-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.gw-filter{font-family:inherit;font-size:0.78rem;font-weight:var(--gw-semibold);letter-spacing:0.06em;text-transform:uppercase;padding:0.55rem 1rem;border:1px solid var(--gw-grey-300);border-radius:var(--gw-radius-sm);background:var(--gw-white);color:var(--gw-grey-700);cursor:pointer;}
+.gw-filter:hover{border-color:var(--gw-black);color:var(--gw-black);}
+.gw-filter--active{background:var(--gw-black);border-color:var(--gw-black);color:var(--gw-white);}
+
+.gw-pick{display:flex;align-items:flex-start;gap:12px;padding:1rem 1.1rem;border:1px solid var(--gw-grey-200);border-radius:var(--gw-radius-lg);background:var(--gw-white);cursor:pointer;transition:border-color var(--gw-transition);}
+.gw-pick:hover{border-color:var(--gw-grey-300);}
+.gw-pick--active{border-color:var(--gw-black);background:var(--gw-grey-100);}
+.gw-pick__box{width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:var(--gw-magenta);}
+.gw-pick__body{flex:1;min-width:0;}
+.gw-pick__name{display:block;font-size:0.95rem;font-weight:var(--gw-semibold);line-height:1.4;}
+.gw-pick--active .gw-pick__name{font-weight:var(--gw-bold);}
+.gw-pick__note{display:block;font-size:0.85rem;line-height:1.6;color:var(--gw-grey-700);margin-top:4px;}
+.gw-pick__billing{display:inline-block;margin-top:8px;font-size:0.66rem;font-weight:var(--gw-semibold);letter-spacing:0.14em;text-transform:uppercase;color:var(--gw-grey-700);border:1px solid var(--gw-grey-300);border-radius:999px;padding:2px 9px;}
+.gw-pick__price{flex-shrink:0;text-align:right;font-size:0.88rem;font-weight:var(--gw-semibold);white-space:nowrap;}
+.gw-pick__price small{display:block;font-size:0.75rem;font-weight:var(--gw-medium);color:var(--gw-grey-700);margin-top:3px;}
+@media(max-width:560px){
+  .gw-pick{flex-wrap:wrap;}
+  .gw-pick__price{width:100%;text-align:left;padding-left:30px;}
+  .gw-pick__price small{display:inline;margin-left:6px;}
+}
+
+.gw-total{position:sticky;bottom:16px;margin-top:28px;padding:clamp(1.25rem,3vw,1.6rem);border-radius:var(--gw-radius-lg);background:var(--gw-black);color:var(--gw-white);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.gw-total__figures{margin:0;font-size:1.3rem;font-weight:var(--gw-extrabold);letter-spacing:-0.02em;}
+.gw-total__figures small{font-size:0.7rem;font-weight:var(--gw-medium);letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.gw-total__plus{margin:0 0.5rem;color:rgba(255,255,255,0.4);}
+.gw-total__poa{margin:6px 0 0;font-size:0.76rem;color:rgba(255,255,255,0.6);}
 
 /* ---- Contact form ---- */
 .gw-field{display:flex;flex-direction:column;gap:6px;margin-bottom:1.1rem;}

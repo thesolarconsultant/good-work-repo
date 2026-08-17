@@ -1,49 +1,26 @@
 import Footer from "../components/Footer";
 import ServiceSelector from "../components/ServiceSelector";
+import { CONSOLE_MODULES } from "../data/services";
 
-const TIERS = [
+const BILLING = [
   {
-    name: "Foundation",
-    sub: "One-time build",
-    price: "£750–£1,250",
-    priceSmall: null,
-    desc: "The essentials, done properly — live, verified, and ready to hand to customers.",
-    includesPrev: null,
-    features: ["Custom website", "Brand refresh — logo, colour, type", "Google & Meta business verification", "Email signature strip", "Starter email templates"],
-    variant: "default",
+    mark: "01",
+    title: "Paid once — the build",
+    desc: "Anything we design, write or build for you: the website, the brand, the contracts, the apps and systems. You own the result. There's no lock-in and nothing stops working if you never spend another pound with us.",
   },
   {
-    name: "Grow",
-    sub: "Build + monthly",
-    price: "£1,500–£2,250",
-    priceSmall: "+ £150–250/mo",
-    desc: "A full identity, plus the engine that keeps your name in front of customers.",
-    includesPrev: "Everything in Foundation, plus:",
-    features: ["Full brand identity", "Social accounts set up & seeded", "The Content Console — see below", "GA4 setup", "ID badges / staff cards"],
-    variant: "soft",
-  },
-  {
-    name: "Scale",
-    sub: "Build + full retainer",
-    price: "£3,000–£4,500",
-    priceSmall: "+ £400–750/mo",
-    desc: "The business runs itself between jobs — leads qualified, quoted, contracted and followed up.",
-    includesPrev: "Everything in Grow, plus:",
-    features: ["Always-on WhatsApp booking & qualifying", "Missed-call answering & callback booking", "Quick quoting & contracting app, white-labelled", "Contracts — wording & design", "Meta ads: setup, running, optimising, reporting"],
-    variant: "outline-dark",
+    mark: "02",
+    title: "Paid monthly — the running",
+    desc: "Anything that has to keep working after launch: content going out, ads being managed, bots and agents answering, systems hosted, watched and updated. Priced monthly because the work is monthly — no minimum term.",
   },
 ];
 
-const ADDONS = [
-  { mark: "01", title: "Quoting engine, built into the app", desc: "Base rate + variables so a customer gets a live price, not a callback promise. Good/Better/Best presets, margin floors set by the owner, quote flows straight into a contract and a deposit link." },
-  { mark: "02", title: "Missed-call answering", desc: "Answers calls that go unanswered, books a callback or routes the caller straight to WhatsApp. No lead goes cold overnight." },
-  { mark: "03", title: "Social media account setup", desc: "Profiles built and optimised across Meta, LinkedIn, TikTok and Google Business Profile, seeded with the first 5–10 posts so launch day isn't an empty page." },
+const PROCESS = [
+  { mark: "01", title: "Understand", desc: "A call to work out how you actually win jobs today, where enquiries come from, and what's leaking. No questionnaire, no discovery invoice." },
+  { mark: "02", title: "Think", desc: "We come back with a scope and a fixed price — what gets built, what it costs to run, and what it should change. Nothing starts until you've agreed it." },
+  { mark: "03", title: "Make", desc: "Built in weeks, not quarters. You see it as it goes, and it doesn't go live until it's verified — links, forms, tracking, the lot." },
+  { mark: "04", title: "Improve", desc: "Where there's a monthly element, the work continues after launch: content going out, ads managed, systems watched, and a report you can read in two minutes." },
 ];
-
-function tierCardClass(variant) {
-  if (variant === "soft") return "gw-card gw-card--soft";
-  return "gw-card";
-}
 
 export default function Services() {
   return (
@@ -54,6 +31,7 @@ export default function Services() {
           <h1 className="gw-h1">Brand. Websites.<br />Systems<span className="gw-dot"></span></h1>
           <p className="gw-body-large gw-max-copy gw-text-muted" style={{ marginTop: 18 }}>
             Everything a business needs to look and work better — built properly, and kept running after launch.
+            Take one thing or the lot.
           </p>
         </div>
       </header>
@@ -62,78 +40,20 @@ export default function Services() {
 
       <section className="gw-section">
         <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>What we build</p>
-          <h2 className="gw-h2">Three tiers. One standard.</h2>
-          <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 36 }}>
-            Start with a proper foundation. Add the systems that keep new business coming in without you chasing it.
-            {" "}<a href="#configure" style={{ textDecoration: "underline" }}>Or build your own package →</a>
-          </p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {TIERS.map((t) => (
-              <div
-                className={tierCardClass(t.variant)}
-                key={t.name}
-                style={t.variant === "outline-dark" ? { borderColor: "var(--gw-black)" } : undefined}
-              >
-                <div className="gw-card__label">
-                  <div>
-                    <h3 className="gw-h3">{t.name}</h3>
-                    <p className="gw-label" style={{ marginTop: 4 }}>{t.sub}</p>
-                  </div>
-                  <div className="gw-price">
-                    {t.price}
-                    {t.priceSmall && <small>{t.priceSmall}</small>}
-                  </div>
-                </div>
-                <p className="gw-body gw-text-muted">{t.desc}</p>
-                {t.includesPrev && <p className="gw-includes-prev">{t.includesPrev}</p>}
-                <ul className="gw-features">
-                  {t.features.map((f) => <li key={f}>{f}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="gw-section gw-dark">
-        <div className="gw-container">
-          <div className="gw-approved" style={{ marginBottom: 28 }}>
-            <div className="gw-stamp"><div className="gw-stamp__centre">GOOD<br />WORK.</div></div>
-            <div>
-              <p className="gw-label">Included from Grow upward</p>
-              <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
-            </div>
-          </div>
-          <p className="gw-body-large gw-max-copy" style={{ marginBottom: 24 }}>
-            One dashboard that keeps a business looking active, without anyone sitting down to write it.
-          </p>
-          <ul className="gw-features" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
-            <li>Blog generator + scheduler</li>
-            <li>Social posts + scheduler</li>
-            <li>WhatsApp message templates</li>
-            <li>Email templates</li>
-            <li>Email signature generator</li>
-            <li>ID badge &amp; staff card generator</li>
-          </ul>
-        </div>
-      </section>
-
-      <section className="gw-section">
-        <div className="gw-container">
-          <p className="gw-label" style={{ marginBottom: 10 }}>Add-ons</p>
-          <h2 className="gw-h2">Priced where they earn it</h2>
+          <p className="gw-label" style={{ marginBottom: 10 }}>How it's priced</p>
+          <h2 className="gw-h2">Two kinds of cost. Nothing hidden.</h2>
           <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 8 }}>
-            Some pieces are heavy builds on their own — sold standalone so a Foundation client isn't paying for the whole top tier.
+            Every service below is either something we build once, something we run for you monthly, or a build
+            with a running cost attached. Each one is labelled, so you can see exactly what you're committing to
+            before you speak to us.
           </p>
           <div style={{ marginTop: 20 }}>
-            {ADDONS.map((a) => (
-              <div className="gw-addon" key={a.mark}>
-                <div className="gw-addon-mark">{a.mark}</div>
+            {BILLING.map((b) => (
+              <div className="gw-addon" key={b.mark}>
+                <div className="gw-addon-mark">{b.mark}</div>
                 <div className="gw-addon-body">
-                  <strong>{a.title}</strong>
-                  <span>{a.desc}</span>
+                  <strong>{b.title}</strong>
+                  <span>{b.desc}</span>
                 </div>
               </div>
             ))}
@@ -142,6 +62,56 @@ export default function Services() {
       </section>
 
       <ServiceSelector />
+
+      <section className="gw-section gw-dark">
+        <div className="gw-container">
+          <div className="gw-approved" style={{ marginBottom: 28 }}>
+            <div className="gw-stamp"><div className="gw-stamp__centre">GOOD<br />WORK.</div></div>
+            <div>
+              <p className="gw-label">Build + monthly</p>
+              <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
+            </div>
+          </div>
+          <p className="gw-body-large gw-max-copy" style={{ marginBottom: 16 }}>
+            One dashboard that keeps a business looking active, without anyone sitting down to write it.
+          </p>
+          <p className="gw-body gw-max-copy" style={{ marginBottom: 8 }}>
+            Most small businesses go quiet online not because they don't see the point, but because writing posts
+            comes last after a full day on site. The Console does the drafting from what you've already told us
+            about the business — you review it, change what you want, and schedule it. Ten minutes a week instead
+            of an agency retainer.
+          </p>
+          <ul className="gw-features gw-features--detail">
+            {CONSOLE_MODULES.map((m) => (
+              <li key={m.name}>
+                <strong>{m.name}</strong>
+                <span>{m.note}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="gw-section">
+        <div className="gw-container">
+          <p className="gw-label" style={{ marginBottom: 10 }}>How it runs</p>
+          <h2 className="gw-h2">What actually happens</h2>
+          <p className="gw-body gw-max-copy gw-text-muted" style={{ marginTop: 12, marginBottom: 8 }}>
+            Four steps, no agency theatre. You'll know the price and the scope before we start building.
+          </p>
+          <div style={{ marginTop: 20 }}>
+            {PROCESS.map((p) => (
+              <div className="gw-addon" key={p.mark}>
+                <div className="gw-addon-mark">{p.mark}</div>
+                <div className="gw-addon-body">
+                  <strong>{p.title}</strong>
+                  <span>{p.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer statement="Make your business look as good as it actually is" />
     </>
