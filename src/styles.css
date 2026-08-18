@@ -36,6 +36,22 @@ img{display:block;max-width:100%;}
 a{color:inherit;text-decoration:none;}
 button{font-family:inherit;}
 
+/* ---- Text selection ----
+   The browser default is a flat grey wash that belongs to no brand. Blue is
+   the gradient's first stop and the only brand colour that clears WCAG AA
+   against white text (4.7:1) — magenta only manages 3.3:1, which is too thin
+   for a paragraph of selected body copy. One rule covers light and dark
+   sections, because the selection colour replaces whatever is behind it. */
+::selection{background:var(--gw-blue);color:var(--gw-white);text-shadow:none;}
+/* Gradient-clipped text paints through a transparent fill, so without an
+   explicit opaque fill here a selected headline is an empty blue box. */
+.gw-grad::selection,
+.gw-logo__wordmark::selection,
+.gw-logo__descriptor::selection,
+.gw-stamp__centre::selection{
+  background:var(--gw-blue);color:var(--gw-white);-webkit-text-fill-color:var(--gw-white);
+}
+
 .gw-container{width:min(calc(100% - (var(--gw-page-padding)*2)),var(--gw-container));margin-inline:auto;}
 .gw-section{padding-block:clamp(3rem,7vw,6rem);}
 .gw-section--tight{padding-block:clamp(2rem,4vw,3.5rem);}
