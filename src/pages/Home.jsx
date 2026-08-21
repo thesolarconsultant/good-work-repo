@@ -20,10 +20,10 @@ const WORK = CASE_STUDIES.map((cs) => ({
 }));
 
 const DISCIPLINES = [
-  { mark: "01", title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
-  { mark: "02", title: "Web", desc: "Websites and digital experiences built around one job: commercial outcomes." },
-  { mark: "03", title: "Creative", desc: "Campaigns, content and advertising that actually gets looked at." },
-  { mark: "04", title: "Systems", desc: "CRM, booking, quoting and content infrastructure that runs without you." },
+  { mark: "1", title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
+  { mark: "2", title: "Web", desc: "Websites and digital experiences built around one job: commercial outcomes." },
+  { mark: "3", title: "Creative", desc: "Campaigns, content and advertising that actually gets looked at." },
+  { mark: "4", title: "Systems", desc: "CRM, booking, quoting and content infrastructure that runs without you." },
 ];
 
 const TICKER = [

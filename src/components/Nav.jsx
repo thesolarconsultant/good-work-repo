@@ -118,7 +118,7 @@ export default function Nav() {
           >
             {l.label}
             <span className="gw-drawer__index" aria-hidden="true">
-              {String(i + 1).padStart(2, "0")}
+              {i + 1}
             </span>
           </Link>
         ))}

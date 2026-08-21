@@ -5,7 +5,7 @@
 export const CONSOLE_SECTIONS = [
   {
     id: "pipeline",
-    kicker: "01 · The pipeline",
+    kicker: "1 · The pipeline",
     title: "The whole content operation, on one board",
     does: "Topics move across four columns — backlog, drafting, review, published — with a live count on each. Every card carries the target search query it's written for, a priority, and a flag saying whether it needs verified data before anyone can write it. The screenshot is The Solar Consultant's console: 24 topics queued, 2 being written, 12 live.",
     great: "One glance tells you the state of the whole operation: what's queued, what's being written, what's waiting on you, what's out. That's the difference between running content deliberately and hoping somebody remembers to post something this month.",
@@ -13,7 +13,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "categories",
-    kicker: "02 · Search clusters",
+    kicker: "2 · Search clusters",
     title: "A backlog organised the way search actually works",
     does: "The same topics, grouped into the search clusters they belong to — tariffs and export, batteries, and so on. Each row holds the topic, its target query, its priority, its data risk and its status, all editable in place. Saving writes straight back to the project's own topic file.",
     great: "It stops content being a stream of one-off ideas and turns it into coverage of the subjects your customers actually search. You can see at a glance where a cluster is thin — and the honest angle is recorded next to each topic, so the piece gets written the way you'd argue it in person.",
@@ -21,7 +21,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "review",
-    kicker: "03 · The review queue",
+    kicker: "3 · The review queue",
     title: "Nothing publishes because it was forgotten about",
     does: "A dedicated review view badges how many pieces are sitting with you, so approving work is a queue you clear rather than a thing you have to remember to check.",
     great: "The bottleneck in every content operation is the owner's attention. Making it a visible queue with a number on it means work doesn't rot in a drafts folder for three weeks.",
@@ -29,7 +29,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "email",
-    kicker: "04 · Email",
+    kicker: "4 · Email",
     title: "Templates, previewed with real sample data",
     does: "The client's email templates in one list, previewed as desktop or mobile, with sample data toggled on so merge tags fill in as a customer would see them — while the copied HTML keeps the raw tags intact for the CRM. Edit the wording, or copy the finished HTML straight into GoHighLevel.",
     great: "It closes the gap between what you write and what lands in an inbox. You see the real thing on a real phone width before it sends, and the merge fields can't get mangled on the way into the CRM.",
@@ -37,7 +37,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "social",
-    kicker: "05 · Social",
+    kicker: "5 · Social",
     title: "Every blog ships with its social pack",
     does: "A social tab holds the Facebook and Instagram pack that goes out with each article, generated from the post itself and stored beside it.",
     great: "Most businesses write the article and then never tell anyone it exists. Tying the pack to the post means the distribution is written when the piece is — not three weeks later, when nobody can remember the angle.",
@@ -45,7 +45,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "editor",
-    kicker: "06 · Writing and publishing",
+    kicker: "6 · Writing and publishing",
     title: "Plain Markdown, with the SEO fields on the same screen",
     does: "Title, URL slug, category, read time, date and the excerpt that doubles as the meta description sit above a Markdown body. Publishing writes the branded page, adds the card to the blog index and commits it — the site redeploys itself. This screen is 8energy's Studio, which runs the same pattern.",
     great: "The fields that decide whether a post ranks are impossible to forget, because they're in the form. And the gap between 'we should write something' and 'it's live' becomes one button — no developer, no CMS plugin, no ticket.",
@@ -53,7 +53,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "whatsapp",
-    kicker: "07 · WhatsApp",
+    kicker: "7 · WhatsApp",
     title: "Approved templates, each with the trigger that fires it",
     does: "WhatsApp and SMS templates live in the console too, categorised as utility messages, showing the pipeline trigger that sends each one and the numbered variables Meta requires at submission.",
     great: "WhatsApp templates have to be approved before they can send, so they can't be improvised mid-conversation. Holding them here — with their trigger visible — means everyone answers in the same voice, and the automated follow-up is something you can read and edit rather than a black box in the CRM.",
@@ -61,7 +61,7 @@ export const CONSOLE_SECTIONS = [
   },
   {
     id: "store",
-    kicker: "08 · Underneath",
+    kicker: "8 · Underneath",
     title: "No rented database. The content stays yours.",
     does: "The Solar Consultant's console reads and writes the project's own files. 8energy's commits published content back to their repository, which triggers the deploy — and runs offline against local files when there's no network.",
     great: "There's no subscription holding the content hostage. Every post has a full version history, the site stays static and fast because of it, and if we disappeared tomorrow the content and the site would carry on exactly as they are.",
@@ -72,7 +72,7 @@ export const CONSOLE_SECTIONS = [
 export const ENGINE_SECTIONS = [
   {
     id: "intake",
-    kicker: "09 · The intake bot",
+    kicker: "9 · The intake bot",
     title: "It interviews you, so nobody faces a blank page",
     does: "A structured interview pulls the post out of whatever the business is working on this week — a client case, a tariff change, a question customers keep asking — one question at a time, drilling for specifics: real numbers, dates, suppliers, system sizes, and where each figure came from.",
     great: "The facts come from the person who did the work, so the writing sounds like them and stays true. It turns the hardest part of content — knowing what to write about — into a five-minute conversation.",
