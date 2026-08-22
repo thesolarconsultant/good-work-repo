@@ -94,6 +94,16 @@ function page({ w, h, layout }) {
   .frame{position:relative;width:${w}px;height:${h}px;overflow:hidden;background:${ground}}
 
   .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% ${focusY}%}
+
+  /* A banner is ~2.5:1. Full-bleeding a portrait into that blows the face up
+     and leaves nowhere for the lockup to sit that isn't across it. So the
+     photo takes a panel on the right and fades into the ground, and the type
+     gets clean space on the left. */
+  .split .photo{left:auto;right:0;width:46%;object-position:50% ${focusY}%;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 26%);
+    mask-image:linear-gradient(90deg,transparent 0%,#000 26%)}
+  .split .placeholder{left:auto;right:0;width:46%}
+  .split .scrim{background:linear-gradient(90deg,${ground} 30%,${ground}00 62%)}
   .placeholder{position:absolute;inset:0;display:grid;place-items:center;
     background:${onLight
       ? "radial-gradient(120% 90% at 50% 20%,#eeeeee,#d8d8d8)"
@@ -109,6 +119,9 @@ function page({ w, h, layout }) {
 
   .lockup{position:absolute;left:${Math.round(w * 0.07)}px;bottom:${Math.round(h * 0.075)}px;
     display:flex;flex-direction:column;align-items:flex-start}
+  .split .lockup{top:50%;bottom:auto;transform:translateY(-50%)}
+  .split .person{top:50%;bottom:auto;transform:translateY(-50%);right:auto;
+    left:${Math.round(w * 0.07)}px;text-align:left;margin-top:${Math.round(h * 0.17)}px}
   .wordmark{font-size:${Math.round(w * 0.082)}px;font-weight:800;letter-spacing:-.06em;line-height:.92;
     background:${GRADIENT};-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .descriptor{margin-top:${Math.round(w * 0.016)}px;font-size:${Math.round(w * 0.0224)}px;font-weight:600;
@@ -126,7 +139,7 @@ function page({ w, h, layout }) {
     -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
   .round{border-radius:50%;overflow:hidden}
 </style>
-<div class="frame ${layout === "avatar" ? "round" : ""}">
+<div class="frame ${layout === "avatar" ? "round" : ""}${layout === "banner" ? " split" : ""}">
   ${media}
   ${layout === "avatar" ? "" : '<div class="scrim"></div>'}
   <div class="grain"></div>
