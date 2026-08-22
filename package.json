@@ -14,7 +14,8 @@
     "logo": "node scripts/build-logo.mjs",
     "og": "node scripts/build-og.mjs",
     "sitemap": "node scripts/build-sitemap.mjs",
-    "portrait": "node scripts/build-portrait.mjs"
+    "portrait": "node scripts/build-portrait.mjs",
+    "merch": "node scripts/build-merch.mjs"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",
