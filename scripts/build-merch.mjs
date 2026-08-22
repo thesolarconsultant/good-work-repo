@@ -80,7 +80,6 @@ function mark(shape, finish) {
 }
 
 function page(shape, finish, w, h) {
-  const onDark = finish === "white";
   const descColour = finish === "white" ? "rgba(255,255,255,.75)"
     : finish === "black" ? "#4E555F"
     : finish === "stepped" ? "#4E555F" : "#6B7280";

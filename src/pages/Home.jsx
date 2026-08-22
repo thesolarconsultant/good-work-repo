@@ -5,6 +5,7 @@ import Headline from "../components/Headline";
 import GlowCard from "../components/GlowCard";
 import Marquee from "../components/Marquee";
 import Reveal from "../components/Reveal";
+import SparklesText from "../components/SparklesText";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 import Shot from "../components/Shot";
@@ -65,17 +66,19 @@ export default function Home() {
               <Reveal variant="fade">
                 <p className="gw-label gw-pulse">Brand · Web · Systems</p>
               </Reveal>
-              <Headline
-                onMount
-                className="gw-h1 gw-stack-md"
-                lines={[
-                  "We make businesses",
-                  <>
-                    look and <em className="gw-grad">work better</em>
-                    <span className="gw-dot" />
-                  </>,
-                ]}
-              />
+              <SparklesText as="div" className="gw-stack-md" count={14}>
+                <Headline
+                  onMount
+                  className="gw-h1"
+                  lines={[
+                    "We make businesses",
+                    <>
+                      look and <em className="gw-grad">work better</em>
+                      <span className="gw-dot" />
+                    </>,
+                  ]}
+                />
+              </SparklesText>
               <Reveal variant="rise" delay={260}>
                 <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-lg">
                   Good businesses get let down by weak websites, disconnected systems and

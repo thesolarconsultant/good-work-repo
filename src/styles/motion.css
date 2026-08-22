@@ -658,6 +658,29 @@ body[data-gw-locked="true"] { overflow: hidden; }
 }
 
 /* ---------------------------------------------------------
+   12d. Sparkles text
+   --------------------------------------------------------- */
+.gw-sparkles { position: relative; display: inline-block; }
+.gw-sparkles:has(.gw-h1) { display: block; }
+/* The field sits behind the glyphs so a sparkle never lands on a letter and
+   makes it harder to read. */
+.gw-sparkles__field { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.gw-sparkles__text { position: relative; z-index: 1; }
+.gw-sparkles__star {
+  position: absolute;
+  transform: scale(0) rotate(0deg);
+  animation-name: gw-sparkle;
+  animation-timing-function: var(--gw-ease-out);
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+@keyframes gw-sparkle {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  45%      { transform: scale(1) rotate(90deg); opacity: 1; }
+  70%      { transform: scale(0.4) rotate(140deg); opacity: 0.5; }
+}
+
+/* ---------------------------------------------------------
    13. Route transitions
    --------------------------------------------------------- */
 .gw-route { animation: gw-route-in 420ms var(--gw-ease-out) both; }
