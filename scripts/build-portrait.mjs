@@ -95,8 +95,10 @@ function page({ w, h, layout }) {
 
   .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% ${focusY}%}
   .placeholder{position:absolute;inset:0;display:grid;place-items:center;
-    background:radial-gradient(120% 90% at 50% 20%,#2b2b2b,#141414);
-    color:rgba(255,255,255,.35);font-size:${Math.round(w * 0.032)}px;font-weight:600;
+    background:${onLight
+      ? "radial-gradient(120% 90% at 50% 20%,#eeeeee,#d8d8d8)"
+      : "radial-gradient(120% 90% at 50% 20%,#2b2b2b,#141414)"};
+    color:${onLight ? "rgba(17,17,17,.32)" : "rgba(255,255,255,.35)"};font-size:${Math.round(w * 0.032)}px;font-weight:600;
     letter-spacing:.18em;text-transform:uppercase;text-align:center;line-height:1.8}
 
   /* The subject stays photographic; the brand arrives at the edges. */
