@@ -10,7 +10,12 @@
 //   ENQUIRY_WEBHOOK_URL   POST the enquiry as JSON. This is the one to use
 //                         for a CRM — GoHighLevel, Zapier, Make, n8n, or your
 //                         own endpoint. Whatever is on the other end decides
-//                         what happens to the lead.
+//                         what happens to the lead. The body is flat at the
+//                         top level (name, firstName, lastName, email, phone,
+//                         companyName, tags, services) so a CRM can map it
+//                         without a transform step in between.
+//   ENQUIRY_WEBHOOK_TOKEN Optional. Sent as `Authorization: Bearer <token>`
+//                         and `X-Webhook-Token`, for endpoints that want one.
 //   RESEND_API_KEY        Send it as an email via Resend. Also needs
 //                         ENQUIRY_TO and ENQUIRY_FROM (a domain verified in
 //                         Resend — an unverified from address is rejected).
@@ -70,12 +75,14 @@ function escapeHtml(s) {
   );
 }
 
-async function sendWebhook(url, payload) {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+async function sendWebhook(url, payload, token) {
+  const headers = { "Content-Type": "application/json" };
+  // Two header names because CRMs disagree about which one they read.
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+    headers["X-Webhook-Token"] = token;
+  }
+  const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
   if (!response.ok) throw new Error(`webhook responded ${response.status}`);
 }
 
@@ -99,6 +106,12 @@ async function sendEmail({ key, to, from, payload }) {
     throw new Error(`resend responded ${response.status}${detail ? `: ${detail.slice(0, 200)}` : ""}`);
   }
 }
+
+// Vercel hands Node functions (req, res) but Edge functions a Request and
+// expects a Response, which is what this is — so declare it. Ignored by
+// Netlify Functions v2 and Cloudflare Workers, which are Web-standard
+// already.
+export const config = { runtime: "edge" };
 
 export default async function handler(request) {
   if (request.method === "OPTIONS") {
@@ -171,17 +184,44 @@ export default async function handler(request) {
   // a plain-text body or HTML-escaped — never interpolated as markup.
   const text = clean(body?.text, 16000) || "(no summary)";
 
+  const answers = body?.answers && typeof body.answers === "object" ? body.answers : {};
+
+  // Split the name so a CRM has first/last without anyone writing a transform
+  // step. Everything after the first space is the surname — wrong for some
+  // names, but the full name is always there under `name` as the source of
+  // truth, so nothing is lost either way.
+  const [firstName, ...restOfName] = contact.name.split(/\s+/);
+
+  // Flat at the top level on purpose. Most CRM and automation tools map fields
+  // by picking them off the root of the payload, and a nested object means
+  // somebody has to write a transform before a lead can land. The nested
+  // `contact` stays too, so either shape works.
   const payload = {
     receivedAt: new Date().toISOString(),
     source: "scope-builder",
-    contact,
-    answers: body?.answers && typeof body.answers === "object" ? body.answers : {},
+
+    name: contact.name,
+    firstName,
+    lastName: restOfName.join(" "),
+    email: contact.email,
+    phone: contact.phone,
+    companyName: contact.business,
+    message: contact.message,
+
+    // Ready to drop straight onto a contact record.
+    tags: ["website-enquiry", "scope-builder", ...serviceIds.map((id) => `service:${id}`)],
+    serviceCount: serviceIds.length,
     serviceIds,
+    // The same list as one string, for the many fields that only take text.
+    services: serviceIds.join(", "),
+
+    contact,
+    answers,
     text,
   };
 
   const results = await Promise.allSettled([
-    canWebhook ? sendWebhook(webhookUrl, payload) : Promise.resolve("skipped"),
+    canWebhook ? sendWebhook(webhookUrl, payload, process.env.ENQUIRY_WEBHOOK_TOKEN) : Promise.resolve("skipped"),
     canEmail ? sendEmail({ key: resendKey, to, from, payload }) : Promise.resolve("skipped"),
   ]);
 

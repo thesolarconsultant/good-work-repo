@@ -120,6 +120,12 @@ const json = (body, status = 200) =>
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
 
+// Vercel hands Node functions (req, res) but Edge functions a Request and
+// expects a Response, which is what this is — so declare it. Ignored by
+// Netlify Functions v2 and Cloudflare Workers, which are Web-standard
+// already.
+export const config = { runtime: "edge" };
+
 export default async function handler(request) {
   const key = credentials();
   // Not configured is a normal state, not an error — the site is deployed

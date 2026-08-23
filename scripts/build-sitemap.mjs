@@ -1,5 +1,9 @@
-// Writes public/sitemap.xml from the routes the app actually serves.
-// Run it whenever a route is added: node scripts/build-sitemap.mjs
+// Writes public/sitemap.xml and public/robots.txt from the routes the app
+// actually serves. Run it whenever a route is added:
+//   node scripts/build-sitemap.mjs
+//
+// robots.txt is generated rather than hand-kept so its Sitemap: line can never
+// drift from the domain everything else is built with — it did, once.
 
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -33,4 +37,13 @@ ${ROUTES.map(
 `;
 
 writeFileSync(join(root, "public", "sitemap.xml"), xml);
+
+const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${site}/sitemap.xml
+`;
+writeFileSync(join(root, "public", "robots.txt"), robots);
+
 console.log(`sitemap: ${ROUTES.length} routes at ${site}`);
+console.log(`robots:  sitemap points at ${site}/sitemap.xml`);

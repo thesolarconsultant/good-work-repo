@@ -1,0 +1,4 @@
+# Netlify/Cloudflare Pages equivalent of the rewrite in vercel.json. Harmless
+# on Vercel, and means moving host doesn't silently reintroduce the 404.
+/api/*  /api/:splat  200
+/*      /index.html  200
