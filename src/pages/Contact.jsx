@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 
@@ -62,6 +63,7 @@ export default function Contact() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">Get in touch</p>
           <Headline

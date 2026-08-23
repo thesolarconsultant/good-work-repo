@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 import Shot from "../components/Shot";
@@ -39,6 +40,7 @@ export default function CaseStudies() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">Case studies</p>
           <Headline
@@ -59,7 +61,7 @@ export default function CaseStudies() {
 
       {CASE_STUDIES.map((cs, i) => (
         <div key={cs.id}>
-          <section className="gw-section" id={cs.id}>
+          <section className={`gw-section${i % 2 === 1 ? " gw-dark" : ""}`} id={cs.id}>
             <div className="gw-container">
               <Reveal variant="rise">
                 <div className="gw-case-head">

@@ -1,7 +1,9 @@
 import Button from "../components/Button";
+import Display from "../components/Display";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 import ServiceSelector from "../components/ServiceSelector";
@@ -42,6 +44,7 @@ export default function Services() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">Services</p>
           <Headline
@@ -62,14 +65,17 @@ export default function Services() {
 
       <ServiceSelector />
 
-      <section className="gw-section gw-dark">
-        <div className="gw-container">
+      <section className="gw-dark">
+        {/* The rule sits outside the padded block so it lands on the edge. */}
+        <div className="gw-block__rule" />
+        <div className="gw-block">
+          <div className="gw-container">
           <Reveal variant="rise">
             <div className="gw-approved" style={{ marginBottom: 28 }}>
               <Stamp size={120} />
               <div>
                 <p className="gw-label">A closer look</p>
-                <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The Content Console</h2>
+                <Display>The Content<br />Console</Display>
               </div>
             </div>
             <p className="gw-body-large gw-max-copy" style={{ marginBottom: 16 }}>
@@ -101,13 +107,14 @@ export default function Services() {
             </div>
           </Reveal>
         </div>
+        </div>
       </section>
 
       <section className="gw-section">
         <div className="gw-container">
           <Reveal variant="rise">
             <p className="gw-label">How it runs</p>
-            <h2 className="gw-h2 gw-stack-sm">What actually happens</h2>
+            <h2 className="gw-display gw-stack-sm">What actually<br />happens</h2>
             <p className="gw-body gw-max-copy gw-text-muted gw-stack-sm">
               Four steps, no agency theatre. You'll know the scope and the price before we start
               building.

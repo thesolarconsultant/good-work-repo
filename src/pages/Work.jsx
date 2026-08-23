@@ -2,11 +2,21 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import HorizontalWork from "../components/HorizontalWork";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
-import Shot from "../components/Shot";
-import Stat from "../components/Stat";
 import { CASE_STUDIES } from "../data/caseStudies";
+
+const WORK = CASE_STUDIES.map((cs) => ({
+  to: `/case-studies#${cs.id}`,
+  name: cs.name,
+  tag: cs.tag,
+  site: cs.site,
+  desc: cs.lede,
+  shot: cs.shots[0].src,
+  facts: cs.facts.slice(0, 2),
+}));
 
 const SCHEMA = {
   "@context": "https://schema.org",
@@ -33,6 +43,7 @@ export default function Work() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">Selected work</p>
           <Headline onMount className="gw-h1 gw-stack-md" lines={["Recent projects"]} />
@@ -50,45 +61,12 @@ export default function Work() {
         </div>
       </header>
 
-      {CASE_STUDIES.map((cs, i) => (
-        <div key={cs.id}>
-          <section className="gw-section" id={cs.id}>
-            <div className="gw-container">
-              <div className="gw-case-body" style={{ alignItems: "center" }}>
-                <div style={{ order: i % 2 === 0 ? 1 : 2 }}>
-                  <Shot
-                    src={cs.shots[0].src}
-                    alt={`${cs.name} homepage`}
-                    sizes="(max-width: 860px) 100vw, 520px"
-                    priority={i === 0}
-                  />
-                </div>
-                <div style={{ order: i % 2 === 0 ? 2 : 1 }}>
-                  <Reveal variant={i % 2 === 0 ? "right" : "left"}>
-                    <span className="gw-work-card__tag">{cs.tag}</span>
-                    <h2 className="gw-h2" style={{ marginTop: 6 }}>{cs.name}</h2>
-                    <p className="gw-case-site">{cs.site}</p>
-                    <p className="gw-body gw-text-muted gw-stack-md">{cs.lede}</p>
-                  </Reveal>
-                  <div className="gw-facts gw-facts--pair">
-                    {cs.facts.slice(0, 2).map((f, n) => (
-                      <Stat key={f.label} figure={f.figure} label={f.label} delay={n * 120} />
-                    ))}
-                  </div>
-                  <Reveal variant="rise">
-                    <Button to={`/case-studies#${cs.id}`} variant="outline" arrow>
-                      See the full case study
-                    </Button>
-                  </Reveal>
-                </div>
-              </div>
-            </div>
-          </section>
-          {i < CASE_STUDIES.length - 1 && (
-            <hr className="gw-rule" style={{ maxWidth: 1100, marginInline: "auto" }} />
-          )}
+      <section className="gw-dark">
+        <div className="gw-block__rule" />
+        <div className="gw-rail-wrap">
+          <HorizontalWork items={WORK} />
         </div>
-      ))}
+      </section>
 
       <Footer statement="This could be your project next" />
     </>

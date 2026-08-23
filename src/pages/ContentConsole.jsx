@@ -1,8 +1,10 @@
 import BrollStudio from "../components/BrollStudio";
 import Button from "../components/Button";
+import Display from "../components/Display";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 import Shot from "../components/Shot";
@@ -66,6 +68,7 @@ export default function ContentConsole() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">The Content Console</p>
           <Headline
@@ -104,7 +107,7 @@ export default function ContentConsole() {
       <section className="gw-section--tight">
         <div className="gw-container">
           <Reveal variant="rise">
-            <h2 className="gw-h2">The problem it solves</h2>
+            <h2 className="gw-display">The problem<br />it solves</h2>
             <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-md">
               Small businesses don't go quiet online because they don't see the point. They go
               quiet because writing a post is the last thing on the list after a full day on site,
@@ -136,14 +139,17 @@ export default function ContentConsole() {
         </div>
       </section>
 
-      <section className="gw-section gw-dark">
-        <div className="gw-container">
+      <section className="gw-dark">
+        {/* The rule sits outside the padded block so it lands on the edge. */}
+        <div className="gw-block__rule" />
+        <div className="gw-block">
+          <div className="gw-container">
           <Reveal variant="rise">
             <div className="gw-approved" style={{ marginBottom: 28 }}>
               <Stamp size={120} />
               <div>
                 <p className="gw-label">Part two</p>
-                <h2 className="gw-h2" style={{ color: "var(--gw-white)" }}>The engine behind it</h2>
+                <Display>The engine<br />behind it</Display>
               </div>
             </div>
             <p className="gw-body-large gw-max-copy">
@@ -161,6 +167,7 @@ export default function ContentConsole() {
               {s.id === "broll" && <BrollStudio />}
             </div>
           ))}
+        </div>
         </div>
       </section>
 

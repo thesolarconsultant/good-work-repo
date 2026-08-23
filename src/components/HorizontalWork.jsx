@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Shot from "./Shot";
+import Stat from "./Stat";
 import { usePrefersReducedMotion } from "../lib/motion";
 
 /**
@@ -131,7 +132,17 @@ export default function HorizontalWork({ items }) {
       <div className="gw-rail__body">
         <span className="gw-work-card__tag">{w.tag}</span>
         <h3 className="gw-rail__name">{w.name}</h3>
+        {w.site && <p className="gw-case-site">{w.site}</p>}
         <p className="gw-body">{w.desc}</p>
+        {/* The figures count up as the card slides in — the observer sees them
+            arrive because the pin clips them until then. */}
+        {w.facts?.length ? (
+          <div className="gw-facts gw-facts--pair gw-rail__facts">
+            {w.facts.map((f, n) => (
+              <Stat key={f.label} figure={f.figure} label={f.label} delay={n * 120} />
+            ))}
+          </div>
+        ) : null}
         <span className="gw-work-card__go">Read the case study <span aria-hidden="true">→</span></span>
       </div>
     </Link>

@@ -432,6 +432,10 @@
    2.4:1, so it has to flip — the rail cards use the same tag component. */
 .gw-work-card--dark .gw-work-card__tag,
 .gw-rail__card .gw-work-card__tag { color: rgba(255, 255, 255, 0.62); }
+/* Same story for anything else that assumes a white card underneath it. */
+.gw-rail__card .gw-case-site { color: rgba(255, 255, 255, 0.62); }
+.gw-rail__card .gw-facts { border-color: rgba(255, 255, 255, 0.16); margin: 20px 0 24px; }
+.gw-rail__card .gw-fact__label { color: rgba(255, 255, 255, 0.6); }
 .gw-work-card--dark .gw-body { color: var(--gw-white); }
 .gw-work-card--dark:hover { border-color: rgba(255, 255, 255, 0.3); }
 /* The screenshot sits flush inside the card, so it drops the standalone frame. */
@@ -456,6 +460,13 @@
 .gw-dark .gw-card { background: #161616; border-color: rgba(255, 255, 255, 0.16); }
 .gw-dark .gw-card:hover { border-color: rgba(255, 255, 255, 0.42); }
 .gw-dark .gw-card--soft { background: rgba(255, 255, 255, 0.05); border-color: transparent; }
+
+/* Components written for a white page, used on a dark one. The chips were
+   near-black on near-black — invisible, not merely low contrast — and the
+   site line was grey ink at 2.5:1. */
+.gw-dark .gw-chip { color: var(--gw-white); border-color: rgba(255, 255, 255, 0.28); }
+.gw-dark .gw-chip:hover { background: var(--gw-white); color: var(--gw-black); border-color: var(--gw-white); }
+.gw-dark .gw-case-site { color: rgba(255, 255, 255, 0.62); }
 
 /* ---------------------------------------------------------
    10. The gradient rule, animated
@@ -765,6 +776,7 @@ body[data-gw-locked="true"] { overflow: hidden; }
   [data-gw-reveal] .gw-shot__frame { clip-path: none !important; }
   .gw-line > span { transform: none !important; }
   .gw-stamp__ring, .gw-aurora span, .gw-marquee__track, .gw-rule--gradient { animation: none !important; }
+  .gw-display--flow .gw-display__ink { animation: none !important; }
   .gw-shot__frame { transform: none !important; }
   .gw-route, .gw-sent { animation: none !important; }
   .gw-sent__ring, .gw-sent__check { stroke-dashoffset: 0 !important; animation: none !important; }
@@ -792,6 +804,38 @@ body[data-gw-locked="true"] { overflow: hidden; }
 }
 .gw-dark .gw-display--outline { -webkit-text-stroke-color: var(--gw-white); }
 @media (max-width: 720px) { .gw-display--outline { -webkit-text-stroke-width: 1px; } }
+
+/* ---- Gradient flowing through the letterforms ----
+   Two stacked copies of the same text: `.gw-display__ink` paints the brand
+   gradient over the glyph and its stroke, then `.gw-display__core` refills the
+   interior in the ground colour so only the stroke is left. That is the whole
+   trick — -webkit-text-stroke takes a colour, never a gradient.
+
+   Kept to dark grounds. Every brand colour clears 3:1 (large text) on black,
+   but coral only reaches 2.79:1 on white, and a hairline stroke is the last
+   place to spend contrast. */
+.gw-display--flow { position: relative; display: block; }
+.gw-display--flow .gw-display__ink,
+.gw-display--flow .gw-display__core { display: block; }
+.gw-display--flow .gw-display__ink {
+  color: transparent;
+  /* Half of a centred stroke is covered by the knockout, so the visible ring
+     is half this. In em so it tracks the clamped display size. */
+  -webkit-text-stroke: 0.032em transparent;
+  background-image: var(--gw-gradient);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gw-flow 14s linear infinite;
+}
+.gw-display--flow .gw-display__core {
+  position: absolute;
+  inset: 0;
+  color: var(--gw-display-ground, var(--gw-white));
+  -webkit-text-stroke: 0;
+}
+.gw-dark, .gw-block { --gw-display-ground: var(--gw-black); }
+@keyframes gw-flow { to { background-position: -220% 0; } }
 
 /* ---- Hard blocks ---- */
 .gw-block {
@@ -828,7 +872,11 @@ body[data-gw-locked="true"] { overflow: hidden; }
 }
 .gw-rail__card {
   flex: 0 0 min(620px, 74vw);
-  display: block;
+  display: flex;
+  flex-direction: column;
+  /* Always a dark surface, so it carries its own ink. Inheriting the page's
+     put near-black text on a near-black card everywhere but a dark section. */
+  color: var(--gw-white);
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--gw-radius-lg);
@@ -849,6 +897,21 @@ body[data-gw-locked="true"] { overflow: hidden; }
   mix-blend-mode: difference;
 }
 .gw-rail__media { overflow: hidden; }
+/* The pinned frame clips anything taller than the viewport, which was quietly
+   cutting the bottom off the card — the case-study link included — on any
+   laptop shorter than about 900px. The card is capped to the frame and the
+   shot absorbs the difference instead, down to a floor where it is still a
+   picture rather than a stripe. */
+/* A definite height, not a max: the track is a centred flex item whose own
+   height is its content, so `100%` there is circular, and without a definite
+   height the percentage chain down to the image never resolves. Fixing it
+   also makes every card the same height, which the rail wants anyway. */
+.gw-rail__track .gw-rail__card { height: min(calc(100vh - var(--gw-nav-height) - 2.5rem), 820px); }
+.gw-rail__track .gw-rail__media { flex: 1 1 auto; min-height: 110px; }
+.gw-rail__track .gw-rail__media .gw-shot,
+.gw-rail__track .gw-rail__media .gw-shot__frame { height: 100%; margin: 0; }
+.gw-rail__track .gw-rail__figure img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: auto; }
+.gw-rail__track .gw-rail__body { flex: 0 0 auto; }
 .gw-rail__figure .gw-shot__frame { border: 0; border-radius: 0; background: transparent; }
 .gw-rail__figure img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
 .gw-rail__body { padding: clamp(1.25rem, 3vw, 2rem); }
@@ -878,8 +941,19 @@ body[data-gw-locked="true"] { overflow: hidden; }
 .gw-rail--static .gw-rail__pin { position: static; height: auto; padding-block: clamp(2rem, 5vw, 4rem); }
 .gw-rail--static .gw-rail__track { justify-content: center; }
 
+/* Breathing room when the rail is the whole section, rather than following a
+   heading block as it does on the homepage. The pinned frame sizes itself, so
+   this only shows on the grid and static fallbacks. */
+.gw-rail-wrap { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.gw-rail-wrap .gw-rail { padding-block: 0; }
+
 /* The fallback below 900px and under reduced motion. */
-.gw-rail-grid { display: grid; gap: clamp(1rem, 2.5vw, 1.75rem); }
+.gw-rail-grid {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  width: min(calc(100% - (var(--gw-page-padding) * 2)), var(--gw-container));
+  margin-inline: auto;
+}
 @media (min-width: 641px) { .gw-rail-grid { grid-template-columns: 1fr 1fr; } }
 .gw-rail-grid .gw-rail__card { flex: none; }
 

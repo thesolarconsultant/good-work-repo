@@ -1,3 +1,4 @@
+import Display from "../components/Display";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
@@ -107,7 +108,7 @@ export default function Home() {
         <div className="gw-container">
           <Reveal variant="rise">
             <p className="gw-label">What we do</p>
-            <h2 className="gw-display gw-display--outline gw-stack-sm">Four<br />disciplines</h2>
+            <Display className="gw-stack-sm">Four<br />disciplines</Display>
             <p className="gw-body-large gw-max-copy gw-stack-md">One standard across all of them.</p>
           </Reveal>
           <div className="gw-grid gw-grid--2 gw-stack-lg">

@@ -2,6 +2,7 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
 import Reveal from "../components/Reveal";
+import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 
 export default function NotFound() {
@@ -17,6 +18,7 @@ export default function NotFound() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <p className="gw-label gw-pulse">Error 404</p>
           <Headline
