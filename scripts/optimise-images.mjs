@@ -20,7 +20,7 @@ const manifestPath = join(root, "src", "data", "imageManifest.json");
 // Widths cover: a phone at 2x, a half-width grid cell at 2x, and a
 // full-bleed container shot at 2x. Nothing above the source resolution.
 const WIDTHS = [640, 960, 1440, 2000];
-const SOURCE_DIRS = ["case-studies", "console"];
+const SOURCE_DIRS = ["case-studies", "console", "textures"];
 const force = process.argv.includes("--force");
 
 const manifest = {};

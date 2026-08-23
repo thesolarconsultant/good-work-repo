@@ -1215,3 +1215,55 @@ body[data-gw-locked="true"] { overflow: hidden; }
 .gw-dark .gw-review__empty,
 .gw-dark .gw-field__hint { color: rgba(255, 255, 255, 0.66); }
 .gw-dark .gw-review__change { color: var(--gw-white); border-color: rgba(255, 255, 255, 0.3); }
+
+/* =========================================================
+   18. Texture layers
+   A still image drifting behind a section. Transform and
+   opacity only, so it composites on the GPU and never
+   triggers layout.
+   ========================================================= */
+
+.gw-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--gw-texture-opacity, 0.5);
+}
+.gw-texture img {
+  position: absolute;
+  /* Oversized so the drift never exposes an edge. */
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  will-change: transform;
+}
+/* Paused off screen, and standing still under reduced motion. The texture is
+   part of the design; only the movement is decoration. */
+.gw-texture[data-gw-running="false"] img { animation-play-state: paused; }
+
+.gw-texture--drift img { animation: gw-texture-drift 46s ease-in-out infinite alternate; }
+.gw-texture--breathe img { animation: gw-texture-breathe 30s ease-in-out infinite alternate; }
+.gw-texture--rotate img { animation: gw-texture-rotate 120s linear infinite; }
+
+@keyframes gw-texture-drift {
+  from { transform: translate3d(-3%, -2%, 0) scale(1.06); }
+  to   { transform: translate3d(3%, 2%, 0) scale(1.14); }
+}
+@keyframes gw-texture-breathe {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.16); }
+}
+@keyframes gw-texture-rotate {
+  from { transform: rotate(0deg) scale(1.3); }
+  to   { transform: rotate(360deg) scale(1.3); }
+}
+
+/* Anything sitting over a texture needs to be above it. */
+.gw-texture ~ * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-texture img { animation: none !important; transform: scale(1.06) !important; }
+}
