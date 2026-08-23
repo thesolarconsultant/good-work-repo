@@ -967,3 +967,172 @@ body[data-gw-locked="true"] { overflow: hidden; }
   .gw-rail__track { transform: none !important; }
   .gw-rail__pin { position: static; height: auto; overflow: visible; }
 }
+
+/* =========================================================
+   17. Scope builder
+   The interactive route through the services: questions, an
+   editable recommendation, then contact details.
+   ========================================================= */
+
+.gw-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.gw-scope__head { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.gw-scope__progress {
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--gw-grey-200);
+  overflow: hidden;
+}
+.gw-scope__progress > span {
+  display: block;
+  height: 100%;
+  background: var(--gw-gradient);
+  transition: width 520ms var(--gw-ease-out);
+}
+.gw-scope__count {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: var(--gw-grey-700);
+}
+
+/* Each step replaces the panel, so it fades in rather than snapping. Keyed on
+   the step in JSX, which is what restarts the animation. */
+.gw-scope__panel--in { animation: gw-scope-in 420ms var(--gw-ease-out) both; }
+@keyframes gw-scope-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+.gw-scope__q { border: 0; padding: 0; margin: 0; min-width: 0; }
+.gw-scope__options { display: grid; gap: 10px; }
+@media (min-width: 780px) { .gw-scope__options { grid-template-columns: 1fr 1fr; } }
+
+/* ---- An option ---- */
+.gw-opt {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: clamp(0.9rem, 2vw, 1.15rem);
+  border: 1px solid var(--gw-grey-300);
+  border-radius: var(--gw-radius-md);
+  background: var(--gw-white);
+  cursor: pointer;
+  transition: border-color 200ms var(--gw-ease-out), background 200ms var(--gw-ease-out),
+    transform 200ms var(--gw-ease-out);
+}
+.gw-opt:hover { border-color: var(--gw-black); }
+.gw-opt--active { border-color: var(--gw-black); background: var(--gw-grey-100); }
+/* The real input is the accessible control — keyboard, screen reader and form
+   semantics all come from it — so it is placed over the tick rather than
+   removed from the page. */
+.gw-opt__input {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--gw-black);
+  cursor: pointer;
+}
+.gw-opt__tick { width: 20px; flex: none; }
+.gw-opt__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+.gw-opt__label { font-weight: var(--gw-semibold); font-size: 0.98rem; }
+.gw-opt__desc { font-size: 0.86rem; color: var(--gw-grey-700); line-height: 1.5; }
+.gw-opt__billing {
+  flex: none;
+  align-self: flex-start;
+  margin-right: 28px;
+  font-size: 0.68rem;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gw-grey-700);
+}
+.gw-opt--compact { padding: 0.8rem 1rem; }
+.gw-scope__why {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  font-weight: var(--gw-medium);
+  color: var(--gw-magenta-ink);
+}
+
+.gw-scope__groups { display: grid; gap: 18px; }
+.gw-scope__group { display: grid; gap: 8px; }
+
+.gw-scope__browse-toggle {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--gw-semibold);
+  padding: 0.6rem 1rem;
+  border: 1px dashed var(--gw-grey-300);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gw-black);
+  cursor: pointer;
+}
+.gw-scope__browse-toggle:hover { border-color: var(--gw-black); }
+
+.gw-scope__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: clamp(1.5rem, 4vw, 2.25rem);
+}
+.gw-scope__back {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: var(--gw-semibold);
+  padding: 0.5rem 0;
+  border: 0;
+  background: none;
+  color: var(--gw-grey-700);
+  cursor: pointer;
+}
+.gw-scope__back:hover { color: var(--gw-black); }
+.gw-scope [disabled] { opacity: 0.4; cursor: not-allowed; }
+
+.gw-scope__form { max-width: 560px; }
+.gw-scope__error {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid var(--gw-coral);
+  border-radius: var(--gw-radius-md);
+  background: rgba(255, 107, 94, 0.08);
+  font-size: 0.9rem;
+}
+.gw-scope__error strong { font-size: 0.95rem; }
+
+/* On a dark ground, everything above assumes a white page. */
+.gw-dark .gw-opt { background: #161616; border-color: rgba(255, 255, 255, 0.18); color: var(--gw-white); }
+.gw-dark .gw-opt:hover { border-color: rgba(255, 255, 255, 0.5); }
+.gw-dark .gw-opt--active { background: rgba(255, 255, 255, 0.07); border-color: rgba(255, 255, 255, 0.6); }
+.gw-dark .gw-opt__desc,
+.gw-dark .gw-opt__billing { color: rgba(255, 255, 255, 0.66); }
+.gw-dark .gw-scope__count,
+.gw-dark .gw-scope__back { color: rgba(255, 255, 255, 0.66); }
+.gw-dark .gw-scope__progress { background: rgba(255, 255, 255, 0.16); }
+.gw-dark .gw-scope__browse-toggle { color: var(--gw-white); border-color: rgba(255, 255, 255, 0.3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-scope__panel--in { animation: none !important; }
+  .gw-scope__progress > span { transition: none !important; }
+}

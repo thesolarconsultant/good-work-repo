@@ -6,7 +6,7 @@ import Reveal from "../components/Reveal";
 import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
-import ServiceSelector from "../components/ServiceSelector";
+import ScopeBuilder from "../components/ScopeBuilder";
 import Stamp from "../components/Stamp";
 import { SERVICES } from "../data/services";
 
@@ -63,7 +63,7 @@ export default function Services() {
 
       <hr className="gw-rule--gradient" style={{ border: 0 }} />
 
-      <ServiceSelector />
+      <ScopeBuilder />
 
       <section className="gw-dark">
         {/* The rule sits outside the padded block so it lands on the edge. */}

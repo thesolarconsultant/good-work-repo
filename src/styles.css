@@ -10,7 +10,10 @@
      for small text on a light ground, where the brand colours land at 3.3:1
      and 4.3:1 against a 4.5:1 requirement. Every fill, button, border, mark
      and the logo keep the brand colours above, untouched. */
-  --gw-magenta-ink: #DB0090;
+  /* Tuned to clear 4.5:1 on the site's grey surfaces (#f4f4f4), not just on
+     pure white — cards and active states sit on the grey, and a token that
+     only passes against white fails the moment it lands on one. */
+  --gw-magenta-ink: #CE0086;
   --gw-blue-ink: #2E5AE6;
   --gw-black: #111111;
   --gw-charcoal: #2B2B2B;
@@ -27,7 +30,7 @@
   --gw-font-primary: "Poppins","Helvetica Neue",Helvetica,Arial,sans-serif;
   --gw-extrabold:800; --gw-bold:700; --gw-semibold:600; --gw-medium:500; --gw-regular:400;
   --gw-space-4:1rem; --gw-space-5:1.5rem; --gw-space-6:2rem; --gw-space-7:3rem; --gw-space-8:4rem;
-  --gw-radius-sm:6px; --gw-radius-lg:18px;
+  --gw-radius-sm:6px; --gw-radius-md:12px; --gw-radius-lg:18px;
   --gw-container:1100px; --gw-page-padding:clamp(1.25rem,4vw,3rem);
   --gw-ease: cubic-bezier(0.22,1,0.36,1);
   --gw-transition: 240ms var(--gw-ease);

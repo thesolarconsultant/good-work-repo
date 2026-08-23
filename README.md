@@ -130,11 +130,49 @@ Two things worth knowing before it goes live:
 Prompts live server-side in `api/broll.js`, including `BRAND_STYLE`, which is
 prepended to every preset. Retune that constant and every clip changes with it.
 
+### The scope builder — /services
+
+`src/components/ScopeBuilder.jsx` is the interactive route through the
+services: six questions, then a recommendation the client can edit, then their
+name, phone and email, then it sends.
+
+Three files, deliberately separate:
+
+- `src/data/scope.js` — the questions, and the rules that map answers to
+  services. **This is the file to edit** when the offer or the pitch changes;
+  it is copy and commercial judgement, not code. Every `services: [...]` entry
+  is a real id from `data/services.js`, and `validateScope()` proves it — a
+  typo logs an error in dev rather than silently creating a service that can
+  never be recommended.
+- `src/lib/enquiry.js` — turns a finished scope into the plain-text summary
+  that lands in the inbox, and builds the mailto fallback.
+- `api/enquiry.js` — delivery.
+
+**It sends nothing until you configure it.** Set at least one of:
+
+- `ENQUIRY_WEBHOOK_URL` — POSTs the enquiry as JSON. Use this for a CRM
+  (GoHighLevel, Zapier, Make, n8n, your own endpoint).
+- `RESEND_API_KEY` with `ENQUIRY_TO` and `ENQUIRY_FROM` — sends it as email.
+  `ENQUIRY_FROM` must be on a domain verified in Resend.
+
+Set both and it does both, and only fails if both fail — a working inbox
+shouldn't be undone by a CRM being down.
+
+With neither set the endpoint returns 503, and the builder shows the client an
+error plus an email link carrying their whole scope, so the lead survives. This
+is deliberate: returning 200 from an unconfigured endpoint would show someone
+"thanks, we'll be in touch" while the enquiry went nowhere. Never make that
+endpoint optimistic.
+
+Deploy `api/enquiry.js` the same way as `api/broll.js` — it is the same
+Web-standard `Request -> Response` handler.
+
 ### Contact form
 
 `src/pages/Contact.jsx` validates and then **does not submit anywhere** — it
-just shows the success state. Wire `handleSubmit` to a real endpoint (a form
-service, or the CRM) before going live.
+just shows the success state. It predates the scope builder and still needs
+wiring; the quickest fix is to point its `handleSubmit` at `/api/enquiry`,
+which already accepts a name, email, phone and message.
 
 ### Favicon
 
