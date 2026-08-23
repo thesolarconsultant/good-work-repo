@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
@@ -6,9 +5,10 @@ import GlowCard from "../components/GlowCard";
 import Marquee from "../components/Marquee";
 import Reveal from "../components/Reveal";
 import SparklesText from "../components/SparklesText";
+import ShaderField from "../components/ShaderField";
+import HorizontalWork from "../components/HorizontalWork";
 import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
-import Shot from "../components/Shot";
 import Stamp from "../components/Stamp";
 import { CASE_STUDIES } from "../data/caseStudies";
 
@@ -60,6 +60,7 @@ export default function Home() {
         <div className="gw-aurora" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
+        <ShaderField />
         <div className="gw-container">
           <div className="gw-hero__grid">
             <div>
@@ -102,11 +103,12 @@ export default function Home() {
 
       <Marquee items={TICKER} />
 
-      <section className="gw-section">
+      <section className="gw-section gw-block gw-dark">
         <div className="gw-container">
           <Reveal variant="rise">
             <p className="gw-label">What we do</p>
-            <h2 className="gw-h2 gw-stack-sm">Four disciplines. One standard.</h2>
+            <h2 className="gw-display gw-display--outline gw-stack-sm">Four<br />disciplines</h2>
+            <p className="gw-body-large gw-max-copy gw-stack-md">One standard across all of them.</p>
           </Reveal>
           <div className="gw-grid gw-grid--2 gw-stack-lg">
             {DISCIPLINES.map((d, i) => (
@@ -122,43 +124,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="gw-section gw-dark">
-        <div className="gw-container">
-          <Reveal variant="rise">
-            <p className="gw-label">Selected work</p>
-            <h2 className="gw-h2 gw-stack-sm">Recent projects</h2>
-          </Reveal>
-          <div className="gw-work-grid gw-stack-lg">
-            {WORK.map((w, i) => (
-              <Reveal key={w.name} variant="rise" delay={i * 110} asChild>
-                <Link to={w.to} className="gw-work-card gw-work-card--dark">
-                  <div className="gw-work-card__media-wrap">
-                    <Shot
-                      src={w.shot}
-                      alt={`${w.name} website`}
-                      sizes="(max-width: 640px) 100vw, 520px"
-                      parallax={false}
-                      reveal={false}
-                      className="gw-work-card__figure"
-                    />
-                    <span className="gw-work-card__scrim" aria-hidden="true" />
-                  </div>
-                  <div className="gw-work-card__body">
-                    <span className="gw-work-card__tag">{w.tag}</span>
-                    <p className="gw-body">{w.desc}</p>
-                    <span className="gw-work-card__go">
-                      Read the case study <span aria-hidden="true">→</span>
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+      <section className="gw-dark">
+        <div className="gw-block__rule" />
+        <div className="gw-section--tight">
+          <div className="gw-container">
+            <Reveal variant="rise">
+              <p className="gw-label">Selected work</p>
+              <SparklesText as="div" count={10}>
+                <h2 className="gw-display gw-stack-sm">Recent<br />projects</h2>
+              </SparklesText>
+            </Reveal>
           </div>
-          <Reveal variant="rise">
-            <Button to="/case-studies" variant="light" className="gw-stack-lg" arrow>
-              Read the case studies
-            </Button>
-          </Reveal>
+        </div>
+
+        <HorizontalWork items={WORK} />
+
+        <div className="gw-section--tight">
+          <div className="gw-container">
+            <Reveal variant="rise">
+              <Button to="/case-studies" variant="light" arrow>
+                Read the case studies
+              </Button>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -169,7 +157,7 @@ export default function Home() {
               <Stamp size={120} />
               <div>
                 <p className="gw-label">How we work</p>
-                <h2 className="gw-h2 gw-stack-sm">Understand. Think. Make. Improve.</h2>
+                <h2 className="gw-display gw-stack-sm">Understand.<br />Think. Make.<br />Improve.</h2>
               </div>
             </div>
           </Reveal>

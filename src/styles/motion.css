@@ -332,6 +332,23 @@
    9. Hero aurora — four brand colours, drifting slowly
    --------------------------------------------------------- */
 .gw-hero { position: relative; overflow: clip; }
+
+/* The WebGL field sits above the CSS aurora and below the content. When WebGL
+   is missing or motion is reduced the canvas is never rendered, and the aurora
+   underneath carries the hero on its own. */
+.gw-shader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
+  /* The buffer is already upscaled ~3x with bilinear smoothing, so it
+     arrives soft — this only has to finish the job, not do all of it. */
+  filter: blur(22px) saturate(1.05);
+  opacity: 0.7;
+}
 .gw-aurora {
   position: absolute;
   inset: -30% -10% auto -10%;
@@ -356,6 +373,10 @@
   to   { transform: translate3d(4vw, -6vh, 0) scale(1.16); }
 }
 .gw-dark .gw-aurora { opacity: 0.38; }
+/* When the WebGL field is live it supplies all the movement back here, so the
+   aurora becomes a still wash. Animating it as well costs about half the frame
+   budget for a drift nobody can pick out from the one already on top of it. */
+:root[data-gw-shader="on"] .gw-aurora span { animation: none; }
 
 .gw-hero__grid {
   display: grid;
@@ -407,7 +428,10 @@
 
 /* Work cards on the dark section. */
 .gw-work-card--dark { border-color: rgba(255, 255, 255, 0.15); background: #161616; }
-.gw-work-card--dark .gw-work-card__tag { color: rgba(255, 255, 255, 0.5); }
+/* The tag is grey ink for a white card. On any dark card that grey lands at
+   2.4:1, so it has to flip — the rail cards use the same tag component. */
+.gw-work-card--dark .gw-work-card__tag,
+.gw-rail__card .gw-work-card__tag { color: rgba(255, 255, 255, 0.62); }
 .gw-work-card--dark .gw-body { color: var(--gw-white); }
 .gw-work-card--dark:hover { border-color: rgba(255, 255, 255, 0.3); }
 /* The screenshot sits flush inside the card, so it drops the standalone frame. */
@@ -425,6 +449,13 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
 }
 .gw-dark > * { position: relative; z-index: 1; }
+
+/* A card on a dark ground. The base card is a white surface, and the dark
+   section rules turn its heading and copy white — so without this the text is
+   white on white and simply disappears. Same treatment as the rail cards. */
+.gw-dark .gw-card { background: #161616; border-color: rgba(255, 255, 255, 0.16); }
+.gw-dark .gw-card:hover { border-color: rgba(255, 255, 255, 0.42); }
+.gw-dark .gw-card--soft { background: rgba(255, 255, 255, 0.05); border-color: transparent; }
 
 /* ---------------------------------------------------------
    10. The gradient rule, animated
@@ -738,4 +769,127 @@ body[data-gw-locked="true"] { overflow: hidden; }
   .gw-route, .gw-sent { animation: none !important; }
   .gw-sent__ring, .gw-sent__check { stroke-dashoffset: 0 !important; animation: none !important; }
   html { scroll-behavior: auto !important; }
+}
+
+/* =========================================================
+   16. LOUD — editorial art direction
+   Added over the base system rather than replacing it, so the
+   quiet version is one deleted block away.
+   ========================================================= */
+
+/* ---- Display type ---- */
+.gw-display {
+  margin: 0;
+  font-size: clamp(3rem, 13vw, 12rem);
+  font-weight: var(--gw-extrabold);
+  letter-spacing: -0.055em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+.gw-display--outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--gw-black);
+}
+.gw-dark .gw-display--outline { -webkit-text-stroke-color: var(--gw-white); }
+@media (max-width: 720px) { .gw-display--outline { -webkit-text-stroke-width: 1px; } }
+
+/* ---- Hard blocks ---- */
+.gw-block {
+  background: var(--gw-black);
+  color: var(--gw-white);
+  padding-block: clamp(3.5rem, 9vw, 8rem);
+}
+.gw-block--invert { background: var(--gw-white); color: var(--gw-black); }
+.gw-block__rule { height: 10px; background: var(--gw-gradient); }
+
+/* ---- Full-bleed: escape the container without a horizontal scrollbar ---- */
+.gw-bleed {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  max-width: 100vw;
+}
+
+/* ---- Horizontal work rail ---- */
+.gw-rail { position: relative; }
+.gw-rail__pin {
+  position: sticky;
+  top: var(--gw-nav-height);
+  height: calc(100vh - var(--gw-nav-height));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.gw-rail__track {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-inline: var(--gw-page-padding);
+  will-change: transform;
+}
+.gw-rail__card {
+  flex: 0 0 min(620px, 74vw);
+  display: block;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--gw-radius-lg);
+  overflow: hidden;
+  background: #161616;
+  transition: border-color 400ms var(--gw-ease-out), transform 400ms var(--gw-ease-out);
+}
+.gw-rail__card:hover { border-color: rgba(255, 255, 255, 0.42); transform: translateY(-4px); }
+.gw-rail__index {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  z-index: 2;
+  font-size: 0.72rem;
+  font-weight: var(--gw-extrabold);
+  letter-spacing: 0.18em;
+  color: var(--gw-white);
+  mix-blend-mode: difference;
+}
+.gw-rail__media { overflow: hidden; }
+.gw-rail__figure .gw-shot__frame { border: 0; border-radius: 0; background: transparent; }
+.gw-rail__figure img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+.gw-rail__body { padding: clamp(1.25rem, 3vw, 2rem); }
+.gw-rail__name {
+  margin: 6px 0 10px;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: var(--gw-extrabold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.gw-rail__card .gw-body { color: rgba(255, 255, 255, 0.72); }
+.gw-rail__end {
+  flex: 0 0 min(520px, 70vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.gw-rail__end-line {
+  margin: 10px 0 0;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: var(--gw-extrabold);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: var(--gw-white);
+}
+/* Nothing to travel (few cards, or a very wide monitor): don't pin at all. */
+.gw-rail--static .gw-rail__pin { position: static; height: auto; padding-block: clamp(2rem, 5vw, 4rem); }
+.gw-rail--static .gw-rail__track { justify-content: center; }
+
+/* The fallback below 900px and under reduced motion. */
+.gw-rail-grid { display: grid; gap: clamp(1rem, 2.5vw, 1.75rem); }
+@media (min-width: 641px) { .gw-rail-grid { grid-template-columns: 1fr 1fr; } }
+.gw-rail-grid .gw-rail__card { flex: none; }
+
+/* ---- Volume ---- */
+.gw-h1 { font-size: clamp(2.1rem, 8.6vw, 5rem); }
+.gw-h2 { font-size: clamp(1.9rem, 5.4vw, 3.2rem); }
+:root { --gw-reveal-duration: 640ms; }
+.gw-aurora { opacity: 0.46; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-rail__track { transform: none !important; }
+  .gw-rail__pin { position: static; height: auto; overflow: visible; }
 }
