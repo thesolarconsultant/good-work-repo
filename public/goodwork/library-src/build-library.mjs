@@ -361,44 +361,157 @@ function updateTray(){
   tray.classList.toggle('on', n > 0);
   trayCount.textContent = n + (n === 1 ? ' piece' : ' pieces');
 }
-// order selected pieces top-to-bottom like a real page
-function rankOf(c){
-  const s = (c.id + ' ' + c.name + ' ' + c.cat).toLowerCase();
-  const K = [['nav',0],['hero',1],['trust',2],['logo',2],['press',2],['compan',2],['marquee',2],
-    ['feature',3],['bento',3],['stat',4],['count',4],['testimonial',5],['review',5],['quote',5],
-    ['pricing',6],['price',6],['faq',7],['accordion',7],['cta',8],['footer',9]];
-  for (let i = 0; i < K.length; i++) if (s.indexOf(K[i][0]) >= 0) return K[i][1];
-  return 5;
+// Every selected piece is placed by ROLE — what the block is for on the page —
+// so the prompt reads as a page brief rather than a pile of snippets. The sub
+// -category set at build time is the truth where there is one; the keyword map
+// covers blocks from categories that carry no sub.
+const ROLES = [
+  { key: 'Navigation',   subs: [],                  words: ['nav','menu','header'] },
+  { key: 'Hero',         subs: ['Hero'],            words: ['hero'] },
+  { key: 'Social proof', subs: ['Social Proof'],    words: ['logo','press','compan','trust','marquee'] },
+  { key: 'Features',     subs: ['Feature Section'], words: ['feature','bento','grid'] },
+  { key: 'Stats',        subs: ['Stats'],           words: ['stat','count'] },
+  { key: 'Testimonials', subs: ['Testimonials'],    words: ['testimonial','review','quote'] },
+  { key: 'Pricing',      subs: ['Pricing'],         words: ['pricing','price','plan'] },
+  { key: 'FAQ',          subs: ['FAQ'],             words: ['faq','accordion'] },
+  { key: 'Call to action', subs: ['CTA'],           words: ['cta'] },
+  { key: 'Footer',       subs: ['Footer'],          words: ['footer'] },
+];
+// Anything that isn't a page section — a button, a text effect, a background —
+// is an ingredient rather than a section, and gets its own group at the end.
+const INGREDIENTS = 'Interface pieces';
+
+// What each kind of section actually needs written into it. This is the part
+// that stops the result coming back full of "Lorem" and "Company Name".
+const BRIEF = {
+  'Navigation':   'The real nav: 4-6 links that match the sections actually on this page, plus one primary action.',
+  'Hero':         'One promise in 12 words or fewer — what the customer gets, not what the company is. A sub-line of 25 words at most. A primary action and a quieter secondary one.',
+  'Social proof': 'Five to eight names that fit this market. Say plainly in the caption whether they are clients, partners or press.',
+  'Features':     'Three to six capabilities, each a benefit headline plus one plain sentence. No feature lists of nouns.',
+  'Stats':        'Four figures a business like this would actually publish, each with a label that says what it measures.',
+  'Testimonials': 'Three quotes in the voice of a real customer, each with a name, a role and a company. Specific about a result.',
+  'Pricing':      'Real tier names, real prices in the right currency, and four to six lines per tier. Say what happens at the top tier.',
+  'FAQ':          'Five or six questions customers genuinely ask before buying — including the awkward ones about price, lock-in and what happens if it goes wrong. Answer them straight.',
+  'Call to action': 'One action, stated once. No second competing ask.',
+  'Footer':       'Grouped links that match the real site, contact details, and the legal line.',
+  [INGREDIENTS]:  'Use these where they belong inside the sections above, not as sections of their own.',
+};
+
+function roleOf(c){
+  const hay = (c.id + ' ' + c.name + ' ' + c.cat).toLowerCase();
+  for (const r of ROLES) {
+    if (c.sub && r.subs.indexOf(c.sub) >= 0) return r.key;
+  }
+  // Only fall back to keywords for blocks with no sub-category of their own.
+  if (!c.sub) {
+    for (const r of ROLES) {
+      for (const w of r.words) if (hay.indexOf(w) >= 0) return r.key;
+    }
+  }
+  return c.cat === 'Sections' ? 'Features' : INGREDIENTS;
 }
+const ROLE_ORDER = ROLES.map(r => r.key).concat([INGREDIENTS]);
+const rankOf = c => ROLE_ORDER.indexOf(roleOf(c));
+
+// The tokens every block reads. This is the contract between a brand guide and
+// the library: fill these in and all 166 components reskin at once.
+const TOKENS = [
+  '--accent      the one bold colour: buttons, active states, icon chips',
+  '--accent-2    the lighter end of gradients',
+  '--accent-ink  the accent as TEXT on a light ground (needs 4.5:1 contrast)',
+  '--bg          page ground        --panel  alternate section band',
+  '--card        raised surface     --card2  nested surface',
+  '--line        hairline borders',
+  '--ink         headings           --body   paragraphs   --muted  captions',
+  '--radius      corner radius, drives every corner on the page',
+  '--sans        body + heading face     --mono  code / eyebrow face',
+];
+
 function buildPrompt(){
   const chosen = COMPS.filter(c => SEL.has(c.id)).slice();
   chosen.sort((a,b) => (rankOf(a) - rankOf(b)) || (COMPS.indexOf(a) - COMPS.indexOf(b)));
+
+  // group into the roles that are actually present, in page order
+  const groups = [];
+  ROLE_ORDER.forEach(function(role){
+    const items = chosen.filter(c => roleOf(c) === role);
+    if (items.length) groups.push({ role: role, items: items });
+  });
+
   const val = id => (document.getElementById(id).value || '').trim();
-  const name = val('bName'), what = val('bWhat'), accent = val('bAccent') || '#3366FF', vibe = val('bVibe');
+  const name = val('bName'), what = val('bWhat'), accent = val('bAccent'), vibe = val('bVibe');
   const L = [];
-  L.push('Build me a complete, production-ready website as a single self-contained index.html — inline CSS and JS, no build step, no dependencies except Google Fonts.');
+
+  L.push('Build a complete, production-ready website as ONE self-contained index.html — inline CSS and JS, no build step, no dependencies beyond Google Fonts.');
   L.push('');
-  L.push('BRAND');
-  L.push('- Name: ' + (name || '[fill in the brand name]'));
-  L.push('- What they do: ' + (what || '[what the business does, and who for]'));
-  L.push('- Accent colour: ' + accent + '  (set this once as --accent in :root; every block reads var(--accent))');
-  L.push('- Tone / vibe: ' + (vibe || '[e.g. bold, warm, premium]'));
+  L.push('─────────────────────────────────────────────');
+  L.push('1. THE BRAND');
+  L.push('─────────────────────────────────────────────');
+  L.push('If a brand guide or style guide appears anywhere in this conversation, IT IS THE SOURCE OF TRUTH — colours, type, tone, voice, do-not-use rules. Follow it over anything below, and over your own taste.');
   L.push('');
-  L.push('HOW TO BUILD IT');
-  L.push('- Assemble the page from the blocks below, in the order given (already ordered top-to-bottom).');
-  L.push('- Keep each block\\'s markup, CSS and animation faithfully — they are tuned. Restyle only colour and copy; do not redesign them.');
-  L.push('- Replace ALL demo copy — headings, body, names, quotes, stats, nav links, prices — with real, specific copy for this brand. No lorem, no placeholder names.');
-  L.push('- Merge every block\\'s :root tokens into one :root and set --accent to the brand colour above.');
-  L.push('- Sticky top navigation, smooth in-page scrolling, fully responsive, coherent dark theme.');
-  L.push('- Rename any clashing element IDs or @keyframes so blocks do not collide; de-duplicate shared CSS.');
-  L.push('- Return the whole thing in ONE code block, ready to save as index.html.');
+  if (name || what || accent || vibe) {
+    if (name)   L.push('- Name: ' + name);
+    if (what)   L.push('- What they do: ' + what);
+    if (accent) L.push('- Accent colour: ' + accent);
+    if (vibe)   L.push('- Tone: ' + vibe);
+  } else {
+    L.push('- Name: [from the brand guide]');
+    L.push('- What they do: [from the brand guide]');
+    L.push('- Accent colour: [from the brand guide]');
+    L.push('- Tone: [from the brand guide]');
+  }
   L.push('');
-  L.push('COMPONENTS (' + chosen.length + ', in order)');
-  chosen.forEach(function(c,i){
+  L.push('Map the guide onto these tokens, once, in a single :root. Every block below reads them, so the whole page reskins from this one place — do not hard-code a brand colour anywhere else:');
+  TOKENS.forEach(t => L.push('  ' + t));
+  L.push('');
+  L.push('If the guide names typefaces, load them from Google Fonts and set --sans / --mono. If it gives a colour as a name rather than a hex, pick the hex that matches and say which you used.');
+  L.push('');
+  L.push('─────────────────────────────────────────────');
+  L.push('2. THE PAGE, IN ORDER');
+  L.push('─────────────────────────────────────────────');
+  var n = 0;
+  groups.forEach(function(g){
+    // Section names already carry their type ("Hero — Centered"), so only
+    // blocks without a sub need the role spelled out in front of them.
+    g.items.forEach(function(c){ n++; L.push('  ' + n + '. ' + (c.sub ? c.name : g.role + ' — ' + c.name)); });
+  });
+  L.push('');
+  L.push('─────────────────────────────────────────────');
+  L.push('3. WHAT GOES IN EACH SECTION');
+  L.push('─────────────────────────────────────────────');
+  L.push('Replace every piece of demo copy. No lorem, no "Company Name", no invented awards, no fake logos of real companies.');
+  L.push('');
+  groups.forEach(function(g){
+    L.push(g.role.toUpperCase() + ' — ' + (BRIEF[g.role] || ''));
+  });
+  L.push('');
+  L.push('─────────────────────────────────────────────');
+  L.push('4. HOW TO ASSEMBLE');
+  L.push('─────────────────────────────────────────────');
+  L.push('- Use the blocks in section 5 in the order given. They are tuned: keep the markup, the CSS and the animation. Change colour and copy, not the design.');
+  L.push('- Merge the :root of every block into the ONE :root from section 1, and de-duplicate any CSS the blocks share.');
+  L.push('- Rename clashing element IDs and @keyframes so two blocks cannot collide.');
+  L.push('- Sticky top navigation, smooth in-page scrolling to each section, and a real responsive pass at 390px as well as desktop.');
+  L.push('- Respect prefers-reduced-motion: keep the layout, drop the movement.');
+  L.push('- Every image gets a real alt; every control is reachable by keyboard with a visible focus state.');
+  L.push('- Return the whole page in ONE code block, ready to save as index.html.');
+  L.push('');
+  L.push('─────────────────────────────────────────────');
+  L.push('5. THE BLOCKS (' + chosen.length + ')');
+  L.push('─────────────────────────────────────────────');
+  var i = 0;
+  groups.forEach(function(g){
     L.push('');
-    L.push('════════ ' + (i+1) + '. ' + c.name + '  [' + c.cat + '] ════════');
-    if (c.desc) L.push('// ' + c.desc);
-    L.push(c.code);
+    L.push('══════════════════════════════════════════════');
+    L.push('  ' + g.role.toUpperCase() + '  (' + g.items.length + ')');
+    L.push('══════════════════════════════════════════════');
+    g.items.forEach(function(c){
+      i++;
+      L.push('');
+      L.push('──── ' + i + '. ' + c.name + ' ────');
+      if (c.desc) L.push('// ' + c.desc);
+      L.push(c.code);
+    });
   });
   return L.join('\\n');
 }
