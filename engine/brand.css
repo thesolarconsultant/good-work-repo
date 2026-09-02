@@ -1,0 +1,145 @@
+/* ============================================================================
+   brand.css — THE KNOB
+   ----------------------------------------------------------------------------
+   This is the ONLY file that changes between two sites built on the engine.
+   Paste a new brand's values below and the entire site reskins: colour, type,
+   corners, light/dark. Nothing in the HTML or the block CSS references a raw
+   colour — everything reads from the tokens defined here.
+
+   Fill the SEVEN things a brand actually owns:
+     1. accent family   (the one bold colour + its darker/lighter cuts)
+     2. neutrals        (page ground, cards, lines, text)
+     3. fonts           (display + body + logo)
+     4. corner radius    (soft / sharp / round)
+     5. the dark band    (footer + feature band, even on a light site)
+     6. hero scrim       (how the hero photo is tinted for legibility)
+     7. shadows          (optional — warm vs cool, soft vs tight)
+
+   Two themes ship side by side: :root is the LIGHT theme, and
+   :root[data-theme="dark"] overrides the same names for DARK. A site can lead
+   with either — just set the default on <html> in the inline theme script.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ LIGHT -- */
+:root {
+  color-scheme: light;
+
+  /* 1 · ACCENT — the brand's one bold colour.
+        --accent      : fills (buttons, active states, icon chips)
+        --accent-hover: pressed / hover fill
+        --accent-2    : the lighter end of gradients
+        --accent-ink  : accent used as TEXT on a light ground (needs ~4.5:1) */
+  --accent:        #FF5722;
+  --accent-hover:  #E64A1B;
+  --accent-2:      #FF9466;
+  --accent-ink:    #BE4018;
+  --grad-text:     linear-gradient(115deg, #FF8A3D 0%, #FF5722 48%, #D9481F 100%);
+  --accent-grad:   linear-gradient(135deg, #FF7A33 0%, #FF5722 100%);
+
+  /* 2 · NEUTRALS — pick a ground with a faint bias toward the accent, never
+        pure grey. -2 is the alternate section; card is the raised surface. */
+  --cream:       #F5F7FA;   /* page canvas            */
+  --cream-2:     #EEF1F5;   /* alternating sections   */
+  --card:        #FFFFFF;   /* cards, forms, pills    */
+  --line:        #E4E8EE;
+  --line-strong: #D3D9E2;
+  --ink:         #12161D;   /* headings               */
+  --body:        #545C6B;   /* paragraphs             */
+  --muted:       #666D78;   /* captions / secondary   */
+
+  /* 5 · DARK BAND — the one dark block inside a light page (feature band +
+        footer). On a dark-led site these still sit a step above the canvas. */
+  --dark:         #12161C;
+  --dark-2:       #1A2029;
+  --on-dark:      #EEF1F5;
+  --on-dark-muted:#9BA3B0;
+  --line-dark:    #29303A;
+
+  /* 6 · HERO SCRIM — r,g,b of the wash over the hero photo + an optional
+        filter on the media itself. Match --scrim-rgb to --cream. */
+  --scrim-rgb:        245, 247, 250;
+  --hero-media-filter: none;
+
+  /* 7 · SHADOWS */
+  --shadow-sm: 0 1px 2px rgba(60,40,15,0.05), 0 6px 20px rgba(90,60,20,0.06);
+  --shadow-md: 0 16px 40px rgba(80,55,20,0.12);
+
+  /* 3 · TYPE — one display face, one body face, one logo face. Self-host or
+        load from Google Fonts. Always give a real fallback stack. */
+  --font-head: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-logo: 'Josefin Sans', 'Inter', system-ui, sans-serif;
+
+  /* 4 · METRICS — the site's geometry. --radius drives every corner. */
+  --container: 1160px;
+  --radius:    16px;
+  --radius-lg: 24px;
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------- DARK -- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cream:       #0B0E13;
+  --cream-2:     #12161C;
+  --card:        #171B22;
+  --line:        #262C34;
+  --line-strong: #353C46;
+  --ink:         #F4F6F9;
+  --body:        #B6BDC8;
+  --muted:       #8A93A2;
+
+  /* accent usually brightens a touch on dark so it doesn't go muddy */
+  --accent:      #FF5722;
+  --accent-hover:#FF7A45;
+  --accent-2:    #FF9466;
+  --accent-ink:  #FF7A4D;
+
+  --dark:        #12161C;
+  --dark-2:      #1A2029;
+  --on-dark:     #EEF1F5;
+  --on-dark-muted:#99A2AF;
+  --line-dark:   #29303A;
+
+  --scrim-rgb:        11, 14, 19;
+  --hero-media-filter: brightness(0.62) saturate(0.95);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.5);
+  --shadow-md: 0 18px 44px rgba(0,0,0,0.62);
+}
+
+/* Follow the visitor's OS theme until they pick one explicitly.
+   (Mirror whichever block above is your NON-default theme here.) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+    --cream:#0B0E13; --cream-2:#12161C; --card:#171B22;
+    --line:#262C34; --line-strong:#353C46;
+    --ink:#F4F6F9; --body:#B6BDC8; --muted:#8A93A2;
+    --accent:#FF5722; --accent-hover:#FF7A45; --accent-2:#FF9466; --accent-ink:#FF7A4D;
+    --dark:#12161C; --dark-2:#1A2029; --on-dark:#EEF1F5; --on-dark-muted:#99A2AF; --line-dark:#29303A;
+    --scrim-rgb:11,14,19; --hero-media-filter:brightness(0.62) saturate(0.95);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.45),0 6px 20px rgba(0,0,0,0.5);
+    --shadow-md:0 18px 44px rgba(0,0,0,0.62);
+  }
+}
+
+/* ============================================================================
+   SWATCH BOOK — proven brand pastes. Copy one over the :root accent + type +
+   radius block above and you have a different site. (Verified on the OMNIV
+   homepage — see engine/BUILD-A-SITE.md.)
+
+   AURELIA  — architectural, calm, editorial (dark-led)
+     --accent:#845EF7; --accent-hover:#7048E8; --accent-2:#B197FC; --accent-ink:#B197FC;
+     --font-head:'Fraunces',serif; --font-body:'Fraunces',serif; --radius:4px;
+
+   SAVANNA  — warm, organic, wellness (light-led)
+     --accent:#1E9E6A; --accent-hover:#178055; --accent-2:#63D0A0; --accent-ink:#0E6E48;
+     --cream:#F7F4EC; --cream-2:#EFEADD; --ink:#20241F; --body:#54594E;
+     --font-head:'Trebuchet MS',sans-serif; --radius:22px;
+
+   LEDGER   — precise, cool, fintech (dark-led)
+     --accent:#5B5BFF; --accent-hover:#4B4BE0; --accent-2:#8F8FFF; --accent-ink:#9A9AFF;
+     --font-head:'Sora',sans-serif; --radius:8px;
+   ========================================================================== */

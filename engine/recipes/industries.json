@@ -1,0 +1,61 @@
+{
+  "_note": "Industry recipes — each decides the shape of the site: which sections in what order, the theme lead, motion intensity, and sensible brand defaults. The Brand Studio (and the brand-site skill) read this to 'make up its mind' about the kind of website an industry needs.",
+  "industries": {
+    "clean-energy": {
+      "label": "Clean Energy / Installer",
+      "lead": "dark", "accent": "#FF5722", "action": "", "radius": "16px",
+      "fontHead": "Inter", "fontBody": "Inter", "motion": "high",
+      "sections": ["nav", "hero", "trust", "features", "stats", "steps", "cta", "footer"],
+      "vibe": "confident, technical, warm"
+    },
+    "wellness": {
+      "label": "Wellness / Skincare (DTC)",
+      "lead": "light", "accent": "#1E9E6A", "action": "", "radius": "26px",
+      "fontHead": "Fraunces", "fontBody": "Nunito Sans", "motion": "medium",
+      "sections": ["nav", "hero", "trust", "features", "testimonials", "cta", "footer"],
+      "vibe": "calm, organic, editorial"
+    },
+    "fintech": {
+      "label": "Fintech / SaaS",
+      "lead": "dark", "accent": "#5B5BFF", "action": "", "radius": "8px",
+      "fontHead": "Sora", "fontBody": "Inter", "motion": "medium",
+      "sections": ["nav", "hero", "logos", "features", "stats", "pricing", "cta", "footer"],
+      "vibe": "precise, cool, trustworthy"
+    },
+    "professional": {
+      "label": "Professional Services / Law",
+      "lead": "light", "accent": "#8A6D3B", "action": "#1F3A5F", "radius": "6px",
+      "fontHead": "Playfair Display", "fontBody": "Inter", "motion": "low",
+      "sections": ["nav", "hero", "trust", "features", "stats", "cta", "footer"],
+      "vibe": "authoritative, established, restrained"
+    },
+    "hospitality": {
+      "label": "Hospitality / Restaurant",
+      "lead": "dark", "accent": "#C0392B", "action": "#B8860B", "radius": "14px",
+      "fontHead": "Cormorant Garamond", "fontBody": "Inter", "motion": "medium",
+      "sections": ["nav", "hero", "features", "testimonials", "cta", "footer"],
+      "vibe": "warm, appetite, hospitable"
+    },
+    "agency": {
+      "label": "Creative / Agency",
+      "lead": "dark", "accent": "#7C4DFF", "action": "#FF2E88", "radius": "6px",
+      "fontHead": "Space Grotesk", "fontBody": "Inter", "motion": "high",
+      "sections": ["nav", "hero", "logos", "features", "testimonials", "cta", "footer"],
+      "vibe": "bold, expressive, confident"
+    },
+    "ecommerce": {
+      "label": "E-commerce / Retail",
+      "lead": "light", "accent": "#FF2E88", "action": "", "radius": "22px",
+      "fontHead": "Poppins", "fontBody": "DM Sans", "motion": "medium",
+      "sections": ["nav", "hero", "features", "logos", "testimonials", "cta", "footer"],
+      "vibe": "fresh, energetic, friendly"
+    },
+    "trades": {
+      "label": "Trades / Construction",
+      "lead": "dark", "accent": "#F5A623", "action": "", "radius": "6px",
+      "fontHead": "Inter", "fontBody": "Inter", "motion": "medium",
+      "sections": ["nav", "hero", "trust", "features", "stats", "cta", "footer"],
+      "vibe": "solid, dependable, no-nonsense"
+    }
+  }
+}

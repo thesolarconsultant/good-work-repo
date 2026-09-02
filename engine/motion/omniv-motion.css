@@ -1,0 +1,100 @@
+/* ============================================================================
+   OMNIV Motion — one include, all movement.
+   Drop this + omniv-motion.js into any site. Every effect reads
+   var(--accent, #FF5722) so it inherits the brand automatically. Add a class
+   (om-*) or a data-attribute (data-om-*) to an element and it animates. The JS
+   file auto-wires the scripted ones on load. All motion is disabled under
+   prefers-reduced-motion.
+   ========================================================================== */
+@property --om-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+:root { --om-ease: cubic-bezier(.22,1,.36,1); }
+
+/* ---- keyframes ---- */
+@keyframes om-sweep   { 0%{transform:translateX(-130%)} 55%,100%{transform:translateX(240%)} }
+@keyframes om-grad    { to{background-position:300% 0} }
+@keyframes om-shine   { to{background-position:-220% 0} }
+@keyframes om-spin    { to{--om-a:360deg} }
+@keyframes om-rot     { to{transform:rotate(360deg)} }
+@keyframes om-pulsering{ 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.55);opacity:0} }
+@keyframes om-glowb   { 0%,100%{box-shadow:0 10px 24px -8px var(--accent,#FF5722)} 50%{box-shadow:0 18px 44px -6px var(--accent,#FF5722)} }
+@keyframes om-breathe { 0%,100%{opacity:.16;transform:scale(1)} 50%{opacity:.30;transform:scale(1.1)} }
+@keyframes om-float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes om-marquee { to{transform:translateX(-50%)} }
+@keyframes om-fall    { 0%{transform:rotate(35deg) translateY(-50px);opacity:0} 10%{opacity:1} 100%{transform:rotate(35deg) translateY(230px);opacity:0} }
+@keyframes om-ripple  { 0%{transform:scale(.4);opacity:.7} 100%{transform:scale(3.4);opacity:0} }
+@keyframes om-dots    { to{background-position:18px 18px} }
+@keyframes om-caret   { 50%{opacity:0} }
+
+/* ---- BUTTONS ---- */
+.om-shimmer{ position:relative; overflow:hidden; }
+.om-shimmer::after{ content:""; position:absolute; inset:0 auto 0 0; width:45%; height:100%; pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);
+  transform:translateX(-130%); animation:om-sweep 4.5s ease-in-out infinite; }
+.om-beam{ position:relative; isolation:isolate; }
+.om-beam::before{ content:""; position:absolute; inset:-2px; border-radius:inherit; z-index:-1; padding:2px;
+  background:conic-gradient(from var(--om-a),transparent 0 60%,var(--accent,#FF5722) 80%,var(--accent-2,#FF9466) 92%,transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:om-spin 3s linear infinite; }
+.om-pulse{ position:relative; }
+.om-pulse::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--accent,#FF5722);
+  z-index:-1; animation:om-pulsering 1.8s ease-out infinite; }
+.om-glow{ animation:om-glowb 2.4s ease-in-out infinite; }
+.om-rainbow{ background:linear-gradient(90deg,var(--accent,#FF5722),var(--accent-2,#FF9466),#FFD36A,var(--accent,#FF5722));
+  background-size:300% 100%; animation:om-grad 3s linear infinite; }
+
+/* ---- TEXT ---- */
+.om-aurora,.om-gradient-text{ background:linear-gradient(115deg,var(--accent-2,#FF9466),var(--accent,#FF5722),#D9481F,var(--accent-2,#FF9466));
+  background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:om-grad 5s linear infinite; }
+.om-shiny-text{ background:linear-gradient(90deg,currentColor 0 40%,#fff 50%,currentColor 60% 100%); background-size:220% 100%;
+  -webkit-background-clip:text; background-clip:text; color:transparent; animation:om-shine 3s linear infinite; }
+.om-caret::after{ content:""; display:inline-block; width:2px; height:1.05em; margin-left:2px; vertical-align:-3px;
+  background:var(--accent,#FF5722); animation:om-caret 1s step-end infinite; }
+
+/* ---- STRUCTURE / AMBIENT ---- */
+.om-marquee{ overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent); }
+.om-marquee > *{ display:flex; gap:34px; width:max-content; animation:om-marquee 16s linear infinite; }
+.om-float{ animation:om-float 5s ease-in-out infinite; }
+.om-orb{ border-radius:50%; background:radial-gradient(circle at 50% 45%,var(--accent-2,#FF9466),var(--accent,#FF5722) 55%,transparent 72%);
+  filter:blur(4px); animation:om-breathe 5s ease-in-out infinite; }
+.om-border-beam{ position:relative; }
+.om-border-beam::before{ content:""; position:absolute; inset:-1px; border-radius:inherit; padding:2px;
+  background:conic-gradient(from var(--om-a),transparent 0 82%,var(--accent,#FF5722) 92%,#fff 97%,transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:om-spin 3s linear infinite; }
+.om-shine-border{ position:relative; }
+.om-shine-border::before{ content:""; position:absolute; inset:0; border-radius:inherit; padding:2px;
+  background:conic-gradient(from var(--om-a),var(--accent,#FF5722),var(--accent-2,#FF9466),#FFD36A,var(--accent,#FF5722));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:om-spin 4s linear infinite; }
+
+/* ---- BACKGROUNDS ---- */
+.om-dots{ background-image:radial-gradient(var(--accent,#FF5722) 1.4px,transparent 1.4px); background-size:18px 18px;
+  animation:om-dots 6s linear infinite; }
+.om-meteors{ position:relative; overflow:hidden; }
+.om-meteors .om-meteor{ position:absolute; top:-10px; width:2px; height:56px;
+  background:linear-gradient(var(--accent,#FF5722),transparent); animation:om-fall linear infinite; }
+
+/* ---- REVEAL ON SCROLL (JS adds .om-in) ---- */
+[data-om-reveal]{ opacity:0; transform:translateY(24px);
+  transition:opacity .7s var(--om-ease), transform .7s var(--om-ease); }
+[data-om-reveal].om-in{ opacity:1; transform:none; }
+[data-om-reveal="left"]{ transform:translateX(-26px); }
+[data-om-reveal="right"]{ transform:translateX(26px); }
+[data-om-reveal="scale"]{ transform:scale(.94); }
+
+/* ripple ink (JS injects .om-ink spans) */
+.om-ripple{ position:relative; overflow:hidden; }
+.om-ripple .om-ink{ position:absolute; border-radius:50%; background:rgba(255,255,255,.5); width:16px; height:16px;
+  transform:translate(-50%,-50%) scale(0); animation:om-inkgrow .7s ease-out forwards; pointer-events:none; }
+@keyframes om-inkgrow{ to{transform:translate(-50%,-50%) scale(16);opacity:0} }
+
+/* ---- reduced motion: turn it all off ---- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; }
+  [data-om-reveal]{ opacity:1 !important; transform:none !important; }
+}

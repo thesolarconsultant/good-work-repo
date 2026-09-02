@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OMNIV Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The OMNIV engine tools — component library, pitch builder and brand studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Josefin+Sans:wght@600;700&display=swap">
+<style>
+  :root{--bg:#0B0E13;--card:#12161C;--line:#222834;--line-2:#2C3442;--ink:#F4F6F9;--muted:#8A93A2;
+    --accent:#FF5722;--accent-2:#FF9466;--sans:'Inter',system-ui,sans-serif;--disp:'Josefin Sans',var(--sans)}
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(120% 90% at 50% -10%,#10151d,var(--bg) 60%);color:var(--ink);
+    font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+  .wrap{max-width:960px;margin:0 auto;padding:70px 22px 80px}
+  .brand{display:flex;align-items:center;gap:13px;margin-bottom:8px}
+  .sun{position:relative;width:38px;height:38px;flex:none}
+  .sun .disc{position:absolute;inset:9px;border-radius:50%;background:var(--accent)}
+  .sun .ray{position:absolute;left:50%;top:50%;width:2.6px;height:6px;margin:-3px 0 0 -1.3px;border-radius:3px;background:var(--accent)}
+  .brand b{font-family:var(--disp);font-weight:700;font-size:27px;letter-spacing:.02em}
+  .brand small{display:block;font-size:11px;letter-spacing:.34em;color:var(--accent-2);font-weight:700;margin-top:2px}
+  .lede{max-width:56ch;color:var(--muted);font-size:16px;line-height:1.65;margin:0 0 38px}
+  .lede b{color:var(--ink);font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  a.tool{display:flex;flex-direction:column;gap:9px;text-decoration:none;color:inherit;background:var(--card);
+    border:1px solid var(--line);border-radius:16px;padding:22px 20px;transition:.18s cubic-bezier(.22,1,.36,1)}
+  a.tool:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 22px 50px -28px var(--accent)}
+  .tool .tag{font:700 10px 'Inter',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2)}
+  .tool h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .tool p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55;flex:1}
+  .tool .go{margin-top:6px;font-size:13px;font-weight:700;color:var(--accent)}
+  footer{margin-top:44px;color:var(--muted);font-size:13px;line-height:1.6}
+  footer code{color:var(--accent-2);background:rgba(255,87,34,.08);padding:2px 6px;border-radius:5px;font-size:12px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="brand">
+      <span class="sun" id="sun"><span class="disc"></span></span>
+      <span><b>OMNIV</b><small>ENGINE TOOLS</small></span>
+    </span>
+    <p class="lede"><b>Pick pieces, get a site.</b> The component library, the in-room pitch builder and the brand studio — every block reads from <code>var(--accent)</code>, so a site reskins to any identity.</p>
+    <div class="grid">
+      <a class="tool" href="./library.html">
+        <span class="tag">Start here</span>
+        <h2>Component Library →</h2>
+        <p>Browse 166 live components, tick the ones you want, and copy a self-contained build prompt to paste into any chat.</p>
+        <span class="go">Pick &amp; build</span>
+      </a>
+      <a class="tool" href="./pitch.html">
+        <span class="tag">In the room</span>
+        <h2>Pitch Builder →</h2>
+        <p>Paste brand guidelines, choose sections, variants and motion, and watch an on-brand site assemble live.</p>
+        <span class="go">Open builder</span>
+      </a>
+      <a class="tool" href="./studio.html">
+        <span class="tag">Guided</span>
+        <h2>Brand Studio →</h2>
+        <p>Enter brand details, pick an industry, edit every area and prompt changes in plain English.</p>
+        <span class="go">Open studio</span>
+      </a>
+    </div>
+    <footer>Source lives in <code>/engine</code>. Rebuild the library after editing components: <code>node engine/library/build-library.mjs</code>.</footer>
+  </div>
+  <script>
+    var s=document.getElementById('sun');for(var i=0;i<12;i++){var r=document.createElement('span');r.className='ray';r.style.transform='rotate('+(i*30)+'deg) translateY(-16px)';s.appendChild(r);}
+  </script>
+</body>
+</html>
