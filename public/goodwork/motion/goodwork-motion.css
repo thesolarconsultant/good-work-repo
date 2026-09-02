@@ -1,0 +1,100 @@
+/* ============================================================================
+   GOODWORK Motion — one include, all movement.
+   Drop this + goodwork-motion.js into any site. Every effect reads
+   var(--accent, #3366FF) so it inherits the brand automatically. Add a class
+   (gw-*) or a data-attribute (data-gw-*) to an element and it animates. The JS
+   file auto-wires the scripted ones on load. All motion is disabled under
+   prefers-reduced-motion.
+   ========================================================================== */
+@property --gw-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+:root { --gw-ease: cubic-bezier(.22,1,.36,1); }
+
+/* ---- keyframes ---- */
+@keyframes gw-sweep   { 0%{transform:translateX(-130%)} 55%,100%{transform:translateX(240%)} }
+@keyframes gw-grad    { to{background-position:300% 0} }
+@keyframes gw-shine   { to{background-position:-220% 0} }
+@keyframes gw-spin    { to{--gw-a:360deg} }
+@keyframes gw-rot     { to{transform:rotate(360deg)} }
+@keyframes gw-pulsering{ 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.55);opacity:0} }
+@keyframes gw-glowb   { 0%,100%{box-shadow:0 10px 24px -8px var(--accent,#3366FF)} 50%{box-shadow:0 18px 44px -6px var(--accent,#3366FF)} }
+@keyframes gw-breathe { 0%,100%{opacity:.16;transform:scale(1)} 50%{opacity:.30;transform:scale(1.1)} }
+@keyframes gw-float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes gw-marquee { to{transform:translateX(-50%)} }
+@keyframes gw-fall    { 0%{transform:rotate(35deg) translateY(-50px);opacity:0} 10%{opacity:1} 100%{transform:rotate(35deg) translateY(230px);opacity:0} }
+@keyframes gw-ripple  { 0%{transform:scale(.4);opacity:.7} 100%{transform:scale(3.4);opacity:0} }
+@keyframes gw-dots    { to{background-position:18px 18px} }
+@keyframes gw-caret   { 50%{opacity:0} }
+
+/* ---- BUTTONS ---- */
+.gw-shimmer{ position:relative; overflow:hidden; }
+.gw-shimmer::after{ content:""; position:absolute; inset:0 auto 0 0; width:45%; height:100%; pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);
+  transform:translateX(-130%); animation:gw-sweep 4.5s ease-in-out infinite; }
+.gw-beam{ position:relative; isolation:isolate; }
+.gw-beam::before{ content:""; position:absolute; inset:-2px; border-radius:inherit; z-index:-1; padding:2px;
+  background:conic-gradient(from var(--gw-a),transparent 0 60%,var(--accent,#3366FF) 80%,var(--accent-2,#7A5CFF) 92%,transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:gw-spin 3s linear infinite; }
+.gw-pulse{ position:relative; }
+.gw-pulse::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--accent,#3366FF);
+  z-index:-1; animation:gw-pulsering 1.8s ease-out infinite; }
+.gw-glow{ animation:gw-glowb 2.4s ease-in-out infinite; }
+.gw-rainbow{ background:linear-gradient(90deg,var(--accent,#3366FF),var(--accent-2,#7A5CFF),#FFD36A,var(--accent,#3366FF));
+  background-size:300% 100%; animation:gw-grad 3s linear infinite; }
+
+/* ---- TEXT ---- */
+.gw-aurora,.gw-gradient-text{ background:linear-gradient(115deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF),#2B51CC,var(--accent-2,#7A5CFF));
+  background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:gw-grad 5s linear infinite; }
+.gw-shiny-text{ background:linear-gradient(90deg,currentColor 0 40%,#fff 50%,currentColor 60% 100%); background-size:220% 100%;
+  -webkit-background-clip:text; background-clip:text; color:transparent; animation:gw-shine 3s linear infinite; }
+.gw-caret::after{ content:""; display:inline-block; width:2px; height:1.05em; margin-left:2px; vertical-align:-3px;
+  background:var(--accent,#3366FF); animation:gw-caret 1s step-end infinite; }
+
+/* ---- STRUCTURE / AMBIENT ---- */
+.gw-marquee{ overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent); }
+.gw-marquee > *{ display:flex; gap:34px; width:max-content; animation:gw-marquee 16s linear infinite; }
+.gw-float{ animation:gw-float 5s ease-in-out infinite; }
+.gw-orb{ border-radius:50%; background:radial-gradient(circle at 50% 45%,var(--accent-2,#7A5CFF),var(--accent,#3366FF) 55%,transparent 72%);
+  filter:blur(4px); animation:gw-breathe 5s ease-in-out infinite; }
+.gw-border-beam{ position:relative; }
+.gw-border-beam::before{ content:""; position:absolute; inset:-1px; border-radius:inherit; padding:2px;
+  background:conic-gradient(from var(--gw-a),transparent 0 82%,var(--accent,#3366FF) 92%,#fff 97%,transparent);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:gw-spin 3s linear infinite; }
+.gw-shine-border{ position:relative; }
+.gw-shine-border::before{ content:""; position:absolute; inset:0; border-radius:inherit; padding:2px;
+  background:conic-gradient(from var(--gw-a),var(--accent,#3366FF),var(--accent-2,#7A5CFF),#FFD36A,var(--accent,#3366FF));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+  animation:gw-spin 4s linear infinite; }
+
+/* ---- BACKGROUNDS ---- */
+.gw-dots{ background-image:radial-gradient(var(--accent,#3366FF) 1.4px,transparent 1.4px); background-size:18px 18px;
+  animation:gw-dots 6s linear infinite; }
+.gw-meteors{ position:relative; overflow:hidden; }
+.gw-meteors .gw-meteor{ position:absolute; top:-10px; width:2px; height:56px;
+  background:linear-gradient(var(--accent,#3366FF),transparent); animation:gw-fall linear infinite; }
+
+/* ---- REVEAL ON SCROLL (JS adds .gw-in) ---- */
+[data-gw-reveal]{ opacity:0; transform:translateY(24px);
+  transition:opacity .7s var(--gw-ease), transform .7s var(--gw-ease); }
+[data-gw-reveal].gw-in{ opacity:1; transform:none; }
+[data-gw-reveal="left"]{ transform:translateX(-26px); }
+[data-gw-reveal="right"]{ transform:translateX(26px); }
+[data-gw-reveal="scale"]{ transform:scale(.94); }
+
+/* ripple ink (JS injects .gw-ink spans) */
+.gw-ripple{ position:relative; overflow:hidden; }
+.gw-ripple .gw-ink{ position:absolute; border-radius:50%; background:rgba(255,255,255,.5); width:16px; height:16px;
+  transform:translate(-50%,-50%) scale(0); animation:gw-inkgrow .7s ease-out forwards; pointer-events:none; }
+@keyframes gw-inkgrow{ to{transform:translate(-50%,-50%) scale(16);opacity:0} }
+
+/* ---- reduced motion: turn it all off ---- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; }
+  [data-gw-reveal]{ opacity:1 !important; transform:none !important; }
+}

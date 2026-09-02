@@ -1,0 +1,151 @@
+/* ============================================================================
+   brand.css — THE KNOB
+   ----------------------------------------------------------------------------
+   This is the ONLY file that changes between two sites built on the engine.
+   Paste a new brand's values below and the entire site reskins: colour, type,
+   corners, light/dark. Nothing in the HTML or the block CSS references a raw
+   colour — everything reads from the tokens defined here.
+
+   Filled in with GOOD WORK. Swap the seven blocks for a client's brand and
+   the same pages become theirs:
+     1. accent family   (the one bold colour + its darker/lighter cuts)
+     2. neutrals        (page ground, cards, lines, text)
+     3. fonts           (display + body + logo)
+     4. corner radius   (soft / sharp / round)
+     5. the dark band   (footer + feature band, even on a light site)
+     6. hero scrim      (how the hero photo is tinted for legibility)
+     7. shadows         (optional — warm vs cool, soft vs tight)
+
+   Two themes ship side by side: :root is the LIGHT theme, and
+   :root[data-theme="dark"] overrides the same names for DARK. A site can lead
+   with either — just set the default on <html> in the inline theme script.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ LIGHT -- */
+:root {
+  color-scheme: light;
+
+  /* 1 · ACCENT — GOOD WORK. leads on the gradient's first stop, blue.
+        --accent      : fills (buttons, active states, icon chips)
+        --accent-hover: pressed / hover fill
+        --accent-2    : the lighter end of gradients (the violet stop)
+        --accent-ink  : accent used as TEXT on a light ground (needs ~4.5:1) */
+  --accent:        #3366FF;
+  --accent-hover:  #2B51CC;
+  --accent-2:      #7A5CFF;
+  --accent-ink:    #2E5AE6;
+  /* The full four-stop brand gradient. Blue → violet → magenta → coral. */
+  --grad-text:     linear-gradient(90deg, #3366FF 0%, #7A5CFF 32%, #FF2DB3 68%, #FF6B5E 100%);
+  --accent-grad:   linear-gradient(135deg, #3366FF 0%, #7A5CFF 45%, #FF2DB3 100%);
+  /* Magenta as text needs its own darker cut — the brand value only reaches
+     3.3:1 on white. Fills, marks and the logo keep the brand magenta. */
+  --accent-ink-2:  #CE0086;
+
+  /* 2 · NEUTRALS — GOOD WORK. runs on a true white ground with a light grey
+        for alternating sections. No warm bias: the colour comes from the
+        gradient, and the neutrals stay out of its way. */
+  --cream:       #FFFFFF;   /* page canvas            */
+  --cream-2:     #F4F4F4;   /* alternating sections   */
+  --card:        #FFFFFF;   /* cards, forms, pills    */
+  --line:        #EAEAEA;
+  --line-strong: #D7D7D7;
+  --ink:         #111111;   /* headings               */
+  --body:        #555555;   /* paragraphs             */
+  --muted:       #555555;   /* captions / secondary   */
+
+  /* 5 · DARK BAND — the one dark block inside a light page (feature band +
+        footer). GOOD WORK. uses near-black, not a navy. */
+  --dark:         #111111;
+  --dark-2:       #1A1A1A;
+  --on-dark:      #FFFFFF;
+  --on-dark-muted:#B4B4B4;
+  --line-dark:    #2B2B2B;
+
+  /* 6 · HERO SCRIM — r,g,b of the wash over the hero photo + an optional
+        filter on the media itself. Match --scrim-rgb to --cream. */
+  --scrim-rgb:        255, 255, 255;
+  --hero-media-filter: none;
+
+  /* 7 · SHADOWS — cool and quiet, so nothing competes with the gradient. */
+  --shadow-sm: 0 1px 2px rgba(17,17,17,0.05), 0 6px 20px rgba(17,17,17,0.06);
+  --shadow-md: 0 16px 40px rgba(17,17,17,0.12);
+
+  /* 3 · TYPE — Poppins throughout, the way the rest of the brand is set. */
+  --font-head: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-logo: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* 4 · METRICS — the site's geometry. --radius drives every corner. */
+  --container: 1100px;
+  --radius:    12px;
+  --radius-lg: 18px;
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------- DARK -- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cream:       #111111;
+  --cream-2:     #1A1A1A;
+  --card:        #1C1C1C;
+  --line:        #2B2B2B;
+  --line-strong: #3A3A3A;
+  --ink:         #FFFFFF;
+  --body:        #C9C9C9;
+  --muted:       #9A9A9A;
+
+  /* accent brightens a step on dark so the blue doesn't go muddy */
+  --accent:      #5B84FF;
+  --accent-hover:#7A9BFF;
+  --accent-2:    #9B84FF;
+  --accent-ink:  #8FA9FF;
+  --accent-ink-2:#FF6FC8;
+
+  --dark:        #1A1A1A;
+  --dark-2:      #232323;
+  --on-dark:     #FFFFFF;
+  --on-dark-muted:#9A9A9A;
+  --line-dark:   #2B2B2B;
+
+  --scrim-rgb:        17, 17, 17;
+  --hero-media-filter: brightness(0.62) saturate(0.95);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.5);
+  --shadow-md: 0 18px 44px rgba(0,0,0,0.62);
+}
+
+/* Follow the visitor's OS theme until they pick one explicitly.
+   (Mirror whichever block above is your NON-default theme here.) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+    --cream:#111111; --cream-2:#1A1A1A; --card:#1C1C1C;
+    --line:#2B2B2B; --line-strong:#3A3A3A;
+    --ink:#FFFFFF; --body:#C9C9C9; --muted:#9A9A9A;
+    --accent:#5B84FF; --accent-hover:#7A9BFF; --accent-2:#9B84FF; --accent-ink:#8FA9FF; --accent-ink-2:#FF6FC8;
+    --dark:#1A1A1A; --dark-2:#232323; --on-dark:#FFFFFF; --on-dark-muted:#9A9A9A; --line-dark:#2B2B2B;
+    --scrim-rgb:17,17,17; --hero-media-filter:brightness(0.62) saturate(0.95);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.45),0 6px 20px rgba(0,0,0,0.5);
+    --shadow-md:0 18px 44px rgba(0,0,0,0.62);
+  }
+}
+
+/* ============================================================================
+   SWATCH BOOK — proven brand pastes. Copy one over the :root accent + type +
+   radius block above and you have a different site. (Verified on the GOOD
+   WORK. homepage — see BUILD-A-SITE.md.)
+
+   AURELIA  — architectural, calm, editorial (dark-led)
+     --accent:#845EF7; --accent-hover:#7048E8; --accent-2:#B197FC; --accent-ink:#B197FC;
+     --font-head:'Fraunces',serif; --font-body:'Fraunces',serif; --radius:4px;
+
+   SAVANNA  — warm, organic, wellness (light-led)
+     --accent:#1E9E6A; --accent-hover:#178055; --accent-2:#63D0A0; --accent-ink:#0E6E48;
+     --cream:#F7F4EC; --cream-2:#EFEADD; --ink:#20241F; --body:#54594E;
+     --font-head:'Trebuchet MS',sans-serif; --radius:22px;
+
+   LEDGER   — precise, cool, fintech (dark-led)
+     --accent:#5B5BFF; --accent-hover:#4B4BE0; --accent-2:#8F8FFF; --accent-ink:#9A9AFF;
+     --font-head:'Sora',sans-serif; --radius:8px;
+   ========================================================================== */

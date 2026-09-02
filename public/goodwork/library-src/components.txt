@@ -1,0 +1,1595 @@
+@@@ shimmer :: Shimmer Button :: Buttons :: A spark of light sweeps across the fill on a loop.
+<style>
+.sh{position:relative;overflow:hidden;border:0;cursor:pointer;font:700 15px Inter,sans-serif;color:#fff;
+ background:var(--accent,#3366FF);padding:15px 30px;border-radius:999px;box-shadow:0 14px 30px -12px var(--accent,#3366FF)}
+.sh::after{content:"";position:absolute;inset:0 auto 0 0;width:45%;height:100%;pointer-events:none;
+ background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+ transform:translateX(-130%);animation:shsweep 2.6s ease-in-out infinite}
+@keyframes shsweep{0%{transform:translateX(-130%)}55%,100%{transform:translateX(240%)}}
+</style>
+<button class="sh">Get a plan</button>
+@@@ beam :: Conic Beam Border :: Buttons :: A light beam travels the border via a masked conic gradient.
+<style>
+@property --beamA{syntax:'<angle>';inherits:false;initial-value:0deg}
+.beam{position:relative;border:0;cursor:pointer;font:700 15px Inter,sans-serif;color:#fff;background:#12161C;
+ padding:15px 30px;border-radius:999px;isolation:isolate}
+.beam::before{content:"";position:absolute;inset:-2px;border-radius:999px;z-index:-1;padding:2px;
+ background:conic-gradient(from var(--beamA),transparent 0 58%,var(--accent,#3366FF) 78%,var(--accent-2,#7A5CFF) 90%,transparent 100%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+ animation:beamspin 3s linear infinite}
+@keyframes beamspin{to{--beamA:360deg}}
+</style>
+<button class="beam">Explore the system</button>
+@@@ magnetic :: Magnetic Button :: Buttons :: The button leans toward your cursor, then springs back. Hover it.
+<style>.mag{border:0;cursor:pointer;font:700 15px Inter,sans-serif;color:#fff;background:var(--accent,#3366FF);
+ padding:16px 32px;border-radius:14px;transition:transform .18s cubic-bezier(.22,1,.36,1)}</style>
+<button class="mag" id="mag">Book a call</button>
+<script>
+const b=document.getElementById('mag');
+b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();
+ b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.3)+'px,'+((e.clientY-r.top-r.height/2)*.4)+'px)';});
+b.addEventListener('pointerleave',()=>b.style.transform='');
+</script>
+@@@ fillslide :: Fill + Arrow Slide :: Buttons :: Colour wipes in and the arrow nudges on hover.
+<style>.fb{--c:var(--accent,#3366FF);position:relative;border:2px solid var(--c);background:transparent;color:var(--c);
+ cursor:pointer;font:700 15px Inter,sans-serif;padding:14px 26px;border-radius:999px;overflow:hidden;transition:color .3s}
+.fb span{position:relative;z-index:1;display:inline-flex;gap:.5em;align-items:center}
+.fb::before{content:"";position:absolute;inset:0;background:var(--c);transform:translateX(-101%);
+ transition:transform .35s cubic-bezier(.22,1,.36,1);z-index:0}
+.fb:hover{color:#fff}.fb:hover::before{transform:none}
+.fb svg{transition:transform .3s}.fb:hover svg{transform:translateX(4px)}</style>
+<button class="fb"><span>Learn more <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+@@@ glowcta :: Glow-Pulse CTA :: Buttons :: A gradient pill that breathes its shadow to pull the eye.
+<style>.gcta{border:0;cursor:pointer;font:800 16px Inter,sans-serif;color:#fff;
+ background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));padding:16px 34px;border-radius:16px;
+ animation:gpulse 2.4s ease-in-out infinite}
+@keyframes gpulse{0%,100%{box-shadow:0 10px 24px -8px rgba(51,102,255,.5)}50%{box-shadow:0 18px 44px -6px rgba(51,102,255,.85)}}</style>
+<button class="gcta">Start saving</button>
+@@@ gradhead :: Gradient Shimmer Headline :: Text Animations :: The brand gradient drifts across the letters forever.
+<style>.gh{font:900 40px/1 Inter,sans-serif;letter-spacing:-.03em;
+ background:linear-gradient(115deg,#7A5CFF,#3366FF,#2B51CC,#7A5CFF);background-size:300% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:ghmove 4s linear infinite}
+@keyframes ghmove{to{background-position:300% 0}}</style>
+<div class="gh">Working as one.</div>
+@@@ wordrise :: Word-by-Word Rise :: Text Animations :: Each word lifts and fades in, staggered.
+<style>.wr{font:800 32px Inter,sans-serif;color:var(--ink,#fff);text-align:center}
+.wr span{display:inline-block;opacity:0;transform:translateY(.6em);animation:wrise .6s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes wrise{to{opacity:1;transform:none}}</style>
+<div class="wr" id="wr"></div>
+<script>
+var words="Your home, working together".split(' ');
+var el=document.getElementById('wr');
+function play(){el.innerHTML=words.map(function(w,i){return '<span style="animation-delay:'+(i*0.12)+'s">'+w+'&nbsp;</span>';}).join('');}
+play();setInterval(play,3200);
+</script>
+@@@ scramble :: Scramble Decode :: Text Animations :: Characters resolve from noise into the word.
+<style>.sc{font:800 30px 'JetBrains Mono',ui-monospace,monospace;color:var(--accent,#3366FF);letter-spacing:.04em}</style>
+<div class="sc" id="sc"></div>
+<script>
+var target="GOOD WORK. ENERGY",chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&",el=document.getElementById('sc');
+function scramble(){var it=0;var iv=setInterval(function(){
+ el.textContent=target.split('').map(function(c,i){return i<it?c:(c===' '?' ':chars[Math.floor(Math.random()*chars.length)]);}).join('');
+ it+=1/3;if(it>=target.length){el.textContent=target;clearInterval(iv);}},40);}
+scramble();setInterval(scramble,3500);
+</script>
+@@@ underline :: Underline Draw Link :: Text Animations :: The underline sweeps out from the left on hover.
+<style>.ul{font:700 20px Inter,sans-serif;color:var(--ink,#fff);text-decoration:none;position:relative}
+.ul::after{content:"";position:absolute;left:0;bottom:-4px;height:2px;width:100%;background:var(--accent,#3366FF);
+ transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.ul:hover::after{transform:scaleX(1)}</style>
+<a class="ul" href="#">See the system</a>
+@@@ countup :: Count-Up Number :: Text Animations :: Eased tween from zero when it enters view.
+<style>.cu{font:900 54px Inter,sans-serif;color:var(--accent,#3366FF);font-variant-numeric:tabular-nums}</style>
+<div class="cu" id="cu">0%</div>
+<script>
+var el=document.getElementById('cu');
+function up(){var t0=null,dur=1500;function f(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);
+ el.textContent=Math.round((1-Math.pow(1-p,3))*80)+'%';if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+up();setInterval(up,3000);
+</script>
+@@@ reveal :: Reveal on Scroll :: Animations :: Fade + rise as the element enters the viewport.
+<style>.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);
+ font:700 22px Inter,sans-serif;color:var(--ink,#fff);text-align:center;max-width:16ch}
+.rv.in{opacity:1;transform:none}</style>
+<div class="rv" id="rv">Content that rises in as it enters view</div>
+<script>
+var el=document.getElementById('rv');
+// PRODUCTION: new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in'))).observe(el);
+function loop(){el.classList.remove('in');requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('in');});});}
+loop();setInterval(loop,2600);
+</script>
+@@@ stagger :: Staggered Card Grid :: Animations :: Cards pop in one after another.
+<style>.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:230px}
+.sg i{display:block;height:56px;border-radius:12px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ opacity:0;transform:translateY(18px) scale(.96);animation:sgin .6s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes sgin{to{opacity:1;transform:none}}</style>
+<div class="sg" id="sg"></div>
+<script>var g=document.getElementById('sg');
+function play(){g.innerHTML='';for(var i=0;i<6;i++){var c=document.createElement('i');c.style.animationDelay=(i*0.09)+'s';g.appendChild(c);}}
+play();setInterval(play,3000);</script>
+@@@ ring :: Progress Ring :: Community :: SVG stroke sweeps to its value with a soft glow.
+<style>.rg svg{transform:rotate(-90deg)}.rg .bg{fill:none;stroke:var(--line,#262C34);stroke-width:9}
+.rg .fg{fill:none;stroke:var(--accent,#3366FF);stroke-width:9;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:314;
+ transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 0 5px rgba(51,102,255,.55))}
+.rg .fg.on{stroke-dashoffset:78}</style>
+<div class="rg"><svg width="110" height="110" viewBox="0 0 110 110"><circle class="bg" cx="55" cy="55" r="50"/><circle class="fg" id="fg" cx="55" cy="55" r="50"/></svg></div>
+<script>var f=document.getElementById('fg');function p(){f.classList.remove('on');requestAnimationFrame(function(){requestAnimationFrame(function(){f.classList.add('on');});});}p();setInterval(p,3000);</script>
+@@@ bars :: Growing Bar Chart :: Community :: Bars rise from zero, staggered, in the brand gradient.
+<style>.bc{display:flex;align-items:flex-end;gap:8px;height:92px}
+.bc span{width:20px;border-radius:6px 6px 3px 3px;height:0;
+ background:linear-gradient(180deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));transition:height .8s cubic-bezier(.22,1,.36,1)}</style>
+<div class="bc" id="bc"></div>
+<script>var h=[40,66,52,88,72,96],c=document.getElementById('bc');
+c.innerHTML=h.map(function(){return '<span></span>';}).join('');var bars=c.querySelectorAll('span');
+function p(){bars.forEach(function(b,i){b.style.height='0';setTimeout(function(){b.style.height=h[i]+'%';},60+i*80);});}
+p();setInterval(p,3000);</script>
+@@@ divider :: Self-Drawing Divider :: Special Effects :: The wave line draws itself along the section seam.
+<style>.dv{width:100%}.dv .fill{fill:var(--card,#171B22)}
+.dv .line{fill:none;stroke:var(--accent,#3366FF);stroke-width:3;stroke-linecap:round;
+ stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1)}
+.dv .line.on{stroke-dashoffset:0}</style>
+<svg class="dv" viewBox="0 0 1200 80" preserveAspectRatio="none" width="260" height="60">
+ <path class="fill" d="M0 80 V40 C300 8 500 64 700 38 C900 14 1050 44 1200 30 V80 Z"/>
+ <path class="line" id="ln" pathLength="1" d="M0 40 C300 8 500 64 700 38 C900 14 1050 44 1200 30"/></svg>
+<script>var l=document.getElementById('ln');function p(){l.classList.remove('on');requestAnimationFrame(function(){requestAnimationFrame(function(){l.classList.add('on');});});}p();setInterval(p,3200);</script>
+@@@ orb :: Breathing Glow Orb :: Special Effects :: An ambient accent light that pulses behind heroes.
+<style>.orb{width:120px;height:120px;border-radius:50%;
+ background:radial-gradient(circle at 50% 45%,var(--accent-2,#7A5CFF),var(--accent,#3366FF) 55%,transparent 72%);
+ filter:blur(4px);animation:orbb 4s ease-in-out infinite}
+@keyframes orbb{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.14);opacity:1}}</style>
+<div class="orb"></div>
+@@@ marquee :: Logo Marquee :: Components :: An endless, seamless scroll of names with faded edges.
+<style>.mq{overflow:hidden;width:280px;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+ mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq ul{display:flex;gap:34px;list-style:none;padding:0;margin:0;width:max-content;animation:mqmove 12s linear infinite}
+.mq li{font:800 18px Inter,sans-serif;color:var(--ink,#fff);opacity:.8;white-space:nowrap}
+@keyframes mqmove{to{transform:translateX(-50%)}}</style>
+<div class="mq"><ul id="mq"></ul></div>
+<script>var names=['Enphase','JA Solar','LONGi','Huawei','GoodWe','Tesla'];
+document.getElementById('mq').innerHTML=names.concat(names).map(function(n){return '<li>'+n+'</li>';}).join('');</script>
+@@@ wink :: Winking Sun Mark :: Special Effects :: The GOOD WORK. signature — the sun blinks one eye.
+<style>.sun{position:relative;width:96px;height:96px}
+.sun .disc{position:absolute;inset:20px;border-radius:50%;background:var(--accent,#3366FF)}
+.sun .ray{position:absolute;left:50%;top:50%;width:5px;height:13px;margin:-6px 0 0 -2px;border-radius:3px;background:var(--accent,#3366FF)}
+.sun .face{position:absolute;inset:30px;display:flex;justify-content:center;align-items:center;gap:12px}
+.sun .eye{width:9px;height:9px;border-radius:50%;background:#0B0E13}
+.sun .eye.r{animation:wink 3.4s ease-in-out infinite;transform-origin:center}
+@keyframes wink{0%,84%,100%{transform:scaleY(1)}90%{transform:scaleY(.1)}}</style>
+<div class="sun" id="sun"><div class="disc"></div><div class="face"><div class="eye l"></div><div class="eye r"></div></div></div>
+<script>var s=document.getElementById('sun');for(var i=0;i<12;i++){var r=document.createElement('div');r.className='ray';r.style.transform='rotate('+(i*30)+'deg) translateY(-40px)';s.appendChild(r);}</script>
+@@@ toggle :: Day / Night Toggle :: Components :: The theme switch — knob slides, colour shifts.
+<style>.tg{width:64px;height:34px;border-radius:999px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);position:relative;cursor:pointer;padding:0}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;
+ background:var(--accent,#3366FF);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.tg.on::after{transform:translateX(30px)}</style>
+<button class="tg" id="tg" aria-label="Toggle theme"></button>
+<script>var t=document.getElementById('tg');t.addEventListener('click',function(){t.classList.toggle('on');});setInterval(function(){t.classList.toggle('on');},2200);</script>
+@@@ chips :: Floating Trust Chips :: Animations :: Pills that bob gently, offset from each other.
+<style>.fc{display:flex;gap:10px}
+.fc span{font:700 12.5px Inter,sans-serif;color:var(--ink,#fff);border:1px solid var(--line,#262C34);
+ background:var(--card,#171B22);padding:8px 14px;border-radius:999px;animation:floaty 4s ease-in-out infinite}
+.fc span:nth-child(2){animation-delay:.6s}.fc span:nth-child(3){animation-delay:1.2s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}</style>
+<div class="fc"><span>MCS certified</span><span>0% VAT</span><span>10-yr warranty</span></div>
+@@@ rainbow :: Rainbow Button :: Buttons :: A multi-hue gradient runs under the fill with a soft glow.
+<style>.rb{position:relative;border:0;cursor:pointer;color:#fff;font:800 15px Inter,sans-serif;padding:15px 30px;border-radius:12px;
+ background:linear-gradient(90deg,var(--accent,#3366FF),#7A5CFF,#FFD36A,#3366FF);background-size:300% 100%;animation:rbmove 3s linear infinite}
+.rb::before{content:"";position:absolute;inset:-3px;z-index:-1;filter:blur(15px);opacity:.7;border-radius:14px;
+ background:linear-gradient(90deg,var(--accent,#3366FF),#7A5CFF,#FFD36A,#3366FF);background-size:300% 100%;animation:rbmove 3s linear infinite}
+@keyframes rbmove{to{background-position:300% 0}}</style>
+<button class="rb">Get started</button>
+@@@ pulse :: Pulsating Button :: Community :: A soft ring keeps pulsing outward to pull the eye.
+<style>.pl{position:relative;border:0;cursor:pointer;color:#fff;font:800 15px Inter,sans-serif;background:var(--accent,#3366FF);padding:15px 30px;border-radius:999px}
+.pl::before{content:"";position:absolute;inset:0;border-radius:999px;background:var(--accent,#3366FF);z-index:-1;animation:plp 1.8s ease-out infinite}
+@keyframes plp{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.55);opacity:0}}</style>
+<button class="pl">Join now</button>
+@@@ ripplebtn :: Ripple Button :: Buttons :: A ripple expands from the point of contact.
+<style>.rp{position:relative;overflow:hidden;border:0;cursor:pointer;color:#fff;font:700 15px Inter,sans-serif;background:var(--accent,#3366FF);padding:15px 30px;border-radius:12px}
+.rp .r{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);width:16px;height:16px;
+ transform:translate(-50%,-50%) scale(0);animation:rip .7s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:translate(-50%,-50%) scale(16);opacity:0}}</style>
+<button class="rp" id="rp">Tap me</button>
+<script>var b=document.getElementById('rp');
+function ripple(x,y){var s=document.createElement('span');s.className='r';s.style.left=x+'px';s.style.top=y+'px';b.appendChild(s);setTimeout(function(){s.remove();},700);}
+b.addEventListener('pointerdown',function(e){var r=b.getBoundingClientRect();ripple(e.clientX-r.left,e.clientY-r.top);});
+setInterval(function(){var r=b.getBoundingClientRect();ripple(r.width/2,r.height/2);},1600);</script>
+@@@ interactive :: Interactive Hover Button :: Community :: A dot blooms to fill the pill as the label shifts. Hover it.
+<style>.ih{position:relative;border:1px solid var(--line,#262C34);background:var(--card,#171B22);color:var(--ink,#fff);cursor:pointer;
+ font:700 15px Inter,sans-serif;padding:14px 26px 14px 44px;border-radius:999px;overflow:hidden;transition:.3s}
+.ih .dot{position:absolute;left:16px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--accent,#3366FF);transition:.35s;z-index:0}
+.ih span.t{position:relative;z-index:1}
+.ih:hover{color:#fff;padding-left:26px;border-color:var(--accent,#3366FF)}
+.ih:hover .dot{width:260%;height:340%;left:-30%;top:-120%;margin:0;border-radius:0}</style>
+<button class="ih"><span class="dot"></span><span class="t">Get a quote &rarr;</span></button>
+@@@ ticker :: Number Ticker :: Text Animations :: Digits roll into place like an odometer.
+<style>.tk{display:inline-flex;gap:2px;color:var(--accent,#3366FF);font:900 54px Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.tk .col{width:.66em;height:56px;overflow:hidden}
+.tk .strip{display:flex;flex-direction:column;transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+.tk .strip span{height:56px;line-height:56px;text-align:center}</style>
+<div class="tk" id="tk"></div>
+<script>var val="1284",tk=document.getElementById('tk');
+var digits='<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>';
+tk.innerHTML=val.split('').map(function(){return '<span class="col"><span class="strip">'+digits+'</span></span>';}).join('');
+function roll(){var s=tk.querySelectorAll('.strip');val.split('').forEach(function(d,i){setTimeout(function(){s[i].style.transform='translateY(-'+(parseInt(d,10)*56)+'px)';},80+i*130);});}
+function reset(){tk.querySelectorAll('.strip').forEach(function(s){s.style.transition='none';s.style.transform='translateY(0)';});requestAnimationFrame(function(){tk.querySelectorAll('.strip').forEach(function(s){s.style.transition='';});roll();});}
+roll();setInterval(reset,3400);</script>
+@@@ shinytext :: Animated Shiny Text :: Text Animations :: A sheen sweeps across muted text — great for eyebrows.
+<style>.st{font:700 24px Inter,sans-serif;
+ background:linear-gradient(90deg,#5a6472 0%,#5a6472 40%,#fff 50%,#5a6472 60%,#5a6472 100%);background-size:220% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:stm 3s linear infinite}
+@keyframes stm{to{background-position:-220% 0}}</style>
+<div class="st">&#10024; Introducing GOOD WORK.</div>
+@@@ aurora :: Aurora Text :: Text Animations :: A living gradient of warm hues flows through the letters.
+<style>.au{font:900 42px Inter,sans-serif;letter-spacing:-.03em;
+ background:linear-gradient(115deg,#3366FF,#7A5CFF,#FFD36A,#3366FF,#2B51CC);background-size:300% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:aum 6s ease infinite}
+@keyframes aum{0%,100%{background-position:0 0}50%{background-position:300% 0}}</style>
+<div class="au">Endless energy</div>
+@@@ wordrotate :: Word Rotate :: Text Animations :: One word fades out and the next fades in, forever.
+<style>.wro{font:800 30px Inter,sans-serif;color:var(--ink,#fff)}
+.wro .rot{color:var(--accent,#3366FF);display:inline-block;transition:opacity .3s,transform .3s}
+.wro .rot.out{opacity:0;transform:translateY(.4em)}</style>
+<div class="wro">Made for <span class="rot" id="wro">solar</span></div>
+<script>var words=['solar','storage','heating','EV'],i=0,el=document.getElementById('wro');
+setInterval(function(){el.classList.add('out');setTimeout(function(){i=(i+1)%words.length;el.textContent=words[i];el.classList.remove('out');},300);},2000);</script>
+@@@ typing :: Typing Animation :: Text Animations :: Types out with a blinking caret, then restarts.
+<style>.ty{font:700 24px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink,#fff)}
+.ty .cur{display:inline-block;width:2px;height:1.05em;background:var(--accent,#3366FF);margin-left:2px;vertical-align:-3px;animation:tyc 1s step-end infinite}
+@keyframes tyc{50%{opacity:0}}</style>
+<div class="ty"><span id="ty"></span><span class="cur"></span></div>
+<script>var full="Your home, working together.",el=document.getElementById('ty');
+function type(){el.textContent='';var i=0;var iv=setInterval(function(){el.textContent=full.slice(0,++i);if(i>=full.length)clearInterval(iv);},55);}
+type();setInterval(type,4200);</script>
+@@@ sparkles :: Sparkles Text :: Text Animations :: Tiny four-point stars twinkle around the word.
+<style>.sp{position:relative;font:900 34px Inter,sans-serif;color:var(--ink,#fff);padding:12px 8px}
+.sp i{position:absolute;width:10px;height:10px;background:var(--accent,#3366FF);pointer-events:none;
+ clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);animation:spk 1.4s ease-in-out forwards}
+@keyframes spk{0%{transform:scale(0) rotate(0);opacity:0}50%{transform:scale(1) rotate(90deg);opacity:1}100%{transform:scale(0) rotate(180deg);opacity:0}}</style>
+<div class="sp" id="sp">Sparkle</div>
+<script>var el=document.getElementById('sp');
+setInterval(function(){var i=document.createElement('i');i.style.left=(Math.random()*100)+'%';i.style.top=(Math.random()*100)+'%';el.appendChild(i);setTimeout(function(){i.remove();},1400);},240);</script>
+@@@ magiccard :: Spotlight Card :: Special Effects :: A soft light tracks your cursor across the card. Hover it.
+<style>.mc{position:relative;width:220px;height:120px;border-radius:16px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ overflow:hidden;display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif}
+.mc .spot{position:absolute;width:220px;height:220px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
+ background:radial-gradient(circle,rgba(51,102,255,.45),transparent 60%);opacity:0;transition:opacity .2s}
+.mc:hover .spot{opacity:1}</style>
+<div class="mc" id="mc"><span class="spot" id="spot"></span>Hover me</div>
+<script>var c=document.getElementById('mc'),s=document.getElementById('spot');
+c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();s.style.left=(e.clientX-r.left)+'px';s.style.top=(e.clientY-r.top)+'px';});</script>
+@@@ borderbeam :: Border Beam :: Special Effects :: A comet of light races around the card's border.
+<style>@property --bb{syntax:'<angle>';inherits:false;initial-value:0deg}
+.bbcard{position:relative;width:210px;height:118px;border-radius:16px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif}
+.bbcard::before{content:"";position:absolute;inset:-1px;border-radius:16px;padding:2px;
+ background:conic-gradient(from var(--bb),transparent 0 82%,var(--accent,#3366FF) 92%,#fff 97%,transparent 100%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+ animation:bbspin 3s linear infinite}
+@keyframes bbspin{to{--bb:360deg}}</style>
+<div class="bbcard">Border Beam</div>
+@@@ shineborder :: Shine Border :: Special Effects :: A rotating gradient frames the card in brand hues.
+<style>@property --sb{syntax:'<angle>';inherits:false;initial-value:0deg}
+.sbcard{position:relative;width:210px;height:118px;border-radius:16px;background:var(--card,#171B22);
+ display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif}
+.sbcard::before{content:"";position:absolute;inset:0;border-radius:16px;padding:2px;
+ background:conic-gradient(from var(--sb),var(--accent,#3366FF),#7A5CFF,#FFD36A,var(--accent,#3366FF));
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+ animation:sbspin 4s linear infinite}
+@keyframes sbspin{to{--sb:360deg}}</style>
+<div class="sbcard">Shine Border</div>
+@@@ meteors :: Meteors :: Special Effects :: Streaks of light fall diagonally across the panel.
+<style>.met{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);
+ background:radial-gradient(circle at 50% -20%,#12161c,#0b0e13)}
+.met i{position:absolute;top:-10px;width:2px;height:56px;background:linear-gradient(var(--accent,#3366FF),transparent);animation:metf linear infinite}
+@keyframes metf{0%{transform:rotate(35deg) translateY(-50px);opacity:0}10%{opacity:1}100%{transform:rotate(35deg) translateY(230px);opacity:0}}</style>
+<div class="met" id="met"></div>
+<script>var m=document.getElementById('met');for(var i=0;i<9;i++){var s=document.createElement('i');s.style.left=(Math.random()*100)+'%';s.style.animationDuration=(1.2+Math.random()*1.6)+'s';s.style.animationDelay=(Math.random()*2.2)+'s';m.appendChild(s);}</script>
+@@@ ripplebg :: Ripple :: Backgrounds :: Concentric rings pulse outward from a bright core.
+<style>.rpl{position:relative;width:180px;height:130px;display:grid;place-items:center}
+.rpl i{position:absolute;border:1px solid var(--accent,#3366FF);border-radius:50%;width:40px;height:40px;opacity:0;animation:rplp 3s ease-out infinite}
+@keyframes rplp{0%{transform:scale(.4);opacity:.7}100%{transform:scale(3.4);opacity:0}}
+.rpl b{width:16px;height:16px;border-radius:50%;background:var(--accent,#3366FF);z-index:1;box-shadow:0 0 14px var(--accent,#3366FF)}</style>
+<div class="rpl" id="rpl"><b></b></div>
+<script>var r=document.getElementById('rpl');for(var i=0;i<4;i++){var c=document.createElement('i');c.style.animationDelay=(i*0.75)+'s';r.appendChild(c);}</script>
+@@@ particles :: Particles :: Special Effects :: Motes drift and bounce on a canvas field.
+<style>.pcanvas{display:block;border-radius:14px;background:#0b0e13;border:1px solid var(--line,#262C34)}</style>
+<canvas class="pcanvas" id="pc" width="240" height="130"></canvas>
+<script>var cv=document.getElementById('pc'),x=cv.getContext('2d'),ps=[];
+for(var i=0;i<48;i++)ps.push({x:Math.random()*240,y:Math.random()*130,r:Math.random()*1.6+.4,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35});
+(function draw(){x.clearRect(0,0,240,130);for(var i=0;i<ps.length;i++){var p=ps[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>240)p.vx*=-1;if(p.y<0||p.y>130)p.vy*=-1;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fillStyle='rgba(255,120,60,.85)';x.fill();}requestAnimationFrame(draw);})();</script>
+@@@ retrogrid :: Retro Grid :: Backgrounds :: An 80s perspective grid scrolls toward you.
+<style>.rg2{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);
+ background:linear-gradient(#0b0e13 40%,#1a0d06);perspective:120px}
+.rg2 .floor{position:absolute;bottom:0;left:-50%;width:200%;height:150%;transform-origin:bottom center;transform:rotateX(60deg);opacity:.6;
+ background-image:linear-gradient(var(--accent,#3366FF) 1px,transparent 1px),linear-gradient(90deg,var(--accent,#3366FF) 1px,transparent 1px);
+ background-size:24px 24px;animation:rg2m 1.2s linear infinite}
+@keyframes rg2m{to{background-position:0 24px}}</style>
+<div class="rg2"><div class="floor"></div></div>
+@@@ dotpattern :: Dot Pattern :: Backgrounds :: A masked dot grid — subtle texture behind sections.
+<style>.dp{width:240px;height:130px;border-radius:14px;background:var(--card,#171B22);
+ background-image:radial-gradient(var(--accent,#3366FF) 1.4px,transparent 1.4px);background-size:18px 18px;
+ -webkit-mask:radial-gradient(circle at 50% 50%,#000,transparent 72%);mask:radial-gradient(circle at 50% 50%,#000,transparent 72%);
+ animation:dpm 6s linear infinite}
+@keyframes dpm{to{background-position:18px 18px}}</style>
+<div class="dp"></div>
+@@@ confetti :: Confetti Button :: Special Effects :: A burst of confetti fires on click.
+<style>.cfwrap{position:relative;display:grid;place-items:center}
+.cf{position:relative;z-index:1;border:0;cursor:pointer;color:#fff;font:800 15px Inter,sans-serif;background:var(--accent,#3366FF);padding:15px 30px;border-radius:12px}
+.cfc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}</style>
+<div class="cfwrap"><canvas class="cfc" id="cfc" width="360" height="200"></canvas><button class="cf" id="cf">Celebrate &#127881;</button></div>
+<script>var cv=document.getElementById('cfc'),x=cv.getContext('2d'),parts=[],cols=['#3366FF','#7A5CFF','#FFD36A','#fff'];
+function burst(){for(var i=0;i<70;i++){var a=Math.random()*6.28,s=Math.random()*5+2;parts.push({x:180,y:100,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,r:Math.random()*4+2,c:cols[i%4],life:60});}}
+(function loop(){x.clearRect(0,0,360,200);for(var i=parts.length-1;i>=0;i--){var p=parts[i];p.vy+=.12;p.x+=p.vx;p.y+=p.vy;p.life--;x.globalAlpha=Math.max(0,p.life/60);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.r,p.r);if(p.life<=0)parts.splice(i,1);}x.globalAlpha=1;requestAnimationFrame(loop);})();
+document.getElementById('cf').addEventListener('click',burst);burst();setInterval(burst,2600);</script>
+@@@ orbit :: Orbiting Circles :: Components :: Nodes orbit a glowing centre on counter-spinning rings.
+<style>.orb2{position:relative;width:150px;height:150px}
+.orb2 .c{position:absolute;inset:0;margin:auto;width:32px;height:32px;border-radius:50%;background:var(--accent,#3366FF);box-shadow:0 0 16px var(--accent,#3366FF)}
+.orb2 .ring{position:absolute;border:1px dashed var(--line,#262C34);border-radius:50%;animation:orbspin linear infinite}
+.orb2 .ring b{position:absolute;top:-9px;left:50%;margin-left:-9px;width:18px;height:18px;border-radius:50%;background:var(--card,#171B22);border:1px solid var(--accent,#3366FF)}
+.orb2 .r1{inset:0;animation-duration:6s}.orb2 .r2{inset:28px;animation-duration:4s;animation-direction:reverse}
+@keyframes orbspin{to{transform:rotate(360deg)}}</style>
+<div class="orb2"><span class="c"></span><span class="ring r1"><b></b></span><span class="ring r2"><b></b></span></div>
+@@@ dock :: Magnify Dock :: Components :: A macOS-style dock — the icon swells toward your cursor. Hover.
+<style>.dock{display:flex;gap:10px;align-items:flex-end;padding:10px 14px;border-radius:16px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}
+.dock i{width:34px;height:34px;border-radius:10px;background:linear-gradient(180deg,#7A5CFF,var(--accent,#3366FF));transition:transform .18s ease,margin .18s ease;transform-origin:bottom;cursor:pointer}
+.dock i:hover{transform:scale(1.7) translateY(-4px);margin:0 12px}</style>
+<div class="dock"><i></i><i></i><i></i><i></i><i></i></div>
+@@@ animlist :: Animated List :: Components :: New rows drop in and push the stack down.
+<style>.al{display:flex;flex-direction:column;gap:8px;width:232px}
+.al .item{display:flex;align-items:center;gap:10px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:12px;
+ padding:10px 12px;font:600 13px Inter,sans-serif;color:var(--ink,#fff);animation:alin .5s cubic-bezier(.22,1,.36,1)}
+.al .item b{width:22px;height:22px;border-radius:50%;background:var(--accent,#3366FF);flex:none}
+@keyframes alin{from{opacity:0;transform:translateY(-14px) scale(.97)}to{opacity:1;transform:none}}</style>
+<div class="al" id="al"></div>
+<script>var msgs=['New quote request','Payment received','Install booked','Panel activated'],al=document.getElementById('al'),k=0;
+function add(){var d=document.createElement('div');d.className='item';d.innerHTML='<b></b>'+msgs[k%msgs.length];al.prepend(d);k++;while(al.children.length>4)al.lastChild.remove();}
+add();add();add();setInterval(add,1500);</script>
+@@@ scrollprog :: Scroll Progress :: Community :: A bar that fills with reading progress.
+<style>.spw{width:232px}.spbar{height:6px;border-radius:999px;background:var(--line,#262C34);overflow:hidden}
+.spbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent,#3366FF),#7A5CFF);border-radius:999px}
+.spw p{font:600 12px Inter,sans-serif;color:#8A93A2;margin:9px 0 0}</style>
+<div class="spw"><div class="spbar"><b id="sp"></b></div><p>Reading progress</p></div>
+<script>var b=document.getElementById('sp'),v=0;setInterval(function(){v=(v+1)%101;b.style.width=v+'%';},30);</script>
+@@@ morphing :: Morphing Text :: Text Animations :: One phrase blurs out as the next blurs in.
+<style>.mph{position:relative;font:900 34px Inter,sans-serif;color:var(--accent,#3366FF);height:46px;min-width:170px}
+.mph span{position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;transition:opacity .6s,filter .6s;filter:blur(0)}
+.mph .off{opacity:0;filter:blur(8px)}</style>
+<div class="mph"><span id="mpa">Solar</span><span class="off" id="mpb">Storage</span></div>
+<script>var words=['Solar','Storage','Heating','Savings'],i=0,cur=document.getElementById('mpa'),nxt=document.getElementById('mpb');
+setInterval(function(){i=(i+1)%words.length;nxt.textContent=words[i];nxt.classList.remove('off');cur.classList.add('off');var t=cur;cur=nxt;nxt=t;},1800);</script>
+@@@ spinning :: Spinning Text :: Text Animations :: Type curves around a ring and rotates.
+<style>.spin{width:130px;height:130px;animation:spinr 8s linear infinite}
+.spin text{font:700 14px Inter,sans-serif;fill:var(--accent,#3366FF);letter-spacing:2px}
+@keyframes spinr{to{transform:rotate(360deg)}}</style>
+<svg class="spin" viewBox="0 0 120 120"><defs><path id="cir" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+<text><textPath href="#cir">GOOD WORK. • CLEAN ENERGY • ENDLESS FUTURE • </textPath></text><circle cx="60" cy="60" r="15" fill="var(--accent,#3366FF)"/></svg>
+@@@ fliptext :: Flip Text :: Text Animations :: Each letter flips up into place.
+<style>.flp{font:900 34px Inter,sans-serif;color:var(--ink,#fff);perspective:500px}
+.flp span{display:inline-block;animation:flip .6s cubic-bezier(.22,1,.36,1) both}
+@keyframes flip{from{transform:rotateX(-90deg);opacity:0}to{transform:none;opacity:1}}</style>
+<div class="flp" id="flp"></div>
+<script>var t="GOOD WORK.",el=document.getElementById('flp');
+function play(){el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.08)+'s">'+c+'</span>';}).join('');}
+play();setInterval(play,2600);</script>
+@@@ boxreveal :: Box Reveal :: Text Animations :: A coloured box wipes across and leaves the text behind.
+<style>.bxr{position:relative;display:inline-block;overflow:hidden;padding:4px 3px}
+.bxr .txt{font:900 30px Inter,sans-serif;color:var(--ink,#fff);opacity:0;animation:bxt 0s .5s forwards}
+.bxr .cover{position:absolute;inset:0;background:var(--accent,#3366FF);animation:bxc 1s ease forwards}
+@keyframes bxc{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform:scaleX(1);transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+@keyframes bxt{to{opacity:1}}</style>
+<div class="bxr" id="bxr"><span class="txt">Reveal</span><span class="cover"></span></div>
+<script>var wrap=document.getElementById('bxr');setInterval(function(){var n=wrap.cloneNode(true);wrap.parentNode.replaceChild(n,wrap);wrap=n;},3000);</script>
+@@@ textreveal :: Text Reveal :: Text Animations :: Words sharpen from a blur, one after another.
+<style>.trv{font:700 22px Inter,sans-serif;color:var(--ink,#fff);max-width:20ch;text-align:center;line-height:1.4}
+.trv span{opacity:.14;filter:blur(4px);transition:opacity .5s,filter .5s;display:inline-block}
+.trv span.on{opacity:1;filter:blur(0)}</style>
+<div class="trv" id="trv"></div>
+<script>var t="Your home working as one clean system".split(' '),el=document.getElementById('trv');
+el.innerHTML=t.map(function(w){return '<span>'+w+'&nbsp;</span>';}).join('');var sp=el.querySelectorAll('span');
+function play(){sp.forEach(function(s){s.classList.remove('on');});sp.forEach(function(s,i){setTimeout(function(){s.classList.add('on');},i*150);});}
+play();setInterval(play,3800);</script>
+@@@ lineshadow :: Line Shadow Text :: Text Animations :: A hard offset shadow breathes behind the type.
+<style>.lsh{font:900 44px Inter,sans-serif;color:var(--ink,#fff);animation:lsh 2s ease-in-out infinite}
+@keyframes lsh{0%,100%{text-shadow:3px 3px 0 var(--accent,#3366FF)}50%{text-shadow:8px 8px 0 var(--accent,#3366FF)}}</style>
+<div class="lsh">GOOD WORK.</div>
+@@@ comictext :: Comic Text :: Community :: Bold outlined pop-text with a wobble.
+<style>.cmc{font:900 46px Inter,sans-serif;color:var(--accent,#3366FF);-webkit-text-stroke:2px #0B0E13;
+ text-shadow:4px 4px 0 rgba(0,0,0,.45);animation:cmc 1.2s ease-in-out infinite}
+@keyframes cmc{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.06)}}</style>
+<div class="cmc">POW!</div>
+@@@ neoncard :: Neon Gradient Card :: Community :: A glowing gradient halo pulses around the card.
+<style>.neon{position:relative;width:210px;height:118px;border-radius:18px;background:#0b0e13;display:grid;place-items:center;color:#fff;font:700 15px Inter,sans-serif}
+.neon::before{content:"";position:absolute;inset:-2px;border-radius:20px;z-index:-1;filter:blur(11px);
+ background:linear-gradient(120deg,var(--accent,#3366FF),#7A5CFF,#FFD36A,var(--accent,#3366FF));background-size:300% 300%;animation:neon 4s linear infinite}
+@keyframes neon{to{background-position:300% 0}}</style>
+<div class="neon">Neon Card</div>
+@@@ warpbg :: Warp Background :: Community :: Soft colour blobs drift behind the content.
+<style>.warp{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;background:#0b0e13;border:1px solid var(--line,#262C34)}
+.warp i{position:absolute;width:120px;height:120px;border-radius:50%;filter:blur(30px);opacity:.7}
+.warp .a{background:var(--accent,#3366FF);animation:wa 6s ease-in-out infinite}
+.warp .b{background:#7A5CFF;animation:wb 7s ease-in-out infinite}
+@keyframes wa{0%,100%{left:-30px;top:-30px}50%{left:130px;top:70px}}
+@keyframes wb{0%,100%{right:-30px;bottom:-30px}50%{right:130px;bottom:70px}}</style>
+<div class="warp"><i class="a"></i><i class="b"></i></div>
+@@@ flickergrid :: Flickering Grid :: Backgrounds :: A grid of cells flickers at random.
+<style>.fg3{display:block;border-radius:14px;background:#0b0e13;border:1px solid var(--line,#262C34)}</style>
+<canvas class="fg3" id="fg3" width="240" height="130"></canvas>
+<script>var cv=document.getElementById('fg3'),x=cv.getContext('2d'),S=14,C=Math.ceil(240/S),R=Math.ceil(130/S);
+(function d(){x.clearRect(0,0,240,130);for(var i=0;i<C;i++)for(var j=0;j<R;j++){if(Math.random()<.5){x.globalAlpha=Math.random()*.5;x.fillStyle='#3366FF';x.fillRect(i*S,j*S,S-2,S-2);}}x.globalAlpha=1;setTimeout(function(){requestAnimationFrame(d);},95);})();</script>
+@@@ gridpattern :: Animated Grid :: Backgrounds :: A light glides over a fine grid.
+<style>.gp2{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);
+ background-color:#0b0e13;background-image:linear-gradient(var(--line,#262C34) 1px,transparent 1px),linear-gradient(90deg,var(--line,#262C34) 1px,transparent 1px);background-size:24px 24px}
+.gp2 i{position:absolute;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(51,102,255,.4),transparent 60%);animation:gpm 6s ease-in-out infinite}
+@keyframes gpm{0%{left:-50px;top:-30px}50%{left:170px;top:70px}100%{left:-50px;top:-30px}}</style>
+<div class="gp2"><i></i></div>
+@@@ bento :: Bento Grid :: Components :: Feature cards with live backgrounds, icon, copy and a hover CTA.
+<style>
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:296px;font-family:Inter,system-ui,sans-serif}
+.bento .cell{position:relative;overflow:hidden;border:1px solid var(--line,#262C34);border-radius:13px;background:var(--card,#171B22);
+ min-height:84px;padding:9px 10px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .3s,border-color .3s}
+.bento .cell:hover{border-color:var(--accent,#3366FF);transform:translateY(-2px)}
+.bento .wide{grid-column:span 2;min-height:72px}
+.bento .bg{position:absolute;left:0;right:0;top:5px;bottom:40px;pointer-events:none;overflow:hidden;opacity:.85;
+ -webkit-mask:linear-gradient(to top,transparent 12%,#000 78%);mask:linear-gradient(to top,transparent 12%,#000 78%);transition:transform .4s,opacity .4s}
+.bento .cell:hover .bg{opacity:1;transform:scale(1.05)}
+.bento .ic{width:22px;height:22px;border-radius:7px;background:var(--accent,#3366FF);display:grid;place-items:center;color:#fff;margin-bottom:5px;position:relative}
+.bento .ic svg{width:13px;height:13px}
+.bento h4{margin:0;font-size:12.5px;color:var(--ink,#F4F6F9);font-weight:700;position:relative}
+.bento p{margin:1px 0 0;font-size:10px;color:#8A93A2;line-height:1.35;position:relative}
+.bento .fchip{font:600 9px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink,#F4F6F9);border:1px solid var(--line,#262C34);background:#12161c;border-radius:6px;padding:5px 7px;white-space:nowrap}
+.bento .ftrack{display:flex;gap:6px;width:max-content;padding-left:8px;animation:bfm 12s linear infinite}
+@keyframes bfm{to{transform:translateX(-50%)}}
+.bento .nrow{display:flex;align-items:center;gap:6px;background:#12161c;border:1px solid var(--line,#262C34);border-radius:7px;padding:4px 7px;margin:0 8px 4px;font:600 9px Inter,sans-serif;color:var(--ink,#F4F6F9)}
+.bento .nrow b{width:12px;height:12px;border-radius:50%;background:var(--accent,#3366FF);flex:none}
+.bento .beamsvg .base{stroke:var(--line,#262C34);stroke-width:2;fill:none}
+.bento .beamsvg .flow{stroke:var(--accent,#3366FF);stroke-width:2.5;fill:none;stroke-dasharray:10 90;animation:bbf 1.5s linear infinite}
+.bento .beamsvg .node{fill:#12161c;stroke:var(--line,#262C34)}
+@keyframes bbf{to{stroke-dashoffset:-100}}</style>
+<div class="bento">
+ <div class="cell"><div class="bg"><div class="ftrack" id="bft"></div></div>
+   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5M8 3h6l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg></div>
+   <h4>Save your files</h4><p>Auto-saved as you type.</p></div>
+ <div class="cell"><div class="bg" id="bnl"></div>
+   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/></svg></div>
+   <h4>Notifications</h4><p>Know when things happen.</p></div>
+ <div class="cell wide"><div class="bg"><svg class="beamsvg" width="100%" height="100%" viewBox="0 0 280 64" preserveAspectRatio="none">
+   <path class="base" d="M28 32 H252"/><path class="base" d="M140 32 V8"/><path class="base" d="M140 32 V56"/>
+   <path class="flow" d="M28 32 H252"/><circle class="node" cx="28" cy="32" r="9"/><circle class="node" cx="252" cy="32" r="9"/></svg></div>
+   <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+   <h4>Integrations</h4><p>100+ and counting.</p></div>
+</div>
+<script>
+var files=['bitcoin.pdf','finances.xlsx','logo.svg','keys.gpg','seed.txt'];
+document.getElementById('bft').innerHTML=files.concat(files).map(function(f){return '<span class="fchip">'+f+'</span>';}).join('');
+var notif=['Payment received','New quote request','Panel activated'];
+document.getElementById('bnl').innerHTML=notif.map(function(n){return '<div class="nrow"><b></b>'+n+'</div>';}).join('');
+</script>
+@@@ animatedbeam :: Animated Beam :: Special Effects :: A pulse of light travels the wire between two nodes.
+<style>.abeam{position:relative;width:230px;height:96px}
+.abeam .node{position:absolute;top:50%;width:34px;height:34px;margin-top:-17px;border-radius:10px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}
+.abeam .n1{left:0}.abeam .n2{right:0}
+.abeam svg{position:absolute;inset:0;width:100%;height:100%}
+.abeam path{fill:none}.abeam .base{stroke:var(--line,#262C34);stroke-width:2}
+.abeam .flow{stroke:var(--accent,#3366FF);stroke-width:2.5;stroke-dasharray:14 130;animation:abf 1.6s linear infinite}
+@keyframes abf{to{stroke-dashoffset:-144}}</style>
+<div class="abeam"><svg viewBox="0 0 230 96"><path class="base" d="M28 48 C90 48,140 48,202 48"/><path class="flow" d="M28 48 C90 48,140 48,202 48"/></svg><div class="node n1"></div><div class="node n2"></div></div>
+@@@ circularprogress :: Circular Progress :: Community :: A ring fills while the label counts up.
+<style>.cp{position:relative;width:96px;height:96px}.cp svg{transform:rotate(-90deg)}
+.cp .bg{fill:none;stroke:var(--line,#262C34);stroke-width:8}
+.cp .fg{fill:none;stroke:var(--accent,#3366FF);stroke-width:8;stroke-linecap:round;stroke-dasharray:264;stroke-dashoffset:264;transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1)}
+.cp b{position:absolute;inset:0;display:grid;place-items:center;font:800 22px Inter,sans-serif;color:var(--ink,#fff)}</style>
+<div class="cp"><svg width="96" height="96" viewBox="0 0 96 96"><circle class="bg" cx="48" cy="48" r="42"/><circle class="fg" id="cpf" cx="48" cy="48" r="42"/></svg><b id="cpv">0%</b></div>
+<script>var f=document.getElementById('cpf'),v=document.getElementById('cpv');
+function p(){f.style.transition='none';f.style.strokeDashoffset=264;v.textContent='0%';requestAnimationFrame(function(){f.style.transition='';f.style.strokeDashoffset=264*0.28;var s=Date.now();var iv=setInterval(function(){var t=Math.min(1,(Date.now()-s)/1400);v.textContent=Math.round((1-Math.pow(1-t,3))*72)+'%';if(t>=1)clearInterval(iv);},30);});}
+p();setInterval(p,3000);</script>
+@@@ avatars :: Avatar Circles :: Components :: Overlapping avatars pop in with a +N counter.
+<style>.av{display:flex;align-items:center}
+.av span{width:38px;height:38px;border-radius:50%;border:2px solid #0B0E13;margin-left:-10px;display:grid;place-items:center;
+ font:700 13px Inter,sans-serif;color:#fff;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF));animation:avin .4s cubic-bezier(.22,1,.36,1) both}
+.av span:first-child{margin-left:0}.av .more{background:var(--card,#171B22);border:2px solid var(--line,#262C34);color:var(--ink,#fff)}
+@keyframes avin{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}</style>
+<div class="av" id="av"></div>
+<script>var av=document.getElementById('av');
+function play(){av.innerHTML='';['SR','JM','KT','AB'].forEach(function(t,i){var s=document.createElement('span');s.textContent=t;s.style.animationDelay=(i*0.1)+'s';av.appendChild(s);});var m=document.createElement('span');m.className='more';m.textContent='+9';m.style.animationDelay='.4s';av.appendChild(m);}
+play();setInterval(play,3200);</script>
+@@@ terminal :: Terminal :: Components :: Command-line output types itself in.
+<style>.term{width:250px;background:#0a0d13;border:1px solid var(--line,#262C34);border-radius:10px;overflow:hidden;font:500 12px 'JetBrains Mono',ui-monospace,monospace}
+.term .tbar{display:flex;gap:6px;padding:8px 10px;background:#12161c;border-bottom:1px solid var(--line,#262C34)}
+.term .tbar i{width:9px;height:9px;border-radius:50%;background:#2f313c}
+.term .tbody{padding:10px 12px;color:#c9d2e0;min-height:78px;line-height:1.6}
+.term .tbody .p{color:var(--accent,#3366FF)}</style>
+<div class="term"><div class="tbar"><i></i><i></i><i></i></div><div class="tbody" id="tb"></div></div>
+<script>var lines=['$ goodwork build','tokens loaded','43 motions wired','site ready ->'],tb=document.getElementById('tb');
+function play(){tb.innerHTML='';var i=0;(function next(){if(i>=lines.length)return;var l=lines[i],d=document.createElement('div');if(l[0]==='$')d.innerHTML='<span class="p">$</span>'+l.slice(1);else d.textContent='  '+l;tb.appendChild(d);i++;setTimeout(next,520);})();}
+play();setInterval(play,3800);</script>
+@@@ marqueev :: Vertical Marquee :: Components :: A seamless vertical scroll with faded ends.
+<style>.mqv{height:130px;overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 15%,#000 85%,transparent);mask:linear-gradient(transparent,#000 15%,#000 85%,transparent)}
+.mqv ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;animation:mqvm 8s linear infinite}
+.mqv li{font:700 14px Inter,sans-serif;color:var(--ink,#fff);background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:10px;padding:8px 20px;text-align:center}
+@keyframes mqvm{to{transform:translateY(-50%)}}</style>
+<div class="mqv"><ul id="mqv"></ul></div>
+<script>var it=['Solar','Battery','Heating','EV','Insights'],u=document.getElementById('mqv');u.innerHTML=it.concat(it).map(function(n){return '<li>'+n+'</li>';}).join('');</script>
+@@@ lens :: Lens :: Components :: A magnifier follows the cursor across the surface. Hover it.
+<style>.lens{position:relative;width:210px;height:120px;border-radius:14px;overflow:hidden;cursor:crosshair;
+ background:repeating-linear-gradient(45deg,#171B22 0 12px,#12161c 12px 24px);display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif}
+.lens .z{position:absolute;width:84px;height:84px;border-radius:50%;border:2px solid var(--accent,#3366FF);pointer-events:none;opacity:0;transition:opacity .2s;
+ background:radial-gradient(circle,rgba(51,102,255,.18),transparent 70%);box-shadow:0 0 24px rgba(51,102,255,.4)}
+.lens:hover .z{opacity:1}</style>
+<div class="lens" id="lens">Hover to zoom<span class="z" id="lz"></span></div>
+<script>var l=document.getElementById('lens'),z=document.getElementById('lz');l.addEventListener('pointermove',function(e){var r=l.getBoundingClientRect();z.style.left=(e.clientX-r.left-42)+'px';z.style.top=(e.clientY-r.top-42)+'px';});</script>
+@@@ marqueereverse :: Marquee (reverse) :: Components :: Same endless scroll, running the other way.
+<style>.mqr{overflow:hidden;width:280px;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mqr ul{display:flex;gap:30px;list-style:none;padding:0;margin:0;width:max-content;animation:mqrm 13s linear infinite reverse}
+.mqr li{font:800 17px Inter,sans-serif;color:var(--accent,#3366FF);white-space:nowrap}
+@keyframes mqrm{to{transform:translateX(-50%)}}</style>
+<div class="mqr"><ul id="mqrl"></ul></div>
+<script>var n=['Solar','Battery','Heating','EV','Insights','Grid'],u=document.getElementById('mqrl');u.innerHTML=n.concat(n).map(function(x){return '<li>'+x+'</li>';}).join('');</script>
+@@@ marqueerows :: Marquee (two rows) :: Components :: Two rows scrolling opposite directions.
+<style>.mq2{display:flex;flex-direction:column;gap:10px;width:280px}
+.mq2 .row{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq2 ul{display:flex;gap:12px;list-style:none;padding:0;margin:0;width:max-content;animation:mq2m 12s linear infinite}
+.mq2 .row.b ul{animation-direction:reverse}
+.mq2 li{font:700 13px Inter,sans-serif;color:var(--ink,#fff);background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:8px;padding:6px 12px;white-space:nowrap}
+@keyframes mq2m{to{transform:translateX(-50%)}}</style>
+<div class="mq2"><div class="row"><ul id="r1"></ul></div><div class="row b"><ul id="r2"></ul></div></div>
+<script>var a=['Enphase','JA Solar','LONGi','Huawei'],b=['GoodWe','Tesla','SolarEdge','Fronius'];
+document.getElementById('r1').innerHTML=a.concat(a).map(function(x){return '<li>'+x+'</li>';}).join('');
+document.getElementById('r2').innerHTML=b.concat(b).map(function(x){return '<li>'+x+'</li>';}).join('');</script>
+@@@ herovideo :: Hero Video Dialog :: Components :: A poster with a play button that opens a dialog.
+<style>.hvd{position:relative;width:250px;height:140px;border-radius:14px;overflow:hidden;cursor:pointer;
+ background:linear-gradient(135deg,#1a2233,#0b0e13)}
+.hvd .play{position:absolute;inset:0;display:grid;place-items:center}
+.hvd .play b{width:56px;height:56px;border-radius:50%;background:var(--accent,#3366FF);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(51,102,255,.5);animation:hvp 2s ease-out infinite}
+.hvd .play b::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+@keyframes hvp{0%{box-shadow:0 0 0 0 rgba(51,102,255,.5)}100%{box-shadow:0 0 0 20px rgba(51,102,255,0)}}
+.hvd .dlg{position:absolute;inset:0;background:rgba(0,0,0,.7);display:none;place-items:center;color:#fff;font:700 14px Inter,sans-serif}
+.hvd.open .dlg{display:grid}.hvd.open .play{display:none}</style>
+<div class="hvd" id="hvd"><div class="play"><b></b></div><div class="dlg">▶ playing…</div></div>
+<script>var h=document.getElementById('hvd');h.addEventListener('click',function(){h.classList.toggle('open');});</script>
+@@@ tweetcard :: Tweet Card :: Components :: A social post card.
+<style>.tw{width:250px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:14px;padding:14px;font-family:Inter,sans-serif}
+.tw .h{display:flex;align-items:center;gap:9px}
+.tw .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF))}
+.tw .n{font-weight:700;font-size:13px;color:var(--ink,#fff)}.tw .u{font-size:12px;color:#8A93A2}
+.tw p{margin:11px 0 0;font-size:13px;color:var(--ink,#fff);line-height:1.5}
+.tw .hl{color:var(--accent,#3366FF)}</style>
+<div class="tw"><div class="h"><div class="av"></div><div><div class="n">GOOD WORK.</div><div class="u">@goodwork</div></div></div>
+<p>Switched the whole house to solar + battery. Bills down <span class="hl">78%</span>. The future, by the hand. ⚡</p></div>
+@@@ globe :: Globe :: Components :: A slowly spinning wireframe globe.
+<style>.globe{position:relative;width:126px;height:126px;border-radius:50%;overflow:hidden;
+ background:radial-gradient(circle at 34% 30%,#1b2740,#0a0d15 72%);box-shadow:inset -12px -12px 30px #000,0 0 32px rgba(51,102,255,.22)}
+.globe::before{content:"";position:absolute;inset:-2px;border-radius:50%;
+ background-image:repeating-linear-gradient(90deg,transparent 0 12px,rgba(51,102,255,.4) 12px 13px),repeating-linear-gradient(0deg,transparent 0 13px,rgba(120,150,220,.28) 13px 14px);
+ background-size:200% 100%;animation:gsp 5s linear infinite;-webkit-mask:radial-gradient(circle,#000 66%,transparent 72%);mask:radial-gradient(circle,#000 66%,transparent 72%)}
+@keyframes gsp{to{background-position:200% 0}}</style>
+<div class="globe"></div>
+@@@ iconcloud :: Icon Cloud :: Components :: A drifting cloud of tags.
+<style>.icl{position:relative;width:200px;height:150px}
+.icl span{position:absolute;font:700 13px Inter,sans-serif;color:var(--accent,#3366FF);white-space:nowrap;animation:iclf 5s ease-in-out infinite}
+.icl span:nth-child(odd){color:var(--ink,#fff)}</style>
+<div class="icl" id="icl"></div>
+<script>var tags=[['Solar',20,30],['Battery',110,20],['Heat',60,70],['EV',150,80],['Grid',20,100],['Inverter',95,120],['kWh',160,130]];
+var el=document.getElementById('icl');el.innerHTML=tags.map(function(t,i){return '<span style="left:'+t[1]+'px;top:'+t[2]+'px;animation-delay:'+(i*0.4)+'s;font-size:'+(11+(i%3)*4)+'px">'+t[0]+'</span>';}).join('');</script>
+<style>@keyframes iclf{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(-8px);opacity:1}}</style>
+@@@ pointer :: Pointer :: Components :: A custom pointer that trails the cursor. Hover it.
+<style>.ptr{position:relative;width:230px;height:120px;border-radius:14px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif;cursor:none;overflow:hidden}
+.ptr .cur{position:absolute;width:0;height:0;pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;
+ border-left:14px solid var(--accent,#3366FF);border-top:9px solid transparent;border-bottom:9px solid transparent;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.ptr:hover .cur{opacity:1}</style>
+<div class="ptr" id="ptr">Move inside<span class="cur" id="pcur"></span></div>
+<script>var p=document.getElementById('ptr'),c=document.getElementById('pcur');p.addEventListener('pointermove',function(e){var r=p.getBoundingClientRect();c.style.left=(e.clientX-r.left)+'px';c.style.top=(e.clientY-r.top)+'px';});</script>
+@@@ smoothcursor :: Smooth Cursor :: Components :: A dot that eases toward the cursor with lag. Hover.
+<style>.scr{position:relative;width:230px;height:120px;border-radius:14px;background:repeating-linear-gradient(45deg,#171B22 0 12px,#12161c 12px 24px);
+ display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif;overflow:hidden;cursor:crosshair}
+.scr .dot{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--accent,#3366FF);pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity .2s}
+.scr:hover .dot{opacity:1}</style>
+<div class="scr" id="scr">Move around<span class="dot" id="sdot"></span></div>
+<script>var s=document.getElementById('scr'),d=document.getElementById('sdot'),tx=115,ty=60,x=115,y=60,on=false;
+s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();tx=e.clientX-r.left;ty=e.clientY-r.top;on=true;});
+(function loop(){x+=(tx-x)*.12;y+=(ty-y)*.12;d.style.left=x+'px';d.style.top=y+'px';requestAnimationFrame(loop);})();</script>
+@@@ progressiveblur :: Progressive Blur :: Components :: A gradient blur fades content into the edge.
+<style>.pbl{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden}
+.pbl .bg{position:absolute;inset:0;background:linear-gradient(135deg,#3366FF,#7A5CFF,#6C2BD9);font:900 22px Inter,sans-serif;color:#fff;display:grid;place-items:end center;padding-bottom:14px}
+.pbl .blur{position:absolute;left:0;right:0;bottom:0;height:60%;backdrop-filter:blur(8px);
+ -webkit-mask:linear-gradient(transparent,#000);mask:linear-gradient(transparent,#000)}</style>
+<div class="pbl"><div class="bg">GOOD WORK.</div><div class="blur"></div></div>
+@@@ dottedmap :: Dotted Map :: Components :: A dot field with a highlighted route.
+<style>.dmap{position:relative;width:240px;height:130px;border-radius:14px;background:#0b0e13;border:1px solid var(--line,#262C34);
+ background-image:radial-gradient(rgba(160,170,190,.35) 1.1px,transparent 1.1px);background-size:12px 12px;overflow:hidden}
+.dmap i{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent,#3366FF);box-shadow:0 0 8px var(--accent,#3366FF);animation:dmp 2s ease-in-out infinite}
+.dmap i:nth-child(2){animation-delay:.6s}.dmap i:nth-child(3){animation-delay:1.2s}
+@keyframes dmp{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.5);opacity:1}}</style>
+<div class="dmap"><i style="left:40px;top:40px"></i><i style="left:120px;top:80px"></i><i style="left:190px;top:35px"></i></div>
+@@@ glarehover :: Glare Hover :: Special Effects :: A glare sweeps across on hover.
+<style>.glr{position:relative;width:210px;height:120px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF));
+ display:grid;place-items:center;color:#fff;font:800 16px Inter,sans-serif;cursor:pointer}
+.glr::after{content:"";position:absolute;top:-60%;left:-30%;width:50%;height:220%;transform:rotate(25deg) translateX(-160%);
+ background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transition:transform .6s}
+.glr:hover::after{transform:rotate(25deg) translateX(320%)}</style>
+<div class="glr">Glare Hover</div>
+@@@ themetoggler :: Theme Toggler :: Special Effects :: A sun that morphs to a moon.
+<style>.ttg{width:52px;height:52px;border:0;background:transparent;cursor:pointer;position:relative}
+.ttg .b{position:absolute;inset:8px;border-radius:50%;background:var(--accent,#3366FF);transition:.5s;box-shadow:0 0 18px var(--accent,#3366FF)}
+.ttg .b::after{content:"";position:absolute;top:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:#0B0E13;transform:scale(0);transition:.5s}
+.ttg.moon .b{background:#cdd3e0;box-shadow:0 0 18px rgba(205,211,224,.5)}
+.ttg.moon .b::after{transform:scale(1)}</style>
+<button class="ttg" id="ttg"><span class="b"></span></button>
+<script>var t=document.getElementById('ttg');setInterval(function(){t.classList.toggle('moon');},2000);t.addEventListener('click',function(){t.classList.toggle('moon');});</script>
+@@@ blurfade :: Blur Fade :: Animations :: Elements resolve from a blur as they appear.
+<style>.bf{display:flex;gap:10px}
+.bf i{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF));
+ opacity:0;filter:blur(10px);animation:bfin .7s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes bfin{to{opacity:1;filter:blur(0)}}</style>
+<div class="bf" id="bf"></div>
+<script>var el=document.getElementById('bf');function play(){el.innerHTML='';for(var i=0;i<3;i++){var d=document.createElement('i');d.style.animationDelay=(i*0.18)+'s';el.appendChild(d);}}play();setInterval(play,2800);</script>
+@@@ videotext :: Video Text :: Text Animations :: Type masks a moving colour field, like video-through-text.
+<style>.vt{font:900 52px Inter,sans-serif;letter-spacing:-.03em;
+ background:linear-gradient(60deg,#3366FF,#6C2BD9,#7A5CFF,#FFD36A,#3366FF);background-size:400% 400%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:vtm 6s ease infinite}
+@keyframes vtm{0%{background-position:0 0}50%{background-position:100% 100%}100%{background-position:0 0}}</style>
+<div class="vt">GOOD WORK.</div>
+@@@ hypertext :: Hyper Text :: Text Animations :: Letters scramble, then lock into place.
+<style>.hyp{font:800 30px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink,#fff);letter-spacing:.06em}</style>
+<div class="hyp" id="hyp"></div>
+<script>var target="HYPER TEXT",CH="ABCDEFGHIJKLMNOPQRSTUVWXYZ",el=document.getElementById('hyp');
+function run(){var frame=0;var iv=setInterval(function(){el.textContent=target.split('').map(function(c,i){if(c===' ')return ' ';return (i*3<frame)?c:CH[Math.floor(Math.random()*26)];}).join('');frame++;if(frame>target.length*3+3)clearInterval(iv);},45);}
+run();setInterval(run,3000);</script>
+@@@ scrollvelocity :: Scroll Velocity :: Text Animations :: A big skewed marquee of words.
+<style>.sv{overflow:hidden;width:280px;transform:skewY(-4deg);-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.sv div{display:flex;gap:24px;width:max-content;animation:svm 9s linear infinite;font:900 28px Inter,sans-serif;letter-spacing:-.02em}
+.sv b{color:var(--accent,#3366FF)}.sv i{color:var(--ink,#fff);font-style:normal}
+@keyframes svm{to{transform:translateX(-50%)}}</style>
+<div class="sv"><div id="svd"></div></div>
+<script>var w='<b>SOLAR</b><i>STORAGE</i><b>HEAT</b><i>SAVINGS</i>';document.getElementById('svd').innerHTML=w+w;</script>
+@@@ highlighter :: Text Highlighter :: Text Animations :: A marker stroke sweeps in behind the words.
+<style>.hlt{font:800 26px Inter,sans-serif;color:var(--ink,#fff)}
+.hlt mark{background:linear-gradient(120deg,var(--accent,#3366FF),var(--accent,#3366FF)) no-repeat;background-size:0 100%;color:inherit;padding:2px 4px;border-radius:4px;animation:hltm 1.4s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes hltm{to{background-size:100% 100%}}</style>
+<div class="hlt" id="hlt">Everyone deserves <mark>fair energy</mark></div>
+<script>var el=document.getElementById('hlt');setInterval(function(){var n=el.cloneNode(true);el.parentNode.replaceChild(n,el);el=n;},3000);</script>
+@@@ text3dflip :: Text 3D Flip :: Text Animations :: A card flips in 3D between two words.
+<style>.t3d{perspective:600px;font:900 30px Inter,sans-serif}
+.t3d .in{position:relative;trans-style:preserve-3d;transform-style:preserve-3d;width:150px;height:44px;animation:t3 3s ease-in-out infinite}
+.t3d .f{position:absolute;inset:0;display:grid;place-items:center;backface-visibility:hidden}
+.t3d .a{color:var(--accent,#3366FF)}.t3d .b{color:var(--ink,#fff);transform:rotateX(180deg)}
+@keyframes t3{0%,40%{transform:rotateX(0)}60%,100%{transform:rotateX(180deg)}}</style>
+<div class="t3d"><div class="in"><div class="f a">SOLAR</div><div class="f b">SAVINGS</div></div></div>
+@@@ kinetictext :: Kinetic Text :: Community :: Letters bounce in a wave.
+<style>.kin{font:900 34px Inter,sans-serif;color:var(--accent,#3366FF);display:inline-flex}
+.kin span{display:inline-block;animation:kin 1.2s ease-in-out infinite}
+@keyframes kin{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}</style>
+<div class="kin" id="kin"></div>
+<script>var t="GOOD WORK.",el=document.getElementById('kin');el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.1)+'s">'+c+'</span>';}).join('');</script>
+@@@ safari :: Safari Frame :: Device Mocks :: A desktop browser mockup.
+<style>.saf{width:260px;border-radius:12px;overflow:hidden;border:1px solid var(--line,#262C34);background:#0b0e13}
+.saf .bar{display:flex;align-items:center;gap:7px;padding:9px 11px;background:#12161c}
+.saf .bar i{width:9px;height:9px;border-radius:50%;background:#2f313c}
+.saf .url{flex:1;margin-left:8px;height:18px;border-radius:6px;background:#0b0e13;border:1px solid #262C34;font:500 10px 'JetBrains Mono',monospace;color:#8A93A2;display:flex;align-items:center;padding:0 10px}
+.saf .screen{height:120px;background:linear-gradient(135deg,#1a2233,#0b0e13);display:grid;place-items:center;color:var(--accent,#3366FF);font:900 22px Inter,sans-serif}</style>
+<div class="saf"><div class="bar"><i></i><i></i><i></i><span class="url">goodwork.nl</span></div><div class="screen">GOOD WORK.</div></div>
+@@@ iphone :: iPhone Frame :: Device Mocks :: A phone mockup with notch.
+<style>.iph{width:132px;height:250px;border-radius:26px;background:#0b0e13;border:3px solid #262C34;padding:8px;position:relative}
+.iph .notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:52px;height:15px;background:#000;border-radius:0 0 12px 12px;z-index:2}
+.iph .screen{width:100%;height:100%;border-radius:18px;background:linear-gradient(160deg,#7A5CFF,var(--accent,#3366FF));display:grid;place-items:center;color:#fff;font:900 20px Inter,sans-serif}</style>
+<div class="iph"><span class="notch"></span><div class="screen">GOOD WORK.</div></div>
+@@@ android :: Android Frame :: Device Mocks :: A phone mockup with punch-hole.
+<style>.and{width:132px;height:250px;border-radius:20px;background:#0b0e13;border:3px solid #262C34;padding:7px;position:relative}
+.and .hole{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:9px;height:9px;background:#000;border-radius:50%;z-index:2}
+.and .screen{width:100%;height:100%;border-radius:14px;background:linear-gradient(160deg,#1a2233,#0b0e13);display:grid;place-items:center;color:var(--accent,#3366FF);font:900 20px Inter,sans-serif}</style>
+<div class="and"><span class="hole"></span><div class="screen">GOOD WORK.</div></div>
+@@@ hexagon :: Hexagon Pattern :: Backgrounds :: A honeycomb grid with a drifting glow.
+<style>.hex{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);background:#0b0e13}
+.hex::before{content:"";position:absolute;inset:0;opacity:.5;
+ background:radial-gradient(circle farthest-side at 0 0,transparent 47%,rgba(51,102,255,.4) 48% 52%,transparent 53%) 0 0/26px 30px,
+ radial-gradient(circle farthest-side at 0 0,transparent 47%,rgba(51,102,255,.4) 48% 52%,transparent 53%) 13px 15px/26px 30px}
+.hex i{position:absolute;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(51,102,255,.4),transparent 60%);animation:hexm 6s ease-in-out infinite}
+@keyframes hexm{0%{left:-40px;top:-30px}50%{left:150px;top:60px}100%{left:-40px;top:-30px}}</style>
+<div class="hex"><i></i></div>
+@@@ striped :: Striped Pattern :: Backgrounds :: Diagonal stripes scroll softly.
+<style>.strp{width:240px;height:130px;border-radius:14px;border:1px solid var(--line,#262C34);
+ background:repeating-linear-gradient(45deg,#0b0e13 0 14px,rgba(51,102,255,.14) 14px 28px);background-size:40px 40px;animation:strm 3s linear infinite}
+@keyframes strm{to{background-position:40px 0}}</style>
+<div class="strp"></div>
+@@@ interactivegrid :: Interactive Grid :: Backgrounds :: Grid cells light up under the cursor. Hover.
+<style>.igp{display:grid;grid-template-columns:repeat(8,26px);grid-auto-rows:24px;gap:2px;padding:6px;border-radius:14px;background:#0b0e13;border:1px solid var(--line,#262C34)}
+.igp i{background:#12161c;border-radius:4px;transition:background .3s}
+.igp i:hover{background:var(--accent,#3366FF);transition:none}</style>
+<div class="igp" id="igp"></div>
+<script>var g=document.getElementById('igp'),s='';for(var i=0;i<32;i++)s+='<i></i>';g.innerHTML=s;</script>
+@@@ lightrays :: Light Rays :: Backgrounds :: God-rays sweep from the top.
+<style>.lr{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;background:#0b0e13;border:1px solid var(--line,#262C34)}
+.lr::before{content:"";position:absolute;top:-40%;left:50%;width:260px;height:260px;transform:translateX(-50%);
+ background:conic-gradient(from 180deg at 50% 0,transparent 0 8deg,rgba(51,102,255,.28) 12deg,transparent 16deg,transparent 20deg,rgba(122,92,255,.22) 24deg,transparent 28deg,transparent 34deg,rgba(51,102,255,.28) 38deg,transparent 42deg);
+ animation:lrm 6s linear infinite;transform-origin:50% 0}
+@keyframes lrm{to{transform:translateX(-50%) rotate(20deg)}}</style>
+<div class="lr"></div>
+@@@ noise :: Noise Texture :: Backgrounds :: A subtle animated film-grain overlay.
+<style>.noi{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF))}
+.noi::after{content:"";position:absolute;inset:-100%;opacity:.5;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+ animation:noim .6s steps(3) infinite}
+@keyframes noim{0%{transform:translate(0,0)}33%{transform:translate(-6%,3%)}66%{transform:translate(4%,-5%)}100%{transform:translate(0,0)}}</style>
+<div class="noi"></div>
+@@@ shinybutton :: Shiny Button :: Community :: A glossy sheen glides across a subtle button.
+<style>.shy{position:relative;overflow:hidden;border:1px solid var(--line,#262C34);background:#12161c;color:var(--ink,#fff);
+ cursor:pointer;font:700 15px Inter,sans-serif;padding:14px 28px;border-radius:12px}
+.shy::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);
+ background-size:220% 100%;animation:shym 3s linear infinite}
+@keyframes shym{to{background-position:-220% 0}}</style>
+<button class="shy">Learn more</button>
+@@@ filetree :: File Tree :: Community :: A source tree with an expanding branch.
+<style>.ft{font:500 13px 'JetBrains Mono',ui-monospace,monospace;color:#c9d2e0;width:220px}
+.ft div{padding:3px 0;display:flex;gap:7px;align-items:center;opacity:0;animation:ftin .4s forwards}
+.ft .i{color:var(--accent,#3366FF)}
+@keyframes ftin{to{opacity:1}}</style>
+<div class="ft" id="ft"></div>
+<script>var rows=['📁 engine','&nbsp;&nbsp;<span class="i">◆</span> brand.css','&nbsp;&nbsp;📁 motion','&nbsp;&nbsp;&nbsp;&nbsp;<span class="i">◆</span> goodwork-motion.js','&nbsp;&nbsp;📁 library'],ft=document.getElementById('ft');
+function play(){ft.innerHTML='';rows.forEach(function(r,i){var d=document.createElement('div');d.style.animationDelay=(i*0.2)+'s';d.innerHTML=r;ft.appendChild(d);});}
+play();setInterval(play,3400);</script>
+@@@ codecompare :: Code Comparison :: Community :: A before/after diff card.
+<style>.cc{width:250px;border-radius:12px;overflow:hidden;border:1px solid var(--line,#262C34);font:500 12px 'JetBrains Mono',ui-monospace,monospace}
+.cc .hd{padding:8px 12px;background:#12161c;color:#8A93A2;border-bottom:1px solid var(--line,#262C34)}
+.cc .ln{padding:3px 12px;color:#c9d2e0}
+.cc .del{background:rgba(255,60,60,.12);color:#ff9a9a}.cc .add{background:rgba(51,102,255,.14);color:var(--accent,#3366FF)}</style>
+<div class="cc"><div class="hd">brand.css</div>
+<div class="ln del">- --accent: #4C5BD4;</div><div class="ln add">+ --accent: #3366FF;</div><div class="ln">&nbsp;&nbsp;--radius: 16px;</div></div>
+@@@ coolmode :: Cool Mode :: Community :: Particles fly off the button when pressed.
+<style>.cool{position:relative;border:0;cursor:pointer;color:#fff;font:800 15px Inter,sans-serif;background:var(--accent,#3366FF);padding:15px 30px;border-radius:12px}
+.coolp{position:absolute;width:7px;height:7px;border-radius:2px;pointer-events:none}</style>
+<button class="cool" id="cool">Press me</button>
+<script>var b=document.getElementById('cool'),cols=['#3366FF','#7A5CFF','#FFD36A','#fff'];
+function burst(){var r=b.getBoundingClientRect();for(var i=0;i<16;i++){(function(){var p=document.createElement('span');p.className='coolp';p.style.background=cols[i%4];p.style.left=(b.offsetLeft+r.width/2)+'px';p.style.top=(b.offsetTop+r.height/2)+'px';b.parentNode.appendChild(p);var a=Math.random()*6.28,d=20+Math.random()*40,t=0;var iv=setInterval(function(){t+=.06;p.style.transform='translate('+Math.cos(a)*d*t+'px,'+(Math.sin(a)*d*t+t*t*30)+'px)';p.style.opacity=1-t;if(t>=1){clearInterval(iv);p.remove();}},16);})();}}
+b.addEventListener('click',burst);burst();setInterval(burst,2000);</script>
+@@@ pixelimage :: Pixel Image :: Community :: A coarse, blocky image resolves into a sharp one.
+<style>.pix{width:120px;height:120px;border-radius:14px;
+ background:conic-gradient(from 45deg,#3366FF,#7A5CFF,#FFD36A,#6C2BD9,#3366FF);
+ animation:pixr 3s ease-in-out infinite}
+@keyframes pixr{0%{filter:contrast(2.4) blur(8px);border-radius:14px}45%{filter:contrast(1.5) blur(2px)}75%,100%{filter:none}}</style>
+<div class="pix"></div>
+@@@ backlight :: Backlight :: Community :: A colour glow pulses behind the card.
+<style>.bkl{position:relative;width:200px;height:110px;border-radius:16px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ display:grid;place-items:center;color:var(--ink,#fff);font:700 15px Inter,sans-serif}
+.bkl::before{content:"";position:absolute;inset:10px;border-radius:16px;z-index:-1;filter:blur(22px);
+ background:var(--accent,#3366FF);animation:bklm 2.6s ease-in-out infinite}
+@keyframes bklm{0%,100%{opacity:.5}50%{opacity:.95}}</style>
+<div class="bkl">Backlight</div>
+@@@ glyphmatrix :: Glyph Matrix :: Community :: Falling code rain.
+<style>.gm{display:block;border-radius:14px;background:#050608;border:1px solid var(--line,#262C34)}</style>
+<canvas class="gm" id="gm" width="240" height="130"></canvas>
+<script>var cv=document.getElementById('gm'),x=cv.getContext('2d'),W=240,H=130,cols=Math.floor(W/12),yy=[];for(var i=0;i<cols;i++)yy[i]=Math.random()*H;
+var CH='01GOODWORK<>/#';
+(function d(){x.fillStyle='rgba(5,6,8,.25)';x.fillRect(0,0,W,H);x.fillStyle='#3366FF';x.font='12px monospace';
+for(var i=0;i<cols;i++){x.globalAlpha=Math.random()*.6+.4;x.fillText(CH[Math.floor(Math.random()*CH.length)],i*12,yy[i]);yy[i]+=12;if(yy[i]>H&&Math.random()>.96)yy[i]=0;}x.globalAlpha=1;setTimeout(function(){requestAnimationFrame(d);},80);})();</script>
+@@@ carousel :: Carousel :: Carousels :: Slides auto-advance with animated dots.
+<style>.car{position:relative;width:240px;overflow:hidden;border-radius:14px;border:1px solid var(--line,#262C34)}
+.car .track{display:flex;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.car .slide{min-width:240px;height:130px;display:grid;place-items:center;font:800 24px Inter,sans-serif;color:#fff}
+.car .dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.car .dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);transition:.3s}
+.car .dots i.on{background:var(--accent,#3366FF);width:18px;border-radius:4px}</style>
+<div class="car"><div class="track" id="ctrack">
+<div class="slide" style="background:linear-gradient(135deg,#7A5CFF,#3366FF)">Solar</div>
+<div class="slide" style="background:linear-gradient(135deg,#6C2BD9,#3366FF)">Battery</div>
+<div class="slide" style="background:linear-gradient(135deg,#1a2233,#0b0e13)">Heating</div></div>
+<div class="dots" id="cdots"></div></div>
+<script>var n=3,i=0,tr=document.getElementById('ctrack'),dt=document.getElementById('cdots');
+for(var k=0;k<n;k++)dt.innerHTML+='<i></i>';var dots=dt.querySelectorAll('i');
+function go(){tr.style.transform='translateX(-'+(i*240)+'px)';dots.forEach(function(d,x){d.classList.toggle('on',x===i);});}
+go();setInterval(function(){i=(i+1)%n;go();},2200);</script>
+@@@ coverflow :: Coverflow :: Carousels :: A 3D card reel with the centre card in focus.
+<style>.cov{display:flex;align-items:center;justify-content:center;gap:8px;perspective:700px;height:150px}
+.cov .c{width:64px;height:96px;border-radius:12px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+ transition:.5s cubic-bezier(.22,1,.36,1);flex:none}
+.cov .c.l{transform:rotateY(38deg) scale(.82);opacity:.55}
+.cov .c.r{transform:rotateY(-38deg) scale(.82);opacity:.55}
+.cov .c.mid{transform:none;opacity:1;width:80px;height:112px;background:linear-gradient(160deg,#7A5CFF,var(--accent,#3366FF));
+ border-color:transparent;box-shadow:0 16px 34px -12px var(--accent,#3366FF)}</style>
+<div class="cov" id="cov"><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span><span class="c"></span></div>
+<script>var cs=document.querySelectorAll('#cov .c'),mid=2;
+function go(){cs.forEach(function(c,x){c.className='c'+(x===mid?' mid':x<mid?' l':' r');});mid=(mid+1)%cs.length;}
+go();setInterval(go,1400);</script>
+@@@ testimonials :: Testimonial Carousel :: Carousels :: Quote cards fade through on a loop.
+<style>.tst{position:relative;width:252px;height:120px}
+.tst .q{position:absolute;inset:0;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:14px;padding:16px 18px;
+ opacity:0;transform:translateX(18px);transition:.5s cubic-bezier(.22,1,.36,1);font:500 14px Inter,sans-serif;color:var(--ink,#fff);line-height:1.5}
+.tst .q.on{opacity:1;transform:none}
+.tst .q b{color:var(--accent,#3366FF);display:block;margin-top:9px;font-size:12px;font-weight:700}</style>
+<div class="tst" id="tst">
+<div class="q on">&ldquo;Bills down 78% — honestly unreal.&rdquo;<b>— Sarah, Leeds</b></div>
+<div class="q">&ldquo;Installed in a day and left it spotless.&rdquo;<b>— James, Bristol</b></div>
+<div class="q">&ldquo;Only wish I&rsquo;d done it sooner.&rdquo;<b>— Priya, London</b></div></div>
+<script>var qs=document.querySelectorAll('#tst .q'),i=0;setInterval(function(){qs[i].classList.remove('on');i=(i+1)%qs.length;qs[i].classList.add('on');},2400);</script>
+@@@ logoloop :: Logo Carousel :: Carousels :: A continuous rail of partner logos.
+<style>.llp{overflow:hidden;width:270px;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.llp ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;width:max-content;animation:llpm 14s linear infinite;align-items:center}
+.llp li{font:800 15px Inter,sans-serif;color:var(--ink,#fff);opacity:.75;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:10px;padding:10px 16px;white-space:nowrap}
+@keyframes llpm{to{transform:translateX(-50%)}}</style>
+<div class="llp"><ul id="llpl"></ul></div>
+<script>var g=['Enphase','JA Solar','LONGi','Huawei','GoodWe','Tesla'],u=document.getElementById('llpl');u.innerHTML=g.concat(g).map(function(x){return '<li>'+x+'</li>';}).join('');</script>
+@@@ navbar :: Sticky Nav Bar :: Components :: On scroll the logo tucks away and Get Started slides into the pill.
+<style>
+.nvb{width:300px;font-family:Inter,system-ui,sans-serif}
+.nvb .row{display:flex;align-items:center;height:64px;gap:6px;padding:0 8px;overflow:hidden}
+.nvb .logo{flex:none;width:26px;height:26px;border-radius:8px;background:var(--accent,#3366FF);transition:.35s cubic-bezier(.22,1,.36,1)}
+.nvb .pill{margin:0 auto;display:flex;align-items:center;background:var(--card,#171B22);border:1px solid transparent;border-radius:999px;padding:5px 6px;transition:.35s cubic-bezier(.22,1,.36,1)}
+.nvb .pill a{font:600 12px Inter,sans-serif;color:var(--ink,#F4F6F9);text-decoration:none;padding:6px 9px;border-radius:999px;transition:.2s}
+.nvb .pill a:hover{background:rgba(255,255,255,.07)}
+.nvb .getin{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .4s cubic-bezier(.22,1,.36,1)}
+.nvb .getin a{background:var(--accent,#3366FF);color:#fff;margin-left:4px}
+.nvb .cta0{flex:none;font:700 12px Inter,sans-serif;color:#fff;background:var(--accent,#3366FF);padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.35s cubic-bezier(.22,1,.36,1)}
+.nvb.scrolled .pill{border-color:var(--line,#262C34);box-shadow:0 8px 24px -10px #000}
+.nvb.scrolled .getin{max-width:130px}
+.nvb.scrolled .logo{width:0;opacity:0;transform:translateY(-30px);margin-right:-6px}
+.nvb.scrolled .cta0{width:0;padding-left:0;padding-right:0;opacity:0;transform:translateY(-30px);overflow:hidden}</style>
+<div class="nvb" id="nvb"><div class="row">
+ <span class="logo"></span>
+ <div class="pill"><a href="#">Home</a><a href="#">About</a><a href="#">Services</a><a href="#">Contact</a>
+  <span class="getin"><a href="#">Get Started</a></span></div>
+ <span class="cta0">Get Started</span></div></div>
+<script>var n=document.getElementById('nvb');setInterval(function(){n.classList.toggle('scrolled');},2200);</script>
+@@@ textanimate :: Text Animate :: Text Animations :: Characters animate in one by one (slide-up preset).
+<style>.tan{font:800 30px Inter,sans-serif;color:var(--ink,#fff)}
+.tan span{display:inline-block;opacity:0;transform:translateY(14px);animation:tanin .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes tanin{to{opacity:1;transform:none}}</style>
+<div class="tan" id="tan"></div>
+<script>var t="Animate me",el=document.getElementById('tan');
+function play(){el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.05)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}
+play();setInterval(play,2800);</script>
+@@@ diatextreveal :: Dia Text Reveal :: Text Animations :: The line brightens under a left-to-right wipe.
+<style>.dia{font:800 24px Inter,sans-serif;max-width:18ch;text-align:center;
+ background:linear-gradient(90deg,var(--ink,#F4F6F9) 0 50%,rgba(180,188,200,.16) 50% 100%);background-size:220% 100%;
+ -webkit-background-clip:text;background-clip:text;color:transparent;animation:diam 2.6s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes diam{0%{background-position:100% 0}55%,100%{background-position:0 0}}</style>
+<div class="dia">Everyone deserves fair energy</div>
+@@@ gridpatternstatic :: Grid Pattern :: Backgrounds :: A static fine grid with a few accent cells.
+<style>.gps{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);
+ background-color:#0b0e13;background-image:linear-gradient(var(--line,#262C34) 1px,transparent 1px),linear-gradient(90deg,var(--line,#262C34) 1px,transparent 1px);background-size:22px 22px;
+ -webkit-mask:radial-gradient(circle at 50% 50%,#000,transparent 84%);mask:radial-gradient(circle at 50% 50%,#000,transparent 84%)}
+.gps i{position:absolute;width:20px;height:20px;background:rgba(51,102,255,.5);border-radius:3px}
+.gps i:nth-child(1){left:45px;top:23px}.gps i:nth-child(2){left:133px;top:67px}.gps i:nth-child(3){left:89px;top:89px}</style>
+<div class="gps"><i></i><i></i><i></i></div>
+@@@ glitchtext :: Glitch Text :: Text Animations :: RGB channels split and jitter like a broken signal.
+<style>.glt{position:relative;font:900 42px Inter,sans-serif;color:var(--ink,#fff);letter-spacing:-.02em}
+.glt::before,.glt::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+.glt::before{color:#ff2e88;animation:gl1 2s infinite linear alternate}
+.glt::after{color:#2ee6ff;animation:gl2 2.4s infinite linear alternate}
+@keyframes gl1{0%{clip-path:inset(0 0 82% 0);transform:translate(-2px)}25%{clip-path:inset(50% 0 20% 0);transform:translate(2px)}50%{clip-path:inset(20% 0 60% 0);transform:translate(-1px)}75%{clip-path:inset(72% 0 5% 0);transform:translate(1px)}100%{clip-path:inset(12% 0 70% 0)}}
+@keyframes gl2{0%{clip-path:inset(62% 0 10% 0);transform:translate(2px)}50%{clip-path:inset(20% 0 52% 0);transform:translate(-2px)}100%{clip-path:inset(42% 0 30% 0);transform:translate(1px)}}</style>
+<div class="glt" data-t="GLITCH">GLITCH</div>
+@@@ truefocus :: True Focus :: Text Animations :: One word snaps into focus while the rest blur.
+<style>.trf{font:800 24px Inter,sans-serif;color:var(--ink,#fff);display:flex;gap:12px}
+.trf span{filter:blur(4px);opacity:.5;transition:.4s;position:relative}
+.trf span.on{filter:none;opacity:1;color:var(--accent,#3366FF)}</style>
+<div class="trf" id="trf"></div>
+<script>var w=['Solar','storage','saved'],el=document.getElementById('trf');el.innerHTML=w.map(function(x){return '<span>'+x+'</span>';}).join('');
+var s=el.querySelectorAll('span'),i=0;function go(){s.forEach(function(x){x.classList.remove('on');});s[i].classList.add('on');i=(i+1)%s.length;}go();setInterval(go,1400);</script>
+@@@ tiltedcard :: Tilted Card :: Components :: The card tips in 3D toward your cursor. Hover it.
+<style>.tilt{width:150px;height:110px;border-radius:16px;background:linear-gradient(150deg,#7A5CFF,var(--accent,#3366FF));
+ display:grid;place-items:center;color:#fff;font:800 15px Inter,sans-serif;transition:transform .12s;box-shadow:0 20px 40px -18px var(--accent,#3366FF)}</style>
+<div class="tilt" id="tilt">Tilt me</div>
+<script>var c=document.getElementById('tilt');
+c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();var rx=((e.clientY-r.top)/r.height-.5)*-24,ry=((e.clientX-r.left)/r.width-.5)*24;c.style.transform='perspective(500px) rotateX('+rx+'deg) rotateY('+ry+'deg)';});
+c.addEventListener('pointerleave',function(){c.style.transform='';});</script>
+@@@ cardswap :: Card Swap :: Components :: The front card peels to the back on a loop.
+<style>.csw{position:relative;width:150px;height:100px}
+.csw .cd{position:absolute;inset:0;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 16px Inter,sans-serif;transition:.5s cubic-bezier(.22,1,.36,1);border:1px solid var(--line,#262C34)}</style>
+<div class="csw" id="csw"><div class="cd" style="background:linear-gradient(135deg,#7A5CFF,#3366FF)">Solar</div><div class="cd" style="background:linear-gradient(135deg,#6C2BD9,#3366FF)">Battery</div><div class="cd" style="background:#171B22">Heating</div></div>
+<script>function stack(){var cards=document.querySelectorAll('#csw .cd');cards.forEach(function(c,i){c.style.transform='translate('+(i*10)+'px,'+(i*-10)+'px) scale('+(1-i*.05)+')';c.style.zIndex=10-i;});}
+stack();setInterval(function(){var f=document.querySelector('#csw .cd');f.parentNode.appendChild(f);stack();},1600);</script>
+@@@ stepper :: Stepper :: Components :: A multi-step progress track fills as it advances.
+<style>.stp{display:flex;align-items:center}
+.stp .s{width:28px;height:28px;border-radius:50%;border:2px solid var(--line,#262C34);display:grid;place-items:center;font:700 12px Inter,sans-serif;color:#8A93A2;transition:.4s;flex:none}
+.stp .s.done{background:var(--accent,#3366FF);border-color:var(--accent,#3366FF);color:#fff}
+.stp .bar{width:34px;height:2px;background:var(--line,#262C34);transition:.4s}.stp .bar.done{background:var(--accent,#3366FF)}</style>
+<div class="stp" id="stp"></div>
+<script>var stp=document.getElementById('stp'),N=4;
+function draw(k){var h='';for(var i=0;i<N;i++){h+='<div class="s'+(i<=k?' done':'')+'">'+(i+1)+'</div>';if(i<N-1)h+='<div class="bar'+(i<k?' done':'')+'"></div>';}stp.innerHTML=h;}
+var k=0;draw(0);setInterval(function(){k=(k+1)%(N+1);draw(k);},900);</script>
+@@@ gooeynav :: Gooey Nav :: Components :: An active blob glides between the nav items.
+<style>.gnv{position:relative;display:flex;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:999px;padding:4px;font:700 12px Inter,sans-serif}
+.gnv a{position:relative;z-index:1;padding:8px 14px;color:var(--ink,#fff);text-decoration:none;transition:color .3s}
+.gnv .blob{position:absolute;top:4px;left:4px;height:calc(100% - 8px);background:var(--accent,#3366FF);border-radius:999px;transition:.45s cubic-bezier(.22,1,.36,1);z-index:0}</style>
+<div class="gnv" id="gnv"><span class="blob" id="blob"></span><a>Home</a><a>Work</a><a>About</a><a>Contact</a></div>
+<script>var nav=document.getElementById('gnv'),blob=document.getElementById('blob'),links=nav.querySelectorAll('a'),i=0;
+function move(){var a=links[i];blob.style.width=a.offsetWidth+'px';blob.style.left=a.offsetLeft+'px';links.forEach(function(l){l.style.color='';});a.style.color='#fff';i=(i+1)%links.length;}
+setTimeout(move,120);setInterval(move,1400);</script>
+@@@ bouncecards :: Bounce Cards :: Components :: A fan of cards springs into place.
+<style>.bcc{position:relative;width:190px;height:120px}
+.bcc .c{position:absolute;left:50%;bottom:0;width:66px;height:94px;margin-left:-33px;border-radius:12px;
+ background:linear-gradient(150deg,#7A5CFF,var(--accent,#3366FF));border:2px solid #0B0E13;animation:bcin .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes bcin{from{transform:translateY(34px) rotate(0) scale(.8);opacity:0}}</style>
+<div class="bcc" id="bcc"></div>
+<script>var bcc=document.getElementById('bcc'),rot=[-24,-8,8,24];
+function play(){bcc.innerHTML='';rot.forEach(function(r,i){var c=document.createElement('div');c.className='c';c.style.transform='rotate('+r+'deg) translateY(-'+Math.abs(r)*.5+'px)';c.style.animationDelay=(i*0.1)+'s';c.style.zIndex=i;bcc.appendChild(c);});}
+play();setInterval(play,3000);</script>
+@@@ folder :: Folder :: Components :: A folder that lifts its papers open on hover.
+<style>.fld{position:relative;width:92px;height:72px;cursor:pointer}
+.fld .back{position:absolute;left:0;right:0;top:12px;bottom:0;background:var(--accent,#3366FF);border-radius:5px 9px 9px 9px}
+.fld .back::before{content:"";position:absolute;top:-8px;left:0;width:38px;height:12px;background:var(--accent,#3366FF);border-radius:6px 6px 0 0}
+.fld .paper{position:absolute;left:9px;right:9px;top:8px;height:44px;background:#EEF1F5;border-radius:4px;transition:.35s;z-index:1}
+.fld .front{position:absolute;left:0;right:0;top:22px;bottom:0;background:#7A5CFF;border-radius:5px;transition:.35s;transform-origin:bottom;z-index:2}
+.fld:hover .front{transform:perspective(200px) rotateX(-38deg)}
+.fld:hover .paper{transform:translateY(-16px)}</style>
+<div class="fld"><span class="back"></span><span class="paper"></span><span class="front"></span></div>
+@@@ pixelcard :: Pixel Card :: Components :: A pixel grid floods in on hover.
+<style>.pxc{position:relative;width:150px;height:100px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);
+ background:var(--card,#171B22);display:grid;place-items:center;color:var(--ink,#fff);font:700 14px Inter,sans-serif}
+.pxc .px{position:absolute;inset:0;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(7,1fr)}
+.pxc .px i{background:var(--accent,#3366FF);opacity:0;transition:opacity .3s}
+.pxc:hover .px i{opacity:1}
+.pxc span{position:relative;z-index:1}</style>
+<div class="pxc"><div class="px" id="pxc"></div><span>Hover</span></div>
+<script>var g=document.getElementById('pxc'),s='';for(var i=0;i<70;i++)s+='<i style="transition-delay:'+(Math.random()*0.4).toFixed(2)+'s"></i>';g.innerHTML=s;</script>
+@@@ flowingmenu :: Flowing Menu :: Components :: Each row floods with colour from the bottom on hover.
+<style>.flm{width:230px;border-radius:12px;overflow:hidden;border:1px solid var(--line,#262C34)}
+.flm a{position:relative;display:block;padding:12px 16px;color:var(--ink,#fff);text-decoration:none;font:800 16px Inter,sans-serif;overflow:hidden;border-bottom:1px solid var(--line,#262C34)}
+.flm a:last-child{border-bottom:0}
+.flm a .fill{position:absolute;inset:0;background:var(--accent,#3366FF);color:#0B0E13;display:flex;align-items:center;padding-left:16px;transform:translateY(101%);transition:.35s cubic-bezier(.22,1,.36,1)}
+.flm a:hover .fill{transform:none}</style>
+<div class="flm"><a>Solar<span class="fill">Solar →</span></a><a>Battery<span class="fill">Battery →</span></a><a>Heating<span class="fill">Heating →</span></a></div>
+@@@ waves :: Waves :: Backgrounds :: Layered sine waves drift across the panel.
+<style>.wav{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;background:#0b0e13;border:1px solid var(--line,#262C34)}
+.wav svg{position:absolute;bottom:0;left:0;width:200%;height:100%}
+.wav path{fill:none;stroke:var(--accent,#3366FF);stroke-width:2}
+.wav .w1{animation:wavm 4s linear infinite;opacity:.6}.wav .w2{animation:wavm 6s linear infinite;opacity:.3}
+@keyframes wavm{to{transform:translateX(-50%)}}</style>
+<div class="wav"><svg viewBox="0 0 480 130" preserveAspectRatio="none"><path class="w1" d="M0 80 Q60 50 120 80 T240 80 T360 80 T480 80"/><path class="w2" d="M0 96 Q60 66 120 96 T240 96 T360 96 T480 96"/></svg></div>
+@@@ aurorabg :: Aurora Background :: Backgrounds :: Soft aurora ribbons of light sway behind content.
+<style>.aur{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;background:#05060a}
+.aur i{position:absolute;width:200%;height:74px;filter:blur(26px);opacity:.7;border-radius:50%}
+.aur .a{background:var(--accent,#3366FF);top:-6px;left:-40px;animation:aurm 6s ease-in-out infinite}
+.aur .b{background:#6C2BD9;top:26px;left:-40px;animation:aurm 8s ease-in-out infinite reverse}
+@keyframes aurm{0%,100%{transform:translateX(-10%) skewY(-4deg)}50%{transform:translateX(10%) skewY(4deg)}}</style>
+<div class="aur"><i class="a"></i><i class="b"></i></div>
+@@@ clickspark :: Click Spark :: Animations :: A burst of sparks fires from the click point.
+<style>.csp{position:relative;width:200px;height:110px;border-radius:14px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);display:grid;place-items:center;color:var(--ink,#fff);font:700 14px Inter,sans-serif;cursor:pointer;overflow:hidden}
+.csp .spk{position:absolute;width:2px;height:11px;background:var(--accent,#3366FF);pointer-events:none;border-radius:2px}</style>
+<div class="csp" id="csp">Click me</div>
+<script>var box=document.getElementById('csp');
+function spark(x,y){for(var i=0;i<9;i++){(function(a){var s=document.createElement('span');s.className='spk';s.style.left=x+'px';s.style.top=y+'px';box.appendChild(s);var t=0;var iv=setInterval(function(){t+=.08;var d=t*32;s.style.transform='translate('+Math.cos(a)*d+'px,'+Math.sin(a)*d+'px) rotate('+a+'rad)';s.style.opacity=1-t;if(t>=1){clearInterval(iv);s.remove();}},16);})(i/9*6.28);}}
+box.addEventListener('pointerdown',function(e){var r=box.getBoundingClientRect();spark(e.clientX-r.left,e.clientY-r.top);});
+setInterval(function(){spark(100,55);},1600);</script>
+@@@ accordion :: Accordion / FAQ :: Components :: Questions expand one at a time with a morphing +/− and smooth height.
+<style>.acc{width:280px;font-family:Inter,system-ui,sans-serif}
+.acc .item{border-bottom:1px solid var(--line,#262C34)}
+.acc .q{width:100%;text-align:left;background:none;border:0;color:var(--ink,#fff);font:700 14px Inter,sans-serif;padding:14px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.acc .ch{width:18px;height:18px;flex:none;position:relative}
+.acc .ch::before,.acc .ch::after{content:"";position:absolute;top:50%;left:50%;width:12px;height:2px;background:var(--accent,#3366FF);transform:translate(-50%,-50%);border-radius:2px}
+.acc .ch::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.acc .item.open .ch::after{transform:translate(-50%,-50%) rotate(0)}
+.acc .a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1)}
+.acc .a p{margin:0 0 14px;font-size:13px;color:var(--body,#B6BDC8);line-height:1.55}</style>
+<div class="acc" id="acc">
+<div class="item"><button class="q">Is there a free plan?<span class="ch"></span></button><div class="a"><p>Yes — a free tier with the essentials, no card needed.</p></div></div>
+<div class="item"><button class="q">Can I change my plan?<span class="ch"></span></button><div class="a"><p>Anytime, in settings. Changes apply from your next billing date.</p></div></div>
+<div class="item"><button class="q">How do I cancel?<span class="ch"></span></button><div class="a"><p>One click in account settings — access lasts until the period ends.</p></div></div>
+</div>
+<script>var acc=document.getElementById('acc'),items=acc.querySelectorAll('.item');
+function openItem(it){items.forEach(function(i){i.classList.remove('open');i.querySelector('.a').style.maxHeight='0';});if(it){it.classList.add('open');var a=it.querySelector('.a');a.style.maxHeight=a.scrollHeight+'px';}}
+acc.querySelectorAll('.q').forEach(function(q){q.addEventListener('click',function(){var it=q.parentNode;openItem(it.classList.contains('open')?null:it);});});
+var idx=0;function demo(){openItem(items[idx%items.length]);idx++;}demo();setInterval(demo,2200);</script>
+@@@ footerbig :: Footer — SaaS :: Sections :: Brand + CTA column, four link columns, social row and copyright.
+<style>.ftb{width:292px;font:500 11px Inter,system-ui,sans-serif;color:var(--body,#B6BDC8);border-top:1px solid var(--line,#262C34)}
+.ftb .top{display:flex;gap:16px;padding:16px 0}
+.ftb .brand{flex:1.3}.ftb .brand .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px}.ftb .brand .lg i{width:16px;height:16px;border-radius:4px;background:var(--accent,#3366FF)}
+.ftb .brand h4{color:var(--ink,#fff);font-size:13px;margin:9px 0 3px}.ftb .brand .cta{display:inline-block;margin-top:7px;background:var(--accent,#3366FF);color:#fff;font-weight:700;font-size:10px;padding:6px 12px;border-radius:999px}
+.ftb .cols{display:flex;gap:13px;flex:2}.ftb .col h5{color:var(--ink,#fff);font-size:9px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 7px}.ftb .col a{display:block;color:var(--body,#B6BDC8);text-decoration:none;padding:2px 0;font-size:10px;transition:.2s}.ftb .col a:hover{color:var(--accent,#3366FF)}
+.ftb .bot{border-top:1px solid var(--line,#262C34);padding:9px 0;display:flex;justify-content:space-between;align-items:center;font-size:9px}
+.ftb .soc{display:flex;gap:6px}.ftb .soc i{width:14px;height:14px;border-radius:4px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}</style>
+<div class="ftb"><div class="top">
+<div class="brand"><div class="lg"><i></i>GOOD WORK.</div><h4>Get started today.</h4><div>Free quote. No obligation.</div><span class="cta">Start free →</span></div>
+<div class="cols"><div class="col"><h5>Product</h5><a>Features</a><a>Pricing</a><a>FAQ</a></div><div class="col"><h5>Company</h5><a>About</a><a>Blog</a><a>Careers</a></div><div class="col"><h5>Legal</h5><a>Privacy</a><a>Terms</a></div></div></div>
+<div class="bot"><div class="soc"><i></i><i></i></div><span>© GOOD WORK.. All rights reserved.</span></div></div>
+@@@ footermin :: Footer — Minimal :: Sections :: Logo, inline links and social icons on one row.
+<style>.ftm{width:292px;padding:14px 0;border-top:1px solid var(--line,#262C34);display:flex;align-items:center;justify-content:space-between;font:600 11px Inter,system-ui,sans-serif;flex-wrap:wrap;gap:10px}
+.ftm .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px}.ftm .lg i{width:16px;height:16px;border-radius:50%;background:var(--accent,#3366FF)}
+.ftm ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}.ftm a{color:var(--body,#B6BDC8);text-decoration:none;transition:.2s}.ftm a:hover{color:var(--accent,#3366FF)}
+.ftm .soc{display:flex;gap:8px}.ftm .soc i{width:16px;height:16px;border-radius:4px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}</style>
+<div class="ftm"><span class="lg"><i></i>GOOD WORK.</span><ul><li><a>About</a></li><li><a>Services</a></li><li><a>Contact</a></li></ul><span class="soc"><i></i><i></i><i></i></span></div>
+@@@ footernews :: Footer — Newsletter :: Sections :: Brand, blurb and an email subscribe form.
+<style>.ftn{width:292px;padding:14px 0;border-top:1px solid var(--line,#262C34);font:500 11px Inter,system-ui,sans-serif;color:var(--body,#B6BDC8)}
+.ftn .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px;margin-bottom:6px}.ftn .lg i{width:16px;height:16px;border-radius:5px;background:var(--accent,#3366FF)}
+.ftn p{margin:0 0 10px;font-size:10px;line-height:1.5}
+.ftn form{display:flex;gap:6px}.ftn input{flex:1;min-width:0;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:8px;color:var(--ink,#fff);font:500 11px Inter,sans-serif;padding:8px 10px;outline:none}.ftn input:focus{border-color:var(--accent,#3366FF)}
+.ftn button{background:var(--accent,#3366FF);color:#fff;border:0;border-radius:8px;font:700 11px Inter,sans-serif;padding:8px 14px;cursor:pointer;white-space:nowrap}</style>
+<div class="ftn"><div class="lg"><i></i>GOOD WORK.</div><p>Join the list — energy tips and product news, monthly.</p>
+<form id="ftnf"><input type="email" placeholder="Email address" required><button id="ftnb">Subscribe</button></form></div>
+<script>document.getElementById('ftnf').addEventListener('submit',function(e){e.preventDefault();var b=document.getElementById('ftnb');b.textContent='Subscribed ✓';this.querySelector('input').value='';setTimeout(function(){b.textContent='Subscribe';},1800);});</script>
+@@@ footercta :: Footer — Questions CTA :: Sections :: A "still have questions?" band with two buttons over the base.
+<style>.ftc{width:292px;font:600 11px Inter,system-ui,sans-serif}
+.ftc .q{display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;padding:16px 0;border-bottom:1px dashed var(--line,#262C34)}
+.ftc .q h3{color:var(--ink,#fff);font:800 18px Inter,sans-serif;margin:0}
+.ftc .q .b{display:flex;gap:8px}.ftc .q .b a{padding:8px 15px;border-radius:999px;text-decoration:none;font-weight:700;font-size:11px;cursor:pointer}
+.ftc .q .b .p{background:var(--accent,#3366FF);color:#fff}.ftc .q .b .g{border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.ftc .bot{display:flex;align-items:center;justify-content:space-between;padding:12px 0;color:var(--body,#B6BDC8);font-size:10px}
+.ftc .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px}.ftc .lg i{width:16px;height:16px;border-radius:5px;background:var(--accent,#3366FF)}</style>
+<div class="ftc"><div class="q"><h3>Still have questions?</h3><div class="b"><a class="p">Let's chat →</a><a class="g">Request demo</a></div></div>
+<div class="bot"><span class="lg"><i></i>GOOD WORK.</span><span>© GOOD WORK.. All rights reserved.</span></div></div>
+@@@ faqsection :: FAQ — Accordion Section :: Sections :: A titled FAQ block with an accordion and an email fallback.
+<style>.fqs{width:290px;font-family:Inter,system-ui,sans-serif;text-align:center}
+.fqs .eb{color:var(--accent,#3366FF);font:700 10px 'JetBrains Mono',monospace;letter-spacing:.12em;margin-bottom:4px}
+.fqs h4{color:var(--ink,#fff);font:800 20px Inter,sans-serif;margin:0 0 12px}
+.fqs .acc{text-align:left}.fqs .item{border-bottom:1px solid var(--line,#262C34)}
+.fqs .q{width:100%;text-align:left;background:none;border:0;color:var(--ink,#fff);font:700 12.5px Inter,sans-serif;padding:11px 0;cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.fqs .ch{width:14px;height:14px;flex:none;position:relative}.fqs .ch::before,.fqs .ch::after{content:"";position:absolute;top:50%;left:50%;width:10px;height:2px;background:var(--accent,#3366FF);transform:translate(-50%,-50%);border-radius:2px}
+.fqs .ch::after{transform:translate(-50%,-50%) rotate(90deg);transition:.3s cubic-bezier(.22,1,.36,1)}.fqs .item.open .ch::after{transform:translate(-50%,-50%) rotate(0)}
+.fqs .a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1)}.fqs .a p{margin:0 0 11px;font-size:11px;color:var(--body,#B6BDC8);line-height:1.5}
+.fqs .more{margin-top:12px;font-size:10px;color:var(--body,#B6BDC8)}.fqs .more a{color:var(--accent,#3366FF)}</style>
+<div class="fqs"><div class="eb">FAQ</div><h4>Frequently asked questions</h4>
+<div class="acc" id="fqacc">
+<div class="item"><button class="q">Is there a free plan?<span class="ch"></span></button><div class="a"><p>Yes — a free tier with the essentials, no card needed.</p></div></div>
+<div class="item"><button class="q">Can I change my plan?<span class="ch"></span></button><div class="a"><p>Anytime, in settings. Changes apply from your next billing date.</p></div></div>
+<div class="item"><button class="q">How do I cancel?<span class="ch"></span></button><div class="a"><p>One click in account settings — access lasts until the period ends.</p></div></div></div>
+<div class="more">Still have questions? <a href="#">Email us</a></div></div>
+<script>var acc=document.getElementById('fqacc'),items=acc.querySelectorAll('.item');
+function openItem(it){items.forEach(function(i){i.classList.remove('open');i.querySelector('.a').style.maxHeight='0';});if(it){it.classList.add('open');var a=it.querySelector('.a');a.style.maxHeight=a.scrollHeight+'px';}}
+acc.querySelectorAll('.q').forEach(function(q){q.addEventListener('click',function(){var it=q.parentNode;openItem(it.classList.contains('open')?null:it);});});
+var idx=0;function demo(){openItem(items[idx%items.length]);idx++;}demo();setInterval(demo,2200);</script>
+@@@ faqgrid :: FAQ — Two Column :: Sections :: A titled FAQ block with questions laid out in a grid.
+<style>.fqg{width:292px;font-family:Inter,system-ui,sans-serif}
+.fqg .eb{color:var(--accent,#3366FF);font:700 10px 'JetBrains Mono',monospace;letter-spacing:.12em;text-align:center;margin-bottom:4px}
+.fqg h4{color:var(--ink,#fff);font:800 20px Inter,sans-serif;margin:0 0 14px;text-align:center}
+.fqg .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 12px}
+.fqg h3{color:var(--ink,#fff);font-size:12px;font-weight:700;margin:0 0 3px}.fqg p{color:var(--body,#B6BDC8);font-size:10px;line-height:1.45;margin:0}</style>
+<div class="fqg"><div class="eb">FAQ</div><h4>Frequently asked questions</h4>
+<div class="grid">
+<div><h3>Is there a free plan?</h3><p>Yes — a free tier with basic features, use it as long as you like.</p></div>
+<div><h3>Any discounts?</h3><p>Students and non-profits, yes. Contact us to learn more.</p></div>
+<div><h3>How do I cancel?</h3><p>Anytime in settings; access lasts to the period end.</p></div>
+<div><h3>Can I switch plans?</h3><p>Anytime; changes start your next billing date.</p></div></div></div>
+@@@ ctamarquee :: CTA — Animated Tiles :: Sections :: Rows of glowing icon tiles drift behind a centred call to action.
+<style>.ctm{position:relative;width:290px;height:196px;border-radius:16px;overflow:hidden;border:1px solid var(--line,#262C34);background:#0b0e13;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.ctm .rowm{overflow:hidden}.ctm .rowm ul{display:flex;gap:8px;width:max-content;list-style:none;margin:0;padding:0}
+.ctm .r1 ul{animation:ctmm 16s linear infinite}.ctm .r2 ul{animation:ctmm 22s linear infinite reverse}.ctm .r3 ul{animation:ctmm 18s linear infinite}
+.ctm .tile{position:relative;width:44px;height:44px;border-radius:12px;background:var(--card,#171B22);border:1px solid rgba(255,255,255,.08);flex:none;overflow:hidden;display:grid;place-items:center;opacity:.7}
+.ctm .tile::before{content:"";position:absolute;width:60%;height:60%;border-radius:50%;filter:blur(11px);opacity:.75;background:linear-gradient(90deg,var(--accent,#3366FF),#FF2E88,#7C4DFF)}
+.ctm .tile svg{position:relative;width:20px;height:20px}
+@keyframes ctmm{to{transform:translateX(-50%)}}
+.ctm .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(62% 62% at 50% 50%,rgba(11,14,19,.9),transparent)}
+.ctm .ico{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:grid;place-items:center;margin-bottom:9px}.ctm .ico svg{width:22px;height:22px}
+.ctm h3{color:#fff;font:800 16px Inter,sans-serif;margin:0 0 3px}.ctm p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:0 0 10px}
+.ctm .go{background:var(--accent,#3366FF);color:#fff;font:700 11px Inter,sans-serif;padding:8px 16px;border-radius:999px;text-decoration:none}</style>
+<div class="ctm"><div class="rowm r1"><ul></ul></div><div class="rowm r2"><ul></ul></div><div class="rowm r3"><ul></ul></div>
+<div class="center"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C7 17 3 13 3 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9 2.5C21 13 17 17 12 21z"/></svg></div>
+<h3>Stop wasting time on design.</h3><p>Start your 7-day free trial. No card required.</p><a class="go">Get started →</a></div></div>
+<script>var IC=['<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 21C7 17 3 13 3 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9 2.5C21 13 17 17 12 21z"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14 3v5h5M8 3h6l5 5v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>'];
+document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var i=0;i<14;i++)s+='<li class="tile">'+IC[i%IC.length]+'</li>';u.innerHTML=s;});</script>
+@@@ ctabadge :: CTA — Badge Pill :: Sections :: A "new" badge above a centred headline and two buttons.
+<style>.ctb2{width:290px;text-align:center;font-family:Inter,system-ui,sans-serif}
+.ctb2 .badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);border-radius:999px;padding:4px 12px 4px 4px;font:600 10px Inter,sans-serif;color:var(--body,#B6BDC8);margin-bottom:14px}
+.ctb2 .badge b{background:var(--accent,#3366FF);color:#fff;border-radius:999px;padding:2px 8px;font-size:9px}
+.ctb2 h3{color:var(--ink,#fff);font:800 22px Inter,sans-serif;margin:0 0 6px}
+.ctb2 p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:0 auto 14px;max-width:32ch;line-height:1.5}
+.ctb2 .btns{display:flex;gap:8px;justify-content:center}.ctb2 a{padding:9px 18px;border-radius:999px;text-decoration:none;font:700 12px Inter,sans-serif;cursor:pointer}
+.ctb2 .p{background:var(--accent,#3366FF);color:#fff}.ctb2 .g{border:1px solid var(--line,#262C34);color:var(--ink,#fff)}</style>
+<div class="ctb2"><span class="badge"><b>New</b>Get started today →</span><h3>Get started with GOOD WORK.</h3><p>Build a fast, animated site that turns visitors into customers.</p><div class="btns"><a class="p">Get started</a><a class="g">Learn more</a></div></div>
+@@@ ctaavatars :: CTA — Avatars :: Sections :: A stacked avatar group with social proof and two buttons.
+<style>.ctv{width:290px;display:flex;flex-direction:column;gap:12px;font-family:Inter,system-ui,sans-serif}
+.ctv .av{display:flex}.ctv .av span{width:26px;height:26px;border-radius:50%;border:2px solid #0B0E13;margin-left:-8px;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF));display:grid;place-items:center;color:#fff;font:700 10px Inter,sans-serif}.ctv .av span:first-child{margin-left:0}
+.ctv h3{color:var(--ink,#fff);font:800 20px Inter,sans-serif;margin:0}.ctv p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:2px 0 0}
+.ctv .btns{display:flex;gap:8px}.ctv a{padding:9px 18px;border-radius:999px;text-decoration:none;font:700 12px Inter,sans-serif}.ctv .p{background:var(--accent,#3366FF);color:#fff}.ctv .g{border:1px solid var(--line,#262C34);color:var(--ink,#fff)}</style>
+<div class="ctv"><div class="av"><span>J</span><span>K</span><span>A</span><span>S</span></div><div><h3>Join 5,000+ builders</h3><p>Get the latest updates and exclusive offers.</p></div><div class="btns"><a class="p">Get started</a><a class="g">Learn more</a></div></div>
+@@@ ctabox :: CTA — Boxed :: Sections :: A bordered panel with the headline and action side by side.
+<style>.ctbx{width:290px;border:1px solid var(--line,#262C34);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;font-family:Inter,system-ui,sans-serif}
+.ctbx h3{color:var(--ink,#fff);font:800 20px Inter,sans-serif;margin:0}.ctbx p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:0;line-height:1.5}
+.ctbx a{align-self:flex-start;background:var(--accent,#3366FF);color:#fff;font:700 12px Inter,sans-serif;padding:10px 20px;border-radius:999px;text-decoration:none;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:.15s}.ctbx a:active{transform:translate(2px,2px);box-shadow:none}</style>
+<div class="ctbx"><h3>Get started with GOOD WORK.</h3><p>Build a fast, animated marketing site that converts visitors into customers.</p><a>Get started</a></div>
+@@@ ctaquote :: CTA — Testimonial :: Sections :: A highlighted quote with author and a buy button.
+<style>.ctq{width:280px;border:1px solid var(--line,#262C34);border-radius:16px;overflow:hidden;font-family:Inter,system-ui,sans-serif;background:var(--card,#171B22)}
+.ctq .img{height:64px;background:linear-gradient(135deg,#7A5CFF,var(--accent,#3366FF))}
+.ctq .body{padding:16px}.ctq blockquote{margin:0;color:var(--ink,#fff);font:700 14px Inter,sans-serif;line-height:1.4}
+.ctq blockquote mark{background:var(--accent,#3366FF);color:#fff;padding:0 4px;border-radius:3px}
+.ctq .by{margin:10px 0 12px}.ctq .by b{color:var(--ink,#fff);font-size:12px}.ctq .by span{display:block;color:var(--body,#B6BDC8);font-size:10px}
+.ctq a{display:block;text-align:center;background:var(--accent,#3366FF);color:#fff;font:700 12px Inter,sans-serif;padding:10px;border-radius:10px;text-decoration:none}</style>
+<div class="ctq"><div class="img"></div><div class="body"><blockquote>&ldquo;The best <mark>animated component library</mark> I&rsquo;ve seen — it boosted our output overnight.&rdquo;</blockquote><div class="by"><b>Jane Smith</b><span>CEO, Acme</span></div><a>Buy now</a></div></div>
+@@@ pricingtiers :: Pricing — Three Tiers :: Sections :: Three plan cards with a highlighted popular tier and feature checklists.
+<style>.prt{display:flex;gap:10px;font-family:Inter,system-ui,sans-serif;align-items:stretch;padding:14px 4px}
+.prt .card{width:140px;border:1px solid var(--line,#262C34);border-radius:16px;padding:16px 14px;background:var(--card,#171B22);display:flex;flex-direction:column;gap:9px}
+.prt .card.pop{border-color:var(--accent,#3366FF);box-shadow:0 0 0 1px var(--accent,#3366FF),0 14px 34px rgba(51,102,255,.20);transform:translateY(-8px)}
+.prt .tag{align-self:flex-start;background:var(--accent,#3366FF);color:#fff;font:700 8px Inter,sans-serif;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.07em}
+.prt h4{margin:0;color:var(--body,#B6BDC8);font:700 11px Inter,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.prt .price{color:var(--ink,#fff);font:800 26px Inter,sans-serif;line-height:1}.prt .price span{font:600 10px Inter,sans-serif;color:var(--body,#B6BDC8)}
+.prt ul{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;flex:1}
+.prt li{color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif;display:flex;gap:6px;align-items:center}
+.prt li::before{content:"\2713";color:var(--accent,#3366FF);font-weight:800;font-size:11px}
+.prt a{display:block;text-align:center;text-decoration:none;font:700 11px Inter,sans-serif;padding:9px;border-radius:10px}
+.prt .ghost{color:var(--ink,#fff);border:1px solid var(--line,#262C34)}
+.prt .solid{color:#fff;background:var(--accent,#3366FF)}</style>
+<div class="prt">
+<div class="card"><h4>Starter</h4><div class="price">$0<span>/mo</span></div><ul><li>1 project</li><li>Community support</li><li>Basic analytics</li></ul><a class="ghost">Choose</a></div>
+<div class="card pop"><span class="tag">Popular</span><h4>Pro</h4><div class="price">$29<span>/mo</span></div><ul><li>Unlimited projects</li><li>Priority support</li><li>Advanced analytics</li><li>Custom domains</li></ul><a class="solid">Choose</a></div>
+<div class="card"><h4>Team</h4><div class="price">$99<span>/mo</span></div><ul><li>Everything in Pro</li><li>SSO &amp; roles</li><li>Audit logs</li></ul><a class="ghost">Choose</a></div>
+</div></div>
+@@@ pricingtoggle :: Pricing — Monthly / Yearly :: Sections :: A billing toggle that swaps monthly and yearly prices across the plans.
+<style>.pto{font-family:Inter,system-ui,sans-serif;padding:14px 4px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.pto .sw{display:inline-flex;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:999px;padding:3px}
+.pto .sw button{border:0;background:transparent;color:var(--body,#B6BDC8);font:700 10px Inter,sans-serif;padding:7px 14px;border-radius:999px;cursor:pointer}
+.pto .sw button.on{background:var(--accent,#3366FF);color:#fff}
+.pto .row{display:flex;gap:10px}
+.pto .card{width:130px;border:1px solid var(--line,#262C34);border-radius:14px;padding:14px;background:var(--card,#171B22);display:flex;flex-direction:column;gap:6px}
+.pto h4{margin:0;color:var(--body,#B6BDC8);font:700 10px Inter,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.pto .p{color:var(--ink,#fff);font:800 24px Inter,sans-serif;line-height:1}.pto .p span{font:600 10px Inter,sans-serif;color:var(--body,#B6BDC8)}
+.pto a{margin-top:4px;text-align:center;text-decoration:none;color:#fff;background:var(--accent,#3366FF);font:700 10px Inter,sans-serif;padding:8px;border-radius:9px}</style>
+<div class="pto">
+<div class="sw"><button class="on" data-b="m">Monthly</button><button data-b="y">Yearly &minus;20%</button></div>
+<div class="row">
+<div class="card"><h4>Pro</h4><div class="p"><em class="v" data-m="29" data-y="279" style="font-style:normal">29</em><span>/mo</span></div><a>Start</a></div>
+<div class="card"><h4>Team</h4><div class="p"><em class="v" data-m="99" data-y="948" style="font-style:normal">99</em><span>/mo</span></div><a>Start</a></div>
+</div></div>
+<script>(function(){var r=document.currentScript.parentNode.querySelector('.pto');var b=r.querySelectorAll('.sw button');var v=r.querySelectorAll('.v');b.forEach(function(x){x.onclick=function(){b.forEach(function(y){y.classList.remove('on')});x.classList.add('on');var mode=x.getAttribute('data-b');v.forEach(function(el){el.textContent=el.getAttribute(mode==='y'?'data-y':'data-m')});r.querySelectorAll('.p span').forEach(function(s){s.textContent=mode==='y'?'/yr':'/mo'})}})})();</script>
+@@@ pricingtable :: Pricing — Comparison Table :: Sections :: A feature matrix comparing plans with checks and crosses.
+<style>.pcmp{font-family:Inter,system-ui,sans-serif;padding:12px 4px;width:320px}
+.pcmp table{width:100%;border-collapse:collapse;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:14px;overflow:hidden}
+.pcmp th,.pcmp td{padding:9px 10px;text-align:center;font:500 10px Inter,sans-serif;border-bottom:1px solid var(--line,#262C34)}
+.pcmp th{color:var(--ink,#fff);font-weight:800}.pcmp thead th:nth-child(2){color:var(--accent,#3366FF)}
+.pcmp td:first-child,.pcmp th:first-child{text-align:left;color:var(--body,#B6BDC8)}
+.pcmp .y{color:var(--accent,#3366FF);font-weight:800}.pcmp .n{color:#4A515C}
+.pcmp tr:last-child td{border-bottom:0}</style>
+<div class="pcmp"><table>
+<thead><tr><th>Feature</th><th>Pro</th><th>Free</th></tr></thead>
+<tbody>
+<tr><td>Unlimited projects</td><td class="y">&#10003;</td><td class="n">&#10007;</td></tr>
+<tr><td>Priority support</td><td class="y">&#10003;</td><td class="n">&#10007;</td></tr>
+<tr><td>Custom domains</td><td class="y">&#10003;</td><td class="n">&#10007;</td></tr>
+<tr><td>Analytics</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+<tr><td>Community access</td><td class="y">&#10003;</td><td class="y">&#10003;</td></tr>
+</tbody></table></div>
+@@@ testimonialcarousel :: Testimonial Carousel :: Carousels :: Full-bleed image cards with a glass quote drift past on an auto-scrolling rail.
+<style>.tcar{width:330px;overflow:hidden;font-family:Inter,system-ui,sans-serif;padding:14px 0;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.tcar .rail{display:flex;gap:12px;width:max-content;animation:tcarm 18s linear infinite}
+.tcar:hover .rail{animation-play-state:paused}
+.tcar .slide{position:relative;width:200px;height:150px;border-radius:14px;overflow:hidden;flex:none;border:1px solid var(--line,#262C34)}
+.tcar .slide .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.tcar .slide.s1 .bg{background-image:linear-gradient(135deg,#7A5CFF,#C0392B)}
+.tcar .slide.s2 .bg{background-image:linear-gradient(135deg,#5B5BFF,#1E9E6A)}
+.tcar .slide.s3 .bg{background-image:linear-gradient(135deg,#F5A623,#3366FF)}
+.tcar .cap{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(20,22,28,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:9px}
+.tcar .cap p{margin:0;color:#fff;font:600 10px Inter,sans-serif;line-height:1.35}
+.tcar .cap b{display:block;margin-top:5px;color:#fff;font:700 9px Inter,sans-serif}
+.tcar .cap b span{display:block;font-weight:500;opacity:.8;font-size:8px}
+@keyframes tcarm{to{transform:translateX(calc(-212px * 3))}}
+@media (prefers-reduced-motion:reduce){.tcar .rail{animation:none}}</style>
+<div class="tcar"><div class="rail" id="tcr">
+<div class="slide s1"><div class="bg"></div><div class="cap"><p>A compelling piece of contemporary design.</p><b>John Doe<span>CEO, Company</span></b></div></div>
+<div class="slide s2"><div class="bg"></div><div class="cap"><p>Boosted our output overnight — genuinely.</p><b>Jane Smith<span>Head of Design</span></b></div></div>
+<div class="slide s3"><div class="bg"></div><div class="cap"><p>The best library we have shipped with.</p><b>Alex Lee<span>Founder</span></b></div></div>
+</div></div>
+<script>(function(){var r=document.getElementById('tcr');r.innerHTML+=r.innerHTML;})();</script>
+@@@ fcnotify :: Feature Card — Notifications :: Components :: A stack of message cards fans open on hover with an orange glow.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:grid;place-items:center;position:relative}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}
+.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}
+.fc .row{position:absolute;width:180px;display:flex;align-items:center;gap:10px;background:var(--card2,#20252E);border:1px solid var(--line,#262C34);border-radius:8px;padding:10px;transition:.25s cubic-bezier(.22,1,.36,1)}
+.fc .row .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));flex:none}
+.fc .row .ln{display:flex;flex-direction:column;gap:5px;flex:1}.fc .row .ln i{height:6px;border-radius:99px;background:#3A424E;display:block}
+.fc .row .ln i:nth-child(1){width:70%}.fc .row .ln i:nth-child(2){width:100%}
+.fc .r1{transform:translateY(-6px) scale(.9)}.fc .r2{transform:translateY(-6px) scale(.95)}.fc .r3{transform:translateY(-6px);opacity:0}
+.fc:hover .r1{transform:translateY(-58px) scale(.86)}
+.fc:hover .r2{transform:translateY(-24px) scale(.93);box-shadow:0 20px 50px -18px rgba(51,102,255,.5)}
+.fc:hover .r3{transform:translateY(30px);opacity:1;box-shadow:0 20px 50px -20px rgba(51,102,255,.35)}</style>
+<div class="fc"><div class="stage"><div class="row r1"><span class="av"></span><span class="ln"><i></i><i></i></span></div><div class="row r2"><span class="av"></span><span class="ln"><i></i><i></i></span></div><div class="row r3"><span class="av"></span><span class="ln"><i></i><i></i></span></div></div><div class="foot"><h2>Notifications</h2><p>Instantly get notified about events</p></div></div>
+@@@ fclist :: Feature Card — Message List :: Components :: A column of labelled rows slides upward and brightens on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;overflow:hidden;position:relative}
+.fc .strip{display:flex;flex-direction:column;gap:12px;padding:16px;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.fc:hover .strip{transform:translateY(-96px)}
+.fc .item{border:1px solid var(--line,#262C34);border-radius:8px;padding:10px 12px;background:var(--card2,#20252E)}
+.fc .item h4{margin:0;color:var(--ink,#fff);font:600 12px Inter,sans-serif;display:flex;align-items:center;gap:7px}
+.fc .item h4 b{color:var(--accent,#3366FF)}.fc .item p{margin:4px 0 0;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="strip"><div class="item"><h4><b>★</b> New Feature Release</h4><p>Experience the latest features now.</p></div><div class="item"><h4><b>↓</b> App Update Available</h4><p>Get the latest version.</p></div><div class="item"><h4><b>◷</b> Scheduled Maintenance</h4><p>Temporarily unavailable soon.</p></div><div class="item"><h4><b>✎</b> Feedback Appreciated</h4><p>Share your thoughts with us.</p></div></div></div><div class="foot"><h2>Notifications</h2><p>Instantly get notified about events</p></div></div>
+@@@ fccopilot :: Feature Card — AI Co-Pilot :: Components :: A "make it pop" badge drops in and a comment card lifts with a glow on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.fc .pop{border:1px solid var(--line,#262C34);border-radius:99px;padding:3px 12px;color:var(--ink,#fff);font:500 12px Inter,sans-serif;transform:translateY(6px) scale(.5);opacity:0;transition:.3s cubic-bezier(.22,1,.36,1)}
+.fc:hover .pop{transform:translateY(-2px) scale(1);opacity:1}
+.fc .cmt{display:flex;gap:10px;max-width:220px;border:1px solid var(--line,#262C34);border-radius:10px;padding:12px;background:var(--card2,#20252E);transition:.3s cubic-bezier(.22,1,.36,1)}
+.fc:hover .cmt{transform:translateY(8px) scale(1.04);box-shadow:0 24px 60px -22px rgba(51,102,255,.5)}
+.fc .cmt .av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));flex:none}
+.fc .cmt h3{margin:0;color:var(--ink,#fff);font:600 13px Inter,sans-serif}.fc .cmt p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 11px Inter,sans-serif;line-height:1.4}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><span class="pop">Make it Pop ✨</span><div class="cmt"><span class="av"></span><div><h3>Josh</h3><p>Lorem ipsum dolor sit amet, consectetur.</p></div></div></div><div class="foot"><h2>AI Co-Pilot</h2><p>Use AI to make your writing stand out</p></div></div>
+@@@ fcsocial :: Feature Card — Social :: Components :: Three tilted cards fan out level and glow on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:flex;align-items:center;justify-content:center;gap:14px}
+.fc .card3{width:70px;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid var(--line,#262C34);border-radius:8px;padding:12px 8px;background:var(--card2,#20252E);transition:.25s cubic-bezier(.22,1,.36,1)}
+.fc .card3 .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF))}
+.fc .card3 .g{display:grid;grid-template-columns:1fr 1fr;gap:5px}.fc .card3 .g i{width:22px;height:6px;border-radius:99px;background:#3A424E;display:block}
+.fc .c1{transform:translateX(38px) rotate(-4deg) scale(.8);z-index:1}.fc .c2{transform:scale(1.1);z-index:2}.fc .c3{transform:translateX(-38px) rotate(4deg) scale(.8);z-index:1}
+.fc:hover .c1{transform:none;box-shadow:0 18px 50px -18px rgba(51,102,255,.4)}
+.fc:hover .c2{transform:scale(1);box-shadow:0 18px 50px -18px rgba(122,92,255,.4)}
+.fc:hover .c3{transform:none;box-shadow:0 18px 50px -18px rgba(51,102,255,.4)}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="card3 c1"><span class="av"></span><span class="g"><i></i><i></i><i></i><i></i></span></div><div class="card3 c2"><span class="av"></span><span class="g"><i></i><i></i><i></i><i></i></span></div><div class="card3 c3"><span class="av"></span><span class="g"><i></i><i></i><i></i><i></i></span></div></div><div class="foot"><h2>Social</h2><p>Write once, share with your friends</p></div></div>
+@@@ fcgrowth :: Feature Card — Growth :: Components :: A muted area chart zooms in and saturates to full colour on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:grid;place-items:center;padding:20px}
+.fc .chart{position:relative;width:100%;height:130px;border:1px solid var(--line,#262C34);border-radius:12px;overflow:hidden;background:var(--card2,#20252E)}
+.fc .chart b{position:absolute;top:12px;left:14px;color:var(--ink,#fff);font:700 15px Inter,sans-serif;z-index:2}
+.fc .chart svg{position:absolute;inset:0;width:100%;height:100%;filter:saturate(.3);opacity:.55;transform:scale(1) translateY(20%);transform-origin:bottom;transition:.4s cubic-bezier(.22,1,.36,1)}
+.fc:hover .chart svg{filter:saturate(1);opacity:1;transform:scale(1) translateY(0)}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="chart"><b>+245%</b><svg viewBox="0 0 300 130" preserveAspectRatio="none"><defs><linearGradient id="fcg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent,#3366FF)"/><stop offset="1" stop-color="var(--accent,#3366FF)" stop-opacity="0"/></linearGradient></defs><path d="M0 120 C60 120 130 40 300 8 L300 130 L0 130 Z" fill="url(#fcg)"/><path d="M0 120 C60 120 130 40 300 8" fill="none" stroke="var(--accent,#3366FF)" stroke-width="2.5"/></svg></div></div><div class="foot"><h2>Growth</h2><p>Invest and watch your money grow</p></div></div>
+@@@ fcshare :: Feature Card — Share :: Components :: Two overlapping cards split apart and tilt with glows on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:grid;place-items:center;position:relative}
+.fc .sc{position:absolute;width:190px;display:flex;gap:10px;align-items:center;border:1px solid var(--line,#262C34);border-radius:8px;padding:12px;background:var(--card2,#20252E);transition:.25s cubic-bezier(.22,1,.36,1)}
+.fc .sc .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));flex:none}
+.fc .sc .ln{display:flex;flex-direction:column;gap:5px;flex:1}.fc .sc .ln i{height:6px;border-radius:99px;background:#3A424E;display:block}.fc .sc .ln i:nth-child(1){width:80%}.fc .sc .ln i:nth-child(2){width:100%}.fc .sc .ln i:nth-child(3){width:55%}
+.fc .a{transform:scale(.95);z-index:3}.fc .b{transform:scale(.95);z-index:2}
+.fc:hover .a{transform:translate(10px,25px) rotate(-2deg);box-shadow:0 20px 55px -18px rgba(122,92,255,.5)}
+.fc:hover .b{transform:translate(-10px,-25px) rotate(3deg);box-shadow:0 20px 55px -18px rgba(51,102,255,.5)}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="sc a"><span class="av"></span><span class="ln"><i></i><i></i><i></i></span></div><div class="sc b"><span class="av"></span><span class="ln"><i></i><i></i><i></i></span></div></div><div class="foot"><h2>Share</h2><p>Share results with your friends</p></div></div>
+@@@ fcintegrations :: Feature Card — Integrations :: Components :: Rows of glowing icon tiles drift in opposite directions behind a soft fade.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:10px;-webkit-mask:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+.fc .mq{display:flex;gap:10px;width:max-content}
+.fc .mq.l{animation:fcml 14s linear infinite}.fc .mq.r{animation:fcmr 18s linear infinite}
+.fc .tile{width:44px;height:44px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card2,#20252E);position:relative;flex:none;display:grid;place-items:center;color:#fff;font-size:18px}
+.fc .tile::after{content:"";position:absolute;width:60%;height:60%;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));filter:blur(12px);opacity:.7}
+.fc .tile span{position:relative;z-index:1}
+@keyframes fcml{to{transform:translateX(-54px)}}@keyframes fcmr{from{transform:translateX(-54px)}to{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.fc .mq{animation:none}}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="mq l"><span class="tile"><span>🤝</span></span><span class="tile"><span>🌐</span></span><span class="tile"><span>📄</span></span><span class="tile"><span>🛡️</span></span><span class="tile"><span>📡</span></span><span class="tile"><span>📊</span></span><span class="tile"><span>🤝</span></span><span class="tile"><span>🌐</span></span></div><div class="mq r"><span class="tile"><span>📊</span></span><span class="tile"><span>🛡️</span></span><span class="tile"><span>🌐</span></span><span class="tile"><span>📄</span></span><span class="tile"><span>📡</span></span><span class="tile"><span>🤝</span></span><span class="tile"><span>📊</span></span><span class="tile"><span>🛡️</span></span></div></div><div class="foot"><h2>Integrations</h2><p>Integrate with all your favourite apps</p></div></div>
+@@@ fcreply :: Feature Card — Reply :: Components :: A reply bubble rises to meet the first with a "sent" tag popping in on hover.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:200px;display:grid;place-items:center;position:relative}
+.fc .bub{position:absolute;width:210px;display:flex;gap:10px;border:1px solid var(--line,#262C34);border-radius:10px;padding:12px;background:var(--card2,#20252E);transition:.3s cubic-bezier(.22,1,.36,1)}
+.fc .bub .av{width:24px;height:24px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF))}
+.fc .bub h3{margin:0;color:var(--ink,#fff);font:600 12px Inter,sans-serif}.fc .bub p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}
+.fc .one{transform:translateY(0) scale(.97)}.fc:hover .one{transform:translateY(-45px) scale(1);box-shadow:0 20px 55px -20px rgba(122,92,255,.4)}
+.fc .two{transform:translateY(30px) scale(.97);opacity:0;z-index:3}.fc:hover .two{transform:translateY(10px) scale(1);opacity:1;box-shadow:0 20px 55px -20px rgba(51,102,255,.35)}
+.fc .tag{position:absolute;right:-6px;bottom:-8px;background:var(--accent,#3366FF);color:#fff;font:600 9px Inter,sans-serif;padding:2px 8px;border-radius:99px;opacity:0;transform:translate(8px,8px);transition:.3s .05s cubic-bezier(.22,1,.36,1)}
+.fc:hover .two .tag{opacity:1;transform:none}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="bub one"><span class="av"></span><div><h3>Mary</h3><p>I think the design can be improved</p></div></div><div class="bub two"><span class="av"></span><div><h3>Joshua</h3><p>On it ✅</p></div><span class="tag">sent</span></div></div><div class="foot"><h2>Reply</h2><p>Reply to other creators in app</p></div></div>
+@@@ fcstream :: Feature Card — Notification List :: Components :: Colour-chipped notifications rise and cycle on an endless loop.
+<style>.fc{width:300px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer}
+.fc .stage{height:220px;overflow:hidden;position:relative;-webkit-mask:linear-gradient(#000 60%,transparent);mask:linear-gradient(#000 60%,transparent)}
+.fc .feed{display:flex;flex-direction:column;gap:10px;padding:14px;animation:fcfeed 8s linear infinite}
+@keyframes fcfeed{0%,18%{transform:translateY(0)}23%,41%{transform:translateY(-62px)}46%,64%{transform:translateY(-124px)}69%,100%{transform:translateY(-186px)}}
+@media(prefers-reduced-motion:reduce){.fc .feed{animation:none}}
+.fc .n{display:flex;gap:11px;align-items:center;border:1px solid var(--line,#262C34);border-radius:10px;padding:11px;background:var(--card2,#20252E)}
+.fc .n .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:15px;flex:none}
+.fc .n b{color:var(--ink,#fff);font:600 12px Inter,sans-serif}.fc .n b span{color:var(--body,#B6BDC8);font-weight:400;margin-left:6px;font-size:10px}
+.fc .n p{margin:2px 0 0;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}
+.fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
+<div class="fc"><div class="stage"><div class="feed"><div class="n"><span class="ic" style="background:var(--accent,#3366FF)">💸</span><div><b>Payment received<span>15m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#FFB800">👤</span><div><b>User signed up<span>10m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#FF3D71">💬</span><div><b>New message<span>5m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#1E86FF">🗞️</span><div><b>New event<span>2m ago</span></b><p>GOOD WORK.</p></div></div></div></div><div class="foot"><h2>Notifications</h2><p>Realtime alerts for events you follow</p></div></div>
+@@@ fcshowcase :: Feature Card — Showcase :: Components :: A tilted grid of avatar cards springs in, split beside a headline.
+<style>.fc{width:320px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column}
+.fc .top{padding:20px;display:flex;flex-direction:column;gap:12px}
+.fc .top h2{margin:0;color:var(--ink,#fff);font:700 18px Inter,sans-serif;line-height:1.3}
+.fc .top a{color:var(--accent,#3366FF);font:500 12px Inter,sans-serif;text-decoration:none}
+.fc .grid{position:relative;height:150px;overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%)}
+.fc .grid .rot{position:absolute;top:14px;left:20px;right:-30px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;transform:rotate(-14deg)}
+.fc .g{display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid var(--line,#262C34);border-radius:8px;padding:9px;background:var(--card2,#20252E);opacity:0;transform:translateY(18px) scale(.96);animation:fcpop .4s cubic-bezier(.22,1,.36,1) forwards}
+.fc .g:nth-child(2){animation-delay:.05s}.fc .g:nth-child(3){animation-delay:.1s}.fc .g:nth-child(4){animation-delay:.15s}.fc .g:nth-child(5){animation-delay:.2s}.fc .g:nth-child(6){animation-delay:.25s}
+@keyframes fcpop{to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.fc .g{animation:none;opacity:1;transform:none}}
+.fc .g .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF))}
+.fc .g small{color:var(--body,#B6BDC8);font:500 9px Inter,sans-serif}.fc .g em{font-style:normal;background:var(--accent,#3366FF);color:#fff;font:600 8px Inter,sans-serif;padding:1px 6px;border-radius:99px}</style>
+<div class="fc"><div class="top"><h2>Build amazing websites with all your friends.</h2><a>Check out our showcase →</a></div><div class="grid"><div class="rot"><div class="g"><span class="av"></span><small>Tom</small><em>Site</em></div><div class="g"><span class="av"></span><small>Chris</small><em>Site</em></div><div class="g"><span class="av"></span><small>PJ</small><em>Site</em></div><div class="g"><span class="av"></span><small>Scott</small><em>Site</em></div><div class="g"><span class="av"></span><small>Ezra</small><em>Site</em></div><div class="g"><span class="av"></span><small>Ivey</small><em>Site</em></div></div></div></div>
+@@@ featureaccordion :: Feature Section — Accordion + Preview :: Sections :: An auto-advancing accordion with a filling progress rail beside a synced preview panel.
+<style>.fsec{width:340px;display:flex;gap:14px;font-family:Inter,system-ui,sans-serif;padding:14px 6px;align-items:stretch}
+.fsec .rail{width:150px;display:flex;flex-direction:column;gap:6px}
+.fsec .fi{position:relative;text-align:left;background:none;border:0;cursor:pointer;padding:8px 10px 8px 16px;color:var(--body,#B6BDC8)}
+.fsec .fi .bar{position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:2px;background:var(--line,#262C34);overflow:hidden}
+.fsec .fi .bar i{position:absolute;top:0;left:0;width:100%;height:0;background:var(--accent,#3366FF)}
+.fsec .fi:not(.on) .bar i{transition:none}
+.fsec .fi.on .bar i{height:100%;transition:height 4s linear}
+.fsec .fi h3{margin:0;font:700 13px Inter,sans-serif;color:var(--body,#B6BDC8);transition:.2s}
+.fsec .fi.on h3{color:var(--ink,#fff)}
+.fsec .fi p{margin:5px 0 0;font:400 10px Inter,sans-serif;line-height:1.4;max-height:0;opacity:0;overflow:hidden;transition:.3s}
+.fsec .fi.on p{max-height:60px;opacity:1}
+.fsec .shot{flex:1;position:relative;border:1px solid var(--line,#262C34);border-radius:12px;overflow:hidden;min-height:150px}
+.fsec .pane{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.98);transition:.35s;color:#fff;font:700 14px Inter,sans-serif;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.fsec .pane.on{opacity:1;transform:none}
+.fsec .p0{background:linear-gradient(135deg,#7A5CFF,#C0392B)}.fsec .p1{background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.fsec .p2{background:linear-gradient(135deg,#F5A623,#3366FF)}.fsec .p3{background:linear-gradient(135deg,#7C4DFF,#FF2E88)}</style>
+<div class="fsec">
+<div class="rail">
+<button class="fi on"><span class="bar"><i></i></span><h3>Innovative Design</h3><p>Visually appealing and highly functional.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>User-Centric Approach</h3><p>We prioritise your needs in every decision.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>Seamless Integration</h3><p>Slots into your existing systems smoothly.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>Continuous Improvement</h3><p>Always updating to give you the best.</p></button>
+</div>
+<div class="shot"><div class="pane p0 on">Innovative Design</div><div class="pane p1">User-Centric</div><div class="pane p2">Seamless Integration</div><div class="pane p3">Continuous Improvement</div></div>
+</div>
+<script>(function(){var r=document.currentScript.parentNode.querySelector('.fsec');var items=r.querySelectorAll('.fi');var panes=r.querySelectorAll('.pane');var i=0,t;function go(n){i=n;items.forEach(function(x,k){x.classList.toggle('on',k===i)});panes.forEach(function(x,k){x.classList.toggle('on',k===i)});}function reset(){clearInterval(t);t=setInterval(function(){go((i+1)%items.length)},4000);}items.forEach(function(x,k){x.onclick=function(){go(k);reset();}});go(0);reset();})();</script>
+@@@ featureaccordionr :: Feature Section — Accordion Right :: Sections :: The accordion feature section mirrored, with the rail and its progress line on the right.
+<style>.fsec{width:340px;display:flex;flex-direction:row-reverse;gap:14px;font-family:Inter,system-ui,sans-serif;padding:14px 6px;align-items:stretch}
+.fsec .rail{width:150px;display:flex;flex-direction:column;gap:6px}
+.fsec .fi{position:relative;text-align:right;background:none;border:0;cursor:pointer;padding:8px 16px 8px 10px;color:var(--body,#B6BDC8)}
+.fsec .fi .bar{position:absolute;right:0;top:6px;bottom:6px;width:2px;border-radius:2px;background:var(--line,#262C34);overflow:hidden}
+.fsec .fi .bar i{position:absolute;top:0;left:0;width:100%;height:0;background:var(--accent,#3366FF)}
+.fsec .fi:not(.on) .bar i{transition:none}
+.fsec .fi.on .bar i{height:100%;transition:height 4s linear}
+.fsec .fi h3{margin:0;font:700 13px Inter,sans-serif;color:var(--body,#B6BDC8);transition:.2s}
+.fsec .fi.on h3{color:var(--ink,#fff)}
+.fsec .fi p{margin:5px 0 0;font:400 10px Inter,sans-serif;line-height:1.4;max-height:0;opacity:0;overflow:hidden;transition:.3s}
+.fsec .fi.on p{max-height:60px;opacity:1}
+.fsec .shot{flex:1;position:relative;border:1px solid var(--line,#262C34);border-radius:12px;overflow:hidden;min-height:150px}
+.fsec .pane{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.98);transition:.35s;color:#fff;font:700 14px Inter,sans-serif;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.fsec .pane.on{opacity:1;transform:none}
+.fsec .p0{background:linear-gradient(135deg,#7A5CFF,#C0392B)}.fsec .p1{background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.fsec .p2{background:linear-gradient(135deg,#F5A623,#3366FF)}.fsec .p3{background:linear-gradient(135deg,#7C4DFF,#FF2E88)}</style>
+<div class="fsec">
+<div class="rail">
+<button class="fi on"><span class="bar"><i></i></span><h3>Innovative Design</h3><p>Visually appealing and highly functional.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>User-Centric Approach</h3><p>We prioritise your needs in every decision.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>Seamless Integration</h3><p>Slots into your existing systems smoothly.</p></button>
+<button class="fi"><span class="bar"><i></i></span><h3>Continuous Improvement</h3><p>Always updating to give you the best.</p></button>
+</div>
+<div class="shot"><div class="pane p0 on">Innovative Design</div><div class="pane p1">User-Centric</div><div class="pane p2">Seamless Integration</div><div class="pane p3">Continuous Improvement</div></div>
+</div>
+<script>(function(){var r=document.currentScript.parentNode.querySelector('.fsec');var items=r.querySelectorAll('.fi');var panes=r.querySelectorAll('.pane');var i=0,t;function go(n){i=n;items.forEach(function(x,k){x.classList.toggle('on',k===i)});panes.forEach(function(x,k){x.classList.toggle('on',k===i)});}function reset(){clearInterval(t);t=setInterval(function(){go((i+1)%items.length)},4000);}items.forEach(function(x,k){x.onclick=function(){go(k);reset();}});go(0);reset();})();</script>
+@@@ featurescroll :: Feature Section — Sticky Scroll :: Sections :: A copy block with window dots, heading and buttons beside a tall device panel.
+<style>.fscr{width:340px;display:flex;gap:16px;align-items:center;font-family:Inter,system-ui,sans-serif;padding:14px 6px}
+.fscr .tx{flex:1;display:flex;flex-direction:column;gap:10px}
+.fscr .dots{display:flex;gap:6px}.fscr .dots i{width:9px;height:9px;border-radius:50%;display:block}
+.fscr .dots i:nth-child(1){background:var(--accent,#3366FF)}.fscr .dots i:nth-child(2){background:var(--accent-2,#7A5CFF)}.fscr .dots i:nth-child(3){background:#5B5BFF}
+.fscr h1{margin:0;color:var(--ink,#fff);font:800 22px Inter,sans-serif;line-height:1.1}
+.fscr p{margin:0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif;line-height:1.5}
+.fscr .btns{display:flex;gap:8px;margin-top:2px}
+.fscr .btns a{font:700 11px Inter,sans-serif;padding:8px 14px;border-radius:8px;text-decoration:none}
+.fscr .btns .p{background:var(--accent,#3366FF);color:#fff}.fscr .btns .o{border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.fscr .dev{width:120px;height:210px;border-radius:22px;border:6px solid #23282F;background:linear-gradient(160deg,#20252E,#0E1219);position:relative;overflow:hidden;flex:none;box-shadow:0 20px 50px -20px rgba(51,102,255,.4)}
+.fscr .dev::before{content:"";position:absolute;top:14px;left:14px;right:14px;height:60px;border-radius:10px;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF))}
+.fscr .dev::after{content:"";position:absolute;top:86px;left:14px;right:14px;bottom:14px;border-radius:10px;background:repeating-linear-gradient(#2A2F38 0 8px,transparent 8px 20px)}</style>
+<div class="fscr"><div class="tx"><div class="dots"><i></i><i></i><i></i></div><h1>Scroll Feature</h1><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quibusdam.</p><div class="btns"><a class="p">Learn More</a><a class="o">Contact Us</a></div></div><div class="dev"></div></div>
+@@@ featuregrid :: Feature Section — Highlights Grid :: Sections :: A badge, heading and six icon tiles in a balanced grid.
+<style>.fgr{width:340px;font-family:Inter,system-ui,sans-serif;padding:14px 6px}
+.fgr .badge{display:inline-block;background:rgba(51,102,255,.12);color:var(--accent,#3366FF);border:1px solid rgba(51,102,255,.3);font:600 10px Inter,sans-serif;padding:3px 10px;border-radius:99px}
+.fgr h2{margin:10px 0 6px;color:var(--ink,#fff);font:800 20px Inter,sans-serif;line-height:1.15}
+.fgr .sub{margin:0 0 14px;color:var(--body,#B6BDC8);font:400 11px Inter,sans-serif;line-height:1.5}
+.fgr .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fgr .t{border:1px solid var(--line,#262C34);background:var(--card,#171B22);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.fgr .t .ic{width:30px;height:30px;border-radius:50%;background:rgba(51,102,255,.12);color:var(--accent,#3366FF);display:grid;place-items:center;font-size:14px}
+.fgr .t h3{margin:0;color:var(--ink,#fff);font:700 11px Inter,sans-serif}
+.fgr .t p{margin:0;color:var(--body,#B6BDC8);font:400 9px Inter,sans-serif;line-height:1.4}</style>
+<div class="fgr"><span class="badge">Feature highlights</span><h2>Surface the value behind every capability</h2><p class="sub">Map six differentiators with equal weight across a tidy, responsive grid.</p><div class="grid"><div class="t"><span class="ic">🌐</span><h3>Global defaults</h3><p>Native-feeling copy and spacing.</p></div><div class="t"><span class="ic">▧</span><h3>Two-row layout</h3><p>Balanced rows, graceful collapse.</p></div><div class="t"><span class="ic">⤳</span><h3>Meaningful icons</h3><p>Any icon, no extra deps.</p></div><div class="t"><span class="ic">🚀</span><h3>Badge-ready</h3><p>Flag launches and betas.</p></div><div class="t"><span class="ic">📊</span><h3>Quantify impact</h3><p>Show savings and adoption.</p></div><div class="t"><span class="ic">🛟</span><h3>Support friendly</h3><p>Room for a helper link.</p></div></div></div>
+@@@ presslogos :: Social Proof — Featured In :: Sections :: A "featured in" caption over a grid of muted press wordmarks.
+<style>.prs{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 6px;text-align:center}
+.prs h3{margin:0 0 14px;color:var(--body,#B6BDC8);font:700 10px Inter,sans-serif;letter-spacing:.14em}
+.prs .grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px 10px;place-items:center}
+.prs span{color:#8A93A2;font:700 12px Georgia,serif;opacity:.85;transition:.2s;white-space:nowrap}
+.prs span:hover{color:var(--ink,#fff);opacity:1}
+.prs .sans{font-family:Inter,sans-serif;font-weight:800;letter-spacing:-.02em}</style>
+<div class="prs"><h3>FEATURED IN</h3><div class="grid"><span>The Times</span><span class="sans">Forbes</span><span>Bloomberg</span><span class="sans">WIRED</span><span class="sans">TechCrunch</span><span>The Post</span><span class="sans">Insider</span><span>Guardian</span></div></div>
+@@@ companymarquee :: Social Proof — Logo Marquee :: Sections :: A "trusted by" caption over an endless marquee of company wordmarks.
+<style>.cmq{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 0;text-align:center}
+.cmq h3{margin:0 0 14px;color:var(--body,#B6BDC8);font:700 10px Inter,sans-serif;letter-spacing:.14em}
+.cmq .rail{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
+.cmq .track{display:flex;gap:34px;width:max-content;animation:cmqm 16s linear infinite}
+.cmq:hover .track{animation-play-state:paused}
+.cmq .track span{color:#8A93A2;font:800 15px Inter,sans-serif;letter-spacing:-.02em;white-space:nowrap}
+@keyframes cmqm{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.cmq .track{animation:none}}</style>
+<div class="cmq"><h3>TRUSTED BY LEADING TEAMS</h3><div class="rail"><div class="track" id="cmqt"><span>Google</span><span>Microsoft</span><span>Amazon</span><span>Netflix</span><span>Uber</span><span>Spotify</span><span>Instagram</span><span>YouTube</span></div></div></div>
+<script>(function(){var t=document.getElementById('cmqt');t.innerHTML+=t.innerHTML;})();</script>
+@@@ testimonialscroll :: Testimonials — Scroll Row :: Sections :: Rated review cards with an orange highlight scroll side to side.
+<style>.tsc{width:340px;font-family:Inter,system-ui,sans-serif;padding:14px 0}
+.tsc .row{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 12px;scroll-snap-type:x mandatory;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.tsc .row::-webkit-scrollbar{display:none}.tsc .row{scrollbar-width:none}
+.tsc .c{flex:0 0 210px;scroll-snap-align:center;border:1px solid var(--line,#262C34);background:var(--card,#171B22);border-radius:16px;padding:16px;display:flex;flex-direction:column;justify-content:space-between}
+.tsc .c p{margin:0;color:var(--body,#B6BDC8);font:450 12px Inter,sans-serif;line-height:1.5}
+.tsc .c p mark{background:rgba(51,102,255,.14);color:var(--accent,#3366FF);padding:0 3px;border-radius:3px}
+.tsc .st{color:var(--accent,#3366FF);font-size:11px;letter-spacing:2px;margin:12px 0 6px}
+.tsc .c b{color:var(--ink,#fff);font:600 12px Inter,sans-serif}.tsc .c span{display:block;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}</style>
+<div class="tsc"><div class="row"><div class="c"><p>The AI analytics revolutionised our cycle. <mark>More accurate and faster than ever.</mark></p><div class="st">★★★★★</div><b>Alex Rivera</b><span>CTO at InnovateTech</span></div><div class="c"><p>Their prediction model improved targeting. <mark>A 50% lift in conversions!</mark></p><div class="st">★★★★★</div><b>Samantha Lee</b><span>Marketing Director</span></div><div class="c"><p>We move fast and stay ahead. <mark>Our dev speed has doubled.</mark></p><div class="st">★★★★★</div><b>Raj Patel</b><span>Founder & CEO</span></div></div></div>
+@@@ testimonialwall :: Testimonials — Marquee Wall :: Sections :: Three columns of rated review cards drift vertically behind soft fades.
+<style>.twl{width:340px;height:250px;font-family:Inter,system-ui,sans-serif;padding:8px 6px;position:relative;overflow:hidden;-webkit-mask:linear-gradient(#000,transparent 92%);mask:linear-gradient(#000,transparent 92%)}
+.twl .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;height:100%}
+.twl .col{overflow:hidden}
+.twl .stk{display:flex;flex-direction:column;gap:10px}
+.twl .c1 .stk{animation:twlu 14s linear infinite}.twl .c2 .stk{animation:twld 18s linear infinite}.twl .c3 .stk{animation:twlu 16s linear infinite}
+@keyframes twlu{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@keyframes twld{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.twl .stk{animation:none}}
+.twl .c{border:1px solid var(--line,#262C34);background:var(--card,#171B22);border-radius:12px;padding:10px}
+.twl .c .st{color:var(--accent,#3366FF);font-size:8px;letter-spacing:1.5px}
+.twl .c p{margin:4px 0;color:var(--body,#B6BDC8);font:450 9px Inter,sans-serif;line-height:1.4}
+.twl .c b{color:var(--ink,#fff);font:600 9px Inter,sans-serif}</style>
+<div class="twl"><div class="cols">
+<div class="col c1"><div class="stk"><div class="c"><div class="st">★★★★★</div><p>Analytics revolutionised our cycle.</p><b>Alex R.</b></div><div class="c"><div class="st">★★★★★</div><p>Dev speed has doubled.</p><b>Raj P.</b></div><div class="c"><div class="st">★★★★★</div><p>Analytics revolutionised our cycle.</p><b>Alex R.</b></div><div class="c"><div class="st">★★★★★</div><p>Dev speed has doubled.</p><b>Raj P.</b></div></div></div>
+<div class="col c2"><div class="stk"><div class="c"><div class="st">★★★★★</div><p>A 50% lift in conversions.</p><b>Samantha L.</b></div><div class="c"><div class="st">★★★★★</div><p>Localization is seamless now.</p><b>Emily C.</b></div><div class="c"><div class="st">★★★★★</div><p>A 50% lift in conversions.</p><b>Samantha L.</b></div><div class="c"><div class="st">★★★★★</div><p>Localization is seamless now.</p><b>Emily C.</b></div></div></div>
+<div class="col c3"><div class="stk"><div class="c"><div class="st">★★★★★</div><p>An edge in predictive accuracy.</p><b>Michael B.</b></div><div class="c"><div class="st">★★★★★</div><p>Costs cut across logistics.</p><b>Linda W.</b></div><div class="c"><div class="st">★★★★★</div><p>An edge in predictive accuracy.</p><b>Michael B.</b></div><div class="c"><div class="st">★★★★★</div><p>Costs cut across logistics.</p><b>Linda W.</b></div></div></div>
+</div></div>
+@@@ statsgrid :: Stats — Bordered Grid :: Sections :: A caption, heading and a hairline-bordered grid of key figures.
+<style>.stg{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 6px;text-align:center}
+.stg .k{color:var(--body,#B6BDC8);font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em}
+.stg h4{margin:8px 0 16px;color:var(--ink,#fff);font:700 20px Inter,sans-serif}
+.stg .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line,#262C34);border:1px solid var(--line,#262C34);border-radius:12px;overflow:hidden}
+.stg .cell{background:var(--card,#171B22);padding:16px 10px}
+.stg .cell b{display:block;color:var(--accent,#3366FF);font:700 24px 'JetBrains Mono',monospace}
+.stg .cell span{color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}</style>
+<div class="stg"><div class="k">STATISTICS</div><h4>Our SaaS by the numbers</h4><div class="grid"><div class="cell"><b>50K</b><span>Active Users</span></div><div class="cell"><b>$1.2M</b><span>Revenue 2023</span></div><div class="cell"><b>1.5M</b><span>API Requests</span></div><div class="cell"><b>45</b><span>Countries</span></div><div class="cell"><b>99.9%</b><span>Uptime</span></div><div class="cell"><b>24/7</b><span>Support</span></div></div></div>
+@@@ statscount :: Stats — Count Up :: Sections :: Four figures that count up from zero when the section scrolls into view.
+<style>.stc{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 6px;text-align:center}
+.stc .k{color:var(--body,#B6BDC8);font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em}
+.stc h4{margin:8px 0 18px;color:var(--ink,#fff);font:700 20px Inter,sans-serif}
+.stc .grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.stc .cell b{display:block;color:var(--accent,#3366FF);font:700 26px 'JetBrains Mono',monospace}
+.stc .cell span{color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}</style>
+<div class="stc"><div class="k">STATS</div><h4>Our numbers speak for themselves</h4><div class="grid"><div class="cell"><b data-to="3400">0</b><span>Downloads</span></div><div class="cell"><b data-to="1500">0</b><span>Users</span></div><div class="cell"><b data-to="84">0</b><span>Subscribers</span></div><div class="cell"><b data-to="7">0</b><span>Products</span></div></div></div>
+<script>(function(){var r=document.currentScript.parentNode.querySelector('.stc');var els=r.querySelectorAll('[data-to]');function fmt(v){return v>=1000?(v/1000).toFixed(1).replace('.0','')+'K':String(v);}function run(){els.forEach(function(el){var to=parseFloat(el.getAttribute('data-to')),plus=to>1000?'+':'',dur=1600,st=null;function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/dur,1);el.textContent=fmt(Math.floor(p*to))+(p===1?plus:'');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){run();io.disconnect();}});});io.observe(r);})();</script>
+@@@ heroborderbeam :: Hero — Border Beam Dashboard :: Sections :: A gradient headline and pill CTA above a dashboard panel traced by a light beam.
+<style>.hbb{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.hbb h1{margin:0;font:800 26px Inter,sans-serif;line-height:1.1;background:linear-gradient(160deg,#fff 30%,#8A93A2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hbb p{margin:0;color:var(--body,#B6BDC8);font:500 12px Inter,sans-serif;max-width:260px;line-height:1.5}
+.hbb a{background:var(--accent,#3366FF);color:#fff;font:700 12px Inter,sans-serif;padding:10px 20px;border-radius:99px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.hbb a:hover{box-shadow:0 0 0 2px var(--accent-2,#7A5CFF),0 0 0 4px rgba(122,92,255,.3)}
+.hbb .wrap{position:relative;width:300px;margin-top:6px}
+.hbb .glow{position:absolute;left:20%;right:20%;top:-10px;height:60px;background:var(--accent,#3366FF);filter:blur(50px);opacity:.5}
+.hbb .panel{position:relative;height:120px;border-radius:12px;border:1px solid var(--line,#262C34);background:linear-gradient(#171B22,#0E1219);overflow:hidden}
+.hbb .panel::after{content:"";position:absolute;top:12px;left:12px;right:12px;bottom:12px;border-radius:8px;background:repeating-linear-gradient(#2A2F38 0 6px,transparent 6px 18px)}
+.hbb .beam{position:absolute;inset:0;border-radius:12px;padding:1.5px;background:conic-gradient(from var(--ha,0deg),transparent 0 70%,var(--accent-2,#7A5CFF) 82%,var(--accent,#3366FF) 92%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:hbbspin 5s linear infinite}
+@property --ha{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes hbbspin{to{--ha:360deg}}
+@media(prefers-reduced-motion:reduce){.hbb .beam{animation:none}}</style>
+<div class="hbb"><h1>Create Magical Landing Pages</h1><p>A curated collection of animated, drop-in sections for fast marketing sites.</p><a>Get Started →</a><div class="wrap"><div class="glow"></div><div class="panel"><div class="beam"></div></div></div></div>
+@@@ heroretro :: Hero — Retro Grid :: Sections :: A centred headline and CTA over a receding neon grid floor with a beamed panel.
+<style>.hrt{width:340px;position:relative;overflow:hidden;font-family:Inter,system-ui,sans-serif;padding:22px 14px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:11px;border-radius:12px;background:#0B0E13}
+.hrt .grid{position:absolute;left:-25%;right:-25%;bottom:0;height:150px;overflow:hidden;opacity:.5;pointer-events:none;perspective:200px}
+.hrt .grid::before{content:"";position:absolute;inset:-50% 0 0;background-image:linear-gradient(var(--accent,#3366FF) 1px,transparent 1px),linear-gradient(90deg,var(--accent,#3366FF) 1px,transparent 1px);background-size:32px 32px;transform:rotateX(60deg);transform-origin:bottom;animation:hrtscroll 4s linear infinite}
+@keyframes hrtscroll{to{background-position:0 32px}}
+@media(prefers-reduced-motion:reduce){.hrt .grid::before{animation:none}}
+.hrt h1{position:relative;margin:0;font:800 24px Inter,sans-serif;line-height:1.1;background:linear-gradient(160deg,#fff 30%,#8A93A2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hrt p{position:relative;margin:0;color:var(--body,#B6BDC8);font:500 12px Inter,sans-serif;max-width:250px;line-height:1.5}
+.hrt a{position:relative;background:var(--accent,#3366FF);color:#fff;font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hrt .panel{position:relative;width:290px;height:90px;margin-top:4px;border-radius:12px;border:1px solid var(--line,#262C34);background:linear-gradient(#171B22,#0E1219);overflow:hidden}
+.hrt .panel .beam{position:absolute;inset:0;border-radius:12px;padding:1.5px;background:conic-gradient(from var(--ha,0deg),transparent 0 72%,var(--accent,#3366FF) 88%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:hrtspin 5s linear infinite}
+@property --ha{syntax:'<angle>';inherits:false;initial-value:0deg}@keyframes hrtspin{to{--ha:360deg}}</style>
+<div class="hrt"><div class="grid"></div><h1>Create Magical Landing Pages</h1><p>A curated collection of animated, drop-in sections.</p><a>Get Started →</a><div class="panel"><div class="beam"></div></div></div>
+@@@ herobadge :: Hero — Badge Pill :: Sections :: An announcement pill above a two-tone headline, dual CTAs and a trust row.
+<style>.hbd{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.hbd .pill{display:inline-flex;align-items:center;gap:8px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:99px;padding:4px 12px 4px 4px;color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif;cursor:pointer}
+.hbd .pill b{background:var(--accent,#3366FF);color:#fff;font:600 9px Inter,sans-serif;padding:2px 8px;border-radius:99px}
+.hbd .pill .ar{transition:.2s}.hbd .pill:hover .ar{transform:translateX(3px)}
+.hbd h1{margin:0;font:600 22px Inter,sans-serif;line-height:1.2;letter-spacing:-.02em}
+.hbd h1 b{color:var(--ink,#fff);font-weight:700}.hbd h1 span{color:#6B7482}
+.hbd .cta{display:flex;gap:10px}
+.hbd .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hbd .cta .p{background:var(--accent,#3366FF);color:#fff}.hbd .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hbd .trust{display:flex;gap:16px;color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif}
+.hbd .trust span{display:flex;align-items:center;gap:5px}.hbd .trust b{color:var(--accent,#3366FF)}</style>
+<div class="hbd"><span class="pill"><b>Update</b> Browse new layouts <span class="ar">→</span></span><h1><b>GOOD WORK. Design Studio:</b> <span>build a fast, animated site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="trust"><span><b>✓</b> 30 days free</span><span><b>✓</b> 3k+ sections</span></div></div>
+@@@ herosplit :: Hero — Split Two Column :: Sections :: A left-aligned headline and CTA beside a rounded preview panel.
+<style>.hsp{width:340px;display:flex;gap:16px;align-items:center;font-family:Inter,system-ui,sans-serif;padding:16px 10px}
+.hsp .tx{flex:1;display:flex;flex-direction:column;gap:11px}
+.hsp h1{margin:0;color:var(--ink,#fff);font:700 20px Inter,sans-serif;line-height:1.15;letter-spacing:-.02em}
+.hsp p{margin:0;color:var(--body,#B6BDC8);font:400 11px Inter,sans-serif;line-height:1.5}
+.hsp a{align-self:flex-start;background:var(--accent,#3366FF);color:#fff;font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hsp .img{width:135px;height:150px;border-radius:16px;border:1px solid var(--line,#262C34);background:linear-gradient(150deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF));flex:none;position:relative;overflow:hidden}
+.hsp .img::after{content:"";position:absolute;inset:14px;border-radius:8px;background:rgba(11,14,19,.28);backdrop-filter:blur(2px)}</style>
+<div class="hsp"><div class="tx"><h1>Streamline your workflow with our platform</h1><p>Boost productivity, enhance collaboration and simplify your business processes.</p><a>Start free trial</a></div><div class="img"></div></div>
+@@@ herocentered :: Hero — Centered :: Sections :: A centred headline, subtitle and dual CTAs above a wide preview panel.
+<style>.hcn{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.hcn h1{margin:0;color:var(--ink,#fff);font:700 24px Inter,sans-serif;line-height:1.12;letter-spacing:-.02em}
+.hcn p{margin:0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif;max-width:270px;line-height:1.5}
+.hcn .cta{display:flex;gap:10px}
+.hcn .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hcn .cta .p{background:var(--accent,#3366FF);color:#fff}.hcn .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hcn .img{width:300px;height:120px;margin-top:4px;border-radius:16px;border:1px solid var(--line,#262C34);background:linear-gradient(160deg,#20252E,#0E1219);position:relative;overflow:hidden}
+.hcn .img::before{content:"";position:absolute;top:0;left:20%;right:20%;height:50%;background:var(--accent,#3366FF);filter:blur(45px);opacity:.4}
+.hcn .img::after{content:"";position:absolute;inset:16px;border-radius:8px;background:repeating-linear-gradient(#2A2F38 0 7px,transparent 7px 20px)}</style>
+<div class="hcn"><h1>GOOD WORK. Design Studio</h1><p>Build a fast, animated marketing website that converts visitors into customers.</p><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="img"></div></div>
+@@@ heroemail :: Hero — Email Capture :: Sections :: A two-tone headline over an inline email field and subscribe button.
+<style>.hem{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.hem h1{margin:0;font:600 21px Inter,sans-serif;line-height:1.25;letter-spacing:-.02em;max-width:290px}
+.hem h1 b{color:var(--ink,#fff);font-weight:700}.hem h1 span{color:#6B7482}
+.hem .form{display:flex;gap:8px;width:100%;max-width:290px}
+.hem input{flex:1;height:38px;border-radius:99px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);color:var(--ink,#fff);padding:0 16px;font:500 12px Inter,sans-serif;outline:none}
+.hem input::placeholder{color:#6B7482}.hem input:focus{border-color:var(--accent,#3366FF)}
+.hem button{background:var(--accent,#3366FF);color:#fff;border:0;font:700 12px Inter,sans-serif;padding:0 18px;border-radius:99px;cursor:pointer}
+.hem .img{width:300px;height:110px;margin-top:2px;border-radius:16px;border:1px solid var(--line,#262C34);background:linear-gradient(160deg,#20252E,#0E1219);position:relative;overflow:hidden}
+.hem .img::after{content:"";position:absolute;inset:14px;border-radius:8px;background:repeating-linear-gradient(#2A2F38 0 7px,transparent 7px 20px)}</style>
+<div class="hem"><h1><b>GOOD WORK. Design Studio:</b> <span>build a site that converts.</span></h1><form class="form" onsubmit="return false"><input type="email" placeholder="Enter your email"><button>Subscribe</button></form><div class="img"></div></div>
+@@@ heroavatars :: Hero — Avatar Proof :: Sections :: A centred headline and dual CTAs above a stacked avatar group and social proof.
+<style>.hav{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px}
+.hav h1{margin:0;font:600 21px Inter,sans-serif;line-height:1.25;letter-spacing:-.02em;max-width:290px}
+.hav h1 b{color:var(--ink,#fff);font-weight:700}.hav h1 span{color:#6B7482}
+.hav .cta{display:flex;gap:10px}
+.hav .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hav .cta .p{background:var(--accent,#3366FF);color:#fff}.hav .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hav .proof{display:flex;align-items:center;gap:10px}
+.hav .stack{display:flex}
+.hav .stack i{width:26px;height:26px;border-radius:50%;border:2px solid #0B0E13;margin-left:-8px;display:block}
+.hav .stack i:first-child{margin-left:0}
+.hav .stack i:nth-child(1){background:linear-gradient(135deg,#7A5CFF,#3366FF)}.hav .stack i:nth-child(2){background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.hav .stack i:nth-child(3){background:linear-gradient(135deg,#F5A623,#C0392B)}.hav .stack i:nth-child(4){background:linear-gradient(135deg,#7C4DFF,#FF2E88)}
+.hav .proof span{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif}</style>
+<div class="hav"><h1><b>GOOD WORK. Design Studio:</b> <span>ship better web experiences.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="proof"><div class="stack"><i></i><i></i><i></i><i></i></div><span>Trusted by 12k+ designers</span></div></div>
+@@@ heroquote :: Hero — Testimonial Quote :: Sections :: A left-aligned headline and CTAs with a customer quote and avatar beneath.
+<style>.hqt{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 14px;display:flex;flex-direction:column;gap:12px}
+.hqt .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:99px;padding:4px 12px 4px 4px;color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif}
+.hqt .pill b{background:var(--accent,#3366FF);color:#fff;font:600 9px Inter,sans-serif;padding:2px 8px;border-radius:99px}
+.hqt h1{margin:0;color:var(--ink,#fff);font:600 20px Inter,sans-serif;line-height:1.2;letter-spacing:-.02em}
+.hqt .cta{display:flex;gap:10px}
+.hqt .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hqt .cta .p{background:var(--accent,#3366FF);color:#fff}.hqt .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hqt .q{display:flex;gap:10px;align-items:flex-start;margin-top:4px}
+.hqt .q .av{width:36px;height:36px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--accent-2,#7A5CFF),var(--accent,#3366FF))}
+.hqt .q p{margin:0;color:var(--ink,#fff);font:500 12px Inter,sans-serif}
+.hqt .q span{color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}</style>
+<div class="hqt"><span class="pill"><b>Update</b> Browse new layouts →</span><h1>A component library built to help teams design better web experiences.</h1><div class="cta"><a class="p">Get started</a><a class="s">Contact us</a></div><div class="q"><span class="av"></span><div><p>&ldquo;Sleek design, exceeds expectations, highly recommended!&rdquo;</p><span>Emily Jones, Design Head @ Glyph</span></div></div></div>
+@@@ herologos :: Hero — Logo Row :: Sections :: A left-aligned headline and CTAs above a row of muted company wordmarks.
+<style>.hlg{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 14px;display:flex;flex-direction:column;gap:13px}
+.hlg .kick{color:var(--body,#B6BDC8);font:600 9px 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase}
+.hlg h1{margin:0;color:var(--ink,#fff);font:600 20px Inter,sans-serif;line-height:1.2;letter-spacing:-.02em}
+.hlg .cta{display:flex;gap:10px}
+.hlg .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hlg .cta .p{background:var(--accent,#3366FF);color:#fff}.hlg .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hlg .logos{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:2px}
+.hlg .logos span{color:#8A93A2;font:800 13px Inter,sans-serif;letter-spacing:-.02em;opacity:.8}</style>
+<div class="hlg"><span class="kick">Browse new layouts</span><h1>A component library built to help teams design better web experiences.</h1><div class="cta"><a class="p">Get started</a><a class="s">Contact us</a></div><div class="logos"><span>Google</span><span>Microsoft</span><span>Amazon</span><span>Netflix</span><span>YouTube</span></div></div>
+@@@ herostats :: Hero — Inline Stats :: Sections :: A centred headline and CTAs above four figures that count up on view.
+<style>.hst{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.hst h1{margin:0;color:var(--ink,#fff);font:700 22px Inter,sans-serif;line-height:1.15;letter-spacing:-.02em;max-width:290px}
+.hst h1 span{color:#6B7482;font-weight:600}
+.hst .cta{display:flex;gap:10px}
+.hst .cta a{font:700 12px Inter,sans-serif;padding:9px 18px;border-radius:99px;text-decoration:none}
+.hst .cta .p{background:var(--accent,#3366FF);color:#fff}.hst .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
+.hst .stats{display:flex;justify-content:space-between;width:100%;max-width:290px;gap:8px}
+.hst .st{display:flex;flex-direction:column;gap:2px}
+.hst .st b{color:var(--accent,#3366FF);font:600 20px 'JetBrains Mono',monospace}
+.hst .st span{color:var(--body,#B6BDC8);font:400 9px Inter,sans-serif}</style>
+<div class="hst"><h1>GOOD WORK. Design Studio: <span>a site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="stats"><div class="st"><b data-to="20" data-suf="k+">0</b><span>Happy users</span></div><div class="st"><b data-to="5" data-suf="k+">0</b><span>Sections</span></div><div class="st"><b data-to="100" data-suf="x">0</b><span>Faster dev</span></div><div class="st"><b data-pre="$" data-to="1" data-suf="M">0</b><span>Revenue</span></div></div></div>
+<script>(function(){var r=document.currentScript.parentNode.querySelector('.hst');var els=r.querySelectorAll('[data-to]');function run(){els.forEach(function(el){var to=parseFloat(el.getAttribute('data-to')),pre=el.getAttribute('data-pre')||'',suf=el.getAttribute('data-suf')||'',dur=1400,st=null;function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/dur,1);el.textContent=pre+Math.floor(p*to)+(p===1?suf:'');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){run();io.disconnect();}});});io.observe(r);})();</script>
+@@@ optionwheel :: Option Wheel :: Components :: A curved 3D wheel picker — scroll, drag or click; the centred option snaps sharp while the rest fade and blur.
+<style>.owl{width:220px;height:210px;position:relative;perspective:620px;font-family:Inter,system-ui,sans-serif;-webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);cursor:grab;user-select:none;touch-action:none}
+.owl.drag{cursor:grabbing}
+.owl .ring{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.owl .it{position:absolute;top:50%;left:0;right:0;margin-top:-16px;height:32px;display:flex;align-items:center;justify-content:center;font:700 19px Inter,sans-serif;color:#6B7482;backface-visibility:hidden;transition:color .2s}
+.owl .it.on{color:var(--ink,#fff)}
+.owl .marker{position:absolute;left:0;right:0;top:50%;height:34px;margin-top:-17px;border-top:1px solid var(--line,#262C34);border-bottom:1px solid var(--line,#262C34);pointer-events:none}
+.owl .marker::before{content:"";position:absolute;left:6px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--accent,#3366FF);box-shadow:0 0 8px var(--accent,#3366FF)}</style>
+<div class="owl"><div class="marker"></div><div class="ring" id="owr"></div></div>
+<script>(function(){var root=document.currentScript.parentNode.querySelector('.owl');var ring=root.querySelector('#owr');var items=['Ambient','House','Techno','Jazz','Lo-Fi','Synthwave'];var R=120,STEP=22,sel=2;items.forEach(function(t){var d=document.createElement('div');d.className='it';d.textContent=t;ring.appendChild(d);});var els=ring.querySelectorAll('.it');function render(){ring.style.transform='rotateX('+(sel*STEP)+'deg)';els.forEach(function(el,i){el.style.transform='rotateX('+(-i*STEP)+'deg) translateZ('+R+'px)';var d=Math.abs(i-sel);el.classList.toggle('on',d<0.5);el.style.opacity=Math.max(0,1-d*0.3);el.style.filter='blur('+Math.min(d*0.9,3)+'px)';});}function set(n){sel=Math.max(0,Math.min(items.length-1,n));render();}els.forEach(function(el,i){el.addEventListener('click',function(){set(i);});});root.addEventListener('wheel',function(e){e.preventDefault();set(sel+(e.deltaY>0?1:-1));},{passive:false});var down=false,sy=0,ss=0;root.addEventListener('pointerdown',function(e){down=true;sy=e.clientY;ss=sel;root.classList.add('drag');});window.addEventListener('pointermove',function(e){if(!down)return;set(Math.round(ss-(e.clientY-sy)/30));});window.addEventListener('pointerup',function(){down=false;root.classList.remove('drag');});render();})();</script>
+@@@ magicbento :: Magic Bento :: Components :: A bento grid where each tile lights a cursor spotlight, a glowing border and twinkling stars, with a click ripple.
+<style>.mbn{width:320px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:78px;gap:10px;font-family:Inter,system-ui,sans-serif}
+.mbn .c{position:relative;border:1px solid var(--line,#262C34);border-radius:14px;background:var(--card,#171B22);overflow:hidden;padding:12px;cursor:pointer;transition:transform .18s}
+.mbn .c.wide{grid-column:span 2}
+.mbn .c .lbl{position:relative;z-index:3;color:var(--ink,#fff);font:700 12px Inter,sans-serif}
+.mbn .c .sub{position:relative;z-index:3;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif;margin-top:3px}
+.mbn .c .spot{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity .3s;background:radial-gradient(170px circle at var(--mx,50%) var(--my,50%),rgba(51,102,255,.20),transparent 62%)}
+.mbn .c:hover .spot{opacity:1}
+.mbn .c .glow{position:absolute;inset:0;z-index:2;border-radius:14px;padding:1px;opacity:0;transition:opacity .3s;background:radial-gradient(150px circle at var(--mx,50%) var(--my,50%),var(--accent,#3366FF),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.mbn .c:hover .glow{opacity:1}
+.mbn .c i{position:absolute;z-index:1;width:3px;height:3px;border-radius:50%;background:var(--accent-2,#7A5CFF);opacity:0}
+.mbn .c:hover i{animation:mbtwk 1.3s ease-in-out infinite}
+.mbn .c i:nth-child(2){left:22%;top:30%;animation-delay:.1s}.mbn .c i:nth-child(3){left:70%;top:24%;animation-delay:.4s}.mbn .c i:nth-child(4){left:55%;top:68%;animation-delay:.7s}.mbn .c i:nth-child(5){left:33%;top:76%;animation-delay:1s}
+@keyframes mbtwk{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1)}}
+.mbn .c:active{transform:scale(.98)}
+.mbn .c .rip{position:absolute;z-index:4;width:8px;height:8px;border-radius:50%;background:var(--accent,#3366FF);transform:translate(-50%,-50%);opacity:.55;pointer-events:none;animation:mbrip .6s ease-out forwards}
+@keyframes mbrip{to{transform:translate(-50%,-50%) scale(16);opacity:0}}
+@media(prefers-reduced-motion:reduce){.mbn .c:hover i{animation:none}}</style>
+<div class="mbn">
+<div class="c wide"><span class="spot"></span><span class="glow"></span><i></i><i></i><i></i><i></i><div class="lbl">Magic Bento</div><div class="sub">Hover for stars, spotlight and a glowing border.</div></div>
+<div class="c"><span class="spot"></span><span class="glow"></span><i></i><i></i><i></i><i></i><div class="lbl">Spotlight</div></div>
+<div class="c"><span class="spot"></span><span class="glow"></span><i></i><i></i><i></i><i></i><div class="lbl">Border Glow</div></div>
+<div class="c"><span class="spot"></span><span class="glow"></span><i></i><i></i><i></i><i></i><div class="lbl">Particles</div></div>
+<div class="c"><span class="spot"></span><span class="glow"></span><i></i><i></i><i></i><i></i><div class="lbl">Click Ripple</div></div>
+</div>
+<script>(function(){var root=document.currentScript.parentNode.querySelector('.mbn');root.querySelectorAll('.c').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');});c.addEventListener('pointerdown',function(e){var r=c.getBoundingClientRect();var s=document.createElement('span');s.className='rip';s.style.left=(e.clientX-r.left)+'px';s.style.top=(e.clientY-r.top)+'px';c.appendChild(s);setTimeout(function(){s.remove();},600);});});})();</script>
+@@@ circulargallery :: Circular Gallery :: Carousels :: A cover-flow of image cards bent along an arc — drag, scroll or let it drift; the centre card faces you.
+<style>.cgl{width:330px;height:200px;position:relative;perspective:900px;overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:grab;user-select:none;touch-action:pan-y}
+.cgl.drag{cursor:grabbing}
+.cgl .stage{position:absolute;inset:0;transform-style:preserve-3d}
+.cgl .card{position:absolute;left:50%;top:50%;width:120px;height:150px;margin:-80px 0 0 -60px;border-radius:12px;overflow:hidden;border:1px solid var(--line,#262C34);transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .45s;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.cgl .card .img{height:120px}
+.cgl .card .cap{height:30px;display:flex;align-items:center;justify-content:center;background:var(--card,#171B22);color:var(--ink,#fff);font:700 11px Inter,sans-serif}
+.cgl .g0 .img{background:linear-gradient(135deg,#7A5CFF,#C0392B)}.cgl .g1 .img{background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.cgl .g2 .img{background:linear-gradient(135deg,#F5A623,#3366FF)}.cgl .g3 .img{background:linear-gradient(135deg,#7C4DFF,#FF2E88)}.cgl .g4 .img{background:linear-gradient(135deg,#1E9E6A,#5B5BFF)}.cgl .g5 .img{background:linear-gradient(135deg,#3366FF,#7C4DFF)}</style>
+<div class="cgl"><div class="stage" id="cgs"></div></div>
+<script>(function(){var root=document.currentScript.parentNode.querySelector('.cgl');var stage=root.querySelector('#cgs');var labels=['Mountain','Forest','Summit','Ocean','Meadow','Desert'];var cards=labels.map(function(t,i){var d=document.createElement('div');d.className='card g'+i;d.innerHTML='<div class="img"></div><div class="cap">'+t+'</div>';stage.appendChild(d);return d;});var c=0,N=labels.length,timer;function render(){cards.forEach(function(el,i){var o=i-c;if(o>N/2)o-=N;if(o<-N/2)o+=N;el.style.transform='translateX('+(o*72)+'px) translateZ('+(-Math.abs(o)*90)+'px) rotateY('+(-o*38)+'deg)';el.style.opacity=Math.max(0,1-Math.abs(o)*0.34);el.style.zIndex=String(20-Math.abs(o));});}function set(n){c=(n%N+N)%N;render();}cards.forEach(function(el,i){el.addEventListener('click',function(){set(i);reset();});});root.addEventListener('wheel',function(e){e.preventDefault();set(c+(e.deltaY>0?1:-1));reset();},{passive:false});var down=false,sx=0,sc=0;root.addEventListener('pointerdown',function(e){down=true;sx=e.clientX;sc=c;root.classList.add('drag');clearInterval(timer);});window.addEventListener('pointermove',function(e){if(!down)return;set(Math.round(sc-(e.clientX-sx)/80));});window.addEventListener('pointerup',function(){if(down){down=false;root.classList.remove('drag');reset();}});function reset(){clearInterval(timer);timer=setInterval(function(){set(c+1);},2600);}root.addEventListener('mouseenter',function(){clearInterval(timer);});root.addEventListener('mouseleave',reset);render();reset();})();</script>
+@@@ infinitespiral :: Infinite Spiral :: Carousels :: Image cards wound into a slowly turning vertical helix, sharp at the centre and fading at the edges.
+<style>.isp{width:250px;height:230px;position:relative;perspective:800px;overflow:hidden;font-family:Inter,system-ui,sans-serif;-webkit-mask:linear-gradient(transparent,#000 24%,#000 76%,transparent);mask:linear-gradient(transparent,#000 24%,#000 76%,transparent)}
+.isp .drum{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;animation:ispspin 14s linear infinite}
+.isp:hover .drum{animation-play-state:paused}
+.isp .card{position:absolute;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.12);backface-visibility:hidden;filter:grayscale(1) contrast(1.05)}
+.isp .g0{background:linear-gradient(135deg,#7A5CFF,#C0392B)}.isp .g1{background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.isp .g2{background:linear-gradient(135deg,#F5A623,#3366FF)}.isp .g3{background:linear-gradient(135deg,#7C4DFF,#FF2E88)}.isp .g4{background:linear-gradient(135deg,#1E9E6A,#5B5BFF)}.isp .g5{background:linear-gradient(135deg,#3366FF,#7C4DFF)}.isp .g6{background:linear-gradient(135deg,#C0392B,#F5A623)}
+@keyframes ispspin{to{transform:rotateY(360deg)}}
+@media(prefers-reduced-motion:reduce){.isp .drum{animation:none}}</style>
+<div class="isp"><div class="drum" id="isd"></div></div>
+<script>(function(){var drum=document.currentScript.parentNode.querySelector('#isd');var N=7,R=150,VS=26;for(var i=0;i<N;i++){var d=document.createElement('div');d.className='card g'+i;var ang=i*(360/N);d.style.transform='rotateY('+ang+'deg) translateZ('+R+'px) translateY('+((i-(N-1)/2)*VS)+'px)';drum.appendChild(d);}})();</script>
