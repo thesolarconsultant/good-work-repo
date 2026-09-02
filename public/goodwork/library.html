@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#0B0E13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Josefin+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 /* GOOD WORK. brand mark — gradient disc, not the engine's original sun. */
 .sun .ray, .sun .face { display: none !important; }
@@ -13,7 +13,7 @@
     --bg:#0B0E13; --panel:#0F131A; --card:#12161C; --line:#222834; --line-2:#2C3442;
     --ink:#F4F6F9; --muted:#8A93A2; --accent:#3366FF; --accent-2:#7A5CFF;
     --radius:16px; --ease:cubic-bezier(.22,1,.36,1);
-    --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Poppins',system-ui,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
@@ -33,7 +33,7 @@
   .sun .eye{width:4px;height:4px;border-radius:50%;background:#0B0E13}
   .sun .eye.r{animation:wink 3.6s ease-in-out infinite;transform-origin:center}
   @keyframes wink{0%,86%,100%{transform:scaleY(1)}92%{transform:scaleY(.1)}}
-  .brand b{font-family:'Josefin Sans',var(--sans);font-weight:700;font-size:26px;letter-spacing:.02em}
+  .brand b{font-family:Poppins,var(--sans);font-weight:700;font-size:26px;letter-spacing:.02em}
   .brand small{display:block;font-size:11px;letter-spacing:.34em;color:var(--accent-2);font-weight:700;margin-top:2px}
   .top__spacer{flex:1}
   .top__count{font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);
@@ -181,12 +181,12 @@ document.getElementById('count').textContent = COMPS.length + ' components';
 // build the header sun's rays
 (function(){var s=document.getElementById('headsun');for(var i=0;i<12;i++){var r=document.createElement('span');r.className='ray';r.style.transform='rotate('+(i*30)+'deg) translateY(-17px)';s.appendChild(r);}})();
 
-const FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=JetBrains+Mono:wght@700&display=swap">';
+const FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=JetBrains+Mono:wght@700&display=swap">';
 const WRAP = code => '<!doctype html><html><head><meta charset="utf-8">' + FONTS +
   '<style>:root{--accent:#3366FF;--accent-2:#7A5CFF;--ink:#F4F6F9;--card:#171B22;--line:#262C34}' +
   '*{box-sizing:border-box}html,body{height:100%;margin:0}' +
   'body{display:grid;place-items:center;background:transparent;color:var(--ink);' +
-  'font-family:Inter,system-ui,sans-serif;overflow:hidden;padding:18px;text-align:center}</style></head><body>' +
+  'font-family:Poppins,system-ui,sans-serif;overflow:hidden;padding:18px;text-align:center}</style></head><body>' +
   code + '</body></html>';
 
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
