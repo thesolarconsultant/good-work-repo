@@ -1,4 +1,4 @@
-<title>OMNIV Brand Studio</title>
+<title>GOOD WORK. Brand Studio</title>
 <meta name="description" content="Enter brand guidelines, pick an industry, edit every area, choose the motions, and prompt changes in plain English — the engine renders a live website you can copy.">
 <meta name="theme-color" content="#0B0E13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,7 +78,7 @@
 </style>
 
 <header class="top">
-  <span class="brand"><span class="sun" id="sun"><span class="disc"></span></span><span><b>OMNIV</b><small>BRAND STUDIO</small></span></span>
+  <span class="brand"><span class="sun" id="sun"><span class="disc"></span></span><span><b>GOOD WORK.</b><small>BRAND STUDIO</small></span></span>
   <span class="sp"></span>
   <span class="rec" id="rec"></span>
   <button class="btn" id="surprise" title="Randomise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
@@ -294,7 +294,7 @@ const B={
   testimonials:c=>{const t=c.testimonials||GENERIC.testimonials;return `<section class="sec"><div class="wrap"><div class="sec__h reveal"><h2>${T('testimonials.title','What people say')}</h2></div><div class="tst">${t.map((q,i)=>`<div class="q reveal">${T('tst.'+i+'.q',q[0])}<b>${T('tst.'+i+'.by',q[1])}</b></div>`).join('')}</div></div></section>`;},
   logos:c=>{const l=GENERIC.logos.concat(GENERIC.logos);return `<section class="sec"><div class="wrap"><div class="logos"><ul>${l.map(x=>`<li>${x}</li>`).join('')}</ul></div></div></section>`;},
   cta:c=>{const q=c.cta||['Ready to start?','Get in touch and we will take it from here.','Get started'];return `<section class="cta"><div class="wrap"><div class="cta__b reveal"><h2>${T('cta.title',q[0])}</h2><p>${T('cta.sub',q[1])}</p><a class="btn btn--p">${T('cta.btn',q[2])}</a></div></div></section>`;},
-  footer:c=>`<footer class="ft"><div class="ft__in"><div><div class="logo">${S.name}</div><p>${S.tag}</p></div><div class="ft__c"><div><h4>Company</h4><a>About</a><a>Careers</a><a>Contact</a></div><div><h4>More</h4><a>Blog</a><a>Support</a><a>Legal</a></div></div></div><div class="ft__base">© ${S.name}. Built on the OMNIV engine.</div></footer>`
+  footer:c=>`<footer class="ft"><div class="ft__in"><div><div class="logo">${S.name}</div><p>${S.tag}</p></div><div class="ft__c"><div><h4>Company</h4><a>About</a><a>Careers</a><a>Contact</a></div><div><h4>More</h4><a>Blog</a><a>Support</a><a>Legal</a></div></div></div><div class="ft__base">© ${S.name}. Built on the GOOD WORK. engine.</div></footer>`
 };
 
 function activeSections(){return RECIPES[S.ind].sections.filter(s=>!S.hidden[s]);}

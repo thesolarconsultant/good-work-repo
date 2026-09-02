@@ -1,7 +1,7 @@
 /* ============================================================================
-   OMNIV Motion — auto-wiring runtime.  <script src="omniv-motion.js" defer>
+   GOODWORK Motion — auto-wiring runtime.  <script src="goodwork-motion.js" defer>
    On load it scans the whole document and wires every scripted motion from
-   data-attributes. Call OMNIV.init(root) again after injecting dynamic content.
+   data-attributes. Call GOODWORK.init(root) again after injecting dynamic content.
    All effects no-op under prefers-reduced-motion.
 
    Cheat sheet (add to any element):
@@ -161,15 +161,15 @@
     }
   };
 
-  var OMNIV = {
+  var GOODWORK = {
     version: "1.0.0",
     init: function (root) {
       root = root || document;
       for (var k in M) if (M.hasOwnProperty(k)) { try { M[k](root); } catch (e) { /* keep going */ } }
-      return OMNIV;
+      return GOODWORK;
     }
   };
-  global.OMNIV = OMNIV;
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { OMNIV.init(); });
-  else OMNIV.init();
+  global.GOODWORK = GOODWORK;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { GOODWORK.init(); });
+  else GOODWORK.init();
 })(window);

@@ -1,4 +1,4 @@
-# OMNIV Motion — one include, all movement
+# GOOD WORK. Motion — one include, all movement
 
 Drop two files into any site and **every motion is available at once**. Add a
 class or a `data-` attribute to an element and it animates — the runtime wires
@@ -8,8 +8,8 @@ per-element JavaScript. Works in plain HTML, React, Vue, anything.
 ## Install (the whole kit, one time)
 
 ```html
-<link rel="stylesheet" href="/engine/motion/omniv-motion.css">
-<script src="/engine/motion/omniv-motion.js" defer></script>
+<link rel="stylesheet" href="/engine/motion/goodwork-motion.css">
+<script src="/engine/motion/goodwork-motion.js" defer></script>
 ```
 
 That's it. Everything below now works anywhere on the page. Colour comes from
@@ -68,7 +68,7 @@ whatever `brand.css` sets, the motion matches.
 ## Dynamic content
 
 The runtime auto-runs on `DOMContentLoaded`. After you inject new markup
-(SPA route change, a fetched list), call `OMNIV.init(container)` to wire it.
+(SPA route change, a fetched list), call `GOODWORK.init(container)` to wire it.
 
 ## Accessibility
 

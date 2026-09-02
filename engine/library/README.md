@@ -1,6 +1,6 @@
-# OMNIV Motion Library
+# GOOD WORK. Motion Library
 
-A living catalog of every motion, button, text effect and block in the OMNIV
+A living catalog of every motion, button, text effect and block in the GOOD WORK.
 engine. Each entry has a **live preview**, a **one-click copy**, and a
 **view-the-code** panel, filterable by category (Buttons · Text · Data · Reveal
 · Structure). Open `index.html` in a browser.

@@ -25,8 +25,8 @@ const cats = ["All", ...present.sort((a, b) => {
 
 const data = JSON.stringify(comps).replace(/<\/script/gi, "<\\/script");
 
-const page = `<title>OMNIV Library</title>
-<meta name="description" content="Every motion, button and block from the OMNIV engine — live previews and copy-ready code.">
+const page = `<title>GOOD WORK. Library</title>
+<meta name="description" content="Every motion, button and block from the GOOD WORK. engine — live previews and copy-ready code.">
 <meta name="theme-color" content="#0B0E13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -155,7 +155,7 @@ const page = `<title>OMNIV Library</title>
   <div class="wrap top__in">
     <span class="brand">
       <span class="sun" id="headsun"><span class="disc"></span><span class="face"><span class="eye l"></span><span class="eye r"></span></span></span>
-      <span><b>OMNIV</b><small>MOTION LIBRARY</small></span>
+      <span><b>GOOD WORK.</b><small>MOTION LIBRARY</small></span>
     </span>
     <span class="top__spacer"></span>
     <span class="top__count" id="count"></span>
@@ -168,8 +168,8 @@ const page = `<title>OMNIV Library</title>
       <span class="sp"></span>
       <button class="install__btn" id="installBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy install</button>
     </div>
-    <pre id="installCode"><span class="k">&lt;link</span> rel=<span class="a">"stylesheet"</span> href=<span class="a">"/engine/motion/omniv-motion.css"</span><span class="k">&gt;</span>
-<span class="k">&lt;script</span> src=<span class="a">"/engine/motion/omniv-motion.js"</span> defer<span class="k">&gt;&lt;/script&gt;</span>
+    <pre id="installCode"><span class="k">&lt;link</span> rel=<span class="a">"stylesheet"</span> href=<span class="a">"/engine/motion/goodwork-motion.css"</span><span class="k">&gt;</span>
+<span class="k">&lt;script</span> src=<span class="a">"/engine/motion/goodwork-motion.js"</span> defer<span class="k">&gt;&lt;/script&gt;</span>
 <span style="color:#5a6472">&lt;!-- then add a class (om-shimmer, om-aurora…) or a data-attr (data-om-reveal,
      data-om-count, data-om-ticker, data-om-typing, data-om-magnetic…) anywhere --&gt;</span></pre>
   </div></div>
@@ -177,7 +177,7 @@ const page = `<title>OMNIV Library</title>
 
 <div class="bar"><div class="wrap bar__in" id="chips"></div></div>
 <main class="wrap"><div class="grid" id="grid"></div></main>
-<footer class="wrap">Part of the OMNIV engine — the full block library, tokens and build docs live in <b>engine/</b> and <b>.claude/skills/brand-site/</b>. Swap <code>brand.css</code> and every motion here reskins to a new identity.</footer>
+<footer class="wrap">Part of the GOOD WORK. engine — the full block library, tokens and build docs live in <b>engine/</b> and <b>.claude/skills/brand-site/</b>. Swap <code>brand.css</code> and every motion here reskins to a new identity.</footer>
 <div class="tray" id="tray">
   <div class="tray__bar">
     <span class="tray__n"><b id="trayCount">0 pieces</b> selected for your site</span>
@@ -286,7 +286,7 @@ function copy(text){
 }
 
 document.getElementById('installBtn').addEventListener('click', function(){
-  copy('<link rel="stylesheet" href="/engine/motion/omniv-motion.css">\\n<script src="/engine/motion/omniv-motion.js" defer><\\/script>');
+  copy('<link rel="stylesheet" href="/engine/motion/goodwork-motion.css">\\n<script src="/engine/motion/goodwork-motion.js" defer><\\/script>');
 });
 
 // ---- selection → build prompt ----

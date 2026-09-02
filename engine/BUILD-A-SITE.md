@@ -5,7 +5,7 @@ website. This is how.
 
 The whole idea in one line: **every colour, font and corner on the site reads
 from a token. `brand.css` sets the tokens. Change `brand.css`, change the
-site — nothing else moves.** Proven on the live OMNIV homepage: same HTML,
+site — nothing else moves.** Proven on the live GOOD WORK. homepage: same HTML,
 three totally different brands, only the token block swapped.
 
 ---
@@ -16,7 +16,7 @@ three totally different brands, only the token block swapped.
    (`assets/css/`), and the blocks you want from the catalog below.
 2. **Fill the knob.** Open `brand.css` and set the seven things a brand owns
    (accent, neutrals, fonts, radius, dark band, hero scrim, shadows). There's
-   a filled example (OMNIV) and three ready-made pastes in the swatch book at
+   a filled example (GOOD WORK.) and three ready-made pastes in the swatch book at
    the bottom of the file.
 3. **Drop the logo + fonts.** Put the brand's logo in `assets/img/` and point
    `--font-*` at its typefaces (self-hosted `@font-face` or a Google Fonts
@@ -50,7 +50,7 @@ colour wants to be a token. That's the one rule that keeps the engine an engine.
 
 Every block uses the same token vocabulary. `--accent` for the bold moments,
 `--ink`/`--body` for type, `--card`/`--line` for surfaces, `--radius` for
-corners, `--font-head`/`--font-body` for type. Structure below; the live OMNIV
+corners, `--font-head`/`--font-body` for type. Structure below; the live GOOD WORK.
 pages are the reference implementation of each.
 
 ### `nav` — top bar
@@ -61,7 +61,7 @@ Logo + links + one accent CTA. Tokens: `--card` (pill bg), `--line`, `--ink`,
 Full-bleed media + eyebrow + two-line headline (second line in `--grad-text`)
 + sub + primary/ghost CTAs. Tokens: `--scrim-rgb` + `--hero-media-filter`
 (legibility wash), `--ink`, `--accent`, `--grad-text`, `--radius`.
-Motion: the OMNIV hero scrubs day→night on scroll — optional, driven by
+Motion: the GOOD WORK. hero scrubs day→night on scroll — optional, driven by
 `scrollstage.js`.
 
 ### `trust` — proof strip
@@ -91,7 +91,7 @@ Always the dark tokens even on a light site. Tokens: `--dark`, `--on-dark`,
 
 ### `divider` — section wave
 The one shape between sections. The wash either side reads `--cream`/`--dark`
-and the traced line follows `--accent` (via the shared `#omnivDividerGrad`
+and the traced line follows `--accent` (via the shared `#goodworkDividerGrad`
 gradient, whose stops are driven from the accent tokens).
 
 ---

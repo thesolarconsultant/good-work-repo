@@ -66,7 +66,7 @@ play();setInterval(play,3200);
 <style>.sc{font:800 30px 'JetBrains Mono',ui-monospace,monospace;color:var(--accent,#FF5722);letter-spacing:.04em}</style>
 <div class="sc" id="sc"></div>
 <script>
-var target="OMNIV ENERGY",chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&",el=document.getElementById('sc');
+var target="GOOD WORK. ENERGY",chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&",el=document.getElementById('sc');
 function scramble(){var it=0;var iv=setInterval(function(){
  el.textContent=target.split('').map(function(c,i){return i<it?c:(c===' '?' ':chars[Math.floor(Math.random()*chars.length)]);}).join('');
  it+=1/3;if(it>=target.length){el.textContent=target;clearInterval(iv);}},40);}
@@ -147,7 +147,7 @@ p();setInterval(p,3000);</script>
 <div class="mq"><ul id="mq"></ul></div>
 <script>var names=['Enphase','JA Solar','LONGi','Huawei','GoodWe','Tesla'];
 document.getElementById('mq').innerHTML=names.concat(names).map(function(n){return '<li>'+n+'</li>';}).join('');</script>
-@@@ wink :: Winking Sun Mark :: Special Effects :: The OMNIV signature — the sun blinks one eye.
+@@@ wink :: Winking Sun Mark :: Special Effects :: The GOOD WORK. signature — the sun blinks one eye.
 <style>.sun{position:relative;width:96px;height:96px}
 .sun .disc{position:absolute;inset:20px;border-radius:50%;background:var(--accent,#FF5722)}
 .sun .ray{position:absolute;left:50%;top:50%;width:5px;height:13px;margin:-6px 0 0 -2px;border-radius:3px;background:var(--accent,#FF5722)}
@@ -218,7 +218,7 @@ roll();setInterval(reset,3400);</script>
  background:linear-gradient(90deg,#5a6472 0%,#5a6472 40%,#fff 50%,#5a6472 60%,#5a6472 100%);background-size:220% 100%;
  -webkit-background-clip:text;background-clip:text;color:transparent;animation:stm 3s linear infinite}
 @keyframes stm{to{background-position:-220% 0}}</style>
-<div class="st">&#10024; Introducing OMNIV</div>
+<div class="st">&#10024; Introducing GOOD WORK.</div>
 @@@ aurora :: Aurora Text :: Text Animations :: A living gradient of warm hues flows through the letters.
 <style>.au{font:900 42px Inter,sans-serif;letter-spacing:-.03em;
  background:linear-gradient(115deg,#FF5722,#FF9466,#FFD36A,#FF5722,#D9481F);background-size:300% 100%;
@@ -362,13 +362,13 @@ setInterval(function(){i=(i+1)%words.length;nxt.textContent=words[i];nxt.classLi
 .spin text{font:700 14px Inter,sans-serif;fill:var(--accent,#FF5722);letter-spacing:2px}
 @keyframes spinr{to{transform:rotate(360deg)}}</style>
 <svg class="spin" viewBox="0 0 120 120"><defs><path id="cir" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
-<text><textPath href="#cir">OMNIV • CLEAN ENERGY • ENDLESS FUTURE • </textPath></text><circle cx="60" cy="60" r="15" fill="var(--accent,#FF5722)"/></svg>
+<text><textPath href="#cir">GOOD WORK. • CLEAN ENERGY • ENDLESS FUTURE • </textPath></text><circle cx="60" cy="60" r="15" fill="var(--accent,#FF5722)"/></svg>
 @@@ fliptext :: Flip Text :: Text Animations :: Each letter flips up into place.
 <style>.flp{font:900 34px Inter,sans-serif;color:var(--ink,#fff);perspective:500px}
 .flp span{display:inline-block;animation:flip .6s cubic-bezier(.22,1,.36,1) both}
 @keyframes flip{from{transform:rotateX(-90deg);opacity:0}to{transform:none;opacity:1}}</style>
 <div class="flp" id="flp"></div>
-<script>var t="OMNIV",el=document.getElementById('flp');
+<script>var t="GOOD WORK.",el=document.getElementById('flp');
 function play(){el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.08)+'s">'+c+'</span>';}).join('');}
 play();setInterval(play,2600);</script>
 @@@ boxreveal :: Box Reveal :: Text Animations :: A coloured box wipes across and leaves the text behind.
@@ -391,7 +391,7 @@ play();setInterval(play,3800);</script>
 @@@ lineshadow :: Line Shadow Text :: Text Animations :: A hard offset shadow breathes behind the type.
 <style>.lsh{font:900 44px Inter,sans-serif;color:var(--ink,#fff);animation:lsh 2s ease-in-out infinite}
 @keyframes lsh{0%,100%{text-shadow:3px 3px 0 var(--accent,#FF5722)}50%{text-shadow:8px 8px 0 var(--accent,#FF5722)}}</style>
-<div class="lsh">OMNIV</div>
+<div class="lsh">GOOD WORK.</div>
 @@@ comictext :: Comic Text :: Community :: Bold outlined pop-text with a wobble.
 <style>.cmc{font:900 46px Inter,sans-serif;color:var(--accent,#FF5722);-webkit-text-stroke:2px #0B0E13;
  text-shadow:4px 4px 0 rgba(0,0,0,.45);animation:cmc 1.2s ease-in-out infinite}
@@ -499,7 +499,7 @@ play();setInterval(play,3200);</script>
 .term .tbody{padding:10px 12px;color:#c9d2e0;min-height:78px;line-height:1.6}
 .term .tbody .p{color:var(--accent,#FF5722)}</style>
 <div class="term"><div class="tbar"><i></i><i></i><i></i></div><div class="tbody" id="tb"></div></div>
-<script>var lines=['$ omniv build','tokens loaded','43 motions wired','site ready ->'],tb=document.getElementById('tb');
+<script>var lines=['$ goodwork build','tokens loaded','43 motions wired','site ready ->'],tb=document.getElementById('tb');
 function play(){tb.innerHTML='';var i=0;(function next(){if(i>=lines.length)return;var l=lines[i],d=document.createElement('div');if(l[0]==='$')d.innerHTML='<span class="p">$</span>'+l.slice(1);else d.textContent='  '+l;tb.appendChild(d);i++;setTimeout(next,520);})();}
 play();setInterval(play,3800);</script>
 @@@ marqueev :: Vertical Marquee :: Components :: A seamless vertical scroll with faded ends.
@@ -553,7 +553,7 @@ document.getElementById('r2').innerHTML=b.concat(b).map(function(x){return '<li>
 .tw .n{font-weight:700;font-size:13px;color:var(--ink,#fff)}.tw .u{font-size:12px;color:#8A93A2}
 .tw p{margin:11px 0 0;font-size:13px;color:var(--ink,#fff);line-height:1.5}
 .tw .hl{color:var(--accent,#FF5722)}</style>
-<div class="tw"><div class="h"><div class="av"></div><div><div class="n">OMNIV</div><div class="u">@omniv</div></div></div>
+<div class="tw"><div class="h"><div class="av"></div><div><div class="n">GOOD WORK.</div><div class="u">@goodwork</div></div></div>
 <p>Switched the whole house to solar + battery. Bills down <span class="hl">78%</span>. The future, by the hand. ⚡</p></div>
 @@@ globe :: Globe :: Components :: A slowly spinning wireframe globe.
 <style>.globe{position:relative;width:126px;height:126px;border-radius:50%;overflow:hidden;
@@ -593,7 +593,7 @@ s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();tx=
 .pbl .bg{position:absolute;inset:0;background:linear-gradient(135deg,#FF5722,#FF9466,#6C2BD9);font:900 22px Inter,sans-serif;color:#fff;display:grid;place-items:end center;padding-bottom:14px}
 .pbl .blur{position:absolute;left:0;right:0;bottom:0;height:60%;backdrop-filter:blur(8px);
  -webkit-mask:linear-gradient(transparent,#000);mask:linear-gradient(transparent,#000)}</style>
-<div class="pbl"><div class="bg">OMNIV</div><div class="blur"></div></div>
+<div class="pbl"><div class="bg">GOOD WORK.</div><div class="blur"></div></div>
 @@@ dottedmap :: Dotted Map :: Components :: A dot field with a highlighted route.
 <style>.dmap{position:relative;width:240px;height:130px;border-radius:14px;background:#0b0e13;border:1px solid var(--line,#262C34);
  background-image:radial-gradient(rgba(160,170,190,.35) 1.1px,transparent 1.1px);background-size:12px 12px;overflow:hidden}
@@ -628,7 +628,7 @@ s.addEventListener('pointermove',function(e){var r=s.getBoundingClientRect();tx=
  background:linear-gradient(60deg,#FF5722,#6C2BD9,#FF9466,#FFD36A,#FF5722);background-size:400% 400%;
  -webkit-background-clip:text;background-clip:text;color:transparent;animation:vtm 6s ease infinite}
 @keyframes vtm{0%{background-position:0 0}50%{background-position:100% 100%}100%{background-position:0 0}}</style>
-<div class="vt">OMNIV</div>
+<div class="vt">GOOD WORK.</div>
 @@@ hypertext :: Hyper Text :: Text Animations :: Letters scramble, then lock into place.
 <style>.hyp{font:800 30px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink,#fff);letter-spacing:.06em}</style>
 <div class="hyp" id="hyp"></div>
@@ -660,24 +660,24 @@ run();setInterval(run,3000);</script>
 .kin span{display:inline-block;animation:kin 1.2s ease-in-out infinite}
 @keyframes kin{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}</style>
 <div class="kin" id="kin"></div>
-<script>var t="OMNIV",el=document.getElementById('kin');el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.1)+'s">'+c+'</span>';}).join('');</script>
+<script>var t="GOOD WORK.",el=document.getElementById('kin');el.innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(i*0.1)+'s">'+c+'</span>';}).join('');</script>
 @@@ safari :: Safari Frame :: Device Mocks :: A desktop browser mockup.
 <style>.saf{width:260px;border-radius:12px;overflow:hidden;border:1px solid var(--line,#262C34);background:#0b0e13}
 .saf .bar{display:flex;align-items:center;gap:7px;padding:9px 11px;background:#12161c}
 .saf .bar i{width:9px;height:9px;border-radius:50%;background:#2f313c}
 .saf .url{flex:1;margin-left:8px;height:18px;border-radius:6px;background:#0b0e13;border:1px solid #262C34;font:500 10px 'JetBrains Mono',monospace;color:#8A93A2;display:flex;align-items:center;padding:0 10px}
 .saf .screen{height:120px;background:linear-gradient(135deg,#1a2233,#0b0e13);display:grid;place-items:center;color:var(--accent,#FF5722);font:900 22px Inter,sans-serif}</style>
-<div class="saf"><div class="bar"><i></i><i></i><i></i><span class="url">omniv.nl</span></div><div class="screen">OMNIV</div></div>
+<div class="saf"><div class="bar"><i></i><i></i><i></i><span class="url">goodwork.uk</span></div><div class="screen">GOOD WORK.</div></div>
 @@@ iphone :: iPhone Frame :: Device Mocks :: A phone mockup with notch.
 <style>.iph{width:132px;height:250px;border-radius:26px;background:#0b0e13;border:3px solid #262C34;padding:8px;position:relative}
 .iph .notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:52px;height:15px;background:#000;border-radius:0 0 12px 12px;z-index:2}
 .iph .screen{width:100%;height:100%;border-radius:18px;background:linear-gradient(160deg,#FF9466,var(--accent,#FF5722));display:grid;place-items:center;color:#fff;font:900 20px Inter,sans-serif}</style>
-<div class="iph"><span class="notch"></span><div class="screen">OMNIV</div></div>
+<div class="iph"><span class="notch"></span><div class="screen">GOOD WORK.</div></div>
 @@@ android :: Android Frame :: Device Mocks :: A phone mockup with punch-hole.
 <style>.and{width:132px;height:250px;border-radius:20px;background:#0b0e13;border:3px solid #262C34;padding:7px;position:relative}
 .and .hole{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:9px;height:9px;background:#000;border-radius:50%;z-index:2}
 .and .screen{width:100%;height:100%;border-radius:14px;background:linear-gradient(160deg,#1a2233,#0b0e13);display:grid;place-items:center;color:var(--accent,#FF5722);font:900 20px Inter,sans-serif}</style>
-<div class="and"><span class="hole"></span><div class="screen">OMNIV</div></div>
+<div class="and"><span class="hole"></span><div class="screen">GOOD WORK.</div></div>
 @@@ hexagon :: Hexagon Pattern :: Backgrounds :: A honeycomb grid with a drifting glow.
 <style>.hex{position:relative;width:240px;height:130px;border-radius:14px;overflow:hidden;border:1px solid var(--line,#262C34);background:#0b0e13}
 .hex::before{content:"";position:absolute;inset:0;opacity:.5;
@@ -724,7 +724,7 @@ run();setInterval(run,3000);</script>
 .ft .i{color:var(--accent,#FF5722)}
 @keyframes ftin{to{opacity:1}}</style>
 <div class="ft" id="ft"></div>
-<script>var rows=['📁 engine','&nbsp;&nbsp;<span class="i">◆</span> brand.css','&nbsp;&nbsp;📁 motion','&nbsp;&nbsp;&nbsp;&nbsp;<span class="i">◆</span> omniv-motion.js','&nbsp;&nbsp;📁 library'],ft=document.getElementById('ft');
+<script>var rows=['📁 engine','&nbsp;&nbsp;<span class="i">◆</span> brand.css','&nbsp;&nbsp;📁 motion','&nbsp;&nbsp;&nbsp;&nbsp;<span class="i">◆</span> goodwork-motion.js','&nbsp;&nbsp;📁 library'],ft=document.getElementById('ft');
 function play(){ft.innerHTML='';rows.forEach(function(r,i){var d=document.createElement('div');d.style.animationDelay=(i*0.2)+'s';d.innerHTML=r;ft.appendChild(d);});}
 play();setInterval(play,3400);</script>
 @@@ codecompare :: Code Comparison :: Community :: A before/after diff card.
@@ -758,7 +758,7 @@ b.addEventListener('click',burst);burst();setInterval(burst,2000);</script>
 <style>.gm{display:block;border-radius:14px;background:#050608;border:1px solid var(--line,#262C34)}</style>
 <canvas class="gm" id="gm" width="240" height="130"></canvas>
 <script>var cv=document.getElementById('gm'),x=cv.getContext('2d'),W=240,H=130,cols=Math.floor(W/12),yy=[];for(var i=0;i<cols;i++)yy[i]=Math.random()*H;
-var CH='01OMNIV<>/#';
+var CH='01GOOD WORK.<>/#';
 (function d(){x.fillStyle='rgba(5,6,8,.25)';x.fillRect(0,0,W,H);x.fillStyle='#FF5722';x.font='12px monospace';
 for(var i=0;i<cols;i++){x.globalAlpha=Math.random()*.6+.4;x.fillText(CH[Math.floor(Math.random()*CH.length)],i*12,yy[i]);yy[i]+=12;if(yy[i]>H&&Math.random()>.96)yy[i]=0;}x.globalAlpha=1;setTimeout(function(){requestAnimationFrame(d);},80);})();</script>
 @@@ carousel :: Carousel :: Carousels :: Slides auto-advance with animated dots.
@@ -978,22 +978,22 @@ var idx=0;function demo(){openItem(items[idx%items.length]);idx++;}demo();setInt
 .ftb .bot{border-top:1px solid var(--line,#262C34);padding:9px 0;display:flex;justify-content:space-between;align-items:center;font-size:9px}
 .ftb .soc{display:flex;gap:6px}.ftb .soc i{width:14px;height:14px;border-radius:4px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}</style>
 <div class="ftb"><div class="top">
-<div class="brand"><div class="lg"><i></i>OMNIV</div><h4>Get started today.</h4><div>Free quote. No obligation.</div><span class="cta">Start free →</span></div>
+<div class="brand"><div class="lg"><i></i>GOOD WORK.</div><h4>Get started today.</h4><div>Free quote. No obligation.</div><span class="cta">Start free →</span></div>
 <div class="cols"><div class="col"><h5>Product</h5><a>Features</a><a>Pricing</a><a>FAQ</a></div><div class="col"><h5>Company</h5><a>About</a><a>Blog</a><a>Careers</a></div><div class="col"><h5>Legal</h5><a>Privacy</a><a>Terms</a></div></div></div>
-<div class="bot"><div class="soc"><i></i><i></i></div><span>© OMNIV. All rights reserved.</span></div></div>
+<div class="bot"><div class="soc"><i></i><i></i></div><span>© GOOD WORK. All rights reserved.</span></div></div>
 @@@ footermin :: Footer — Minimal :: Sections :: Logo, inline links and social icons on one row.
 <style>.ftm{width:292px;padding:14px 0;border-top:1px solid var(--line,#262C34);display:flex;align-items:center;justify-content:space-between;font:600 11px Inter,system-ui,sans-serif;flex-wrap:wrap;gap:10px}
 .ftm .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px}.ftm .lg i{width:16px;height:16px;border-radius:50%;background:var(--accent,#FF5722)}
 .ftm ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}.ftm a{color:var(--body,#B6BDC8);text-decoration:none;transition:.2s}.ftm a:hover{color:var(--accent,#FF5722)}
 .ftm .soc{display:flex;gap:8px}.ftm .soc i{width:16px;height:16px;border-radius:4px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}</style>
-<div class="ftm"><span class="lg"><i></i>OMNIV</span><ul><li><a>About</a></li><li><a>Services</a></li><li><a>Contact</a></li></ul><span class="soc"><i></i><i></i><i></i></span></div>
+<div class="ftm"><span class="lg"><i></i>GOOD WORK.</span><ul><li><a>About</a></li><li><a>Services</a></li><li><a>Contact</a></li></ul><span class="soc"><i></i><i></i><i></i></span></div>
 @@@ footernews :: Footer — Newsletter :: Sections :: Brand, blurb and an email subscribe form.
 <style>.ftn{width:292px;padding:14px 0;border-top:1px solid var(--line,#262C34);font:500 11px Inter,system-ui,sans-serif;color:var(--body,#B6BDC8)}
 .ftn .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px;margin-bottom:6px}.ftn .lg i{width:16px;height:16px;border-radius:5px;background:var(--accent,#FF5722)}
 .ftn p{margin:0 0 10px;font-size:10px;line-height:1.5}
 .ftn form{display:flex;gap:6px}.ftn input{flex:1;min-width:0;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:8px;color:var(--ink,#fff);font:500 11px Inter,sans-serif;padding:8px 10px;outline:none}.ftn input:focus{border-color:var(--accent,#FF5722)}
 .ftn button{background:var(--accent,#FF5722);color:#fff;border:0;border-radius:8px;font:700 11px Inter,sans-serif;padding:8px 14px;cursor:pointer;white-space:nowrap}</style>
-<div class="ftn"><div class="lg"><i></i>OMNIV</div><p>Join the list — energy tips and product news, monthly.</p>
+<div class="ftn"><div class="lg"><i></i>GOOD WORK.</div><p>Join the list — energy tips and product news, monthly.</p>
 <form id="ftnf"><input type="email" placeholder="Email address" required><button id="ftnb">Subscribe</button></form></div>
 <script>document.getElementById('ftnf').addEventListener('submit',function(e){e.preventDefault();var b=document.getElementById('ftnb');b.textContent='Subscribed ✓';this.querySelector('input').value='';setTimeout(function(){b.textContent='Subscribe';},1800);});</script>
 @@@ footercta :: Footer — Questions CTA :: Sections :: A "still have questions?" band with two buttons over the base.
@@ -1005,7 +1005,7 @@ var idx=0;function demo(){openItem(items[idx%items.length]);idx++;}demo();setInt
 .ftc .bot{display:flex;align-items:center;justify-content:space-between;padding:12px 0;color:var(--body,#B6BDC8);font-size:10px}
 .ftc .lg{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink,#fff);font-size:13px}.ftc .lg i{width:16px;height:16px;border-radius:5px;background:var(--accent,#FF5722)}</style>
 <div class="ftc"><div class="q"><h3>Still have questions?</h3><div class="b"><a class="p">Let's chat →</a><a class="g">Request demo</a></div></div>
-<div class="bot"><span class="lg"><i></i>OMNIV</span><span>© OMNIV. All rights reserved.</span></div></div>
+<div class="bot"><span class="lg"><i></i>GOOD WORK.</span><span>© GOOD WORK. All rights reserved.</span></div></div>
 @@@ faqsection :: FAQ — Accordion Section :: Sections :: A titled FAQ block with an accordion and an email fallback.
 <style>.fqs{width:290px;font-family:Inter,system-ui,sans-serif;text-align:center}
 .fqs .eb{color:var(--accent,#FF5722);font:700 10px 'JetBrains Mono',monospace;letter-spacing:.12em;margin-bottom:4px}
@@ -1063,7 +1063,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .ctb2 p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:0 auto 14px;max-width:32ch;line-height:1.5}
 .ctb2 .btns{display:flex;gap:8px;justify-content:center}.ctb2 a{padding:9px 18px;border-radius:999px;text-decoration:none;font:700 12px Inter,sans-serif;cursor:pointer}
 .ctb2 .p{background:var(--accent,#FF5722);color:#fff}.ctb2 .g{border:1px solid var(--line,#262C34);color:var(--ink,#fff)}</style>
-<div class="ctb2"><span class="badge"><b>New</b>Get started today →</span><h3>Get started with OMNIV</h3><p>Build a fast, animated site that turns visitors into customers.</p><div class="btns"><a class="p">Get started</a><a class="g">Learn more</a></div></div>
+<div class="ctb2"><span class="badge"><b>New</b>Get started today →</span><h3>Get started with GOOD WORK.</h3><p>Build a fast, animated site that turns visitors into customers.</p><div class="btns"><a class="p">Get started</a><a class="g">Learn more</a></div></div>
 @@@ ctaavatars :: CTA — Avatars :: Sections :: A stacked avatar group with social proof and two buttons.
 <style>.ctv{width:290px;display:flex;flex-direction:column;gap:12px;font-family:Inter,system-ui,sans-serif}
 .ctv .av{display:flex}.ctv .av span{width:26px;height:26px;border-radius:50%;border:2px solid #0B0E13;margin-left:-8px;background:linear-gradient(135deg,#FF9466,var(--accent,#FF5722));display:grid;place-items:center;color:#fff;font:700 10px Inter,sans-serif}.ctv .av span:first-child{margin-left:0}
@@ -1074,7 +1074,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 <style>.ctbx{width:290px;border:1px solid var(--line,#262C34);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;font-family:Inter,system-ui,sans-serif}
 .ctbx h3{color:var(--ink,#fff);font:800 20px Inter,sans-serif;margin:0}.ctbx p{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif;margin:0;line-height:1.5}
 .ctbx a{align-self:flex-start;background:var(--accent,#FF5722);color:#fff;font:700 12px Inter,sans-serif;padding:10px 20px;border-radius:999px;text-decoration:none;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:.15s}.ctbx a:active{transform:translate(2px,2px);box-shadow:none}</style>
-<div class="ctbx"><h3>Get started with OMNIV</h3><p>Build a fast, animated marketing site that converts visitors into customers.</p><a>Get started</a></div>
+<div class="ctbx"><h3>Get started with GOOD WORK.</h3><p>Build a fast, animated marketing site that converts visitors into customers.</p><a>Get started</a></div>
 @@@ ctaquote :: CTA — Testimonial :: Sections :: A highlighted quote with author and a buy button.
 <style>.ctq{width:280px;border:1px solid var(--line,#262C34);border-radius:16px;overflow:hidden;font-family:Inter,system-ui,sans-serif;background:var(--card,#171B22)}
 .ctq .img{height:64px;background:linear-gradient(135deg,#FF9466,var(--accent,#FF5722))}
@@ -1258,7 +1258,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .fc .n b{color:var(--ink,#fff);font:600 12px Inter,sans-serif}.fc .n b span{color:var(--body,#B6BDC8);font-weight:400;margin-left:6px;font-size:10px}
 .fc .n p{margin:2px 0 0;color:var(--body,#B6BDC8);font:400 10px Inter,sans-serif}
 .fc .foot{border-top:1px solid var(--line,#262C34);padding:14px}.fc .foot h2{margin:0;color:var(--ink,#fff);font:700 16px Inter,sans-serif}.fc .foot p{margin:3px 0 0;color:var(--body,#B6BDC8);font:400 12px Inter,sans-serif}</style>
-<div class="fc"><div class="stage"><div class="feed"><div class="n"><span class="ic" style="background:var(--accent,#FF5722)">💸</span><div><b>Payment received<span>15m ago</span></b><p>OMNIV</p></div></div><div class="n"><span class="ic" style="background:#FFB800">👤</span><div><b>User signed up<span>10m ago</span></b><p>OMNIV</p></div></div><div class="n"><span class="ic" style="background:#FF3D71">💬</span><div><b>New message<span>5m ago</span></b><p>OMNIV</p></div></div><div class="n"><span class="ic" style="background:#1E86FF">🗞️</span><div><b>New event<span>2m ago</span></b><p>OMNIV</p></div></div></div></div><div class="foot"><h2>Notifications</h2><p>Realtime alerts for events you follow</p></div></div>
+<div class="fc"><div class="stage"><div class="feed"><div class="n"><span class="ic" style="background:var(--accent,#FF5722)">💸</span><div><b>Payment received<span>15m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#FFB800">👤</span><div><b>User signed up<span>10m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#FF3D71">💬</span><div><b>New message<span>5m ago</span></b><p>GOOD WORK.</p></div></div><div class="n"><span class="ic" style="background:#1E86FF">🗞️</span><div><b>New event<span>2m ago</span></b><p>GOOD WORK.</p></div></div></div></div><div class="foot"><h2>Notifications</h2><p>Realtime alerts for events you follow</p></div></div>
 @@@ fcshowcase :: Feature Card — Showcase :: Components :: A tilted grid of avatar cards springs in, split beside a headline.
 <style>.fc{width:320px;border-radius:12px;border:1px solid var(--line,#262C34);background:var(--card,#171B22);overflow:hidden;font-family:Inter,system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column}
 .fc .top{padding:20px;display:flex;flex-direction:column;gap:12px}
@@ -1455,7 +1455,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .hbd .cta .p{background:var(--accent,#FF5722);color:#fff}.hbd .cta .s{background:var(--card,#171B22);border:1px solid var(--line,#262C34);color:var(--ink,#fff)}
 .hbd .trust{display:flex;gap:16px;color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif}
 .hbd .trust span{display:flex;align-items:center;gap:5px}.hbd .trust b{color:var(--accent,#FF5722)}</style>
-<div class="hbd"><span class="pill"><b>Update</b> Browse new layouts <span class="ar">→</span></span><h1><b>OMNIV Design Studio:</b> <span>build a fast, animated site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="trust"><span><b>✓</b> 30 days free</span><span><b>✓</b> 3k+ sections</span></div></div>
+<div class="hbd"><span class="pill"><b>Update</b> Browse new layouts <span class="ar">→</span></span><h1><b>GOOD WORK. Design Studio:</b> <span>build a fast, animated site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="trust"><span><b>✓</b> 30 days free</span><span><b>✓</b> 3k+ sections</span></div></div>
 @@@ herosplit :: Hero — Split Two Column :: Sections :: A left-aligned headline and CTA beside a rounded preview panel.
 <style>.hsp{width:340px;display:flex;gap:16px;align-items:center;font-family:Inter,system-ui,sans-serif;padding:16px 10px}
 .hsp .tx{flex:1;display:flex;flex-direction:column;gap:11px}
@@ -1475,7 +1475,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .hcn .img{width:300px;height:120px;margin-top:4px;border-radius:16px;border:1px solid var(--line,#262C34);background:linear-gradient(160deg,#20252E,#0E1219);position:relative;overflow:hidden}
 .hcn .img::before{content:"";position:absolute;top:0;left:20%;right:20%;height:50%;background:var(--accent,#FF5722);filter:blur(45px);opacity:.4}
 .hcn .img::after{content:"";position:absolute;inset:16px;border-radius:8px;background:repeating-linear-gradient(#2A2F38 0 7px,transparent 7px 20px)}</style>
-<div class="hcn"><h1>OMNIV Design Studio</h1><p>Build a fast, animated marketing website that converts visitors into customers.</p><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="img"></div></div>
+<div class="hcn"><h1>GOOD WORK. Design Studio</h1><p>Build a fast, animated marketing website that converts visitors into customers.</p><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="img"></div></div>
 @@@ heroemail :: Hero — Email Capture :: Sections :: A two-tone headline over an inline email field and subscribe button.
 <style>.hem{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
 .hem h1{margin:0;font:600 21px Inter,sans-serif;line-height:1.25;letter-spacing:-.02em;max-width:290px}
@@ -1486,7 +1486,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .hem button{background:var(--accent,#FF5722);color:#fff;border:0;font:700 12px Inter,sans-serif;padding:0 18px;border-radius:99px;cursor:pointer}
 .hem .img{width:300px;height:110px;margin-top:2px;border-radius:16px;border:1px solid var(--line,#262C34);background:linear-gradient(160deg,#20252E,#0E1219);position:relative;overflow:hidden}
 .hem .img::after{content:"";position:absolute;inset:14px;border-radius:8px;background:repeating-linear-gradient(#2A2F38 0 7px,transparent 7px 20px)}</style>
-<div class="hem"><h1><b>OMNIV Design Studio:</b> <span>build a site that converts.</span></h1><form class="form" onsubmit="return false"><input type="email" placeholder="Enter your email"><button>Subscribe</button></form><div class="img"></div></div>
+<div class="hem"><h1><b>GOOD WORK. Design Studio:</b> <span>build a site that converts.</span></h1><form class="form" onsubmit="return false"><input type="email" placeholder="Enter your email"><button>Subscribe</button></form><div class="img"></div></div>
 @@@ heroavatars :: Hero — Avatar Proof :: Sections :: A centred headline and dual CTAs above a stacked avatar group and social proof.
 <style>.hav{width:340px;font-family:Inter,system-ui,sans-serif;padding:18px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:13px}
 .hav h1{margin:0;font:600 21px Inter,sans-serif;line-height:1.25;letter-spacing:-.02em;max-width:290px}
@@ -1500,7 +1500,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .hav .stack i:first-child{margin-left:0}
 .hav .stack i:nth-child(1){background:linear-gradient(135deg,#FF9466,#FF5722)}.hav .stack i:nth-child(2){background:linear-gradient(135deg,#5B5BFF,#1E9E6A)}.hav .stack i:nth-child(3){background:linear-gradient(135deg,#F5A623,#C0392B)}.hav .stack i:nth-child(4){background:linear-gradient(135deg,#7C4DFF,#FF2E88)}
 .hav .proof span{color:var(--body,#B6BDC8);font:500 11px Inter,sans-serif}</style>
-<div class="hav"><h1><b>OMNIV Design Studio:</b> <span>ship better web experiences.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="proof"><div class="stack"><i></i><i></i><i></i><i></i></div><span>Trusted by 12k+ designers</span></div></div>
+<div class="hav"><h1><b>GOOD WORK. Design Studio:</b> <span>ship better web experiences.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="proof"><div class="stack"><i></i><i></i><i></i><i></i></div><span>Trusted by 12k+ designers</span></div></div>
 @@@ heroquote :: Hero — Testimonial Quote :: Sections :: A left-aligned headline and CTAs with a customer quote and avatar beneath.
 <style>.hqt{width:340px;font-family:Inter,system-ui,sans-serif;padding:16px 14px;display:flex;flex-direction:column;gap:12px}
 .hqt .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);border-radius:99px;padding:4px 12px 4px 4px;color:var(--body,#B6BDC8);font:500 10px Inter,sans-serif}
@@ -1535,7 +1535,7 @@ document.querySelectorAll('.ctm .rowm ul').forEach(function(u){var s='';for(var 
 .hst .st{display:flex;flex-direction:column;gap:2px}
 .hst .st b{color:var(--accent,#FF5722);font:600 20px 'JetBrains Mono',monospace}
 .hst .st span{color:var(--body,#B6BDC8);font:400 9px Inter,sans-serif}</style>
-<div class="hst"><h1>OMNIV Design Studio: <span>a site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="stats"><div class="st"><b data-to="20" data-suf="k+">0</b><span>Happy users</span></div><div class="st"><b data-to="5" data-suf="k+">0</b><span>Sections</span></div><div class="st"><b data-to="100" data-suf="x">0</b><span>Faster dev</span></div><div class="st"><b data-pre="$" data-to="1" data-suf="M">0</b><span>Revenue</span></div></div></div>
+<div class="hst"><h1>GOOD WORK. Design Studio: <span>a site that converts.</span></h1><div class="cta"><a class="p">Start free trial</a><a class="s">See a demo</a></div><div class="stats"><div class="st"><b data-to="20" data-suf="k+">0</b><span>Happy users</span></div><div class="st"><b data-to="5" data-suf="k+">0</b><span>Sections</span></div><div class="st"><b data-to="100" data-suf="x">0</b><span>Faster dev</span></div><div class="st"><b data-pre="$" data-to="1" data-suf="M">0</b><span>Revenue</span></div></div></div>
 <script>(function(){var r=document.currentScript.parentNode.querySelector('.hst');var els=r.querySelectorAll('[data-to]');function run(){els.forEach(function(el){var to=parseFloat(el.getAttribute('data-to')),pre=el.getAttribute('data-pre')||'',suf=el.getAttribute('data-suf')||'',dur=1400,st=null;function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/dur,1);el.textContent=pre+Math.floor(p*to)+(p===1?suf:'');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){run();io.disconnect();}});});io.observe(r);})();</script>
 @@@ optionwheel :: Option Wheel :: Components :: A curved 3D wheel picker — scroll, drag or click; the centred option snaps sharp while the rest fade and blur.
 <style>.owl{width:220px;height:210px;position:relative;perspective:620px;font-family:Inter,system-ui,sans-serif;-webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);cursor:grab;user-select:none;touch-action:none}
