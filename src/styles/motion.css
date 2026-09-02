@@ -1267,3 +1267,153 @@ body[data-gw-locked="true"] { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .gw-texture img { animation: none !important; transform: scale(1.06) !important; }
 }
+
+/* =========================================================
+   19. Service area map
+   A decorative "coverage radar" — pulsing hub, seeded pin
+   scatter, optional rotating sweep — backed by a real,
+   fully text-listed set of area chips underneath. The radar
+   is aria-hidden; the chip list is what actually gets read.
+   ========================================================= */
+
+.gw-service-map {
+  display: grid;
+  gap: var(--gw-space-6);
+  align-items: center;
+}
+@media (min-width: 780px) {
+  .gw-service-map { grid-template-columns: minmax(220px, 340px) 1fr; }
+}
+
+.gw-service-map__radar {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 340px;
+  margin-inline: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, var(--gw-grey-100) 0%, var(--gw-white) 70%);
+  border: 1px solid var(--gw-grey-200);
+}
+.gw-service-map__radar::before,
+.gw-service-map__radar::after {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 1px dashed var(--gw-grey-300);
+  pointer-events: none;
+}
+.gw-service-map__radar::after { inset: 27%; }
+
+.gw-service-map__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gw-blue);
+  opacity: 0;
+  animation: gw-map-ring 3.2s var(--gw-ease-out) infinite;
+  animation-delay: var(--gw-ring-delay, 0s);
+}
+@keyframes gw-map-ring {
+  0%   { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(13); opacity: 0; }
+}
+
+.gw-service-map__sweep {
+  position: absolute;
+  inset: -1px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(51, 102, 255, 0.22) 348deg,
+    transparent 360deg
+  );
+  animation: gw-map-sweep 5.5s linear infinite;
+}
+@keyframes gw-map-sweep { to { transform: rotate(360deg); } }
+
+.gw-service-map__pin {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gw-gradient);
+  transform: translate(-50%, -50%) scale(0);
+  box-shadow: 0 0 0 3px rgba(51, 102, 255, 0.14);
+  transition: transform 260ms var(--gw-ease-spring);
+  transition-delay: var(--gw-pin-delay, 0s);
+}
+[data-gw-map-visible="true"] .gw-service-map__pin {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.gw-service-map__hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.gw-service-map__hub-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gw-black);
+  box-shadow: 0 0 0 5px var(--gw-white), 0 0 0 6px var(--gw-grey-300);
+}
+.gw-service-map__hub-label {
+  font-size: 0.72rem;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--gw-black);
+  background: var(--gw-white);
+  border: 1px solid var(--gw-grey-200);
+  border-radius: var(--gw-radius-sm);
+  padding: 2px 8px;
+}
+
+.gw-service-map__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gw-service-map__chip {
+  font-size: 0.85rem;
+  font-weight: var(--gw-medium);
+  color: var(--gw-charcoal);
+  background: var(--gw-grey-100);
+  border: 1px solid var(--gw-grey-200);
+  border-radius: 999px;
+  padding: 7px 14px;
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity 480ms var(--gw-ease-out),
+    transform 480ms var(--gw-ease-out);
+  transition-delay: var(--gw-chip-delay, 0ms);
+}
+[data-gw-map-visible="true"] .gw-service-map__chip {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-service-map__ring { animation: none; opacity: 0.35; transform: scale(4); }
+  .gw-service-map__sweep { animation: none; opacity: 0; }
+  .gw-service-map__pin,
+  .gw-service-map__chip { transition: none; }
+}
