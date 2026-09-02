@@ -14,7 +14,12 @@ const comps = parts.map(block => {
   const head = block.slice(0, nl).trim();
   const code = block.slice(nl + 1).replace(/\s+$/, "");
   const [id, name, cat, desc] = head.split(" :: ");
-  return { id, name, cat, desc, code };
+  // Section components are named "Hero — Centered", "Footer — Minimal" and so
+  // on, so the sub-category is the part before the dash. Anything without one
+  // simply has no sub.
+  const dash = name.indexOf(" \u2014 ");
+  const sub = dash > 0 ? name.slice(0, dash).trim() : null;
+  return { id, name, cat, sub, desc, code };
 });
 const CAT_ORDER = ["Components", "Special Effects", "Animations", "Text Animations", "Device Mocks", "Buttons", "Backgrounds", "Community", "Carousels", "Sections"];
 const present = Array.from(new Set(comps.map(c => c.cat)));
@@ -22,6 +27,23 @@ const cats = ["All", ...present.sort((a, b) => {
   const ia = CAT_ORDER.indexOf(a), ib = CAT_ORDER.indexOf(b);
   return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
 })];
+
+// Sub-categories, in the order you would actually assemble a page. Anything
+// not listed sorts alphabetically after the known ones.
+const SUB_ORDER = ["Hero", "Feature Section", "Social Proof", "Stats", "Testimonials", "Pricing", "FAQ", "CTA", "Footer"];
+const subRank = (x) => { const i = SUB_ORDER.indexOf(x); return i < 0 ? 99 : i; };
+
+// A category only gets a sub-filter row when EVERY component in it carries a
+// sub. Partial coverage would mean a row of chips that hides most of the
+// category behind an "Other" bucket, which is worse than no row at all.
+const SUBS = {};
+for (const cat of present) {
+  const inCat = comps.filter(c => c.cat === cat);
+  if (!inCat.length || inCat.some(c => !c.sub)) continue;
+  const subs = Array.from(new Set(inCat.map(c => c.sub)));
+  if (subs.length < 2) continue;
+  SUBS[cat] = subs.sort((a, b) => subRank(a) - subRank(b) || a.localeCompare(b));
+}
 
 const data = JSON.stringify(comps).replace(/<\/script/gi, "<\\/script");
 
@@ -77,6 +99,13 @@ const page = `<meta charset="utf-8">
   .chip:hover{border-color:var(--line-2)}
   .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
   .chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  /* The sub row reads as a level down: it sits under the main bar, doesn't
+     stick, and its chips are lighter until chosen. */
+  .bar--sub{position:static;background:var(--panel);border-bottom:1px solid var(--line)}
+  .bar--sub .bar__in{padding:10px 0}
+  .chip--sub{font:600 12px var(--sans);padding:6px 12px;border-radius:8px;background:transparent;color:var(--body)}
+  .chip--sub:hover{color:var(--ink)}
+  .chip--sub.on{background:var(--accent-2);border-color:var(--accent-2);color:#fff}
 
   /* grid */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;padding:26px 0 70px}
@@ -180,6 +209,7 @@ const page = `<meta charset="utf-8">
 </header>
 
 <div class="bar"><div class="wrap bar__in" id="chips"></div></div>
+<div class="bar bar--sub" id="subbar" hidden><div class="wrap bar__in" id="subchips"></div></div>
 <main class="wrap"><div class="grid" id="grid"></div></main>
 <footer class="wrap">Part of the GOOD WORK. engine — the full block library, tokens and build docs live in <b>engine/</b> and <b>.claude/skills/brand-site/</b>. Swap <code>brand.css</code> and every motion here reskins to a new identity.</footer>
 <div class="tray" id="tray">
@@ -203,6 +233,7 @@ const page = `<meta charset="utf-8">
 <script>
 const COMPS = JSON.parse(document.getElementById('data').textContent);
 const CATS = ${JSON.stringify(cats)};
+const SUBS = ${JSON.stringify(SUBS)};
 document.getElementById('count').textContent = COMPS.length + ' components';
 
 // build the header sun's rays
@@ -226,14 +257,18 @@ function highlight(s){
 
 const grid = document.getElementById('grid');
 let active = 'All';
+let activeSub = 'All';
 
 function render(){
   grid.innerHTML = '';
-  COMPS.filter(c => active === 'All' || c.cat === active).forEach(c => {
+  COMPS.filter(c =>
+    (active === 'All' || c.cat === active) &&
+    (activeSub === 'All' || c.sub === activeSub)
+  ).forEach(c => {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML =
-      '<div class="preview"><span class="cat-dot">'+c.cat+'</span>'+
+      '<div class="preview"><span class="cat-dot">'+(c.sub || c.cat)+'</span>'+
         '<iframe scrolling="no" title="'+c.name+'"></iframe></div>'+
       '<div class="body"><h3>'+c.name+'</h3><p>'+c.desc+'</p>'+
         '<div class="acts">'+
@@ -266,17 +301,41 @@ function render(){
 
 // chips
 const chipWrap = document.getElementById('chips');
+const subBar = document.getElementById('subbar');
+const subWrap = document.getElementById('subchips');
+
+function buildSubs(){
+  const subs = SUBS[active];
+  subWrap.innerHTML = '';
+  subBar.hidden = !subs;
+  if (!subs) return;
+  ['All'].concat(subs).forEach(sub => {
+    const b = document.createElement('button');
+    b.className = 'chip chip--sub' + (sub === activeSub ? ' on' : '');
+    b.textContent = sub;
+    b.addEventListener('click', () => {
+      activeSub = sub;
+      subWrap.querySelectorAll('.chip--sub').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    });
+    subWrap.appendChild(b);
+  });
+}
+
 CATS.forEach(cat => {
   const b = document.createElement('button');
   b.className = 'chip' + (cat === 'All' ? ' on' : '');
   b.textContent = cat === 'All' ? 'All' : cat;
   b.addEventListener('click', () => {
     active = cat;
-    document.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b));
+    activeSub = 'All';
+    chipWrap.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === b));
+    buildSubs();
     render();
   });
   chipWrap.appendChild(b);
 });
+buildSubs();
 
 const toast = document.getElementById('toast');
 function copy(text){
