@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 h1,h2,h3,p{margin:0}
 ::selection{background:var(--bh-gold);color:var(--bh-espresso)}
-:root{--pill:999px}
+:root{--pill:999px;--round:22px}
 
 .wrap{width:min(calc(100% - clamp(2.5rem,7vw,6rem)),var(--container));margin-inline:auto}
 .section{padding-block:clamp(4rem,9vw,8rem)}
@@ -107,11 +107,11 @@ h1,h2,h3,p{margin:0}
 @media(hover:none),(pointer:coarse){.cursor{display:none}}
 
 /* ---- nav: a pill that firms up on scroll (the library's sticky nav) ---- */
-.nav{position:sticky;top:0;z-index:40;padding-block:.9rem;transition:padding var(--dur) var(--ease)}
+.nav{position:sticky;top:0;z-index:40;padding-block:.9rem;background:color-mix(in srgb,var(--cream) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:padding var(--dur) var(--ease)}
 .nav__in{display:flex;align-items:center;gap:1.5rem}
 .nav .bh-logo{font-size:1.35rem}
 .nav__pill{margin-left:auto;display:flex;align-items:center;gap:.2rem;padding:.35rem;border-radius:var(--pill);border:1px solid transparent;
-  background:color-mix(in srgb,var(--cream) 70%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+  background:var(--card);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
 .nav__pill a{font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body);padding:.6rem 1rem;border-radius:var(--pill);transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
 .nav__pill a:hover{background:rgba(201,166,92,.14);color:var(--ink)}
 .nav.scrolled{padding-block:.6rem}
@@ -119,26 +119,11 @@ h1,h2,h3,p{margin:0}
 .nav .btn{padding:.75em 1.4em}
 .nav__menu{display:none;font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.7em 1.2em;border:1px solid var(--line-strong);border-radius:var(--pill)}
 .nav__panel[hidden]{display:none}
-.nav__panel{display:grid;gap:.2rem;margin-top:.8rem;padding:.6rem 1.2rem 1rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card)}
+.nav__panel{display:grid;gap:.2rem;margin-top:.8rem;padding:.6rem 1.2rem 1rem;border:1px solid var(--line);border-radius:var(--round);background:var(--card)}
 .nav__panel a{font-weight:var(--weight-micro);font-size:.8rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.75rem 0;border-bottom:1px solid var(--line)}
 .nav__panel a:last-child{border-bottom:0}
 @media(max-width:860px){.nav__pill{display:none}.nav__menu{display:inline-block;margin-left:auto}.nav__in{gap:.8rem}}
 @media(min-width:861px){.nav__panel{display:none}}
-
-/* ---- hero ---- */
-.hero{position:relative;overflow:hidden;padding-block:clamp(4rem,9vw,8rem) clamp(4rem,8vw,7rem)}
-.hero__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,6vw,5rem);align-items:center}
-.hero__copy{display:grid;gap:1.6rem}
-.hero__photo{max-width:440px;justify-self:end;width:100%}
-.hero__photo .photo{aspect-ratio:4/5}
-.hero__halo{position:absolute;width:min(70vw,780px);aspect-ratio:1;right:-8%;top:-12%;background:var(--bh-halo);opacity:.55;pointer-events:none;
-  transform:translate3d(0,calc(var(--sy,0) * -0.12px),0) rotate(calc(var(--sy,0) * 0.02deg))}
-/* the library's word-by-word rise, once, on load */
-.rise .w{display:inline-block;opacity:0;transform:translateY(.5em);animation:bh-rise 1.1s var(--ease-slow) forwards}
-@keyframes bh-rise{to{opacity:1;transform:none}}
-.hero__loved{display:flex;align-items:center;gap:1rem;color:var(--ink)}
-.hero__loved .rule{width:40px}
-@media(max-width:860px){.hero__grid{grid-template-columns:1fr}.hero__photo{justify-self:start;max-width:360px}}
 
 /* ---- disciplines marquee (the library's marquee, slowed) ---- */
 .strip{border-block:1px solid var(--line);padding-block:1.1rem;background:var(--cream-2)}
@@ -146,33 +131,96 @@ h1,h2,h3,p{margin:0}
 .strip span{font-weight:var(--weight-display);font-size:1.05rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);white-space:nowrap;padding-inline:1.4rem;display:inline-flex;align-items:center;gap:2.8rem}
 .strip span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
 
-/* ---- the fork: two arched doorways ---- */
-.fork{padding-block:clamp(4rem,9vw,8rem)}
-.fork__head{display:grid;gap:1rem;margin-bottom:clamp(2rem,4vw,3.5rem)}
-.fork__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,3vw,2.5rem);max-width:920px}
-.arch-btn{position:relative;display:grid;align-content:end;gap:.9rem;text-align:left;padding:clamp(1.6rem,3vw,2.4rem);aspect-ratio:4/5;
+/* ---- the scroll story: a pinned stage that plays through the building
+   in beats and lands on the fork. JS adds .story--live; without it (or
+   under reduced motion) the beats simply stack, all visible. ---- */
+.story{position:relative;--beats:5}
+.story--live{height:calc(100vh + (var(--beats) - 1) * 85vh)}
+.story__stage{position:relative;overflow:hidden;min-height:100vh;display:grid;align-content:center}
+.story--live .story__stage{position:sticky;top:0;height:100vh;height:100dvh}
+.story__halo{position:absolute;width:min(70vw,780px);aspect-ratio:1;right:-8%;top:-12%;background:var(--bh-halo);opacity:.55;pointer-events:none;
+  transform:translate3d(0,calc(var(--p,0) * -180px),0) rotate(calc(var(--p,0) * 40deg))}
+.story__grid{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,6vw,5rem);align-items:center;padding-block:clamp(3rem,6vw,5rem)}
+.story__copy{position:relative;min-height:min(60vh,520px)}
+.story--live .beat{position:absolute;inset:0;display:grid;gap:1.4rem;align-content:center;opacity:0;transform:translateY(34px);pointer-events:none;
+  transition:opacity .9s var(--ease-slow),transform .9s var(--ease-slow)}
+.story--live .beat>*{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease-slow),transform .9s var(--ease-slow)}
+.story--live .beat.is-on{opacity:1;transform:none;pointer-events:auto}
+.story--live .beat.is-on>*{opacity:1;transform:none}
+.story--live .beat.is-on>:nth-child(2){transition-delay:.12s}
+.story--live .beat.is-on>:nth-child(3){transition-delay:.24s}
+.story--live .beat.is-on>:nth-child(4){transition-delay:.36s}
+.story--live .beat.is-on>:nth-child(5){transition-delay:.48s}
+.story:not(.story--live) .beat{display:grid;gap:1.4rem;padding-block:2rem}
+.beat .d1{font-size:clamp(2.8rem,7.4vw,6.4rem)}
+.beat .disciplines{display:grid;gap:.1em;font-family:var(--font-head);font-weight:var(--weight-display);font-size:clamp(2rem,5vw,4rem);letter-spacing:var(--track-display);line-height:1.05;color:var(--ink)}
+.beat .disciplines b{font-weight:var(--weight-emphasis)}
+.beat .loved-big{font-size:clamp(1.8rem,4.6vw,3.8rem);font-weight:var(--weight-display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.beat .loved-big b{font-weight:var(--weight-emphasis)}
+.beat .q{font-size:clamp(1.05rem,1.5vw,1.3rem);color:var(--ink);font-weight:var(--weight-display);max-width:44ch;line-height:1.5}
+.beat .q::before{content:"\201C"}.beat .q::after{content:"\201D"}
+.story__loved{display:flex;align-items:center;gap:1rem;color:var(--ink)}
+.story__loved .rule{width:40px}
+.hint{display:inline-flex;align-items:center;gap:.8rem;color:var(--muted);font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+.hint i{display:block;width:1px;height:34px;background:linear-gradient(var(--accent),transparent);animation:bh-hint 2.2s var(--ease-slow) infinite}
+@keyframes bh-hint{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+/* the one arch, its photograph changing with the beat */
+.story__arch{max-width:440px;justify-self:end;width:100%;transition:opacity .9s var(--ease-slow),transform 1.2s var(--ease-slow)}
+.story__arch .photo{aspect-ratio:4/5;transform:scale(calc(1 + var(--p,0) * .04))}
+.story__arch .photo img{opacity:0;transition:opacity 1.2s var(--ease-slow),transform 1.2s var(--ease-slow)}
+.story__arch .photo img.is-on{opacity:1}
+.story__arch .photo:has(img)::after,.story__arch .photo:has(img) .photo__tag{display:none}
+/* the last beat: the fork takes the whole stage */
+.story__fork{position:absolute;inset:0;display:grid;align-content:center;justify-items:start;gap:clamp(1.2rem,3vh,2.4rem);padding-block:clamp(4.5rem,9vh,6rem) clamp(1.5rem,4vh,3rem);
+  opacity:0;transform:translateY(40px);pointer-events:none;transition:opacity 1s var(--ease-slow),transform 1s var(--ease-slow)}
+.story--live .story__fork{background:var(--bh-ivory)}
+.story:not(.story--live) .story__fork{position:relative;opacity:1;transform:none;pointer-events:auto;padding-block:clamp(3rem,7vw,5rem)}
+.story__fork.is-on{opacity:1;transform:none;pointer-events:auto}
+.story__fork .fork__head{display:grid;gap:.8rem}
+.fork__grid{display:grid;grid-template-columns:repeat(2,min(46vh,44vw));gap:clamp(1rem,3vw,2.2rem)}
+.story--live .story__fork.is-on .arch-btn{animation:bh-archin 1.1s var(--ease-slow) both}
+.story--live .story__fork.is-on .arch-btn:nth-child(2){animation-delay:.15s}
+@keyframes bh-archin{from{opacity:0;transform:translateY(50px) scale(.96)}to{opacity:1;transform:none}}
+.arch-btn{position:relative;display:grid;align-content:end;gap:.7rem;text-align:left;padding:clamp(1.2rem,2.4vw,2rem);aspect-ratio:4/5;
   border-radius:var(--bh-arch);border:1px solid var(--line-strong);background:var(--bh-taupe);color:var(--body);overflow:hidden;isolation:isolate;
   transition:border-color var(--dur) var(--ease),transform var(--dur-slow) var(--ease-slow),box-shadow var(--dur-slow) var(--ease)}
 .arch-btn .photo{position:absolute;inset:0;border-radius:inherit;z-index:-2;transition:transform var(--dur-slow) var(--ease-slow)}
 .arch-btn .photo::after{opacity:.35}
-.arch-btn .wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(36,33,30,0) 30%,rgba(36,33,30,.78) 100%)}
-/* the library's spotlight card: a soft light tracks the cursor */
+.arch-btn .wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(36,33,30,0) 30%,rgba(36,33,30,.8) 100%)}
 .arch-btn .spot{position:absolute;width:60%;aspect-ratio:1;left:var(--sx,50%);top:var(--sy2,40%);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:-1;
   background:radial-gradient(circle,rgba(201,166,92,.38),rgba(201,166,92,0) 62%);opacity:0;transition:opacity var(--dur) var(--ease)}
 .arch-btn:hover .spot{opacity:1}
 .arch-btn:hover,.arch-btn[aria-pressed="true"]{border-color:var(--accent);transform:translateY(-6px);box-shadow:var(--shadow-md)}
 .arch-btn:hover .photo{transform:scale(1.04)}
 .arch-btn>*{position:relative}
-.arch-btn .t{font-weight:var(--weight-micro);font-size:.76rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bh-gold)}
-.arch-btn .l{font-family:var(--font-head);font-weight:var(--weight-display);font-size:clamp(1.6rem,3.2vw,2.5rem);letter-spacing:var(--track-display);line-height:1.08;color:var(--bh-ivory)}
-.arch-btn .s{color:rgba(244,240,233,.78);font-size:.92rem}
-.arch-btn .go{display:inline-flex;align-items:center;gap:.7em;margin-top:.4rem;padding:.85em 1.5em;border-radius:var(--pill);border:1px solid var(--bh-gold);color:var(--bh-ivory);
-  font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;transition:background var(--dur) var(--ease),color var(--dur) var(--ease);justify-self:start}
+.arch-btn .t{font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bh-gold)}
+.arch-btn .l{font-family:var(--font-head);font-weight:var(--weight-display);font-size:clamp(1.3rem,2.6vw,2.2rem);letter-spacing:var(--track-display);line-height:1.08;color:var(--bh-ivory)}
+.arch-btn .s{color:rgba(244,240,233,.78);font-size:.88rem}
+.arch-btn .go{display:inline-flex;align-items:center;gap:.7em;margin-top:.3rem;padding:.8em 1.4em;border-radius:var(--pill);border:1px solid var(--bh-gold);color:var(--bh-ivory);
+  font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;transition:background var(--dur) var(--ease),color var(--dur) var(--ease);justify-self:start}
 .arch-btn:hover .go,.arch-btn[aria-pressed="true"] .go{background:var(--bh-gold);color:var(--bh-espresso)}
 .arch-btn .go .arr{transition:transform var(--dur) var(--ease)}
 .arch-btn:hover .go .arr{transform:translateX(4px)}
 .arch-btn[aria-pressed="true"] .t::after{content:"· chosen";margin-left:.6em}
-@media(max-width:640px){.fork__grid{grid-template-columns:1fr}.arch-btn{aspect-ratio:auto;min-height:380px}}
+/* progress: one dot per beat, no numbers */
+.story__dots{position:absolute;right:clamp(1rem,3vw,2.5rem);top:50%;transform:translateY(-50%);display:grid;gap:.7rem}
+.story__dots i{display:block;width:6px;height:6px;border-radius:50%;border:1px solid var(--accent);transition:background var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.story__dots i.is-on{background:var(--accent);transform:scale(1.4)}
+.story:not(.story--live) .story__dots{display:none}
+@media(max-width:860px){
+  .story__grid{grid-template-columns:1fr;gap:1.4rem;align-content:start;padding-top:1.5rem}
+  .story__copy{min-height:0}
+  .story--live .story__copy{min-height:46vh}
+  .story__arch{justify-self:start;max-width:none;width:min(100%,260px)}
+  .story--live .story__arch .photo{aspect-ratio:auto;height:34vh}
+  .beat .lede{font-size:1rem}
+  .beat .hint{display:none}
+  .story--live .story__arch .photo{height:30vh}
+  .story__dots{right:.8rem}
+  .arch-btn .s{display:none}
+}
+@media(max-width:480px){.fork__grid{grid-template-columns:repeat(2,44vw);gap:.8rem}.arch-btn{padding:.9rem;gap:.35rem;aspect-ratio:3/4.3}.arch-btn .l{font-size:1.1rem}.arch-btn .t{font-size:.62rem}.arch-btn .go{padding:.7em 1em;font-size:.6rem}
+  .arch-btn .wash{background:linear-gradient(180deg,rgba(36,33,30,.15) 0%,rgba(36,33,30,.88) 100%)}}
 
 /* ---- journeys ---- */
 .journey{display:none}
@@ -181,7 +229,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 .journey__head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem;align-items:end;margin-bottom:clamp(2rem,4vw,3.5rem)}
 @media(max-width:720px){.journey__head{grid-template-columns:1fr}}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem}
-.card{display:grid;gap:.8rem;align-content:start;padding:1.7rem 1.6rem 1.8rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);position:relative;overflow:hidden;
+.card{display:grid;gap:.8rem;align-content:start;padding:1.7rem 1.6rem 1.8rem;background:var(--card);border:1px solid var(--line);border-radius:var(--round);position:relative;overflow:hidden;
   transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease)}
 .card::after{content:"";position:absolute;left:0;right:0;bottom:0;border-top:var(--bh-gold-line);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-slow) var(--ease-slow)}
 .card:hover{border-color:var(--line-strong);transform:translateY(-3px)}
@@ -191,7 +239,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 .card .micro{margin-top:.3rem}
 .card .rule{width:28px}
 .reassure{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem;align-items:center;padding:1.6rem 1.8rem;
-  border:1px solid var(--line);background:var(--cream-2);border-radius:var(--radius-lg)}
+  border:1px solid var(--line);background:var(--cream-2);border-radius:var(--round)}
 .reassure .halo-dot{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent);position:relative;flex:none}
 .reassure .halo-dot::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--accent)}
 .reassure strong{font-weight:var(--weight-micro);color:var(--ink)}
@@ -250,7 +298,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 .rail__track{display:flex;gap:1.25rem;width:max-content;animation:bh-rail 60s linear infinite}
 .rail:hover .rail__track{animation-play-state:paused}
 @keyframes bh-rail{to{transform:translateX(-50%)}}
-.quote{flex:none;width:min(78vw,400px);display:grid;gap:1.1rem;align-content:start;padding:1.8rem 1.7rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card)}
+.quote{flex:none;width:min(78vw,400px);display:grid;gap:1.1rem;align-content:start;padding:1.8rem 1.7rem;border:1px solid var(--line);border-radius:var(--round);background:var(--card)}
 .quote p{color:var(--ink);font-size:1.08rem;line-height:1.5;font-weight:var(--weight-display)}
 .quote p::before{content:"“"}.quote p::after{content:"”"}
 .quote cite{font-style:normal;display:grid;gap:.15rem}
@@ -298,7 +346,7 @@ body:not([data-journey]) .journey--treatments{display:block}
   .eyebrow .t{opacity:1}.eyebrow::after{display:none}
   .rise .w{opacity:1;transform:none}
   .loved .w{opacity:1;filter:none}
-  .hero__halo,.hub .rays,.rail__track{animation:none;transform:none}
+  .story__halo,.hub .rays,.rail__track,.hint i{animation:none;transform:none}
   .cursor{display:none}
   .btn::before,.photo img,.arch-btn,.card,.gal__card{transition:none}
   html{scroll-behavior:auto}
@@ -334,27 +382,75 @@ body:not([data-journey]) .journey--treatments{display:block}
 
 <main id="top">
 
-<!-- =============================================================== HERO -->
-<section class="hero" data-surface="taupe" aria-labelledby="hero-h">
-  <div class="hero__halo" aria-hidden="true"></div>
-  <div class="wrap hero__grid">
-    <div class="hero__copy" data-gw-stagger>
-      <p class="micro" data-gw-reveal>Beauty · Hair · Skin · Aesthetics · Wellness · Academy</p>
-      <h1 id="hero-h" class="display d1 rise" data-rise>welcome<br>to <b>heaven.</b></h1>
-      <p class="lede" data-gw-reveal>Every beauty discipline and a professional academy, under one roof. Whether it's your first treatment or your next qualification, we'll explain it properly and make sure you're comfortable.</p>
-      <div class="actions" data-gw-reveal>
-        <a class="btn btn--fill gw-shimmer" href="#fork" data-gw-magnetic="0.25"><span>What are you here for?</span> <span class="arr">→</span></a>
-        <a class="btn" href="#hub" data-gw-magnetic="0.25"><span>See the Hub</span></a>
+<!-- ======================================================== THE STORY -->
+<section class="story" id="story" data-surface="taupe" aria-label="Welcome to Beauty Heaven Hub">
+  <div class="story__stage" id="stage">
+    <div class="story__halo" aria-hidden="true"></div>
+    <div class="wrap story__grid">
+      <div class="story__copy">
+        <div class="beat" data-beat="0">
+          <p class="micro">Beauty · Hair · Skin · Aesthetics · Wellness · Academy</p>
+          <h1 id="hero-h" class="display d1 rise" data-rise>welcome<br>to <b>heaven.</b></h1>
+          <p class="lede">Every beauty discipline and a professional academy, under one roof. Whether it's your first treatment or your next qualification, we'll explain it properly and make sure you're comfortable.</p>
+          <div class="actions">
+            <a class="btn btn--fill gw-shimmer" href="#fork" data-gw-magnetic="0.25"><span>What are you here for?</span> <span class="arr">→</span></a>
+            <a class="btn" href="#hub" data-gw-magnetic="0.25"><span>See the Hub</span></a>
+          </div>
+          <p class="hint"><i aria-hidden="true"></i> Scroll</p>
+        </div>
+        <div class="beat" data-beat="1">
+          <p class="micro">The Hub</p>
+          <h2 class="display d1">a destination, <b>not just</b> a salon.</h2>
+          <p class="lede">Arched mirrors, a gold desk, fluted doors and herringbone floors. A building people travel to, and the reason the website looks the way it does.</p>
+        </div>
+        <div class="beat" data-beat="2">
+          <p class="micro">Under one roof</p>
+          <p class="disciplines"><span>beauty.</span><span>hair.</span><span>skin.</span><span>aesthetics.</span><span><b>wellness.</b></span><span>academy.</span></p>
+        </div>
+        <div class="beat" data-beat="3">
+          <p class="micro">Reviews</p>
+          <p class="loved-big">Loved by <b>hundreds</b> of clients.</p>
+          <p class="q">I was nervous for my first treatment and they put me completely at ease. Everything was explained before it happened.</p>
+          <p class="story__loved micro"><span class="rule" aria-hidden="true"></span> Paraphrased from a public review</p>
+        </div>
       </div>
-      <p class="hero__loved micro" data-gw-reveal><span class="rule" aria-hidden="true"></span> Loved by hundreds of clients</p>
-    </div>
-    <div class="hero__photo frame" data-gw-reveal="mask">
-      <div class="halo" aria-hidden="true"></div>
-      <div class="photo photo--arch mask">
-        <img src="photos/reception-portrait.jpg" alt="The reception at Beauty Heaven Hub: the gold desk, the logo on the taupe wall, herringbone floor" onerror="this.remove()">
-        <div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo, reception</i></div>
+      <div class="story__arch frame">
+        <div class="halo" aria-hidden="true"></div>
+        <div class="photo photo--arch">
+          <img data-beat-img="0" src="photos/reception-portrait.png" alt="The reception at Beauty Heaven Hub: the gold desk, the logo on the taupe wall, herringbone floor" onerror="this.remove()">
+          <img data-beat-img="1" src="photos/salon-mirrors.png" alt="The salon floor and its arched mirrors" onerror="this.remove()">
+          <img data-beat-img="2" src="photos/reception-wide.png" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()">
+          <img data-beat-img="3" src="photos/lounge-wings.png" alt="The lounge, with the neon wings and halo" onerror="this.remove()">
+          <div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo, reception</i></div>
+        </div>
       </div>
     </div>
+    <!-- the landing: the fork -->
+    <div class="story__fork" data-beat="4" data-surface="ivory" id="fork">
+      <div class="wrap fork__head">
+        <p class="micro micro--gold">Start here</p>
+        <h2 id="fork-h" class="display d2">what are you <b>here</b> for?</h2>
+      </div>
+      <div class="wrap"><div class="fork__grid">
+        <button class="arch-btn" type="button" data-choose="treatments" aria-pressed="false">
+          <div class="photo"><img src="photos/salon-mirrors.png" alt="" onerror="this.remove()"></div>
+          <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
+          <span class="t">Treatments</span>
+          <span class="l">I want something for me.</span>
+          <span class="s">Beauty · Hair · Skin · Aesthetics · Wellness</span>
+          <span class="go">Find my treatment <span class="arr">→</span></span>
+        </button>
+        <button class="arch-btn" type="button" data-choose="academy" aria-pressed="false">
+          <div class="photo"><img src="photos/lounge-wings.png" alt="" onerror="this.remove()"></div>
+          <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
+          <span class="t">Academy</span>
+          <span class="l">I want to learn.</span>
+          <span class="s">Professional beauty &amp; aesthetics education</span>
+          <span class="go">Find my training <span class="arr">→</span></span>
+        </button>
+      </div></div>
+    </div>
+    <div class="story__dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -365,34 +461,6 @@ body:not([data-journey]) .journey--treatments{display:block}
     <span>Beauty</span><span>Hair</span><span>Skin</span><span>Aesthetics</span><span>Wellness</span><span>Academy</span>
   </div></div>
 </div>
-
-<!-- =========================================================== THE FORK -->
-<section class="fork" id="fork" aria-labelledby="fork-h">
-  <div class="wrap">
-    <div class="fork__head">
-      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Start here</span></p>
-      <h2 id="fork-h" class="display d2" data-gw-reveal="mask"><span class="mask">what are you <b>here</b> for?</span></h2>
-    </div>
-    <div class="fork__grid" data-gw-stagger>
-      <button class="arch-btn" type="button" data-choose="treatments" aria-pressed="false" data-gw-reveal>
-        <div class="photo"><img src="photos/salon-mirrors.jpg" alt="" onerror="this.remove()"></div>
-        <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
-        <span class="t">Treatments</span>
-        <span class="l">I want something for me.</span>
-        <span class="s">Beauty · Hair · Skin · Aesthetics · Wellness</span>
-        <span class="go">Find my treatment <span class="arr">→</span></span>
-      </button>
-      <button class="arch-btn" type="button" data-choose="academy" aria-pressed="false" data-gw-reveal>
-        <div class="photo"><img src="photos/academy-floor.jpg" alt="" onerror="this.remove()"></div>
-        <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
-        <span class="t">Academy</span>
-        <span class="l">I want to learn.</span>
-        <span class="s">Professional beauty &amp; aesthetics education</span>
-        <span class="go">Find my training <span class="arr">→</span></span>
-      </button>
-    </div>
-  </div>
-</section>
 
 <!-- ================================================ JOURNEY · TREATMENTS -->
 <section class="journey journey--treatments section" id="treatments" aria-labelledby="treat-h">
@@ -456,10 +524,10 @@ body:not([data-journey]) .journey--treatments{display:block}
     </div>
     <div class="gal" id="gal" data-gw-reveal aria-label="The building" role="region">
       <div class="gal__stage" id="galStage">
-        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-wide.jpg" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone</small></figcaption></figure>
-        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/salon-mirrors.jpg" alt="The salon floor and its arched mirrors" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
-        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/lounge-wings.jpg" alt="The lounge, with the neon wings and halo" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
-        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-portrait.jpg" alt="The gold desk and the logo on the wall" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo</i></div></div><figcaption><span>The desk</span><small>Brushed gold, the logo above it</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-wide.png" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/salon-mirrors.png" alt="The salon floor and its arched mirrors" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/lounge-wings.png" alt="The lounge, with the neon wings and halo" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-portrait.png" alt="The gold desk and the logo on the wall" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo</i></div></div><figcaption><span>The desk</span><small>Brushed gold, the logo above it</small></figcaption></figure>
         <figure class="gal__card"><div class="photo photo--arch"><img src="photos/treatment-macro.jpg" alt="A treatment in progress, close up" onerror="this.remove()"><div class="photo__tag"><i>Photo · treatment</i><i>macro, real hands</i></div></div><figcaption><span>In treatment</span><small>Macro, not clinical stock</small></figcaption></figure>
         <figure class="gal__card"><div class="photo photo--arch"><img src="photos/academy-floor.jpg" alt="Students training in the Academy" onerror="this.remove()"><div class="photo__tag"><i>Photo · academy</i><i>students, models, teaching</i></div></div><figcaption><span>The academy floor</span><small>Real students, real models</small></figcaption></figure>
       </div>
@@ -592,10 +660,45 @@ body:not([data-journey]) .journey--treatments{display:block}
   var rise = document.querySelector("[data-rise]");
   if (rise && !reduce) {
     var i = 0;
-    rise.innerHTML = rise.innerHTML.replace(/(<b>[^<]*<\/b>|[^\s<>]+)/g, function (m) {
+    rise.innerHTML = rise.innerHTML.replace(/(<br\s*\/?>|<b>[^<]*<\/b>|[^\s<>]+)/g, function (m) {
+      if (/^<br/i.test(m)) return m;
       return '<span class="w" style="animation-delay:' + (0.15 + i++ * 0.16) + 's">' + m + "</span>";
     });
   }
+
+
+  /* ---- the scroll story: scroll position picks the beat; the stage stays pinned ---- */
+  (function () {
+    var story = document.getElementById("story"), stage = document.getElementById("stage");
+    if (!story || reduce) return;
+    story.classList.add("story--live");
+    var beats = story.querySelectorAll("[data-beat]"), imgs = story.querySelectorAll("[data-beat-img]"), dots = story.querySelectorAll(".story__dots i");
+    var N = 5, current = -1, tick = false;
+    function show(n) {
+      if (n === current) return; current = n;
+      beats.forEach(function (b) { b.classList.toggle("is-on", parseInt(b.dataset.beat, 10) === n); });
+      imgs.forEach(function (im) { im.classList.toggle("is-on", parseInt(im.dataset.beatImg, 10) === Math.min(n, 3)); });
+      dots.forEach(function (d, k) { d.classList.toggle("is-on", k === n); });
+      story.querySelector(".story__arch").style.opacity = n === 4 ? "0" : "1";
+    }
+    function update() {
+      var top = story.offsetTop, range = story.offsetHeight - innerHeight;
+      var p = Math.max(0, Math.min(1, (scrollY - top) / Math.max(1, range)));
+      stage.style.setProperty("--p", String(p));
+      show(Math.min(N - 1, Math.floor(p * N)));
+      tick = false;
+    }
+    addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener("resize", update);
+    update();
+    // a link to #fork should land on the fork beat, not the top of the story
+    document.querySelectorAll('a[href="#fork"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        scrollTo({ top: story.offsetTop + (story.offsetHeight - innerHeight) * 0.86, behavior: "smooth" });
+      });
+    });
+  })();
 
   /* ---- the fork: choose a world; the page personalises below it ---- */
   var body = document.body;

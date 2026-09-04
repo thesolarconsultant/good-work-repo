@@ -11,11 +11,12 @@ What's in this folder:
 | File | What it is |
 | --- | --- |
 | `brand.css` | The token file. Every colour, font, corner and surface on a Beauty Heaven page reads from here. Same vocabulary as the GOOD WORK. engine, so any engine block reskins on contact. |
-| `index.html` | Prototype homepage: the signature *what are you here for?* fork, arched photography, the hub, reviews as brand material. |
+| `index.html` | Prototype homepage: a pinned scroll story through the building that lands on the *what are you here for?* fork, then the two worlds, the hub, the team and reviews. |
 | `guidelines.html` | This document as a page, with live swatches, type and logo specimens. |
 | `logo/` | Vector masters and PNG exports of the wordmark, the stacked mark, the Treatments and Academy lockups, and the arch favicon. |
 | `logo.config.mjs` | The spec the logo artwork is built from (`npm run brand:logo -- beauty-heaven-hub`). |
 | `fonts/` | Jost, self-hosted, SIL Open Font License. |
+| `photos/` | The premises photography. Four shots are in; the shot list in `photos/README.md` says what is still to come. |
 
 ---
 
@@ -57,10 +58,10 @@ Rules:
 - Gold on taupe is a 2.3:1 contrast pair. That is fine for the logo and for
   large display type, and is never used for copy.
 
-The artwork in `logo/` is rebuilt from the typeface to match the existing
-sign. **The client's original logo file remains the master.** When it is
-supplied, drop it into `logo/` alongside these and use it for anything that
-goes to print.
+**The client's logo is `logo/original.png` and is the master** for anything
+that goes to print. The SVGs and PNGs alongside it are rebuilt from the
+typeface to match it, for the applications and lockups the original
+doesn't cover.
 
 ### Brand architecture
 
@@ -242,6 +243,13 @@ ACADEMY      I want to learn.            → Find my training
 
 The two choices are arched doorways, not numbered cards. Nothing on the site
 is numbered: sections are named, steps are named, and buttons are pills.
+
+The fork is the landing point of a scroll story. The opening screen pins
+while four beats play through it — the welcome, the building, the six
+disciplines, the reviews — each with its own photograph in the arch, and
+then the two doorways rise into place. It is one continuous move from
+"welcome to heaven" to "what are you here for?", and it is the reason the
+homepage feels like walking in.
 
 From there the page personalises: the section below the fork shows the
 chosen world, the closing calls to action follow it, and a returning visitor
