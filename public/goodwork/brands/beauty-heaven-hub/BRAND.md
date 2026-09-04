@@ -16,7 +16,7 @@ What's in this folder:
 | `logo/` | Vector masters and PNG exports of the wordmark, the stacked mark, the Treatments and Academy lockups, and the arch favicon. |
 | `logo.config.mjs` | The spec the logo artwork is built from (`npm run brand:logo -- beauty-heaven-hub`). |
 | `fonts/` | Jost, self-hosted, SIL Open Font License. |
-| `photos/` | The premises photography. Four shots are in; the shot list in `photos/README.md` says what is still to come. |
+| `photos/` | The premises photography, and the responsive WebP copies the pages actually serve. The shot list in `photos/README.md` says what is still to come. |
 
 ---
 
@@ -295,6 +295,29 @@ We're not rebranding them. We're codifying the brand they've already built.
 
 ---
 
+## Built for a phone
+
+Most people will meet this brand on a phone, in the salon or in bed, so the
+prototype is built for that first:
+
+- **256kB on a cold load**, down from 1.7MB. Photography is served as
+  responsive WebP through `srcset`, so a phone pulls a 25kB copy where a
+  desktop pulls the large one. Jost is subsetted to Latin and served as
+  WOFF2 — four weights for 35kB, against 229kB of TTF. The logo mask is a
+  17kB PNG rather than the 264kB master.
+- **The story is paced for a thumb.** Each beat costs less scroll on a
+  phone, the copy and the arch each take a fixed share of one screen, and
+  the opening beat drops its second button so nothing collides.
+- **Dynamic viewport units** (`dvh`), so the address bar sliding away
+  doesn't resize the pinned stage mid-scroll.
+- **Nothing under 44px to aim at** — nav, menu, footer links and the
+  gallery arrows all clear the touch target minimum.
+- **No hover-only anything.** The cursor halo is desktop-only; the fork,
+  the gallery and the accordion all work by tap and drag.
+
+Re-run `npm run brand:photos -- beauty-heaven-hub` after adding or replacing
+a photograph, and commit the result.
+
 ## Using this with the engine
 
 1. Point a page at `brand.css` instead of the GOOD WORK. one. Every engine
@@ -305,4 +328,5 @@ We're not rebranding them. We're codifying the brand they've already built.
 3. Photography in `.photo.photo--arch`; a halo goes on the unclipped
    `.frame` around it, never inside the arch.
 4. Rebuild the artwork after any change to `logo.config.mjs`:
-   `npm run brand:logo -- beauty-heaven-hub`.
+   `npm run brand:logo -- beauty-heaven-hub`, and the responsive photography
+   after any change in `photos/`: `npm run brand:photos -- beauty-heaven-hub`.

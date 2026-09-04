@@ -16,6 +16,13 @@ labelled placeholder instead.
 | `jessica.jpg` | Team portrait (3:4) | Jessica |
 | `hollie.jpg` | Team portrait (3:4) | Hollie |
 
+**Send the originals when you can.** The four supplied shots are 370–630px
+wide, which is what a social post exports at; the site serves them at their
+native size and they go soft in the big arches on a good screen. A photo
+straight off the camera or phone (2000px+) would fill them properly. The
+build makes the responsive WebP copies in `derived/` — regenerate them
+after replacing any file.
+
 Every slot is an arch that crops with `object-fit: cover`, so portrait
 orientation works best; a landscape shot is fine in the rail and is cropped
 to the centre. Any size — a phone photo is enough for the prototype.

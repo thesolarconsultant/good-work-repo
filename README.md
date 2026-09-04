@@ -22,6 +22,7 @@ npm run dev
 | `npm run og` | Regenerate `public/og.png`, the social share card |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` |
 | `npm run brand:logo -- <slug>` | Rebuild a client brand's logo artwork from `public/goodwork/brands/<slug>/logo.config.mjs` |
+| `npm run brand:photos -- <slug>` | Rebuild a client brand's responsive WebP photography — **run this after adding a photo** |
 
 ## How it's put together
 
@@ -239,6 +240,11 @@ outlined paths with opentype.js and rasterises PNGs from those same paths.
 The SVGs open anywhere with nothing installed; the PNGs are computed edges,
 never upscaled ones. Re-run it after any change to the config, and commit
 the output — like the image derivatives, the deploy must not depend on it.
+
+Photography works the same way: drop a file in `photos/`, run
+`npm run brand:photos -- <slug>`, and the pages pick up the WebP copies
+through `srcset`. Both outputs are committed, for the same reason the image
+derivatives are — a deploy must not depend on a working `sharp` install.
 
 Current brands: `beauty-heaven-hub`.
 

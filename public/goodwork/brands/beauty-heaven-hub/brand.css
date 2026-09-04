@@ -31,10 +31,10 @@
    geometric that mirrors the existing logo: single-storey a, straight y,
    a bold with real width. One family; light / bold / light is the whole
    typographic idea. */
-@font-face { font-family: 'Jost'; font-weight: 300; font-style: normal; font-display: swap; src: url('fonts/Jost-Light.ttf') format('truetype'); }
-@font-face { font-family: 'Jost'; font-weight: 400; font-style: normal; font-display: swap; src: url('fonts/Jost-Regular.ttf') format('truetype'); }
-@font-face { font-family: 'Jost'; font-weight: 500; font-style: normal; font-display: swap; src: url('fonts/Jost-Medium.ttf') format('truetype'); }
-@font-face { font-family: 'Jost'; font-weight: 700; font-style: normal; font-display: swap; src: url('fonts/Jost-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 300; font-style: normal; font-display: swap; src: url('fonts/Jost-Light.woff2') format('woff2'), url('fonts/Jost-Light.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 400; font-style: normal; font-display: swap; src: url('fonts/Jost-Regular.woff2') format('woff2'), url('fonts/Jost-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 500; font-style: normal; font-display: swap; src: url('fonts/Jost-Medium.woff2') format('woff2'), url('fonts/Jost-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 700; font-style: normal; font-display: swap; src: url('fonts/Jost-Bold.woff2') format('woff2'), url('fonts/Jost-Bold.ttf') format('truetype'); }
 
 /* ---------------------------------------------------------------- PALETTE -- */
 :root {
@@ -330,11 +330,11 @@
   font-size: min(11cqw, 1em); line-height: 1; white-space: nowrap; color: currentColor;
 }
 .bh-mark__fallback b { font-weight: 700; }
-@supports ((-webkit-mask-image: url("logo/wordmark-master.png")) or (mask-image: url("logo/wordmark-master.png"))) {
+@supports ((-webkit-mask-image: url("logo/wordmark-mask.png")) or (mask-image: url("logo/wordmark-mask.png"))) {
   .bh-mark {
     background-color: currentColor;
-    -webkit-mask: url('logo/wordmark-master.png') no-repeat center / contain;
-            mask: url('logo/wordmark-master.png') no-repeat center / contain;
+    -webkit-mask: url('logo/wordmark-mask.png') no-repeat center / contain;
+            mask: url('logo/wordmark-mask.png') no-repeat center / contain;
   }
   .bh-mark__fallback { visibility: hidden; }
 }
