@@ -104,6 +104,11 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;bac
 @media(max-width:640px){.type__row{grid-template-columns:1fr;gap:.5rem}}
 
 /* physical → digital */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.6rem}
+.shots figure{margin:0;display:grid;gap:.55rem}
+.shots .photo{aspect-ratio:3/4;border-radius:999px 999px var(--radius) var(--radius);overflow:hidden;position:relative;border:1px solid rgba(201,166,92,.55)}
+.shots img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shots figcaption{font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
 .fixtures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:1.6rem}
 .fx{display:grid;gap:.8rem}
 .fx__demo{height:170px;border-radius:var(--radius-lg);border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center}
@@ -273,8 +278,8 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
     <figure class="fx"><div class="fx__demo"><div class="demo-line"><i></i><i></i></div></div><figcaption><span>Brushed gold finishes</span><small>Fine gold lines, icons, micro-interactions</small><code>--bh-gold-line</code></figcaption></figure>
     <figure class="fx"><div class="fx__demo demo-fluted"></div><figcaption><span>Dark fluted doors</span><small>Subtle vertical texture on espresso sections</small><code>--bh-fluted</code></figcaption></figure>
     <figure class="fx"><div class="fx__demo demo-herring"></div><figcaption><span>Herringbone floor</span><small>Warmth, and occasional geometric texture</small><code>--bh-herringbone</code></figcaption></figure>
-    <figure class="fx"><div class="fx__demo demo-halo"></div><figcaption><span>Pendant lighting</span><small>Halos, cursor interaction, slow circular motion</small><code>--bh-halo</code></figcaption></figure>
-    <figure class="fx"><div class="fx__demo demo-wings"><svg viewBox="0 0 80 80" fill="none" stroke="#F4F0E9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="40" cy="11" r="5.5"/><path d="M37 24 C30 22 20 26 14 34 C22 33 27 35 30 38 C24 40 20 44 18 50 C24 48 29 49 32 52 C28 55 27 60 28 66 C33 60 36 50 37 24Z"/><path d="M43 24 C50 22 60 26 66 34 C58 33 53 35 50 38 C56 40 60 44 62 50 C56 48 51 49 48 52 C52 55 53 60 52 66 C47 60 44 50 43 24Z"/></svg></div><figcaption><span>The neon wings</span><small>The one literal Heaven in the building, shown cinematically</small><code>photography</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-halo"></div><figcaption><span>Gold ring pendants</span><small>Halos, cursor interaction, slow circular motion — the rings hanging in the treatment rooms</small><code>--bh-halo</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-wings"><svg viewBox="0 0 80 80" fill="none" stroke="#F4F0E9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="40" cy="11" r="5.5"/><path d="M37 24 C30 22 20 26 14 34 C22 33 27 35 30 38 C24 40 20 44 18 50 C24 48 29 49 32 52 C28 55 27 60 28 66 C33 60 36 50 37 24Z"/><path d="M43 24 C50 22 60 26 66 34 C58 33 53 35 50 38 C56 40 60 44 62 50 C56 48 51 49 48 52 C52 55 53 60 52 66 C47 60 44 50 43 24Z"/></svg></div><figcaption><span>The wings</span><small>Neon in the lounge, stone in the treatment rooms — the one literal Heaven, shown cinematically</small><code>photography</code></figcaption></figure>
     <figure class="fx"><div class="fx__demo demo-taupe">the canvas</div><figcaption><span>Taupe walls</span><small>The primary brand surface</small><code>[data-surface="taupe"]</code></figcaption></figure>
   </div>
 </section>
@@ -293,6 +298,12 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
 <section class="sec" id="photo">
   <div class="sec__head"><span class="sec__num">07</span><h2 class="display">the <b>photography.</b></h2></div>
   <p class="lede">Real Beauty Heaven beats stock. The building is too good to hide behind generic pictures of women touching their faces.</p>
+  <div class="shots">
+    <figure><div class="photo"><img src="photos/reception-wide.png" alt="Reception, wide"></div><figcaption>Reception · premises</figcaption></figure>
+    <figure><div class="photo"><img src="photos/salon-mirrors.png" alt="The salon floor and its arched mirrors"></div><figcaption>The mirrors · the arch</figcaption></figure>
+    <figure><div class="photo"><img src="photos/treatment-room.jpg" alt="A treatment room under gold ring pendants, with the stone wings"></div><figcaption>A treatment room · the halo</figcaption></figure>
+    <figure><div class="photo"><img src="photos/lounge-wings.png" alt="The lounge, with the neon wings and halo"></div><figcaption>The lounge · the wings</figcaption></figure>
+  </div>
   <div class="cols">
     <div class="card"><h3>Premises</h3><p>Wide architectural shots that show the scale: reception with the gold desk and the logo, the salon floor and its arched mirrors, the lounge.</p></div>
     <div class="card"><h3>Details</h3><p>The gold desk, the logo on the wall, the arches and mirror frames, pendant lights, fluted doors, the herringbone, the neon wings and halo.</p></div>

@@ -10,7 +10,8 @@ labelled placeholder instead.
 | `reception-wide.png` | Story arch, third beat · The Hub gallery | Reception, wide ✅ supplied |
 | `salon-mirrors.png` | Story arch · Treatments doorway · gallery | The salon floor and its arched mirrors ✅ supplied |
 | `lounge-wings.png` | Story arch · Academy doorway · gallery | The lounge, the neon wings and halo ✅ supplied |
-| `treatment-macro.jpg` | The Hub gallery | A treatment close up — still to shoot |
+| `treatment-room.jpg` | Story arch, third beat · Treatments doorway · gallery | A treatment room: ring pendants, the stone wings ✅ supplied — cropped at the bottom to remove a social-post overlay; send the original file when you have it |
+| `treatment-macro.jpg` | *(spare)* | A macro of a treatment in progress — still to shoot, and worth having |
 | `academy-floor.jpg` | The Hub gallery | Students, models, teaching — still to shoot. Until it exists the Academy doorway uses the lounge and its wings. |
 | `jessica.jpg` | Team portrait (3:4) | Jessica |
 | `hollie.jpg` | Team portrait (3:4) | Hollie |
