@@ -21,6 +21,7 @@ npm run dev
 | `npm run logo` | Regenerate the logo artwork in `brand/` for printers, suppliers and socials |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` |
+| `npm run brand:logo -- <slug>` | Rebuild a client brand's logo artwork from `public/goodwork/brands/<slug>/logo.config.mjs` |
 
 ## How it's put together
 
@@ -221,6 +222,25 @@ Web-standard `Request -> Response` handler.
 just shows the success state. It predates the scope builder and still needs
 wiring; the quickest fix is to point its `handleSubmit` at `/api/enquiry`,
 which already accepts a name, email, phone and message.
+
+### Client brands — `public/goodwork/brands/`
+
+Each client brand built on the engine gets a folder here, served statically
+at `/goodwork/brands/<slug>/` (the `/goodwork/` path is already excluded from
+the SPA rewrite). The folder is the handover: a `brand.css` in the engine's
+token vocabulary, a `BRAND.md` and `guidelines.html` that say the same thing
+as a document and as a page, a prototype `index.html`, the logo artwork in
+`logo/` and the typeface in `fonts/`.
+
+The logo artwork is generated, not drawn: `logo.config.mjs` describes the
+marks (which words, in which weights, on which lines) and the colour
+applications, and `npm run brand:logo -- <slug>` turns every glyph into
+outlined paths with opentype.js and rasterises PNGs from those same paths.
+The SVGs open anywhere with nothing installed; the PNGs are computed edges,
+never upscaled ones. Re-run it after any change to the config, and commit
+the output — like the image derivatives, the deploy must not depend on it.
+
+Current brands: `beauty-heaven-hub`.
 
 ### Favicon
 

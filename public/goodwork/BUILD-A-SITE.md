@@ -31,6 +31,22 @@ That's the site. Steps 2–4 are the only creative work; the engine does the res
 
 ---
 
+## Brands built on the engine
+
+Each one lives in `brands/<slug>/` with its own `brand.css`, guidelines,
+prototype page and logo artwork — the whole paste, in one folder.
+
+| Brand | Lead theme | The one-line brief |
+| --- | --- | --- |
+| [`brands/beauty-heaven-hub/`](brands/beauty-heaven-hub/guidelines.html) | light (ivory), with taupe surfaces | Warm. Architectural. Premium. Human. Heavenly. The premises, translated into a digital brand. |
+
+Beauty Heaven Hub adds one idea worth keeping in the engine: **surfaces**.
+`data-surface="taupe"` on a section re-reads every token for that wall, so a
+block painted for the page's light theme becomes a brand moment without a
+second copy of its CSS. See the top of its `brand.css`.
+
+---
+
 ## What's the engine vs. what's the brand
 
 | The ENGINE (never changes)            | The BRAND (the paste)                     |
