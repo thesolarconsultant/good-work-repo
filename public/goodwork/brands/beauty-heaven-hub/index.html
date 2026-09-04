@@ -109,7 +109,8 @@ h1,h2,h3,p{margin:0}
 /* ---- nav: a pill that firms up on scroll (the library's sticky nav) ---- */
 .nav{position:sticky;top:0;z-index:40;padding-block:.9rem;background:color-mix(in srgb,var(--cream) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:padding var(--dur) var(--ease)}
 .nav__in{display:flex;align-items:center;gap:1.5rem}
-.nav .bh-logo{font-size:1.35rem}
+.nav__mark{width:clamp(150px,17vw,208px);color:var(--ink)}
+.nav a:focus-visible .bh-mark{outline:2px solid var(--accent);outline-offset:6px}
 .nav__pill{margin-left:auto;display:flex;align-items:center;gap:.2rem;padding:.35rem;border-radius:var(--pill);border:1px solid transparent;
   background:var(--card);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
 .nav__pill a{font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body);padding:.6rem 1rem;border-radius:var(--pill);transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
@@ -323,6 +324,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 /* ---- closing band ---- */
 .close{position:relative;overflow:hidden;text-align:center;padding-block:clamp(5rem,12vw,10rem)}
 .close__in{display:grid;gap:1.8rem;justify-items:center;position:relative}
+.close__mark{width:min(560px,86%);margin-bottom:.4rem}
 .close__halo{position:absolute;left:50%;top:50%;width:min(120vw,1100px);aspect-ratio:1;transform:translate(-50%,-50%);background:var(--bh-glow);opacity:.7;pointer-events:none}
 .close .actions{justify-content:center}
 .close .eyebrow{justify-self:center}
@@ -330,7 +332,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 /* ---- footer ---- */
 .footer{padding-block:clamp(3rem,6vw,5rem) 2rem;border-top:1px solid var(--line)}
 .footer__grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:2.5rem}
-.footer .bh-logo{font-size:1.5rem;color:var(--ink)}
+.footer__mark{width:min(280px,72%);color:var(--bh-gold)}
 .footer .world{display:grid;gap:.3rem;margin-top:1.2rem}
 .footer .world .bh-logo{font-size:1.05rem}
 .footer .world .micro{letter-spacing:.3em;color:var(--accent-ink)}
@@ -360,7 +362,7 @@ body:not([data-journey]) .journey--treatments{display:block}
 <!-- ================================================================ NAV -->
 <header class="nav" id="nav">
   <div class="wrap nav__in">
-    <a class="bh-logo" href="#top" aria-label="Beauty Heaven Hub — home">beauty <b>heaven</b> hub</a>
+    <a href="#top" aria-label="Beauty Heaven Hub — home"><span class="bh-mark bh-mark--hover nav__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
     <nav class="nav__pill" aria-label="Primary">
       <a href="#treatments" data-journey-link="treatments">Treatments</a>
       <a href="#academy" data-journey-link="academy">Academy</a>
@@ -610,6 +612,7 @@ body:not([data-journey]) .journey--treatments{display:block}
   <div class="close__halo" aria-hidden="true"></div>
   <div class="wrap close__in">
     <p class="micro eyebrow" data-gw-reveal><span class="t">Ready when you are</span></p>
+    <span class="bh-mark bh-mark--gold bh-mark--glint close__mark" role="img" aria-label="Beauty Heaven Hub" data-gw-reveal><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span>
     <h2 id="close-h" class="display d1" data-gw-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h2>
     <div class="actions" data-gw-reveal>
       <a class="btn btn--fill gw-shimmer" href="#" data-gw-magnetic="0.25"><span>Book a treatment</span> <span class="arr">→</span></a>
@@ -625,7 +628,7 @@ body:not([data-journey]) .journey--treatments{display:block}
   <div class="wrap">
     <div class="footer__grid">
       <div>
-        <a class="bh-logo" href="#top">beauty <b>heaven</b> hub</a>
+        <a href="#top" aria-label="Beauty Heaven Hub — back to the top"><span class="bh-mark bh-mark--gold bh-mark--glint footer__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
         <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Treatments</span></div>
         <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Academy</span></div>
       </div>
@@ -739,32 +742,63 @@ body:not([data-journey]) .journey--treatments{display:block}
     var track = document.getElementById("railTrack"); track.innerHTML += track.innerHTML;
   }
 
-  /* ---- the arc gallery: drag, click, arrows, or let it drift ---- */
+  /* ---- the arc gallery: the scroll turns it; drag and the arrows nudge it ---- */
   (function () {
     var root = document.getElementById("gal"); if (!root) return;
+    var section = document.getElementById("hub");
     var cards = Array.prototype.slice.call(root.querySelectorAll(".gal__card"));
-    var N = cards.length, c = 0, timer, down = false, moved = false, sx = 0, sc = 0;
+    var N = cards.length, pos = 0, target = 0, nudge = 0, raf = null;
+    var down = false, moved = false, sx = 0, sc = 0;
     function render() {
       cards.forEach(function (el, k) {
-        var o = k - c; if (o > N / 2) o -= N; if (o < -N / 2) o += N;
+        var o = k - pos; while (o > N / 2) o -= N; while (o < -N / 2) o += N;
         var w = el.offsetWidth || 240;
         el.style.transform = "translate(-50%,-50%) translateX(" + (o * w * 0.86) + "px) translateZ(" + (-Math.abs(o) * 140) + "px) rotateY(" + (-o * 26) + "deg)";
         el.style.opacity = String(Math.max(0, 1 - Math.abs(o) * 0.3));
-        el.style.zIndex = String(20 - Math.abs(o));
-        el.classList.toggle("is-centre", o === 0);
+        el.style.zIndex = String(20 - Math.round(Math.abs(o)));
+        el.classList.toggle("is-centre", Math.abs(o) < 0.5);
       });
     }
-    function set(n) { c = ((n % N) + N) % N; render(); }
-    function reset() { clearInterval(timer); if (!reduce) timer = setInterval(function () { set(c + 1); }, 3600); }
-    cards.forEach(function (el, k) { el.addEventListener("click", function () { if (!moved) { set(k); reset(); } }); });
-    root.addEventListener("pointerdown", function (e) { down = true; moved = false; sx = e.clientX; sc = c; root.classList.add("drag"); clearInterval(timer); });
-    addEventListener("pointermove", function (e) { if (!down) return; var d = e.clientX - sx; if (Math.abs(d) > 6) moved = true; set(Math.round(sc - d / 120)); });
-    addEventListener("pointerup", function () { if (down) { down = false; root.classList.remove("drag"); reset(); } });
-    root.addEventListener("mouseenter", function () { clearInterval(timer); });
-    root.addEventListener("mouseleave", reset);
-    document.querySelectorAll("[data-gal]").forEach(function (b) { b.addEventListener("click", function () { set(c + parseInt(b.dataset.gal, 10)); reset(); }); });
-    addEventListener("resize", render);
-    render(); reset();
+    // Scroll position through the section maps to just over one full turn, so
+    // the arc keeps moving the whole way past rather than finishing early.
+    function fromScroll() {
+      var r = section.getBoundingClientRect();
+      var span = r.height + innerHeight;
+      var p = Math.max(0, Math.min(1, (innerHeight - r.top) / span));
+      return p * (N + 1) - 1.2;
+    }
+    function loop() {
+      var d = target - pos;
+      if (Math.abs(d) < 0.001) { pos = target; render(); raf = null; return; }
+      pos += d * 0.12; render(); raf = requestAnimationFrame(loop);
+    }
+    function set(t, instant) {
+      target = t;
+      if (instant || reduce) { pos = target; render(); return; }
+      if (!raf) raf = requestAnimationFrame(loop);
+    }
+    function sync() { set(fromScroll() + nudge); }
+    addEventListener("scroll", sync, { passive: true });
+    addEventListener("resize", function () { sync(); render(); });
+    cards.forEach(function (el, k) {
+      el.addEventListener("click", function () {
+        if (moved) return;
+        // clicking a card brings it to the centre, as an offset from the scroll
+        var o = k - target; while (o > N / 2) o -= N; while (o < -N / 2) o += N;
+        nudge += o; sync();
+      });
+    });
+    root.addEventListener("pointerdown", function (e) { down = true; moved = false; sx = e.clientX; sc = nudge; root.classList.add("drag"); });
+    addEventListener("pointermove", function (e) {
+      if (!down) return; var d = e.clientX - sx;
+      if (Math.abs(d) > 6) moved = true;
+      nudge = sc - d / 120; sync();
+    });
+    addEventListener("pointerup", function () { if (down) { down = false; root.classList.remove("drag"); nudge = Math.round(nudge * 2) / 2; sync(); } });
+    document.querySelectorAll("[data-gal]").forEach(function (b) {
+      b.addEventListener("click", function () { nudge += parseInt(b.dataset.gal, 10); sync(); });
+    });
+    sync(); pos = target; render();
   })();
 
   /* ---- the accordion ---- */

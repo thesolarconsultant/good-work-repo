@@ -51,6 +51,15 @@ Rules:
 
 - No gradients in the logo. No drop shadows. No fake metallic effects. No
   pink version.
+- **One sanctioned light effect.** On screen, on a dark or taupe ground, the
+  gold logo may catch the light: a single specular sweep travelling across
+  the letterforms every six and a half seconds, then stillness. The gold
+  underneath stays flat — this is light moving over the mark, not a gradient
+  baked into it, and it is the only thing the logo is ever allowed to do.
+  It is built in `brand.css` as `.bh-mark--glint`, masked through the real
+  artwork, and it stops entirely under `prefers-reduced-motion`. In the nav,
+  on the light ground, the mark is espresso and glints once on hover.
+  Print never gets it.
 - Clear space: the height of the lowercase **b** on every side. The
   ground-colour files in `logo/` have this built in.
 - Minimum size: 120px wide on screen, 30mm in print, for the wordmark. Use
@@ -59,7 +68,10 @@ Rules:
   large display type, and is never used for copy.
 
 **The client's logo is `logo/original.png` and is the master** for anything
-that goes to print. The SVGs and PNGs alongside it are rebuilt from the
+that goes to print. `logo/wordmark-master.png` is the same artwork trimmed,
+and it is what the site masks: the real letterforms take whatever ink the
+surface calls for — espresso on ivory, gold on taupe, ivory on photography —
+from one file. The SVGs and PNGs alongside it are rebuilt from the
 typeface to match it, for the applications and lockups the original
 doesn't cover.
 
@@ -193,11 +205,12 @@ Slow, smooth, expensive. Not "look how many animations we can add."
 - Gentle parallax; the halo drifting with the scroll
 - Text emerging through architectural shapes
 - Smooth page transitions; subtle image scaling on hover (1.03, never more)
-- Horizontal editorial galleries
+- Horizontal editorial galleries, and an arc of arches that turns as you scroll past
 - Considered hover states: a gold hairline drawing in under a nav link
 - A cursor halo on desktop, a spotlight that follows the cursor across the
-  fork arches, and a gallery of arches bent along an arc that drifts on its
-  own and can be dragged
+  fork arches, and a gallery of arches bent along an arc: the scroll turns
+  it, and it can still be dragged or stepped with the arrows
+- The logo catching the light, once, slowly (see 02)
 
 The prototype runs on the GOOD WORK. motion library (`/goodwork/motion/`):
 reveals, staggers, magnetic buttons, the marquee and the shimmer come from

@@ -303,6 +303,91 @@
 .bh-display b, .bh-display strong { font-weight: var(--weight-emphasis); }
 .bh-gold-rule { border: 0; border-top: var(--bh-gold-line); width: 64px; margin: 0; }
 
+
+/* ---------------------------------------------- THE LOGO, AS ARTWORK -- */
+/* The supplied logo (logo/original.png, trimmed to logo/wordmark-master.png)
+   used as a mask, so the real letterforms take whatever ink the surface
+   calls for — espresso on ivory, gold on taupe, ivory on photography — from
+   one file, with no recolouring by hand.
+
+   .bh-mark            the logo, painted in currentColor
+   .bh-mark--gold      champagne gold, for taupe and espresso grounds
+   .bh-mark--glint     the light catches it: one slow specular sweep, then
+                       nothing for six seconds. The gold stays FLAT — this is
+                       light moving across the mark, never a gradient baked
+                       into it, and never a shadow or a foil effect. */
+.bh-mark {
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+  width: 100%;
+  aspect-ratio: 2095 / 267;   /* the master's own proportions */
+}
+/* Live text inside the mark is the fallback for a browser that cannot mask.
+   Where masking works, the real artwork replaces it. */
+.bh-mark__fallback {
+  font-family: var(--font-logo); font-weight: 300; letter-spacing: .01em;
+  font-size: min(11cqw, 1em); line-height: 1; white-space: nowrap; color: currentColor;
+}
+.bh-mark__fallback b { font-weight: 700; }
+@supports ((-webkit-mask-image: url("logo/wordmark-master.png")) or (mask-image: url("logo/wordmark-master.png"))) {
+  .bh-mark {
+    background-color: currentColor;
+    -webkit-mask: url('logo/wordmark-master.png') no-repeat center / contain;
+            mask: url('logo/wordmark-master.png') no-repeat center / contain;
+  }
+  .bh-mark__fallback { visibility: hidden; }
+}
+.bh-mark--gold { color: var(--bh-gold); }
+
+.bh-mark--glint {
+  /* A soft warm bloom with a narrow bright core, the way light actually
+     travels across brushed gold. It rides over the flat colour and is the
+     only moving part. */
+  background-image: linear-gradient(100deg,
+      rgba(255,255,255,0)   26%,
+      rgba(255,244,214,.30) 36%,   /* the dim leading bloom            */
+      rgba(255,255,255,0)   41%,
+      rgba(255,246,224,.55) 47%,
+      rgba(255,255,255,.98) 51%,   /* the specular core                */
+      rgba(255,246,224,.55) 55%,
+      rgba(255,255,255,0)   62%,
+      rgba(255,244,214,.22) 68%,   /* and the trail behind it          */
+      rgba(255,255,255,0)   76%);
+  background-repeat: no-repeat;
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  animation: bh-glint 6.5s var(--ease-slow) infinite;
+}
+/* The sweep takes about a fifth of the cycle; the rest is stillness, which is
+   what keeps it expensive rather than blinking. */
+@keyframes bh-glint {
+  0%        { background-position: 160% 0; }
+  26%, 100% { background-position: -80% 0; }
+}
+/* On a mark that only glints when you touch it (the nav), the sweep runs once. */
+.bh-mark--hover { background-image: none; }
+.bh-mark--hover:hover, a:hover > .bh-mark--hover {
+  background-image: linear-gradient(100deg,
+      rgba(255,255,255,0)   34%,
+      rgba(255,246,224,.40) 44%,
+      rgba(255,255,255,.85) 50%,
+      rgba(255,246,224,.40) 56%,
+      rgba(255,255,255,0)   66%);
+  background-repeat: no-repeat;
+  background-size: 260% 100%;
+  animation: bh-glint-once 1.5s var(--ease-slow) 1;
+}
+@keyframes bh-glint-once {
+  from { background-position: 160% 0; }
+  to   { background-position: -80% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bh-mark--glint, .bh-mark--hover:hover, a:hover > .bh-mark--hover {
+    background-image: none; animation: none;
+  }
+}
+
 /* The logo as live text — the weight IS the logo. Same size on all three
    words; light / bold / light. Use the SVG masters in logo/ for artwork. */
 .bh-logo {
