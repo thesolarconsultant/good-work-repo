@@ -63,8 +63,11 @@ h1,h2,h3,p{margin:0}
 .photo::after{content:"";position:absolute;inset:0;background:var(--bh-herringbone);opacity:.5;mix-blend-mode:multiply}
 .photo__tag{position:absolute;left:0;right:0;bottom:1.1rem;text-align:center;color:rgba(244,240,233,.78);z-index:1}
 .photo__tag i{font-style:normal;display:block;font-size:.66rem;letter-spacing:var(--track-micro);text-transform:uppercase}
-.photo img{width:100%;height:100%;object-fit:cover;transition:transform var(--dur-slow) var(--ease-slow)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform var(--dur-slow) var(--ease-slow)}
 .photo:hover img{transform:scale(1.03)}
+/* a real photograph replaces the placeholder wash and its label; a missing
+   file removes itself (onerror) and the labelled slot comes back */
+.photo:has(img)::after,.photo:has(img) .photo__tag{display:none}
 .halo{position:absolute;inset:-22%;background:var(--bh-halo);pointer-events:none;z-index:0;opacity:.9;
   transform:translate3d(var(--hx,0),var(--hy,0),0);transition:opacity var(--dur-slow) var(--ease)}
 
@@ -269,7 +272,8 @@ body:not([data-journey]) .journey--treatments{display:block}
     <div class="hero__photo frame" data-reveal="mask">
       <div class="halo" aria-hidden="true"></div>
       <div class="photo photo--arch mask">
-        <!-- PHOTO: replace with real Beauty Heaven photography. -->
+        <!-- Drop the real photograph in photos/ under this name and it takes the slot. -->
+        <img src="photos/reception-portrait.jpg" alt="The reception at Beauty Heaven Hub: the gold desk, the logo on the taupe wall, herringbone floor" onerror="this.remove()">
         <div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo, reception</i></div>
       </div>
     </div>
@@ -362,11 +366,11 @@ body:not([data-journey]) .journey--treatments{display:block}
       <p class="lede" data-reveal>Arched mirrors, a gold desk, fluted doors, herringbone floors and a pair of neon wings with a halo. It's a building that took a long time to get right, and it's the reason the website looks the way it does.</p>
     </div>
     <div class="rail" data-reveal>
-      <figure><div class="photo photo--arch"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone floor</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><div class="photo__tag"><i>Photo · premises</i><i>salon floor, the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo, lounge</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><div class="photo__tag"><i>Photo · treatment</i><i>macro, real hands</i></div></div><figcaption><span>In treatment</span><small>Macro, not clinical stock</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><div class="photo__tag"><i>Photo · academy</i><i>students, models, teaching</i></div></div><figcaption><span>The academy floor</span><small>Real students, real models</small></figcaption></figure>
+      <figure><div class="photo photo--arch"><img src="photos/reception-wide.jpg" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone floor</small></figcaption></figure>
+      <figure><div class="photo photo--arch"><img src="photos/salon-mirrors.jpg" alt="The salon floor and its arched mirrors" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>salon floor, the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
+      <figure><div class="photo photo--arch"><img src="photos/lounge-wings.jpg" alt="The lounge, with the neon wings and halo" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo, lounge</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
+      <figure><div class="photo photo--arch"><img src="photos/treatment-macro.jpg" alt="A treatment in progress, close up" onerror="this.remove()"><div class="photo__tag"><i>Photo · treatment</i><i>macro, real hands</i></div></div><figcaption><span>In treatment</span><small>Macro, not clinical stock</small></figcaption></figure>
+      <figure><div class="photo photo--arch"><img src="photos/academy-floor.jpg" alt="Students training in the Academy" onerror="this.remove()"><div class="photo__tag"><i>Photo · academy</i><i>students, models, teaching</i></div></div><figcaption><span>The academy floor</span><small>Real students, real models</small></figcaption></figure>
     </div>
     <div class="hub__fixtures" data-stagger>
       <div class="fixture" data-reveal><span class="micro">Arched mirrors</span><span>Arched photography</span></div>
@@ -388,11 +392,11 @@ body:not([data-journey]) .journey--treatments{display:block}
     </div>
     <div class="people__grid" data-stagger>
       <div class="person" data-reveal>
-        <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><div class="photo__tag"><i>Portrait</i><i>Jessica</i></div></div></div>
+        <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><img src="photos/jessica.jpg" alt="Jessica" onerror="this.remove()"><div class="photo__tag"><i>Portrait</i><i>Jessica</i></div></div></div>
         <div><h3>Jessica</h3><p class="micro micro--gold">Founder · Practitioner · Educator</p><p>Runs the Hub and teaches in the Academy. Clients mention her by name for the care and precision of her work, and for explaining everything before she starts.</p></div>
       </div>
       <div class="person" data-reveal>
-        <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><div class="photo__tag"><i>Portrait</i><i>Hollie</i></div></div></div>
+        <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><img src="photos/hollie.jpg" alt="Hollie" onerror="this.remove()"><div class="photo__tag"><i>Portrait</i><i>Hollie</i></div></div></div>
         <div><h3>Hollie</h3><p class="micro micro--gold">Practitioner · Educator</p><p>The other name that comes up in review after review. Professional, friendly and reassuring, particularly with clients who arrive nervous.</p></div>
       </div>
     </div>
