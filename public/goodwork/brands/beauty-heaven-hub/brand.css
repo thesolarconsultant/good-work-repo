@@ -1,0 +1,313 @@
+/* ============================================================================
+   brand.css — BEAUTY HEAVEN HUB
+   ----------------------------------------------------------------------------
+   The knob, filled in for Beauty Heaven Hub. Same token vocabulary as the
+   GOOD WORK. engine (public/goodwork/brand.css), so any engine block reskins
+   the moment it points here — plus a short block of tokens the brand owns
+   outright: the taupe surface, the arch, the halo, the fluted panel.
+
+   The seven things a brand owns:
+     1. accent family   champagne gold + its cuts
+     2. neutrals        warm ivory ground, espresso type, stone lines
+     3. fonts           Jost — one geometric family, weight does the work
+     4. corner radius   architectural: near-square, with the arch as the
+                        one big curve
+     5. the dark band   Deep Espresso, with the fluted panel texture
+     6. hero scrim      ivory wash on light, espresso on dark
+     7. shadows         warm, espresso-tinted, soft
+
+   Colour balance to design around: ~50% ivory / 25% taupe / 15% espresso /
+   10% gold. Gold is the jewellery. Do not drown the site in it.
+
+   Three surfaces ship. :root is the LIGHT theme (ivory). data-theme="dark"
+   is the ESPRESSO theme. data-surface="taupe" is the brand's own canvas,
+   applied to a section rather than the page — the hero, the fork, the
+   closing band. Pick one of them for the page, then paint the taupe
+   moments on top.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- TYPE -- */
+/* Jost, self-hosted from fonts/ (SIL Open Font License). A Futura-style
+   geometric that mirrors the existing logo: single-storey a, straight y,
+   a bold with real width. One family; light / bold / light is the whole
+   typographic idea. */
+@font-face { font-family: 'Jost'; font-weight: 300; font-style: normal; font-display: swap; src: url('fonts/Jost-Light.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 400; font-style: normal; font-display: swap; src: url('fonts/Jost-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 500; font-style: normal; font-display: swap; src: url('fonts/Jost-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'Jost'; font-weight: 700; font-style: normal; font-display: swap; src: url('fonts/Jost-Bold.ttf') format('truetype'); }
+
+/* ---------------------------------------------------------------- PALETTE -- */
+:root {
+  /* The core five. Working visual matches from the premises photography,
+     not claimed paint or Pantone specifications. */
+  --bh-taupe:    #746B60;   /* Heaven Taupe    — primary brand background      */
+  --bh-gold:     #C9A65C;   /* Champagne Gold  — logo, accents, fine detailing */
+  --bh-ivory:    #F4F0E9;   /* Warm Ivory      — light backgrounds             */
+  --bh-espresso: #24211E;   /* Deep Espresso   — type, dark sections           */
+  --bh-stone:    #B9AFA2;   /* Soft Stone      — secondary surfaces            */
+
+  /* Working cuts. The brand colours are tuned for surfaces and the logo,
+     not for a line of 14px type — these are the same hues taken down (or
+     up) in lightness only, for the places contrast law applies:
+       gold on ivory      2.0:1  ✗   → --bh-gold-ink on ivory   5.0:1 ✓
+       taupe on ivory-2   4.2:1  ✗   → --bh-taupe-ink            4.8:1 ✓
+       gold on espresso   6.9:1  ✓   (gold as text is fine on dark)
+       ivory on taupe     4.6:1  ✓   (the only text colour for taupe)
+       gold on taupe      2.3:1      logo and large display ONLY, never copy */
+  --bh-gold-ink:   #7F6329;
+  --bh-gold-light: #E3CD94;   /* gold lifted a step, for text on espresso  */
+  --bh-taupe-ink:  #6B6257;
+  --bh-taupe-deep: #5E564C;
+  --bh-ivory-2:    #ECE6DD;
+  --bh-ivory-card: #FBF9F5;
+  --bh-espresso-2: #2E2A26;
+}
+
+/* ------------------------------------------------------------------ LIGHT -- */
+:root {
+  color-scheme: light;
+
+  /* 1 · ACCENT — champagne gold. Fills and hairlines use the brand gold;
+        gold as text on a light ground uses the ink cut. */
+  --accent:        var(--bh-gold);
+  --accent-hover:  #B8934A;
+  --accent-2:      var(--bh-gold-light);
+  --accent-ink:    var(--bh-gold-ink);
+  --accent-ink-2:  var(--bh-taupe-ink);
+  /* The engine's gradient slots. Kept deliberately quiet: a sheen across a
+     single headline word at most, and NEVER on the logo. The closing band
+     is taupe, not a gold gradient — gold is the button on it. */
+  --grad-text:     linear-gradient(100deg, #B8934A 0%, #E3CD94 48%, #B8934A 100%);
+  --accent-grad:   linear-gradient(135deg, var(--bh-taupe) 0%, var(--bh-taupe-deep) 100%);
+
+  /* 2 · NEUTRALS — warm ivory ground, espresso type. Cards are a touch
+        lighter than the page so they lift without a border. */
+  --cream:       var(--bh-ivory);
+  --cream-2:     var(--bh-ivory-2);
+  --card:        var(--bh-ivory-card);
+  --line:        #DED6CA;
+  --line-strong: var(--bh-stone);
+  --ink:         var(--bh-espresso);
+  --body:        #4A443E;
+  --muted:       var(--bh-taupe-ink);
+
+  /* 5 · DARK BAND — Deep Espresso, the fluted doors and panelling. */
+  --dark:         var(--bh-espresso);
+  --dark-2:       var(--bh-espresso-2);
+  --on-dark:      var(--bh-ivory);
+  --on-dark-muted:var(--bh-stone);
+  --line-dark:    #3A3530;
+
+  /* 6 · HERO SCRIM — ivory wash. Photography is the brand, so keep the
+        media filter off and let the room show. */
+  --scrim-rgb:         244, 240, 233;
+  --hero-media-filter: none;
+
+  /* 7 · SHADOWS — warm and soft, tinted with espresso rather than black. */
+  --shadow-sm: 0 1px 2px rgba(36,33,30,0.06), 0 8px 24px rgba(36,33,30,0.08);
+  --shadow-md: 0 18px 44px rgba(36,33,30,0.16);
+
+  /* 3 · TYPE — Jost throughout. Light for display, bold for emphasis
+        (the bold "heaven"), regular for body, medium for microcopy. */
+  --font-head: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-logo: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --weight-display: 300;
+  --weight-emphasis: 700;
+  --weight-body: 400;
+  --weight-micro: 500;
+  --track-micro: 0.18em;     /* small uppercase, opened up */
+  --track-display: -0.015em; /* large lowercase, closed a touch */
+
+  /* 4 · METRICS — architectural. Corners are near-square; the arch is the
+        one big curve and it belongs to photography and the odd panel. */
+  --container: 1180px;
+  --radius:    2px;
+  --radius-lg: 4px;
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur:       600ms;   /* motion is slow, smooth and expensive */
+  --dur-slow:  1200ms;
+}
+
+/* ------------------------------------------------------------------- DARK -- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cream:       var(--bh-espresso);
+  --cream-2:     var(--bh-espresso-2);
+  --card:        #2A2622;
+  --line:        #3A3530;
+  --line-strong: #4A443E;
+  --ink:         var(--bh-ivory);
+  --body:        #D6CFC4;
+  --muted:       var(--bh-stone);
+
+  /* gold reads as text on espresso as-is; lift the ink cut so links stay
+     champagne rather than mustard */
+  --accent:      var(--bh-gold);
+  --accent-hover:var(--bh-gold-light);
+  --accent-2:    var(--bh-gold-light);
+  --accent-ink:  var(--bh-gold-light);
+  --accent-ink-2:var(--bh-stone);
+
+  --dark:        #1C1A17;
+  --dark-2:      var(--bh-espresso);
+  --on-dark:     var(--bh-ivory);
+  --on-dark-muted:var(--bh-stone);
+  --line-dark:   #3A3530;
+
+  --scrim-rgb:         36, 33, 30;
+  --hero-media-filter: brightness(0.72) saturate(0.9);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.45);
+  --shadow-md: 0 18px 44px rgba(0,0,0,0.6);
+}
+
+/* Follow the visitor's OS theme until they pick one explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+    --cream:var(--bh-espresso); --cream-2:var(--bh-espresso-2); --card:#2A2622;
+    --line:#3A3530; --line-strong:#4A443E;
+    --ink:var(--bh-ivory); --body:#D6CFC4; --muted:var(--bh-stone);
+    --accent:var(--bh-gold); --accent-hover:var(--bh-gold-light); --accent-2:var(--bh-gold-light);
+    --accent-ink:var(--bh-gold-light); --accent-ink-2:var(--bh-stone);
+    --dark:#1C1A17; --dark-2:var(--bh-espresso); --on-dark:var(--bh-ivory);
+    --on-dark-muted:var(--bh-stone); --line-dark:#3A3530;
+    --scrim-rgb:36,33,30; --hero-media-filter:brightness(0.72) saturate(0.9);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.4),0 8px 24px rgba(0,0,0,0.45);
+    --shadow-md:0 18px 44px rgba(0,0,0,0.6);
+  }
+}
+
+/* ------------------------------------------------------------- SURFACES -- */
+/* Section-level canvases. Put data-surface on a <section> and every engine
+   block inside it re-reads its tokens — the same card, button and line
+   rules, painted for that wall. */
+
+/* Heaven Taupe — the primary brand canvas. Type is ivory; gold is for the
+   logo, hairlines, buttons and large display only. */
+[data-surface="taupe"] {
+  color-scheme: dark;
+  --cream:       var(--bh-taupe);
+  --cream-2:     var(--bh-taupe-deep);
+  --card:        rgba(244,240,233,0.06);
+  --line:        rgba(201,166,92,0.35);
+  --line-strong: rgba(201,166,92,0.6);
+  --ink:         var(--bh-ivory);
+  --body:        rgba(244,240,233,0.82);
+  --muted:       rgba(244,240,233,0.68);
+  --accent:      var(--bh-gold);
+  --accent-hover:var(--bh-gold-light);
+  --accent-ink:  var(--bh-gold-light);
+  --scrim-rgb:   116,107,96;
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Deep Espresso — the fluted doors. Add .bh-fluted for the panelling. */
+[data-surface="espresso"] {
+  color-scheme: dark;
+  --cream:       var(--bh-espresso);
+  --cream-2:     var(--bh-espresso-2);
+  --card:        #2A2622;
+  --line:        #3A3530;
+  --line-strong: #4A443E;
+  --ink:         var(--bh-ivory);
+  --body:        #D6CFC4;
+  --muted:       var(--bh-stone);
+  --accent:      var(--bh-gold);
+  --accent-hover:var(--bh-gold-light);
+  --accent-ink:  var(--bh-gold-light);
+  --scrim-rgb:   36,33,30;
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Warm Ivory — for a section that has to go light inside a dark page. */
+[data-surface="ivory"] {
+  color-scheme: light;
+  --cream:       var(--bh-ivory);
+  --cream-2:     var(--bh-ivory-2);
+  --card:        var(--bh-ivory-card);
+  --line:        #DED6CA;
+  --line-strong: var(--bh-stone);
+  --ink:         var(--bh-espresso);
+  --body:        #4A443E;
+  --muted:       var(--bh-taupe-ink);
+  --accent:      var(--bh-gold);
+  --accent-hover:#B8934A;
+  --accent-ink:  var(--bh-gold-ink);
+  --scrim-rgb:   244,240,233;
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* ----------------------------------------------- THE BUILDING, AS TOKENS -- */
+/* Physical → digital. Each of these is a fixture from the premises, so the
+   site feels like it was designed at the same time as the building. */
+:root {
+  /* Arched mirrors → arched photography containers and masks. */
+  --bh-arch: 999px 999px var(--radius) var(--radius);
+
+  /* Brushed gold finishes → one fine gold line. Never a thick gold border. */
+  --bh-gold-line: 1px solid var(--bh-gold);
+  --bh-gold-line-soft: 1px solid rgba(201,166,92,0.45);
+
+  /* Circular pendant lighting → a halo: a soft ring of light, not a blob.
+     Painted as a background on a positioned element; keep opacity low. */
+  --bh-halo: radial-gradient(circle at center,
+      rgba(201,166,92,0) 40%, rgba(201,166,92,0.10) 47%,
+      rgba(201,166,92,0.18) 50%, rgba(201,166,92,0.08) 55%,
+      rgba(201,166,92,0) 64%);
+  --bh-glow: radial-gradient(circle at center, rgba(201,166,92,0.16) 0%, rgba(201,166,92,0) 60%);
+
+  /* Dark fluted doors and panelling → a subtle vertical texture for
+     espresso sections. Use at low opacity over --dark, or as .bh-fluted. */
+  --bh-flute-w: 22px;
+  --bh-fluted: repeating-linear-gradient(90deg,
+      rgba(244,240,233,0.045) 0 1px,
+      rgba(0,0,0,0)           1px calc(var(--bh-flute-w) / 2),
+      rgba(0,0,0,0.22)        calc(var(--bh-flute-w) / 2) calc(var(--bh-flute-w) / 2 + 1px),
+      rgba(0,0,0,0)           calc(var(--bh-flute-w) / 2 + 1px) var(--bh-flute-w));
+
+  /* Herringbone floor → warmth, and the occasional geometric moment. Two
+     crossed hairline stripes at 45° on a stone ground; use sparingly. */
+  --bh-herringbone:
+      repeating-linear-gradient(45deg,  rgba(36,33,30,0.05) 0 1px, transparent 1px 18px),
+      repeating-linear-gradient(-45deg, rgba(36,33,30,0.05) 0 1px, transparent 1px 18px);
+}
+
+/* Ready-made helpers. Structure only — every colour above is a token. */
+.bh-arch { border-radius: var(--bh-arch); overflow: hidden; }
+.bh-fluted { position: relative; }
+.bh-fluted::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--bh-fluted); opacity: 0.9;
+}
+.bh-halo { position: relative; }
+.bh-halo::before {
+  content: ""; position: absolute; inset: -18%; pointer-events: none; z-index: 0;
+  background: var(--bh-halo); opacity: 0.9;
+}
+.bh-halo > * { position: relative; z-index: 1; }
+.bh-micro {
+  font-family: var(--font-body); font-weight: var(--weight-micro);
+  font-size: 0.72rem; letter-spacing: var(--track-micro); text-transform: uppercase;
+}
+.bh-display {
+  font-family: var(--font-head); font-weight: var(--weight-display);
+  letter-spacing: var(--track-display); line-height: 1.02;
+}
+.bh-display b, .bh-display strong { font-weight: var(--weight-emphasis); }
+.bh-gold-rule { border: 0; border-top: var(--bh-gold-line); width: 64px; margin: 0; }
+
+/* The logo as live text — the weight IS the logo. Same size on all three
+   words; light / bold / light. Use the SVG masters in logo/ for artwork. */
+.bh-logo {
+  font-family: var(--font-logo); font-weight: 300; letter-spacing: 0.01em;
+  line-height: 1; white-space: nowrap; color: var(--ink); text-decoration: none;
+}
+.bh-logo b { font-weight: 700; }
+[data-surface="taupe"] .bh-logo, .bh-logo--gold { color: var(--bh-gold); }

@@ -1,0 +1,277 @@
+# Beauty Heaven Hub — brand guidelines, working v1
+
+The premises came first. This document codifies the brand the building has
+already started: warm, architectural, premium, human, heavenly. It is a
+working version — colour values are visual matches from photography, not
+paint or Pantone specifications, and the photography and course copy in the
+prototype are placeholders until the shoot and the sign-off.
+
+What's in this folder:
+
+| File | What it is |
+| --- | --- |
+| `brand.css` | The token file. Every colour, font, corner and surface on a Beauty Heaven page reads from here. Same vocabulary as the GOOD WORK. engine, so any engine block reskins on contact. |
+| `index.html` | Prototype homepage: the signature *what are you here for?* fork, arched photography, the hub, reviews as brand material. |
+| `guidelines.html` | This document as a page, with live swatches, type and logo specimens. |
+| `logo/` | Vector masters and PNG exports of the wordmark, the stacked mark, the Treatments and Academy lockups, and the arch favicon. |
+| `logo.config.mjs` | The spec the logo artwork is built from (`npm run brand:logo -- beauty-heaven-hub`). |
+| `fonts/` | Jost, self-hosted, SIL Open Font License. |
+
+---
+
+## 01 · Brand idea
+
+Beauty Heaven Hub is a destination, not just a salon. Multiple beauty
+disciplines and professional education under one roof.
+
+The feeling: **premium, warm, established, expert, welcoming. Feminine
+without being girly.**
+
+Reviews already say this. Customers describe the team as professional,
+friendly and reassuring, and talk about feeling comfortable and at ease. The
+brand's job is to look like that sounds.
+
+## 02 · Logo
+
+The existing logo stays at the heart of the identity:
+
+> beauty **heaven** hub
+
+All three words at the same size. The distinction is weight only: beauty
+light, heaven bold, hub light. Never recreate it with different sizes.
+
+**Primary application:** champagne gold on Heaven Taupe, as it is on the
+reception wall.
+
+**Secondary applications:** espresso on ivory · gold on espresso · ivory on
+dark photography · single-colour black where a printer needs it.
+
+Rules:
+
+- No gradients in the logo. No drop shadows. No fake metallic effects. No
+  pink version.
+- Clear space: the height of the lowercase **b** on every side. The
+  ground-colour files in `logo/` have this built in.
+- Minimum size: 120px wide on screen, 30mm in print, for the wordmark. Use
+  the stacked mark below that or in square spaces.
+- Gold on taupe is a 2.3:1 contrast pair. That is fine for the logo and for
+  large display type, and is never used for copy.
+
+The artwork in `logo/` is rebuilt from the typeface to match the existing
+sign. **The client's original logo file remains the master.** When it is
+supplied, drop it into `logo/` alongside these and use it for anything that
+goes to print.
+
+### Brand architecture
+
+```
+BEAUTY HEAVEN HUB                 the master brand
+├── beauty heaven · TREATMENTS    something for me
+│   Beauty · Hair · Skin · Aesthetics · Wellness
+└── beauty heaven · ACADEMY       something for my future
+    Professional beauty & aesthetics education
+```
+
+Two worlds, visibly one family. The lockups drop "hub" and set the world
+small, uppercase and tracked beneath. They live in `logo/` as `treatments`
+and `academy`.
+
+## 03 · Colour
+
+| Colour | Hex | Role |
+| --- | --- | --- |
+| Heaven Taupe | `#746B60` | Primary brand background. The walls. |
+| Champagne Gold | `#C9A65C` | Logo, accents, fine detailing. The jewellery. |
+| Warm Ivory | `#F4F0E9` | Light backgrounds. |
+| Deep Espresso | `#24211E` | Typography and dark sections. The fluted doors. |
+| Soft Stone | `#B9AFA2` | Secondary surfaces, hairlines, quiet text on dark. |
+
+Working cuts, in `brand.css`, for the places contrast law applies:
+
+| Token | Hex | Why |
+| --- | --- | --- |
+| `--bh-gold-ink` | `#7F6329` | Gold as *text* on ivory. Brand gold only reaches 2.0:1. |
+| `--bh-gold-light` | `#E3CD94` | Gold as text on espresso when it needs lifting. |
+| `--bh-taupe-ink` | `#6B6257` | Taupe as small text on the deeper ivory. |
+| `--bh-taupe-deep` | `#5E564C` | The shadowed end of a taupe gradient. |
+| `--bh-ivory-2` | `#ECE6DD` | Alternating light sections. |
+
+**Balance.** Roughly 50% ivory and light neutrals, 25% taupe, 15% espresso,
+10% gold. Gold is the jewellery; don't drown the site in it.
+
+**The purple lighting** in the treatment rooms is environmental. It is not a
+brand colour and it does not come onto the website.
+
+Contrast pairs that pass for text: espresso on ivory (14:1), ivory on taupe
+(4.6:1), gold on espresso (6.9:1), gold-ink on ivory (5.0:1). Ivory is the
+only text colour for taupe.
+
+## 04 · Typography
+
+**Jost**, one family, self-hosted. A Futura-style geometric that mirrors the
+existing logo: single-storey *a*, straight *y*, a bold with real width. Clean,
+architectural, spacious, contemporary. No high-fashion serif — the premises
+and the logo are more modern than that.
+
+| Level | Weight | Setting |
+| --- | --- | --- |
+| Display | 300 light | Large, confident, lowercase. `letter-spacing: -0.015em`, line-height 1.02. |
+| Emphasis | 700 bold | One word in a display line, the way *heaven* is bold in the logo. Never a whole headline. |
+| Body | 400 regular | 17px, line-height 1.65, measure around 52 characters. |
+| Microcopy / nav | 500 medium | Small uppercase, `letter-spacing: 0.18em`. |
+
+Headlines are lowercase for brand and editorial moments:
+
+> welcome to heaven.
+> what are you here for?
+> beauty, your way.
+
+Large uppercase is allowed for major statements where it suits the
+experience — *LOVED BY HUNDREDS OF CLIENTS.* — set light, tracked, with one
+bold word.
+
+## 05 · Physical → digital
+
+The most important rule: **the website is taken from the building.** In
+`brand.css` each fixture is a token.
+
+| In the building | On the site | Token |
+| --- | --- | --- |
+| Arched mirrors, thin frames | Arched photo containers with a hairline frame | `--bh-arch` |
+| Brushed and champagne gold | Fine gold lines, icons, micro-interactions | `--bh-gold-line` |
+| Dark fluted doors and panelling | Subtle vertical texture on espresso sections | `--bh-fluted` |
+| Herringbone timber floor | Warmth, occasional geometric texture | `--bh-herringbone` |
+| Circular pendant lighting | Halos, cursor interaction, slow circular motion | `--bh-halo`, `--bh-glow` |
+| The neon wings, with their halo | Restrained Heaven iconography, revealed cinematically | photography |
+| Taupe walls | The primary canvas | `[data-surface="taupe"]` |
+
+The site should feel like it was designed at the same time as the premises.
+
+## 06 · The Heaven language
+
+The name earns a visual vocabulary: halo, light, glow, wings, reveal,
+ascension and upward movement, soft atmospheric transitions.
+
+Yes: a very subtle halo behind a treatment image. Circular light moving as
+someone scrolls. The actual wings from the lounge, filmed properly.
+
+No: clouds. Angels flying around the website. Glitter. Sparkly
+beauty-template nonsense.
+
+## 07 · Photography
+
+Photography is a major part of the identity. Real Beauty Heaven beats stock,
+every time. The building is too good to hide behind generic pictures of women
+touching their faces.
+
+Shot list:
+
+- **Premises** — wide architectural shots that show the scale: reception with
+  the gold desk and the logo; the salon floor and its arched mirrors; the
+  lounge.
+- **Details** — the gold desk, the logo on the wall, the arches, the mirror
+  frames, pendant lights, fluted doors, the herringbone, the neon wings and
+  halo.
+- **People** — Jessica, Hollie and the wider team. Confident, natural, in the
+  space.
+- **Treatments** — macro, beautiful, real hands. Not clinical.
+- **Results** — before/after with identical framing, lighting and distance.
+- **Academy** — real students, practical training, models, Jessica and
+  Hollie teaching.
+
+Every photo slot in the prototype is labelled with the shot that replaces it.
+Photography goes in arched containers by default, with the hairline frame.
+Purple-lit rooms: colour-correct towards neutral, or shoot with the LEDs off.
+
+## 08 · Motion
+
+Slow, smooth, expensive. Not "look how many animations we can add."
+
+- Slow cinematic reveals (masked, from the bottom, 1.2–1.4s, `--ease-slow`)
+- Masked image transitions through the arch
+- Gentle parallax; the halo drifting with the scroll
+- Text emerging through architectural shapes
+- Smooth page transitions; subtle image scaling on hover (1.03, never more)
+- Horizontal editorial galleries
+- Considered hover states: a gold hairline drawing in under a nav link
+
+Everything is transform and opacity. Everything respects
+`prefers-reduced-motion`. The site should feel like moving through the
+building.
+
+## 09 · Voice
+
+Premium but friendly. People who know what they're doing and make customers
+comfortable.
+
+| | |
+| --- | --- |
+| **Confident** | We're very good at this. |
+| **Warm** | You're welcome here. |
+| **Knowledgeable** | We'll explain it properly. |
+| **Straightforward** | No beauty jargon for the sake of it. |
+| **Reassuring** | Especially around first treatments. |
+| **Aspirational** | Particularly for the Academy. |
+
+Not this: *"Indulge in an exquisite sanctuary of transformative beauty…"*
+
+This: *"First time? That's most people, once. We'll talk you through what
+happens before it happens, and you can stop and ask anything at any point."*
+
+Reviews back this up: nervous first-time clients repeatedly say they were put
+at ease and had things explained.
+
+## 10 · The signature interaction
+
+The homepage doesn't open with HOME | ABOUT | SERVICES | COURSES | CONTACT.
+It asks a question.
+
+```
+what are you here for?
+
+01  TREATMENTS      I want something for me.     → Find my treatment
+02  ACADEMY         I want to learn.              → Find my training
+```
+
+From there the page personalises: the section below the fork shows the
+chosen world, the closing calls to action follow it, and a returning visitor
+lands in the world they chose last time. It is built in `index.html` and is
+part of the brand, not just the navigation.
+
+## 11 · Social proof
+
+Reviews are brand material, not a widget at the bottom.
+
+*LOVED BY HUNDREDS OF CLIENTS.* is a recurring trust device: in the hero, on
+the reviews wall, on print.
+
+Real customer comments then appear contextually: a long-standing client's
+words about Hollie and Jessica's care, professionalism and precision belong
+beside their portraits, not in a carousel. A nervous first-timer's review
+belongs on the treatments page next to the reassurance copy.
+
+The quotes in the prototype are paraphrased from public reviews and labelled
+as such. Replace them with verbatim reviews, with permission, before launch.
+
+## 12 · The benchmark
+
+**WARM. ARCHITECTURAL. PREMIUM. HUMAN. HEAVENLY.**
+
+Not clinical aesthetics. Not girly beauty salon. Not sterile luxury. Not
+Instagram-template beige.
+
+We're not rebranding them. We're codifying the brand they've already built.
+
+---
+
+## Using this with the engine
+
+1. Point a page at `brand.css` instead of the GOOD WORK. one. Every engine
+   block reads the same tokens.
+2. Lead light (`data-theme="light"`, ivory) and paint the brand moments taupe
+   with `data-surface="taupe"` on the section. Espresso sections take
+   `data-surface="espresso"` plus `.bh-fluted`.
+3. Photography in `.photo.photo--arch`; a halo goes on the unclipped
+   `.frame` around it, never inside the arch.
+4. Rebuild the artwork after any change to `logo.config.mjs`:
+   `npm run brand:logo -- beauty-heaven-hub`.

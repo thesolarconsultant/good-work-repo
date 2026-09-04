@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beauty Heaven Hub — brand guidelines</title>
+<meta name="description" content="Working v1 brand guidelines for Beauty Heaven Hub: logo, colour, type, the building as a design language, voice and the signature interaction.">
+<meta name="theme-color" content="#746B60">
+<link rel="icon" href="logo/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="brand.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--body);font-family:var(--font-body);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,ul{margin:0}
+ul{padding:0;list-style:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:var(--cream-2);border:1px solid var(--line);padding:.1em .4em;border-radius:var(--radius)}
+::selection{background:var(--bh-gold);color:var(--bh-espresso)}
+
+.wrap{width:min(calc(100% - clamp(2.5rem,7vw,6rem)),1080px);margin-inline:auto}
+.micro{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.micro--gold{color:var(--accent-ink)}
+.display{font-family:var(--font-head);font-weight:300;letter-spacing:var(--track-display);line-height:1.05;color:var(--ink)}
+.display b{font-weight:700}
+.rule{display:block;border:0;border-top:var(--bh-gold-line);width:56px;margin:0;height:0}
+
+/* cover */
+.cover{padding-block:clamp(4rem,10vw,8rem);position:relative;overflow:hidden}
+.cover__halo{position:absolute;right:-10%;top:-30%;width:min(80vw,820px);aspect-ratio:1;background:var(--bh-halo);opacity:.35;pointer-events:none}
+.cover__in{position:relative;display:grid;gap:1.6rem}
+.cover .bh-logo{font-size:clamp(2.4rem,7vw,5.6rem)}
+.cover h1{font-size:clamp(1.3rem,2.4vw,1.8rem);font-weight:300;color:var(--ink)}
+.cover p{max-width:56ch;font-size:1.05rem}
+.cover .words{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;font-weight:500;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;color:var(--bh-gold)}
+
+/* contents */
+.toc{border-block:1px solid var(--line);padding-block:1.2rem}
+.toc ul{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem}
+.toc a{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body)}
+.toc a:hover{color:var(--accent-ink)}
+
+/* sections */
+.sec{padding-block:clamp(3.5rem,7vw,6rem);border-bottom:1px solid var(--line)}
+.sec__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem 2rem;align-items:baseline;margin-bottom:clamp(1.6rem,3vw,2.6rem)}
+.sec__num{font-weight:300;font-size:1.4rem;color:var(--accent-ink);letter-spacing:-.02em}
+.sec__head h2{font-size:clamp(1.9rem,4vw,3rem)}
+.lede{font-size:1.1rem;max-width:60ch}
+.prose{max-width:66ch;display:grid;gap:1rem}
+.prose strong{color:var(--ink);font-weight:500}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem 2.5rem;margin-top:1.6rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.4rem 1.4rem 1.5rem;display:grid;gap:.6rem;align-content:start}
+.card h3{font-weight:400;font-size:1.15rem;color:var(--ink)}
+.card p,.card li{font-size:.95rem}
+.do,.dont{display:grid;gap:.5rem}
+.do li::before{content:"— ";color:var(--accent-ink)}
+.dont li::before{content:"× ";color:var(--muted)}
+
+/* logo specimens */
+.logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:1.6rem}
+.spec{display:grid;gap:.6rem}
+.spec img{width:100%;border-radius:var(--radius-lg);border:1px solid var(--line)}
+.spec--dark img{background:#3a3a3a}
+.spec figcaption{display:grid;gap:.1rem}
+.spec figcaption span{color:var(--ink);font-size:.95rem}
+.spec figcaption small{font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.arch-tree{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.7;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;overflow-x:auto;color:var(--ink);white-space:pre;margin-top:1.6rem}
+.anatomy{margin-top:1.6rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.anatomy .card{text-align:center}
+.anatomy .bh-logo{font-size:2.1rem;justify-self:center}
+.anatomy .bh-logo span{display:inline-block}
+.anatomy .w{display:flex;justify-content:center;gap:1.6rem;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+
+/* colour */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1.6rem}
+.sw{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.sw__chip{height:120px}
+.sw__body{padding:.9rem 1rem 1rem;display:grid;gap:.15rem}
+.sw__body b{font-weight:500;color:var(--ink)}
+.sw__body code{width:max-content}
+.sw__body small{font-size:.85rem}
+.balance{margin-top:2rem;display:grid;gap:.6rem}
+.balance__bar{display:flex;height:44px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line)}
+.balance__bar i{display:block;height:100%}
+.balance__key{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;font-size:.8rem}
+.balance__key span::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:.5em;background:var(--c);vertical-align:-.05em}
+.pairs{margin-top:2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+.pair{padding:1rem 1.1rem;border-radius:var(--radius-lg);display:grid;gap:.15rem;border:1px solid var(--line)}
+.pair b{font-weight:400;font-size:1.05rem}
+.pair small{font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;opacity:.8}
+
+/* type */
+.type{display:grid;gap:1.8rem;margin-top:1.6rem}
+.type__row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:1.5rem;align-items:baseline;padding-bottom:1.6rem;border-bottom:1px solid var(--line)}
+.type__row .micro{padding-top:.3rem}
+.t-display{font-size:clamp(2.6rem,6vw,4.8rem);font-weight:300;line-height:1.02;letter-spacing:var(--track-display);color:var(--ink)}
+.t-display b{font-weight:700}
+.t-upper{font-size:clamp(1.4rem,3.6vw,2.6rem);font-weight:300;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.t-upper b{font-weight:700}
+.t-body{font-size:17px;line-height:1.65;max-width:52ch}
+.t-micro{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink)}
+@media(max-width:640px){.type__row{grid-template-columns:1fr;gap:.5rem}}
+
+/* physical → digital */
+.fixtures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:1.6rem}
+.fx{display:grid;gap:.8rem}
+.fx__demo{height:170px;border-radius:var(--radius-lg);border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center}
+.fx figcaption{display:grid;gap:.15rem}
+.fx figcaption span{color:var(--ink)}
+.fx figcaption small{font-size:.85rem;color:var(--muted)}
+.fx figcaption code{width:max-content;margin-top:.2rem}
+.demo-arch{width:96px;height:130px;border-radius:var(--bh-arch);background:linear-gradient(170deg,var(--bh-stone),var(--bh-taupe));border:1px solid rgba(201,166,92,.6)}
+.demo-arch-wrap{position:relative;display:grid;place-items:center}
+.demo-arch-wrap::before{content:"";position:absolute;inset:-40%;background:var(--bh-halo);opacity:.9}
+.demo-line{width:70%;display:grid;gap:14px}
+.demo-line i{display:block;border-top:var(--bh-gold-line)}
+.demo-line i:nth-child(2){width:40%}
+.demo-fluted{background:var(--bh-espresso)}
+.demo-fluted::before{content:"";position:absolute;inset:0;background:var(--bh-fluted)}
+.demo-herring{background:var(--bh-ivory-2)}
+.demo-herring::before{content:"";position:absolute;inset:0;background:var(--bh-herringbone)}
+.demo-halo{background:var(--bh-taupe)}
+.demo-halo::before{content:"";position:absolute;inset:-20%;background:var(--bh-halo);opacity:.9}
+.demo-taupe{background:var(--bh-taupe);color:var(--bh-ivory);font-weight:300;font-size:1.4rem}
+.demo-wings{background:var(--bh-espresso)}
+.demo-wings svg{width:80px;height:80px}
+
+/* voice */
+.voice{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.6rem}
+.voice .card b{font-weight:500;color:var(--ink);font-size:1rem}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:1.6rem}
+.compare .card q{display:block;font-weight:300;font-size:1.15rem;color:var(--ink);line-height:1.45}
+.compare .card q::before{content:"“"}.compare .card q::after{content:"”"}
+
+/* the fork, mini */
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.6rem}
+.fork .card{gap:.9rem}
+.fork .n{font-weight:300;font-size:1.8rem;color:var(--accent-ink);line-height:1}
+.fork .t{font-weight:500;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+.fork .l{font-weight:300;font-size:1.4rem;color:var(--ink);letter-spacing:var(--track-display);line-height:1.15}
+.fork .g{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
+@media(max-width:600px){.fork{grid-template-columns:1fr}}
+
+/* social proof */
+.loved{font-size:clamp(1.6rem,4.4vw,3.2rem);font-weight:300;letter-spacing:.08em;text-transform:uppercase;line-height:1.1;color:var(--ink);margin-top:1.4rem}
+.loved b{font-weight:700}
+
+.files{margin-top:1.6rem;display:grid;gap:.4rem;font-size:.92rem}
+.files li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.files a{color:var(--accent-ink);font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+
+.end{padding-block:clamp(3rem,7vw,6rem);text-align:center;display:grid;gap:1.2rem;justify-items:center}
+.end .words{font-weight:300;font-size:clamp(1.2rem,3vw,2rem);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.end .words b{font-weight:700}
+.end p{max-width:52ch}
+footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
+</style>
+</head>
+<body>
+
+<!-- ====================================================== COVER (taupe) -->
+<header class="cover" data-surface="taupe">
+  <div class="cover__halo" aria-hidden="true"></div>
+  <div class="wrap cover__in">
+    <p class="micro">Brand guidelines · working v1</p>
+    <div class="bh-logo">beauty <b>heaven</b> hub</div>
+    <h1>The new premises, translated into a digital brand.</h1>
+    <p>Beauty Heaven Hub is a destination, not just a salon. This is the brand the building has already started, codified: the logo, the colour, the type, and the rule that everything on screen is taken from something on site.</p>
+    <p class="words"><span>Warm</span><span>Architectural</span><span>Premium</span><span>Human</span><span>Heavenly</span></p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="wrap"><ul>
+    <li><a href="#idea">01 Idea</a></li><li><a href="#logo">02 Logo</a></li><li><a href="#colour">03 Colour</a></li><li><a href="#type">04 Type</a></li>
+    <li><a href="#building">05 The building</a></li><li><a href="#heaven">06 Heaven</a></li><li><a href="#photo">07 Photography</a></li><li><a href="#motion">08 Motion</a></li>
+    <li><a href="#voice">09 Voice</a></li><li><a href="#architecture">10 Architecture</a></li><li><a href="#fork">11 The fork</a></li><li><a href="#proof">12 Social proof</a></li><li><a href="#files">Files</a></li>
+  </ul></div>
+</nav>
+
+<main class="wrap">
+
+<!-- 01 -->
+<section class="sec" id="idea">
+  <div class="sec__head"><span class="sec__num">01</span><h2 class="display">the brand <b>idea.</b></h2></div>
+  <div class="prose">
+    <p class="lede">Multiple beauty disciplines and professional education, under one roof. A place people travel to.</p>
+    <p><strong>The feeling:</strong> premium, warm, established, expert, welcoming. Feminine without being girly.</p>
+    <p>The reviews already describe it. Customers call the team professional, friendly and reassuring, and talk about feeling comfortable and at ease. The brand's job is to look the way that sounds.</p>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="sec" id="logo">
+  <div class="sec__head"><span class="sec__num">02</span><h2 class="display">the <b>logo.</b></h2></div>
+  <div class="prose">
+    <p class="lede">The existing logo stays at the heart of the identity. Three words, one size. The only distinction is weight.</p>
+  </div>
+  <div class="anatomy">
+    <div class="card"><span class="bh-logo"><span>beauty</span> <b>heaven</b> <span>hub</span></span><span class="w"><span>light</span><span>bold</span><span>light</span></span></div>
+    <div class="card"><h3>Don't recreate it with sizes</h3><p>The weight change is the whole idea. Never enlarge "heaven"; never shrink "hub".</p></div>
+    <div class="card"><h3>Restraint is the point</h3><ul class="dont"><li>No gradients in the logo</li><li>No drop shadows</li><li>No fake metallic effects everywhere</li><li>No pink version</li></ul></div>
+  </div>
+  <div class="logos">
+    <figure class="spec"><img src="logo/beauty-heaven-hub-wordmark-gold-on-taupe.svg" alt="Wordmark, champagne gold on Heaven Taupe"><figcaption><span>Primary</span><small>Champagne gold on Heaven Taupe</small></figcaption></figure>
+    <figure class="spec"><img src="logo/beauty-heaven-hub-wordmark-espresso-on-ivory.svg" alt="Wordmark, Deep Espresso on Warm Ivory"><figcaption><span>Secondary</span><small>Espresso on ivory</small></figcaption></figure>
+    <figure class="spec"><img src="logo/beauty-heaven-hub-wordmark-gold-on-espresso.svg" alt="Wordmark, champagne gold on Deep Espresso"><figcaption><span>Secondary</span><small>Gold on espresso</small></figcaption></figure>
+    <figure class="spec spec--dark"><img src="logo/beauty-heaven-hub-wordmark-ivory.svg" alt="Wordmark, ivory on a dark ground"><figcaption><span>Secondary</span><small>Ivory on dark photography</small></figcaption></figure>
+    <figure class="spec"><img src="logo/beauty-heaven-hub-stacked-gold-on-taupe.svg" alt="Stacked mark, gold on taupe"><figcaption><span>Stacked</span><small>Square spaces and small sizes</small></figcaption></figure>
+    <figure class="spec"><img src="logo/favicon.svg" alt="The arch mark" style="width:96px"><figcaption><span>Arch mark</span><small>Favicon and app icon only</small></figcaption></figure>
+  </div>
+  <div class="cols">
+    <div class="card"><h3>Clear space</h3><p>The height of the lowercase <strong>b</strong> on every side. The ground-colour files have it built in.</p></div>
+    <div class="card"><h3>Minimum size</h3><p>Wordmark: 120px on screen, 30mm in print. Below that, use the stacked mark.</p></div>
+    <div class="card"><h3>The master</h3><p>This artwork is rebuilt from the typeface to match the sign. The client's original file remains the master for print.</p></div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec" id="colour">
+  <div class="sec__head"><span class="sec__num">03</span><h2 class="display">the <b>colour.</b></h2></div>
+  <p class="lede">Working visual matches from the premises photography, not claimed paint or Pantone specifications.</p>
+  <div class="swatches">
+    <div class="sw"><div class="sw__chip" style="background:#746B60"></div><div class="sw__body"><b>Heaven Taupe</b><code>#746B60</code><small>Primary brand background</small></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#C9A65C"></div><div class="sw__body"><b>Champagne Gold</b><code>#C9A65C</code><small>Logo, accents, fine detailing</small></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#F4F0E9;border-bottom:1px solid var(--line)"></div><div class="sw__body"><b>Warm Ivory</b><code>#F4F0E9</code><small>Light backgrounds</small></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#24211E"></div><div class="sw__body"><b>Deep Espresso</b><code>#24211E</code><small>Typography, dark sections</small></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#B9AFA2"></div><div class="sw__body"><b>Soft Stone</b><code>#B9AFA2</code><small>Secondary surfaces</small></div></div>
+  </div>
+  <div class="balance">
+    <p class="micro micro--gold">Balance</p>
+    <div class="balance__bar" role="img" aria-label="50% ivory, 25% taupe, 15% espresso, 10% gold">
+      <i style="width:50%;background:#F4F0E9"></i><i style="width:25%;background:#746B60"></i><i style="width:15%;background:#24211E"></i><i style="width:10%;background:#C9A65C"></i>
+    </div>
+    <div class="balance__key"><span style="--c:#F4F0E9">50% ivory and light neutrals</span><span style="--c:#746B60">25% taupe</span><span style="--c:#24211E">15% espresso</span><span style="--c:#C9A65C">10% gold</span></div>
+    <p>Gold is the jewellery. Don't drown the site in it. The purple treatment-room lighting is environmental, not a brand colour.</p>
+  </div>
+  <p class="micro micro--gold" style="margin-top:2rem">Text pairs that pass</p>
+  <div class="pairs">
+    <div class="pair" style="background:#F4F0E9;color:#24211E"><b>Espresso on ivory</b><small>14.1 : 1 · body copy</small></div>
+    <div class="pair" style="background:#746B60;color:#F4F0E9"><b>Ivory on taupe</b><small>4.6 : 1 · the only text for taupe</small></div>
+    <div class="pair" style="background:#24211E;color:#C9A65C"><b>Gold on espresso</b><small>6.9 : 1 · fine on dark</small></div>
+    <div class="pair" style="background:#F4F0E9;color:#7F6329"><b>Gold ink on ivory</b><small>5.0 : 1 · #7F6329, not brand gold</small></div>
+    <div class="pair" style="background:#746B60;color:#C9A65C"><b>Gold on taupe</b><small>2.3 : 1 · logo and display only</small></div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="sec" id="type">
+  <div class="sec__head"><span class="sec__num">04</span><h2 class="display">the <b>type.</b></h2></div>
+  <div class="prose">
+    <p class="lede">Jost. One geometric family that mirrors the logo: single-storey <em>a</em>, straight <em>y</em>, a bold with real width. Clean, architectural, spacious.</p>
+    <p>No high-fashion serif just because it's a beauty company. The premises and the logo are more contemporary than that. Headlines are lowercase for brand and editorial moments; large uppercase is allowed for major statements.</p>
+  </div>
+  <div class="type">
+    <div class="type__row"><span class="micro">Display · 300</span><p class="t-display">welcome<br>to <b>heaven.</b></p></div>
+    <div class="type__row"><span class="micro">Display · lowercase</span><p class="t-display" style="font-size:clamp(2rem,4.6vw,3.6rem)">what are you <b>here</b> for?<br>beauty, <b>your</b> way.</p></div>
+    <div class="type__row"><span class="micro">Statement · uppercase</span><p class="t-upper">Loved by <b>hundreds</b> of clients.</p></div>
+    <div class="type__row"><span class="micro">Body · 400</span><p class="t-body">Clean sans serif with generous line spacing. Seventeen pixels, a line-height of 1.65 and a measure of about fifty-two characters, so a paragraph about a first treatment reads as calmly as it's meant to.</p></div>
+    <div class="type__row"><span class="micro">Microcopy · 500</span><p class="t-micro">Treatments · Academy · The Hub · Book now</p></div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="sec" id="building">
+  <div class="sec__head"><span class="sec__num">05</span><h2 class="display">physical → <b>digital.</b></h2></div>
+  <p class="lede">The most important rule. We take the website design from the building, so it feels like both were designed at the same time.</p>
+  <div class="fixtures">
+    <figure class="fx"><div class="fx__demo"><div class="demo-arch-wrap"><div class="demo-arch"></div></div></div><figcaption><span>Arched mirrors</span><small>Arched photography containers with the mirrors' thin frame</small><code>--bh-arch</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo"><div class="demo-line"><i></i><i></i></div></div><figcaption><span>Brushed gold finishes</span><small>Fine gold lines, icons, micro-interactions</small><code>--bh-gold-line</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-fluted"></div><figcaption><span>Dark fluted doors</span><small>Subtle vertical texture on espresso sections</small><code>--bh-fluted</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-herring"></div><figcaption><span>Herringbone floor</span><small>Warmth, and occasional geometric texture</small><code>--bh-herringbone</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-halo"></div><figcaption><span>Pendant lighting</span><small>Halos, cursor interaction, slow circular motion</small><code>--bh-halo</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-wings"><svg viewBox="0 0 80 80" fill="none" stroke="#F4F0E9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="40" cy="11" r="5.5"/><path d="M37 24 C30 22 20 26 14 34 C22 33 27 35 30 38 C24 40 20 44 18 50 C24 48 29 49 32 52 C28 55 27 60 28 66 C33 60 36 50 37 24Z"/><path d="M43 24 C50 22 60 26 66 34 C58 33 53 35 50 38 C56 40 60 44 62 50 C56 48 51 49 48 52 C52 55 53 60 52 66 C47 60 44 50 43 24Z"/></svg></div><figcaption><span>The neon wings</span><small>The one literal Heaven in the building, shown cinematically</small><code>photography</code></figcaption></figure>
+    <figure class="fx"><div class="fx__demo demo-taupe">the canvas</div><figcaption><span>Taupe walls</span><small>The primary brand surface</small><code>[data-surface="taupe"]</code></figcaption></figure>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="sec" id="heaven">
+  <div class="sec__head"><span class="sec__num">06</span><h2 class="display">the heaven <b>language.</b></h2></div>
+  <p class="lede">The name earns a visual vocabulary: halo, light, glow, wings, reveal, ascension, soft atmospheric transitions. It has to stay sophisticated.</p>
+  <div class="cols">
+    <div class="card"><h3>Yes</h3><ul class="do"><li>A very subtle halo behind a treatment image</li><li>Circular light moving as someone scrolls</li><li>The actual wings from the lounge, filmed properly</li><li>Text rising into view through an arch</li></ul></div>
+    <div class="card"><h3>No</h3><ul class="dont"><li>Clouds</li><li>Angels flying around the website</li><li>Glitter</li><li>Sparkly beauty-template nonsense</li></ul></div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec" id="photo">
+  <div class="sec__head"><span class="sec__num">07</span><h2 class="display">the <b>photography.</b></h2></div>
+  <p class="lede">Real Beauty Heaven beats stock. The building is too good to hide behind generic pictures of women touching their faces.</p>
+  <div class="cols">
+    <div class="card"><h3>Premises</h3><p>Wide architectural shots that show the scale: reception with the gold desk and the logo, the salon floor and its arched mirrors, the lounge.</p></div>
+    <div class="card"><h3>Details</h3><p>The gold desk, the logo on the wall, the arches and mirror frames, pendant lights, fluted doors, the herringbone, the neon wings and halo.</p></div>
+    <div class="card"><h3>People</h3><p>Jessica, Hollie and the wider team. Confident but natural, in the space.</p></div>
+    <div class="card"><h3>Treatments</h3><p>Beautiful macro footage, real hands. Not clinical stock.</p></div>
+    <div class="card"><h3>Results</h3><p>Before and after with identical framing, lighting and distance.</p></div>
+    <div class="card"><h3>Academy</h3><p>Real students, practical training, models, Jessica and Hollie teaching.</p></div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec" id="motion">
+  <div class="sec__head"><span class="sec__num">08</span><h2 class="display">the <b>motion.</b></h2></div>
+  <p class="lede">Slow, smooth and expensive. Not "look how many animations we can add." The site should feel like moving through the building.</p>
+  <div class="cols">
+    <div class="card"><ul class="do"><li>Slow cinematic reveals, 1.2 to 1.4 seconds</li><li>Masked image transitions through the arch</li><li>Gentle parallax; the halo drifting with the scroll</li><li>Text emerging through architectural shapes</li></ul></div>
+    <div class="card"><ul class="do"><li>Smooth page transitions</li><li>Subtle image scaling on hover, 1.03 and never more</li><li>Horizontal editorial galleries</li><li>A gold hairline drawing in under a nav link</li></ul></div>
+    <div class="card"><h3>Two rules</h3><p>Everything is transform and opacity only. Everything respects <code>prefers-reduced-motion</code>.</p></div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="sec" id="voice">
+  <div class="sec__head"><span class="sec__num">09</span><h2 class="display">the <b>voice.</b></h2></div>
+  <p class="lede">Premium but friendly. Beauty Heaven speaks like people who know what they're doing and make customers feel comfortable.</p>
+  <div class="voice">
+    <div class="card"><b>Confident</b><p>We're very good at this.</p></div>
+    <div class="card"><b>Warm</b><p>You're welcome here.</p></div>
+    <div class="card"><b>Knowledgeable</b><p>We'll explain it properly.</p></div>
+    <div class="card"><b>Straightforward</b><p>No beauty jargon for the sake of it.</p></div>
+    <div class="card"><b>Reassuring</b><p>Especially around first treatments.</p></div>
+    <div class="card"><b>Aspirational</b><p>Particularly for the Academy.</p></div>
+  </div>
+  <div class="compare">
+    <div class="card"><span class="micro">Not this</span><q>Indulge in an exquisite sanctuary of transformative beauty…</q></div>
+    <div class="card"><span class="micro micro--gold">This</span><q>First time? That's most people, once. We'll talk you through what happens before it happens, and you can stop and ask anything at any point.</q></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="architecture">
+  <div class="sec__head"><span class="sec__num">10</span><h2 class="display">brand <b>architecture.</b></h2></div>
+  <p class="lede">One master brand, two worlds. Visually connected, never two separate brands.</p>
+<pre class="arch-tree">BEAUTY HEAVEN HUB                 the master brand
+├── beauty heaven · TREATMENTS    something for me
+│   Beauty · Hair · Skin · Aesthetics · Wellness
+└── beauty heaven · ACADEMY       something for my future
+    Professional beauty &amp; aesthetics education</pre>
+  <div class="logos">
+    <figure class="spec"><img src="logo/beauty-heaven-hub-treatments-gold-on-taupe.svg" alt="Beauty Heaven Treatments lockup"><figcaption><span>Treatments</span><small>Something for me</small></figcaption></figure>
+    <figure class="spec"><img src="logo/beauty-heaven-hub-academy-espresso-on-ivory.svg" alt="Beauty Heaven Academy lockup"><figcaption><span>Academy</span><small>Something for my future</small></figcaption></figure>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="fork">
+  <div class="sec__head"><span class="sec__num">11</span><h2 class="display">the signature <b>interaction.</b></h2></div>
+  <p class="lede">The homepage doesn't open with HOME | ABOUT | SERVICES | COURSES | CONTACT. It asks a question, and each answer becomes a personalised journey.</p>
+  <p class="t-display" style="font-size:clamp(1.8rem,4vw,3rem);margin-top:1.6rem">what are you <b>here</b> for?</p>
+  <div class="fork">
+    <div class="card"><span class="n">01</span><span class="t">Treatments</span><span class="l">I want something for me.</span><span class="g">→ Find my treatment</span></div>
+    <div class="card"><span class="n">02</span><span class="t">Academy</span><span class="l">I want to learn.</span><span class="g">→ Find my training</span></div>
+  </div>
+  <p style="margin-top:1.4rem">Live in the <a href="index.html" style="color:var(--accent-ink);font-weight:500">prototype homepage</a>. The page remembers the world a visitor chose.</p>
+</section>
+
+<!-- 12 -->
+<section class="sec" id="proof">
+  <div class="sec__head"><span class="sec__num">12</span><h2 class="display">social <b>proof.</b></h2></div>
+  <p class="lede">Reviews aren't a widget at the bottom. They're brand material.</p>
+  <p class="loved">Loved by <b>hundreds</b> of clients.</p>
+  <div class="prose" style="margin-top:1.4rem">
+    <p>A recurring trust device: in the hero, on the reviews wall, on print. Then real customer comments appear contextually. A long-standing client's words about Hollie and Jessica's care, professionalism and precision belong beside their portraits, not in a carousel. A nervous first-timer's review belongs next to the reassurance copy on the treatments page.</p>
+    <p><strong>Before launch:</strong> replace the paraphrased quotes in the prototype with verbatim reviews, with permission.</p>
+  </div>
+</section>
+
+<!-- files -->
+<section class="sec" id="files">
+  <div class="sec__head"><span class="sec__num">—</span><h2 class="display">the <b>files.</b></h2></div>
+  <ul class="files">
+    <li><span>Brand tokens: every colour, font, corner and surface, in the engine's vocabulary.</span><a href="brand.css">brand.css</a></li>
+    <li><span>The guidelines as a document.</span><a href="BRAND.md">BRAND.md</a></li>
+    <li><span>Prototype homepage with the fork, arched photography, the hub and reviews.</span><a href="index.html">index.html</a></li>
+    <li><span>Logo artwork: wordmark, stacked, Treatments and Academy lockups, arch mark. SVG masters and PNG at 1024, 2048 and 4096.</span><a href="logo/">logo/</a></li>
+    <li><span>Jost, self-hosted, SIL Open Font License.</span><a href="fonts/">fonts/</a></li>
+  </ul>
+</section>
+
+<section class="end">
+  <span class="rule" aria-hidden="true"></span>
+  <p class="words">Warm · Architectural · Premium · <b>Human</b> · Heavenly</p>
+  <p>Not clinical aesthetics. Not girly beauty salon. Not sterile luxury. Not Instagram-template beige. We're not rebranding them. We're codifying the brand they've already built.</p>
+</section>
+
+<footer><span>Beauty Heaven Hub · brand guidelines · working v1</span><span>Prepared by GOOD WORK.</span></footer>
+
+</main>
+</body>
+</html>
