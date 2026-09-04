@@ -304,6 +304,71 @@
 .bh-gold-rule { border: 0; border-top: var(--bh-gold-line); width: 64px; margin: 0; }
 
 
+
+/* ------------------------------------------------- THE DRAWN LINE -- */
+/* Botanicals from botanicals/ — an olive sprig, a flowering stem, a vine.
+   They are one fine gold line, drawn by the scroll: the stem paints itself
+   and each leaf opens exactly as the line reaches it, because every leaf
+   carries `--t`, its own position along the stem.
+
+   Rules, so this stays a signature and not a template:
+     · One plant per section, at most. They punctuate; they do not decorate.
+     · Always at an edge or behind a heading — never behind body copy.
+     · The gold hairline only. No fills, no second colour, no shadow.
+     · Decorative, so aria-hidden and pointer-events: none, always.
+     · Without JavaScript, or under reduced motion, they are simply drawn.
+   ------------------------------------------------------------------- */
+.bh-bot {
+  position: absolute; pointer-events: none; overflow: visible; z-index: 0;
+  color: var(--accent);
+}
+.bh-bot path {
+  fill: none; stroke: currentColor; stroke-width: 1.35;
+  stroke-linecap: round; stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+/* The drawn state. JS adds .bh-bot--draw once it has measured the stem, so
+   the fallback is a finished plant rather than an invisible one. */
+.bh-bot--draw .bh-bot__stem {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: calc(var(--len) * (1 - var(--grow, 0)));
+}
+.bh-bot--draw .bh-bot__leaf,
+.bh-bot--draw .bh-bot__bloom {
+  /* opacity takes a unitless calc, so a leaf can compare its own position
+     against how far the line has been drawn with no script at all */
+  opacity: clamp(0, calc((var(--grow, 0) - var(--t)) * 7), 1);
+  transform-box: fill-box; transform-origin: center;
+  transform: scale(calc(0.55 + 0.45 * clamp(0, (var(--grow, 0) - var(--t)) * 5, 1)));
+  transition: opacity .5s var(--ease), transform .7s var(--ease-slow);
+}
+.bh-bot--draw .bh-bot__bloom { transition-duration: .7s, .9s; }
+
+/* ----------------------------------------------- CAST SHADOWS -- */
+/* The ring pendants hang above everything in the building, so an arch throws
+   an arch — leaned away from the light, soft at the edge. The shape is the
+   element's own, never a rectangle behind a curve. */
+.bh-cast { position: relative; }
+.bh-cast::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 8%; right: -16%; top: 10%; bottom: -5%;
+  border-radius: var(--bh-arch);
+  background: rgba(36, 33, 30, 0.30);
+  filter: blur(26px);
+  transform: skewX(-13deg);
+}
+.bh-cast > * { position: relative; z-index: 1; }
+/* On a dark ground the light is the pendant itself, so the cast is deeper
+   and tighter to the shape. */
+[data-surface="espresso"] .bh-cast::before,
+[data-surface="taupe"] .bh-cast::before { background: rgba(0, 0, 0, 0.34); filter: blur(30px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bh-bot--draw .bh-bot__stem { stroke-dashoffset: 0; }
+  .bh-bot--draw .bh-bot__leaf,
+  .bh-bot--draw .bh-bot__bloom { opacity: 1; transform: none; transition: none; }
+}
+
 /* ---------------------------------------------- THE LOGO, AS ARTWORK -- */
 /* The supplied logo (logo/original.png, trimmed to logo/wordmark-master.png)
    used as a mask, so the real letterforms take whatever ink the surface

@@ -23,6 +23,7 @@ npm run dev
 | `npm run sitemap` | Regenerate `public/sitemap.xml` |
 | `npm run brand:logo -- <slug>` | Rebuild a client brand's logo artwork from `public/goodwork/brands/<slug>/logo.config.mjs` |
 | `npm run brand:photos -- <slug>` | Rebuild a client brand's responsive WebP photography — **run this after adding a photo** |
+| `npm run brand:botanicals -- <slug>` | Regenerate a brand's drawn botanicals (olive sprigs, vines) |
 
 ## How it's put together
 
