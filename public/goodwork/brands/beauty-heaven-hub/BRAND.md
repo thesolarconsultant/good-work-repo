@@ -138,7 +138,7 @@ The most important rule: **the website is taken from the building.** In
 | In the building | On the site | Token |
 | --- | --- | --- |
 | Arched mirrors, thin frames | Arched photo containers with a hairline frame | `--bh-arch` |
-| Brushed and champagne gold | Fine gold lines, icons, micro-interactions | `--bh-gold-line` |
+| Brushed and champagne gold | Fine gold lines, icons, micro-interactions, pill buttons | `--bh-gold-line` |
 | Dark fluted doors and panelling | Subtle vertical texture on espresso sections | `--bh-fluted` |
 | Herringbone timber floor | Warmth, occasional geometric texture | `--bh-herringbone` |
 | Circular pendant lighting | Halos, cursor interaction, slow circular motion | `--bh-halo`, `--bh-glow` |
@@ -194,6 +194,13 @@ Slow, smooth, expensive. Not "look how many animations we can add."
 - Smooth page transitions; subtle image scaling on hover (1.03, never more)
 - Horizontal editorial galleries
 - Considered hover states: a gold hairline drawing in under a nav link
+- A cursor halo on desktop, a spotlight that follows the cursor across the
+  fork arches, and a gallery of arches bent along an arc that drifts on its
+  own and can be dragged
+
+The prototype runs on the GOOD WORK. motion library (`/goodwork/motion/`):
+reveals, staggers, magnetic buttons, the marquee and the shimmer come from
+the runtime, and the rest are library pieces adapted to the brand.
 
 Everything is transform and opacity. Everything respects
 `prefers-reduced-motion`. The site should feel like moving through the
@@ -229,9 +236,12 @@ It asks a question.
 ```
 what are you here for?
 
-01  TREATMENTS      I want something for me.     → Find my treatment
-02  ACADEMY         I want to learn.              → Find my training
+TREATMENTS   I want something for me.   → Find my treatment
+ACADEMY      I want to learn.            → Find my training
 ```
+
+The two choices are arched doorways, not numbered cards. Nothing on the site
+is numbered: sections are named, steps are named, and buttons are pills.
 
 From there the page personalises: the section below the fork shows the
 chosen world, the closing calls to action follow it, and a returning visitor

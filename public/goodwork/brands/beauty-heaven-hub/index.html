@@ -10,13 +10,19 @@
 <link rel="apple-touch-icon" href="logo/favicon-180.png">
 
 <link rel="stylesheet" href="brand.css">
+<!-- The GOOD WORK. motion library. Every effect reads the brand tokens. -->
+<link rel="stylesheet" href="../../motion/goodwork-motion.css">
+<script src="../../motion/goodwork-motion.js" defer></script>
 
 <style>
 /* ==========================================================================
-   Beauty Heaven Hub — prototype homepage
-   Every colour, font and corner reads from brand.css. This file is structure,
-   copy and motion. Photography slots are marked; they take real Beauty
-   Heaven photography, never stock.
+   Beauty Heaven Hub — prototype homepage, built on the library
+   Colour, type and corners read from brand.css. Motion comes from the
+   library runtime (data-gw-reveal, data-gw-stagger, data-gw-magnetic,
+   gw-marquee, gw-shimmer) plus a handful of library pieces adapted to the
+   brand: the cursor halo, the spotlight arches, the arc gallery, the
+   drifting reviews rail, the accordion, the light rays.
+   Photography slots are wired to photos/ — see photos/README.md.
    ========================================================================== */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:clip}
@@ -27,6 +33,7 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 h1,h2,h3,p{margin:0}
 ::selection{background:var(--bh-gold);color:var(--bh-espresso)}
+:root{--pill:999px}
 
 .wrap{width:min(calc(100% - clamp(2.5rem,7vw,6rem)),var(--container));margin-inline:auto}
 .section{padding-block:clamp(4rem,9vw,8rem)}
@@ -36,178 +43,244 @@ h1,h2,h3,p{margin:0}
 .display b{font-weight:var(--weight-emphasis)}
 .d1{font-size:clamp(3rem,8.5vw,7.2rem)}
 .d2{font-size:clamp(2.2rem,5.2vw,4.2rem)}
-.d3{font-size:clamp(1.6rem,3vw,2.4rem)}
 .lede{font-size:clamp(1.05rem,1.4vw,1.25rem);max-width:52ch;line-height:1.6}
 .rule{display:block;border:0;border-top:var(--bh-gold-line);width:56px;margin:0;height:0}
 .stack{display:grid;gap:1.25rem}
 
-/* buttons — gold is the jewellery: one filled, the rest hairlines */
-.btn{display:inline-flex;align-items:center;gap:.7em;padding:.95em 1.6em;border-radius:var(--radius);
-  font-weight:var(--weight-micro);font-size:.78rem;letter-spacing:var(--track-micro);text-transform:uppercase;
-  border:1px solid var(--accent);color:var(--ink);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),transform var(--dur) var(--ease)}
-.btn:hover{background:rgba(201,166,92,.12)}
-.btn--fill{background:var(--accent);color:var(--bh-espresso);border-color:var(--accent)}
-.btn--fill:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
-.btn .arr{transition:transform var(--dur) var(--ease)}
+/* ---- the library's reveal, slowed to the brand's pace ---- */
+[data-gw-reveal]{transition-duration:var(--dur-slow);transition-timing-function:var(--ease-slow)}
+/* the masked reveal: clip a child, never the observed element */
+[data-gw-reveal="mask"]{opacity:1;transform:none}
+[data-gw-reveal="mask"]>.mask{display:block;clip-path:inset(0 0 100% 0);transform:translateY(12px);transition:clip-path 1400ms var(--ease-slow),transform 1400ms var(--ease-slow)}
+[data-gw-reveal="mask"].gw-in>.mask{clip-path:inset(0 0 0 0);transform:none}
+
+/* eyebrow labels: a gold box wipes across and leaves the label behind
+   (the library's Box Reveal, fired by the runtime's .gw-in) */
+.eyebrow{position:relative;display:inline-block;padding:.2em .4em;margin:-.2em -.4em;justify-self:start}
+.eyebrow .t{opacity:0}
+.eyebrow::after{content:"";position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.eyebrow.gw-in .t{animation:bh-eyet 0s .55s forwards}
+.eyebrow.gw-in::after{animation:bh-eyec 1.1s var(--ease-slow) forwards}
+@keyframes bh-eyec{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform:scaleX(1);transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+@keyframes bh-eyet{to{opacity:1}}
+
+/* ---- buttons: pills, always ---- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:.7em;padding:1em 1.8em;border-radius:var(--pill);overflow:hidden;
+  font-weight:var(--weight-micro);font-size:.76rem;letter-spacing:var(--track-micro);text-transform:uppercase;white-space:nowrap;
+  border:1px solid var(--accent);color:var(--ink);transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.btn>*{position:relative;z-index:1}
+/* the library's fill-and-slide: colour wipes in from the left on hover */
+.btn::before{content:"";position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .5s var(--ease)}
+.btn:hover::before{transform:none}
+.btn:hover{color:var(--bh-espresso)}
+.btn--fill{background:var(--accent);color:var(--bh-espresso)}
+.btn--fill::before{background:var(--accent-hover)}
+.btn .arr{display:inline-block;transition:transform var(--dur) var(--ease)}
 .btn:hover .arr{transform:translateX(4px)}
-.btn:focus-visible,.fork__card:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+/* the library's shimmer, softened for gold: a slow catch of light */
+.btn--fill.gw-shimmer::after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.32),transparent);animation-duration:6.5s;z-index:2}
+.btn:focus-visible,.arch-btn:focus-visible,.acc__q:focus-visible,.gal__nav button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .actions{display:flex;flex-wrap:wrap;gap:.9rem}
 
-/* photography slots — arched, with a halo behind. Placeholder until the
-   shoot; the caption is the shot-list line it will be replaced by. */
-.photo{position:relative;background:linear-gradient(170deg,var(--bh-stone) 0%,var(--bh-taupe) 60%,var(--bh-taupe-deep) 100%);
-  overflow:hidden;isolation:isolate}
+/* ---- photography: arched, framed like the mirrors, halo outside ---- */
+.photo{position:relative;background:linear-gradient(170deg,var(--bh-stone) 0%,var(--bh-taupe) 60%,var(--bh-taupe-deep) 100%);overflow:hidden;isolation:isolate}
 .photo--arch{border-radius:var(--bh-arch)}
-/* the mirrors have a thin frame; so do the arches */
 .photo--arch::before{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid rgba(201,166,92,.55);z-index:2;pointer-events:none}
 .photo::after{content:"";position:absolute;inset:0;background:var(--bh-herringbone);opacity:.5;mix-blend-mode:multiply}
 .photo__tag{position:absolute;left:0;right:0;bottom:1.1rem;text-align:center;color:rgba(244,240,233,.78);z-index:1}
 .photo__tag i{font-style:normal;display:block;font-size:.66rem;letter-spacing:var(--track-micro);text-transform:uppercase}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform var(--dur-slow) var(--ease-slow)}
 .photo:hover img{transform:scale(1.03)}
-/* a real photograph replaces the placeholder wash and its label; a missing
-   file removes itself (onerror) and the labelled slot comes back */
 .photo:has(img)::after,.photo:has(img) .photo__tag{display:none}
+.frame{position:relative}
+.frame>.photo{position:relative;z-index:1}
 .halo{position:absolute;inset:-22%;background:var(--bh-halo);pointer-events:none;z-index:0;opacity:.9;
-  transform:translate3d(var(--hx,0),var(--hy,0),0);transition:opacity var(--dur-slow) var(--ease)}
+  transform:translate3d(var(--hx,0),var(--hy,0),0)}
 
-/* reveal — slow, smooth, transform + opacity only */
-[data-reveal]{opacity:0;transform:translateY(22px);transition:opacity var(--dur-slow) var(--ease-slow),transform var(--dur-slow) var(--ease-slow)}
-/* The masked reveal clips a child, never the observed element: a clipped
-   element reports zero intersection and would never reveal. */
-[data-reveal="mask"]{opacity:1;transform:none}
-[data-reveal="mask"]>.mask{display:block;clip-path:inset(0 0 100% 0);transform:translateY(12px);transition:clip-path 1400ms var(--ease-slow),transform 1400ms var(--ease-slow)}
-[data-reveal].is-in{opacity:1;transform:none}
-[data-reveal="mask"].is-in>.mask{clip-path:inset(0 0 0 0);transform:none}
-[data-stagger]>[data-reveal]:nth-child(2){transition-delay:120ms}
-[data-stagger]>[data-reveal]:nth-child(3){transition-delay:240ms}
-[data-stagger]>[data-reveal]:nth-child(4){transition-delay:360ms}
-[data-stagger]>[data-reveal]:nth-child(5){transition-delay:480ms}
+/* ---- the cursor halo (the library's smooth cursor, as a pendant of light) ---- */
+.cursor{position:fixed;left:0;top:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--bh-gold);pointer-events:none;z-index:100;
+  opacity:0;transition:width .35s var(--ease),height .35s var(--ease),opacity .4s,background .35s}
+.cursor::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:var(--bh-gold);transform:translate(-50%,-50%)}
+.cursor.on{opacity:1}
+.cursor.hot{width:56px;height:56px;background:rgba(201,166,92,.12)}
+.cursor.hot::after{opacity:0}
+@media(hover:none),(pointer:coarse){.cursor{display:none}}
 
-/* ---- nav ---- */
-.nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  background:color-mix(in srgb,var(--cream) 82%,transparent);border-bottom:1px solid var(--line)}
-.nav__in{display:flex;align-items:center;gap:2rem;padding-block:1.1rem}
+/* ---- nav: a pill that firms up on scroll (the library's sticky nav) ---- */
+.nav{position:sticky;top:0;z-index:40;padding-block:.9rem;transition:padding var(--dur) var(--ease)}
+.nav__in{display:flex;align-items:center;gap:1.5rem}
 .nav .bh-logo{font-size:1.35rem}
-.nav__links{display:flex;gap:2rem;margin-left:auto}
-.nav__links a{font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body);
-  position:relative;padding-block:.3rem}
-.nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:0;border-top:var(--bh-gold-line);transition:right var(--dur) var(--ease)}
-.nav__links a:hover::after{right:0}
-.nav .btn{padding:.7em 1.2em}
-.nav__menu{display:none;font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.6em 0}
+.nav__pill{margin-left:auto;display:flex;align-items:center;gap:.2rem;padding:.35rem;border-radius:var(--pill);border:1px solid transparent;
+  background:color-mix(in srgb,var(--cream) 70%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.nav__pill a{font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body);padding:.6rem 1rem;border-radius:var(--pill);transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
+.nav__pill a:hover{background:rgba(201,166,92,.14);color:var(--ink)}
+.nav.scrolled{padding-block:.6rem}
+.nav.scrolled .nav__pill{border-color:var(--line);box-shadow:var(--shadow-sm)}
+.nav .btn{padding:.75em 1.4em}
+.nav__menu{display:none;font-weight:var(--weight-micro);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.7em 1.2em;border:1px solid var(--line-strong);border-radius:var(--pill)}
 .nav__panel[hidden]{display:none}
-.nav__panel{display:grid;gap:.2rem;padding:.6rem clamp(1.25rem,3.5vw,3rem) 1.2rem;border-top:1px solid var(--line)}
-.nav__panel a{font-weight:var(--weight-micro);font-size:.8rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.7rem 0;border-bottom:1px solid var(--line)}
-@media(max-width:820px){.nav__links{display:none}.nav__menu{display:inline-block;margin-left:auto}.nav .btn{margin-left:0}.nav__in{gap:1.2rem}}
-@media(min-width:821px){.nav__panel{display:none}}
+.nav__panel{display:grid;gap:.2rem;margin-top:.8rem;padding:.6rem 1.2rem 1rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card)}
+.nav__panel a{font-weight:var(--weight-micro);font-size:.8rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--ink);padding:.75rem 0;border-bottom:1px solid var(--line)}
+.nav__panel a:last-child{border-bottom:0}
+@media(max-width:860px){.nav__pill{display:none}.nav__menu{display:inline-block;margin-left:auto}.nav__in{gap:.8rem}}
+@media(min-width:861px){.nav__panel{display:none}}
 
-/* ---- hero (taupe) ---- */
+/* ---- hero ---- */
 .hero{position:relative;overflow:hidden;padding-block:clamp(4rem,9vw,8rem) clamp(4rem,8vw,7rem)}
 .hero__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,6vw,5rem);align-items:center}
 .hero__copy{display:grid;gap:1.6rem}
 .hero__photo{max-width:440px;justify-self:end;width:100%}
 .hero__photo .photo{aspect-ratio:4/5}
-/* a frame is the unclipped wrapper a halo lives in — the arch clips the photo, the light sits around it */
-.frame{position:relative}
-.frame>.photo{position:relative;z-index:1}
 .hero__halo{position:absolute;width:min(70vw,780px);aspect-ratio:1;right:-8%;top:-12%;background:var(--bh-halo);opacity:.55;pointer-events:none;
   transform:translate3d(0,calc(var(--sy,0) * -0.12px),0) rotate(calc(var(--sy,0) * 0.02deg))}
-.hero .loved{display:flex;align-items:center;gap:1rem;color:var(--ink)}
-.hero .loved .rule{width:40px}
-@media(max-width:820px){.hero__grid{grid-template-columns:1fr}.hero__photo{justify-self:start;max-width:360px}}
+/* the library's word-by-word rise, once, on load */
+.rise .w{display:inline-block;opacity:0;transform:translateY(.5em);animation:bh-rise 1.1s var(--ease-slow) forwards}
+@keyframes bh-rise{to{opacity:1;transform:none}}
+.hero__loved{display:flex;align-items:center;gap:1rem;color:var(--ink)}
+.hero__loved .rule{width:40px}
+@media(max-width:860px){.hero__grid{grid-template-columns:1fr}.hero__photo{justify-self:start;max-width:360px}}
 
-/* ---- the fork ---- */
+/* ---- disciplines marquee (the library's marquee, slowed) ---- */
+.strip{border-block:1px solid var(--line);padding-block:1.1rem;background:var(--cream-2)}
+.strip .gw-marquee>*{animation-duration:38s;gap:0}
+.strip span{font-weight:var(--weight-display);font-size:1.05rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);white-space:nowrap;padding-inline:1.4rem;display:inline-flex;align-items:center;gap:2.8rem}
+.strip span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+/* ---- the fork: two arched doorways ---- */
 .fork{padding-block:clamp(4rem,9vw,8rem)}
 .fork__head{display:grid;gap:1rem;margin-bottom:clamp(2rem,4vw,3.5rem)}
-.fork__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.5rem)}
-.fork__card{position:relative;text-align:left;display:grid;gap:1.2rem;align-content:start;padding:clamp(1.6rem,3vw,2.6rem);
-  border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card);color:var(--body);overflow:hidden;isolation:isolate;
-  transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
-.fork__card::before{content:"";position:absolute;inset:auto -30% -55% -30%;aspect-ratio:1;background:var(--bh-glow);opacity:0;z-index:-1;
-  transition:opacity var(--dur-slow) var(--ease)}
-.fork__card:hover,.fork__card[aria-pressed="true"]{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow-md)}
-.fork__card:hover::before,.fork__card[aria-pressed="true"]::before{opacity:1}
-.fork__num{font-weight:var(--weight-display);font-size:2.2rem;color:var(--accent-ink);line-height:1;letter-spacing:-.02em}
-.fork__title{font-weight:var(--weight-micro);font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
-.fork__line{font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:var(--weight-display);letter-spacing:var(--track-display);color:var(--ink);line-height:1.1}
-.fork__list{color:var(--muted);font-size:.9rem}
-.fork__go{display:inline-flex;align-items:center;gap:.6em;color:var(--accent-ink);font-weight:var(--weight-micro);font-size:.76rem;letter-spacing:var(--track-micro);text-transform:uppercase;margin-top:.4rem}
-.fork__go .arr{transition:transform var(--dur) var(--ease)}
-.fork__card:hover .fork__go .arr{transform:translateX(5px)}
-.fork__card[aria-pressed="true"] .fork__title::after{content:"· chosen";margin-left:.6em;color:var(--accent-ink);letter-spacing:var(--track-micro)}
-@media(max-width:720px){.fork__grid{grid-template-columns:1fr}}
+.fork__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,3vw,2.5rem);max-width:920px}
+.arch-btn{position:relative;display:grid;align-content:end;gap:.9rem;text-align:left;padding:clamp(1.6rem,3vw,2.4rem);aspect-ratio:4/5;
+  border-radius:var(--bh-arch);border:1px solid var(--line-strong);background:var(--bh-taupe);color:var(--body);overflow:hidden;isolation:isolate;
+  transition:border-color var(--dur) var(--ease),transform var(--dur-slow) var(--ease-slow),box-shadow var(--dur-slow) var(--ease)}
+.arch-btn .photo{position:absolute;inset:0;border-radius:inherit;z-index:-2;transition:transform var(--dur-slow) var(--ease-slow)}
+.arch-btn .photo::after{opacity:.35}
+.arch-btn .wash{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(36,33,30,0) 30%,rgba(36,33,30,.78) 100%)}
+/* the library's spotlight card: a soft light tracks the cursor */
+.arch-btn .spot{position:absolute;width:60%;aspect-ratio:1;left:var(--sx,50%);top:var(--sy2,40%);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,rgba(201,166,92,.38),rgba(201,166,92,0) 62%);opacity:0;transition:opacity var(--dur) var(--ease)}
+.arch-btn:hover .spot{opacity:1}
+.arch-btn:hover,.arch-btn[aria-pressed="true"]{border-color:var(--accent);transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.arch-btn:hover .photo{transform:scale(1.04)}
+.arch-btn>*{position:relative}
+.arch-btn .t{font-weight:var(--weight-micro);font-size:.76rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bh-gold)}
+.arch-btn .l{font-family:var(--font-head);font-weight:var(--weight-display);font-size:clamp(1.6rem,3.2vw,2.5rem);letter-spacing:var(--track-display);line-height:1.08;color:var(--bh-ivory)}
+.arch-btn .s{color:rgba(244,240,233,.78);font-size:.92rem}
+.arch-btn .go{display:inline-flex;align-items:center;gap:.7em;margin-top:.4rem;padding:.85em 1.5em;border-radius:var(--pill);border:1px solid var(--bh-gold);color:var(--bh-ivory);
+  font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;transition:background var(--dur) var(--ease),color var(--dur) var(--ease);justify-self:start}
+.arch-btn:hover .go,.arch-btn[aria-pressed="true"] .go{background:var(--bh-gold);color:var(--bh-espresso)}
+.arch-btn .go .arr{transition:transform var(--dur) var(--ease)}
+.arch-btn:hover .go .arr{transform:translateX(4px)}
+.arch-btn[aria-pressed="true"] .t::after{content:"· chosen";margin-left:.6em}
+@media(max-width:640px){.fork__grid{grid-template-columns:1fr}.arch-btn{aspect-ratio:auto;min-height:380px}}
 
-/* ---- journeys (the personalised part) ---- */
+/* ---- journeys ---- */
 .journey{display:none}
 body[data-journey="treatments"] .journey--treatments,body[data-journey="academy"] .journey--academy{display:block}
 body:not([data-journey]) .journey--treatments{display:block}
 .journey__head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem;align-items:end;margin-bottom:clamp(2rem,4vw,3.5rem)}
 @media(max-width:720px){.journey__head{grid-template-columns:1fr}}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem}
-.card{display:grid;gap:.8rem;align-content:start;padding:1.6rem 1.5rem 1.7rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);
+.card{display:grid;gap:.8rem;align-content:start;padding:1.7rem 1.6rem 1.8rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);position:relative;overflow:hidden;
   transition:border-color var(--dur) var(--ease),transform var(--dur) var(--ease)}
-.card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+.card::after{content:"";position:absolute;left:0;right:0;bottom:0;border-top:var(--bh-gold-line);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-slow) var(--ease-slow)}
+.card:hover{border-color:var(--line-strong);transform:translateY(-3px)}
+.card:hover::after{transform:scaleX(1)}
 .card h3{font-weight:var(--weight-body);font-size:1.25rem;color:var(--ink);letter-spacing:-.01em}
 .card p{font-size:.95rem;color:var(--body)}
 .card .micro{margin-top:.3rem}
 .card .rule{width:28px}
 .reassure{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem;align-items:center;padding:1.6rem 1.8rem;
-  border-left:2px solid var(--accent);background:var(--cream-2);border-radius:0 var(--radius-lg) var(--radius-lg) 0}
+  border:1px solid var(--line);background:var(--cream-2);border-radius:var(--radius-lg)}
 .reassure .halo-dot{width:44px;height:44px;border-radius:50%;border:1px solid var(--accent);position:relative;flex:none}
 .reassure .halo-dot::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--accent)}
 .reassure strong{font-weight:var(--weight-micro);color:var(--ink)}
 @media(max-width:560px){.reassure{grid-template-columns:1fr}}
 
-/* ---- the hub (espresso, fluted) ---- */
+/* ---- the hub: espresso, fluted, with light rays and the arc gallery ---- */
 .hub{position:relative;overflow:hidden}
+/* the library's light rays, in gold, slowed right down */
+.hub .rays{position:absolute;top:-30%;left:50%;width:min(160vw,1800px);aspect-ratio:1;transform:translateX(-50%);transform-origin:50% 0;pointer-events:none;opacity:.55;
+  background:conic-gradient(from 180deg at 50% 0,transparent 0 6deg,rgba(201,166,92,.16) 9deg,transparent 12deg,transparent 18deg,rgba(201,166,92,.10) 21deg,transparent 24deg,transparent 31deg,rgba(201,166,92,.14) 34deg,transparent 37deg);
+  animation:bh-rays 22s ease-in-out infinite alternate}
+@keyframes bh-rays{from{transform:translateX(-50%) rotate(-8deg)}to{transform:translateX(-50%) rotate(8deg)}}
 .hub__in{position:relative;z-index:1}
-.hub__head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:end;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.hub__head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:end;margin-bottom:clamp(2rem,4vw,3rem)}
 @media(max-width:820px){.hub__head{grid-template-columns:1fr}}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:min(72vw,360px);gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;
-  padding-bottom:1rem;scrollbar-width:none;-webkit-mask:linear-gradient(90deg,#000 88%,transparent);mask:linear-gradient(90deg,#000 88%,transparent)}
-.rail::-webkit-scrollbar{display:none}
-.rail>figure{margin:0;scroll-snap-align:start;display:grid;gap:.9rem}
-.rail .photo{aspect-ratio:3/4}
-.rail figcaption{display:grid;gap:.25rem}
-.rail figcaption span{color:var(--ink);font-weight:var(--weight-body)}
-.rail figcaption small{color:var(--muted);font-size:.85rem}
-.hub__fixtures{margin-top:clamp(2.5rem,5vw,4rem);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem 2rem;border-top:1px solid var(--line-dark);padding-top:2rem}
+/* the library's circular gallery: arches bent along an arc; drag, click, or let it drift */
+.gal{position:relative;height:clamp(420px,50vw,560px);perspective:1200px;overflow:hidden;cursor:grab;user-select:none;touch-action:pan-y;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.gal.drag{cursor:grabbing}
+.gal__stage{position:absolute;inset:0;transform-style:preserve-3d}
+.gal__card{position:absolute;left:50%;top:46%;width:clamp(200px,24vw,280px);aspect-ratio:3/4;margin:0;transform:translate(-50%,-50%);
+  transition:transform .9s var(--ease-slow),opacity .9s var(--ease-slow);will-change:transform}
+.gal__card .photo{width:100%;height:100%;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.gal__card figcaption{position:absolute;left:0;right:0;top:calc(100% + .9rem);text-align:center;display:grid;gap:.15rem;opacity:0;transition:opacity .6s var(--ease)}
+.gal__card.is-centre figcaption{opacity:1}
+.gal__card figcaption span{color:var(--ink);font-size:.95rem}
+.gal__card figcaption small{color:var(--muted);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+.gal__nav{display:flex;justify-content:center;gap:.8rem;margin-top:.6rem}
+.gal__nav button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line-strong);color:var(--ink);display:grid;place-items:center;transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease)}
+.gal__nav button:hover{border-color:var(--accent);background:rgba(201,166,92,.14)}
+.hub__fixtures{margin-top:clamp(2.5rem,5vw,4rem);display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1.5rem 2rem;border-top:1px solid var(--line);padding-top:2rem}
 .fixture{display:grid;gap:.4rem}
 .fixture .micro{color:var(--accent-ink)}
 .fixture span{color:var(--body);font-size:.95rem}
 
-/* ---- people (ivory) ---- */
+/* ---- people ---- */
 .people__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,4vw,3rem);margin-top:clamp(2rem,4vw,3rem)}
 .person{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:1.5rem;align-items:center}
 .person .photo{aspect-ratio:3/4}
-.person .frame{position:relative}
 .person h3{font-weight:var(--weight-body);font-size:1.4rem;color:var(--ink)}
 .person p{font-size:.95rem;margin-top:.6rem}
 @media(max-width:860px){.people__grid{grid-template-columns:1fr}}
 @media(max-width:480px){.person{grid-template-columns:1fr}.person .frame{max-width:240px}}
 
-/* ---- reviews (taupe) ---- */
+/* ---- reviews: the statement sharpens word by word, then the rail drifts ---- */
 .reviews{position:relative;overflow:hidden}
 .reviews__halo{position:absolute;left:50%;top:50%;width:min(90vw,900px);aspect-ratio:1;transform:translate(-50%,-50%);background:var(--bh-halo);opacity:.5;pointer-events:none}
-.reviews__in{position:relative}
-.reviews .loved{font-size:clamp(1.6rem,4.6vw,3.6rem);font-weight:var(--weight-display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);line-height:1.1}
-.reviews .loved b{font-weight:var(--weight-emphasis)}
-.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:clamp(2rem,4vw,3.5rem)}
-.quote{display:grid;gap:1.1rem;align-content:start;padding:1.8rem 1.6rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card)}
+.reviews__in{position:relative;display:grid;gap:1rem}
+.loved{font-size:clamp(1.6rem,4.6vw,3.6rem);font-weight:var(--weight-display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.loved b{font-weight:var(--weight-emphasis)}
+/* the library's text reveal: each word arrives from a blur */
+.loved .w{display:inline-block;opacity:.12;filter:blur(6px);transition:opacity .9s var(--ease-slow),filter .9s var(--ease-slow)}
+.loved.on .w{opacity:1;filter:blur(0)}
+/* the library's testimonial carousel: a rail that drifts, pauses on hover */
+.rail{position:relative;margin-top:clamp(2rem,4vw,3.5rem);overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.rail__track{display:flex;gap:1.25rem;width:max-content;animation:bh-rail 60s linear infinite}
+.rail:hover .rail__track{animation-play-state:paused}
+@keyframes bh-rail{to{transform:translateX(-50%)}}
+.quote{flex:none;width:min(78vw,400px);display:grid;gap:1.1rem;align-content:start;padding:1.8rem 1.7rem;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--card)}
 .quote p{color:var(--ink);font-size:1.08rem;line-height:1.5;font-weight:var(--weight-display)}
 .quote p::before{content:"“"}.quote p::after{content:"”"}
 .quote cite{font-style:normal;display:grid;gap:.15rem}
 .quote cite span{color:var(--ink);font-size:.9rem}
-.quote cite small{color:var(--muted);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+.quote cite small{color:var(--muted);font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase}
 
-/* ---- closing band (taupe) ---- */
+/* ---- before your first visit: the library's accordion ---- */
+.faq__grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+@media(max-width:820px){.faq__grid{grid-template-columns:1fr}}
+.acc{border-top:1px solid var(--line)}
+.acc__item{border-bottom:1px solid var(--line)}
+.acc__q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.3rem 0;text-align:left;color:var(--ink);font-size:1.15rem;font-weight:var(--weight-body);transition:color var(--dur) var(--ease)}
+.acc__q:hover{color:var(--accent-ink)}
+.acc__ch{width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--line-strong);position:relative;transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease)}
+.acc__ch::before,.acc__ch::after{content:"";position:absolute;top:50%;left:50%;width:12px;height:1px;background:var(--accent-ink);transform:translate(-50%,-50%)}
+.acc__ch::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform var(--dur) var(--ease)}
+.acc__item.open .acc__ch{border-color:var(--accent);background:rgba(201,166,92,.14)}
+.acc__item.open .acc__ch::after{transform:translate(-50%,-50%) rotate(0)}
+.acc__a{max-height:0;overflow:hidden;transition:max-height .6s var(--ease-slow)}
+.acc__a p{margin:0 0 1.3rem;font-size:1rem;max-width:56ch}
+
+/* ---- closing band ---- */
 .close{position:relative;overflow:hidden;text-align:center;padding-block:clamp(5rem,12vw,10rem)}
 .close__in{display:grid;gap:1.8rem;justify-items:center;position:relative}
 .close__halo{position:absolute;left:50%;top:50%;width:min(120vw,1100px);aspect-ratio:1;transform:translate(-50%,-50%);background:var(--bh-glow);opacity:.7;pointer-events:none}
+.close .actions{justify-content:center}
+.close .eyebrow{justify-self:center}
 
-/* ---- footer (espresso) ---- */
-.footer{padding-block:clamp(3rem,6vw,5rem) 2rem;border-top:1px solid var(--line-dark)}
+/* ---- footer ---- */
+.footer{padding-block:clamp(3rem,6vw,5rem) 2rem;border-top:1px solid var(--line)}
 .footer__grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:2.5rem}
 .footer .bh-logo{font-size:1.5rem;color:var(--ink)}
 .footer .world{display:grid;gap:.3rem;margin-top:1.2rem}
@@ -216,41 +289,47 @@ body:not([data-journey]) .journey--treatments{display:block}
 .footer h4{margin:0 0 .9rem;font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
 .footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem;font-size:.95rem}
 .footer a:hover{color:var(--ink)}
-.footer__base{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line-dark);font-size:.8rem;color:var(--muted)}
+.footer__base{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
 @media(max-width:820px){.footer__grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.footer__grid{grid-template-columns:1fr}}
 
 @media(prefers-reduced-motion:reduce){
-  [data-reveal],[data-reveal="mask"]>.mask{opacity:1;transform:none;clip-path:none;transition:none}
-  .hero__halo{transform:none}
-  .photo img,.btn,.fork__card,.card{transition:none}
+  [data-gw-reveal="mask"]>.mask{clip-path:none;transform:none;transition:none}
+  .eyebrow .t{opacity:1}.eyebrow::after{display:none}
+  .rise .w{opacity:1;transform:none}
+  .loved .w{opacity:1;filter:none}
+  .hero__halo,.hub .rays,.rail__track{animation:none;transform:none}
+  .cursor{display:none}
+  .btn::before,.photo img,.arch-btn,.card,.gal__card{transition:none}
   html{scroll-behavior:auto}
 }
 </style>
 </head>
 <body>
 
+<div class="cursor" aria-hidden="true"></div>
+
 <!-- ================================================================ NAV -->
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap nav__in">
     <a class="bh-logo" href="#top" aria-label="Beauty Heaven Hub — home">beauty <b>heaven</b> hub</a>
-    <nav class="nav__links" aria-label="Primary">
+    <nav class="nav__pill" aria-label="Primary">
       <a href="#treatments" data-journey-link="treatments">Treatments</a>
       <a href="#academy" data-journey-link="academy">Academy</a>
       <a href="#hub">The Hub</a>
       <a href="#people">Jessica &amp; Hollie</a>
       <a href="#reviews">Reviews</a>
     </nav>
-    <a class="btn btn--fill" href="#book">Book</a>
+    <a class="btn btn--fill" href="#book" data-gw-magnetic="0.25"><span>Book</span></a>
     <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
-  <div class="nav__panel" id="menu" hidden>
+  <div class="wrap"><div class="nav__panel" id="menu" hidden>
     <a href="#treatments" data-journey-link="treatments">Treatments</a>
     <a href="#academy" data-journey-link="academy">Academy</a>
     <a href="#hub">The Hub</a>
     <a href="#people">Jessica &amp; Hollie</a>
     <a href="#reviews">Reviews</a>
-  </div>
+  </div></div>
 </header>
 
 <main id="top">
@@ -259,20 +338,19 @@ body:not([data-journey]) .journey--treatments{display:block}
 <section class="hero" data-surface="taupe" aria-labelledby="hero-h">
   <div class="hero__halo" aria-hidden="true"></div>
   <div class="wrap hero__grid">
-    <div class="hero__copy" data-stagger>
-      <p class="micro" data-reveal>Beauty · Hair · Skin · Aesthetics · Wellness · Academy</p>
-      <h1 id="hero-h" class="display d1" data-reveal="mask"><span class="mask">welcome<br>to <b>heaven.</b></span></h1>
-      <p class="lede" data-reveal>Every beauty discipline and a professional academy, under one roof. Whether it's your first treatment or your next qualification, we'll explain it properly and make sure you're comfortable.</p>
-      <div class="actions" data-reveal>
-        <a class="btn btn--fill" href="#fork">What are you here for? <span class="arr">→</span></a>
-        <a class="btn" href="#hub">See the Hub</a>
+    <div class="hero__copy" data-gw-stagger>
+      <p class="micro" data-gw-reveal>Beauty · Hair · Skin · Aesthetics · Wellness · Academy</p>
+      <h1 id="hero-h" class="display d1 rise" data-rise>welcome<br>to <b>heaven.</b></h1>
+      <p class="lede" data-gw-reveal>Every beauty discipline and a professional academy, under one roof. Whether it's your first treatment or your next qualification, we'll explain it properly and make sure you're comfortable.</p>
+      <div class="actions" data-gw-reveal>
+        <a class="btn btn--fill gw-shimmer" href="#fork" data-gw-magnetic="0.25"><span>What are you here for?</span> <span class="arr">→</span></a>
+        <a class="btn" href="#hub" data-gw-magnetic="0.25"><span>See the Hub</span></a>
       </div>
-      <p class="loved micro" data-reveal><span class="rule" aria-hidden="true"></span> Loved by hundreds of clients</p>
+      <p class="hero__loved micro" data-gw-reveal><span class="rule" aria-hidden="true"></span> Loved by hundreds of clients</p>
     </div>
-    <div class="hero__photo frame" data-reveal="mask">
+    <div class="hero__photo frame" data-gw-reveal="mask">
       <div class="halo" aria-hidden="true"></div>
       <div class="photo photo--arch mask">
-        <!-- Drop the real photograph in photos/ under this name and it takes the slot. -->
         <img src="photos/reception-portrait.jpg" alt="The reception at Beauty Heaven Hub: the gold desk, the logo on the taupe wall, herringbone floor" onerror="this.remove()">
         <div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo, reception</i></div>
       </div>
@@ -280,75 +358,85 @@ body:not([data-journey]) .journey--treatments{display:block}
   </div>
 </section>
 
+<!-- ======================================================= DISCIPLINES -->
+<div class="strip" aria-hidden="true">
+  <div class="gw-marquee"><div>
+    <span>Beauty</span><span>Hair</span><span>Skin</span><span>Aesthetics</span><span>Wellness</span><span>Academy</span>
+    <span>Beauty</span><span>Hair</span><span>Skin</span><span>Aesthetics</span><span>Wellness</span><span>Academy</span>
+  </div></div>
+</div>
+
 <!-- =========================================================== THE FORK -->
 <section class="fork" id="fork" aria-labelledby="fork-h">
   <div class="wrap">
-    <div class="fork__head" data-stagger>
-      <p class="micro micro--gold" data-reveal>Start here</p>
-      <h2 id="fork-h" class="display d2" data-reveal>what are you <b>here</b> for?</h2>
+    <div class="fork__head">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Start here</span></p>
+      <h2 id="fork-h" class="display d2" data-gw-reveal="mask"><span class="mask">what are you <b>here</b> for?</span></h2>
     </div>
-    <div class="fork__grid" data-stagger>
-      <button class="fork__card" type="button" data-choose="treatments" aria-pressed="false" data-reveal>
-        <span class="fork__num">01</span>
-        <span class="fork__title">Treatments</span>
-        <span class="fork__line">I want something for me.</span>
-        <span class="fork__list">Beauty · Hair · Skin · Aesthetics · Wellness</span>
-        <span class="fork__go">Find my treatment <span class="arr">→</span></span>
+    <div class="fork__grid" data-gw-stagger>
+      <button class="arch-btn" type="button" data-choose="treatments" aria-pressed="false" data-gw-reveal>
+        <div class="photo"><img src="photos/salon-mirrors.jpg" alt="" onerror="this.remove()"></div>
+        <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
+        <span class="t">Treatments</span>
+        <span class="l">I want something for me.</span>
+        <span class="s">Beauty · Hair · Skin · Aesthetics · Wellness</span>
+        <span class="go">Find my treatment <span class="arr">→</span></span>
       </button>
-      <button class="fork__card" type="button" data-choose="academy" aria-pressed="false" data-reveal>
-        <span class="fork__num">02</span>
-        <span class="fork__title">Academy</span>
-        <span class="fork__line">I want to learn.</span>
-        <span class="fork__list">Professional beauty &amp; aesthetics education</span>
-        <span class="fork__go">Find my training <span class="arr">→</span></span>
+      <button class="arch-btn" type="button" data-choose="academy" aria-pressed="false" data-gw-reveal>
+        <div class="photo"><img src="photos/academy-floor.jpg" alt="" onerror="this.remove()"></div>
+        <span class="wash" aria-hidden="true"></span><span class="spot" aria-hidden="true"></span>
+        <span class="t">Academy</span>
+        <span class="l">I want to learn.</span>
+        <span class="s">Professional beauty &amp; aesthetics education</span>
+        <span class="go">Find my training <span class="arr">→</span></span>
       </button>
     </div>
   </div>
 </section>
 
-<!-- ============================================ JOURNEY 01 · TREATMENTS -->
+<!-- ================================================ JOURNEY · TREATMENTS -->
 <section class="journey journey--treatments section" id="treatments" aria-labelledby="treat-h">
   <div class="wrap">
-    <div class="journey__head" data-stagger>
-      <div class="stack" data-reveal>
-        <p class="micro micro--gold">01 · Treatments</p>
-        <h2 id="treat-h" class="display d2">beauty, <b>your</b> way.</h2>
-        <p class="lede">Five disciplines, one team, and no pressure to know exactly what you want before you walk in. Tell us what you're after and we'll tell you what we'd do.</p>
+    <div class="journey__head">
+      <div class="stack">
+        <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Treatments</span></p>
+        <h2 id="treat-h" class="display d2" data-gw-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h2>
+        <p class="lede" data-gw-reveal>Five disciplines, one team, and no pressure to know exactly what you want before you walk in. Tell us what you're after and we'll tell you what we'd do.</p>
       </div>
-      <a class="btn btn--fill" href="#book" data-reveal>Book a treatment <span class="arr">→</span></a>
+      <a class="btn btn--fill" href="#book" data-gw-reveal data-gw-magnetic="0.25"><span>Book a treatment</span> <span class="arr">→</span></a>
     </div>
-    <div class="cards" data-stagger>
-      <article class="card" data-reveal><hr class="rule"><h3>Beauty</h3><p>Nails, lashes, brows, waxing and tanning. The things you come back for every few weeks, done properly.</p><span class="micro">From your first visit</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Hair</h3><p>Cut, colour and styling, with an honest conversation about what suits you before anything is picked up.</p><span class="micro">Consultation included</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Skin</h3><p>Facials and skin treatments planned around your skin, not a menu. We'll tell you what will actually make a difference.</p><span class="micro">Skin analysis first</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Aesthetics</h3><p>Advanced treatments carried out by qualified practitioners, explained clearly, with a proper consultation every time.</p><span class="micro">Practitioner-led</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Wellness</h3><p>Time to switch off. Treatments that are about how you feel afterwards as much as how you look.</p><span class="micro">Slow down</span></article>
+    <div class="cards" data-gw-stagger>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Beauty</h3><p>Nails, lashes, brows, waxing and tanning. The things you come back for every few weeks, done properly.</p><span class="micro">From your first visit</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Hair</h3><p>Cut, colour and styling, with an honest conversation about what suits you before anything is picked up.</p><span class="micro">Consultation included</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Skin</h3><p>Facials and skin treatments planned around your skin, not a menu. We'll tell you what will actually make a difference.</p><span class="micro">Skin analysis first</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Aesthetics</h3><p>Advanced treatments carried out by qualified practitioners, explained clearly, with a proper consultation every time.</p><span class="micro">Practitioner-led</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Wellness</h3><p>Time to switch off. Treatments that are about how you feel afterwards as much as how you look.</p><span class="micro">Slow down</span></article>
     </div>
-    <aside class="reassure" data-reveal>
+    <aside class="reassure" data-gw-reveal>
       <div class="halo-dot" aria-hidden="true"></div>
       <p><strong>First time?</strong> That's most people, once. We'll talk you through what happens before it happens, and you can stop and ask anything at any point. Nervous is normal; you'll be at ease within a few minutes.</p>
     </aside>
   </div>
 </section>
 
-<!-- =============================================== JOURNEY 02 · ACADEMY -->
+<!-- =================================================== JOURNEY · ACADEMY -->
 <section class="journey journey--academy section" id="academy" aria-labelledby="acad-h">
   <div class="wrap">
-    <div class="journey__head" data-stagger>
-      <div class="stack" data-reveal>
-        <p class="micro micro--gold">02 · Academy</p>
-        <h2 id="acad-h" class="display d2">something for <b>your future.</b></h2>
-        <p class="lede">Professional beauty and aesthetics education, taught in a working salon by people who do this every day. Small groups, real models, and Jessica and Hollie in the room.</p>
+    <div class="journey__head">
+      <div class="stack">
+        <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Academy</span></p>
+        <h2 id="acad-h" class="display d2" data-gw-reveal="mask"><span class="mask">something for <b>your future.</b></span></h2>
+        <p class="lede" data-gw-reveal>Professional beauty and aesthetics education, taught in a working salon by people who do this every day. Small groups, real models, and Jessica and Hollie in the room.</p>
       </div>
-      <a class="btn btn--fill" href="#book" data-reveal>Find my training <span class="arr">→</span></a>
+      <a class="btn btn--fill" href="#book" data-gw-reveal data-gw-magnetic="0.25"><span>Find my training</span> <span class="arr">→</span></a>
     </div>
-    <div class="cards" data-stagger>
-      <article class="card" data-reveal><hr class="rule"><h3>Foundation courses</h3><p>Start from nothing. Accredited beginner training across beauty disciplines, with the practical hours to back it up.</p><span class="micro">No experience needed</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Advanced skin &amp; aesthetics</h3><p>For qualified therapists ready to move into higher-value treatments, with the theory, the safety and the hands-on practice.</p><span class="micro">Prerequisites apply</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Masterclasses</h3><p>One-day sessions on a single skill, for people already working who want to get better at one thing quickly.</p><span class="micro">One day</span></article>
-      <article class="card" data-reveal><hr class="rule"><h3>Business &amp; mentoring</h3><p>Pricing, clients, social media and confidence. The part of running a beauty business nobody teaches you.</p><span class="micro">After you qualify</span></article>
+    <div class="cards" data-gw-stagger>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Foundation courses</h3><p>Start from nothing. Accredited beginner training across beauty disciplines, with the practical hours to back it up.</p><span class="micro">No experience needed</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Advanced skin &amp; aesthetics</h3><p>For qualified therapists ready to move into higher-value treatments, with the theory, the safety and the hands-on practice.</p><span class="micro">Prerequisites apply</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Masterclasses</h3><p>One-day sessions on a single skill, for people already working who want to get better at one thing quickly.</p><span class="micro">One day</span></article>
+      <article class="card" data-gw-reveal><span class="rule"></span><h3>Business &amp; mentoring</h3><p>Pricing, clients, social media and confidence. The part of running a beauty business nobody teaches you.</p><span class="micro">After you qualify</span></article>
     </div>
-    <aside class="reassure" data-reveal>
+    <aside class="reassure" data-gw-reveal>
       <div class="halo-dot" aria-hidden="true"></div>
       <p><strong>Not sure which course?</strong> Tell us where you are now and where you'd like to be, and we'll map the route. Payment plans are available, and every course includes support after you've finished.</p>
     </aside>
@@ -357,28 +445,36 @@ body:not([data-journey]) .journey--treatments{display:block}
 
 <!-- ============================================================ THE HUB -->
 <section class="hub section bh-fluted" id="hub" data-surface="espresso" aria-labelledby="hub-h">
+  <div class="rays" aria-hidden="true"></div>
   <div class="wrap hub__in">
     <div class="hub__head">
-      <div class="stack" data-reveal>
-        <p class="micro micro--gold">The Hub</p>
-        <h2 id="hub-h" class="display d2">built to be <b>a destination.</b></h2>
+      <div class="stack">
+        <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">The Hub</span></p>
+        <h2 id="hub-h" class="display d2" data-gw-reveal="mask"><span class="mask">built to be <b>a destination.</b></span></h2>
       </div>
-      <p class="lede" data-reveal>Arched mirrors, a gold desk, fluted doors, herringbone floors and a pair of neon wings with a halo. It's a building that took a long time to get right, and it's the reason the website looks the way it does.</p>
+      <p class="lede" data-gw-reveal>Arched mirrors, a gold desk, fluted doors, herringbone floors and a pair of neon wings with a halo. It's a building that took a long time to get right, and it's the reason the website looks the way it does.</p>
     </div>
-    <div class="rail" data-reveal>
-      <figure><div class="photo photo--arch"><img src="photos/reception-wide.jpg" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone floor</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><img src="photos/salon-mirrors.jpg" alt="The salon floor and its arched mirrors" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>salon floor, the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><img src="photos/lounge-wings.jpg" alt="The lounge, with the neon wings and halo" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo, lounge</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><img src="photos/treatment-macro.jpg" alt="A treatment in progress, close up" onerror="this.remove()"><div class="photo__tag"><i>Photo · treatment</i><i>macro, real hands</i></div></div><figcaption><span>In treatment</span><small>Macro, not clinical stock</small></figcaption></figure>
-      <figure><div class="photo photo--arch"><img src="photos/academy-floor.jpg" alt="Students training in the Academy" onerror="this.remove()"><div class="photo__tag"><i>Photo · academy</i><i>students, models, teaching</i></div></div><figcaption><span>The academy floor</span><small>Real students, real models</small></figcaption></figure>
+    <div class="gal" id="gal" data-gw-reveal aria-label="The building" role="region">
+      <div class="gal__stage" id="galStage">
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-wide.jpg" alt="Reception, wide: the gold desk, the fluted doors and the herringbone floor" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>reception, wide</i></div></div><figcaption><span>The reception</span><small>Gold desk, fluted doors, herringbone</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/salon-mirrors.jpg" alt="The salon floor and its arched mirrors" onerror="this.remove()"><div class="photo__tag"><i>Photo · premises</i><i>the arched mirrors</i></div></div><figcaption><span>The mirrors</span><small>Where the arch comes from</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/lounge-wings.jpg" alt="The lounge, with the neon wings and halo" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the neon wings and halo</i></div></div><figcaption><span>The wings</span><small>The one literal Heaven in the building</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/reception-portrait.jpg" alt="The gold desk and the logo on the wall" onerror="this.remove()"><div class="photo__tag"><i>Photo · detail</i><i>the gold desk and the logo</i></div></div><figcaption><span>The desk</span><small>Brushed gold, the logo above it</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/treatment-macro.jpg" alt="A treatment in progress, close up" onerror="this.remove()"><div class="photo__tag"><i>Photo · treatment</i><i>macro, real hands</i></div></div><figcaption><span>In treatment</span><small>Macro, not clinical stock</small></figcaption></figure>
+        <figure class="gal__card"><div class="photo photo--arch"><img src="photos/academy-floor.jpg" alt="Students training in the Academy" onerror="this.remove()"><div class="photo__tag"><i>Photo · academy</i><i>students, models, teaching</i></div></div><figcaption><span>The academy floor</span><small>Real students, real models</small></figcaption></figure>
+      </div>
     </div>
-    <div class="hub__fixtures" data-stagger>
-      <div class="fixture" data-reveal><span class="micro">Arched mirrors</span><span>Arched photography</span></div>
-      <div class="fixture" data-reveal><span class="micro">Brushed gold</span><span>Fine gold lines</span></div>
-      <div class="fixture" data-reveal><span class="micro">Fluted panelling</span><span>This dark section</span></div>
-      <div class="fixture" data-reveal><span class="micro">Pendant lighting</span><span>The halo behind the photos</span></div>
-      <div class="fixture" data-reveal><span class="micro">Taupe walls</span><span>The brand canvas</span></div>
-      <div class="fixture" data-reveal><span class="micro">The neon wings</span><span>The halo, the reveal</span></div>
+    <div class="gal__nav">
+      <button type="button" data-gal="-1" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+      <button type="button" data-gal="1" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="hub__fixtures" data-gw-stagger>
+      <div class="fixture" data-gw-reveal><span class="micro">Arched mirrors</span><span>Arched photography</span></div>
+      <div class="fixture" data-gw-reveal><span class="micro">Brushed gold</span><span>Fine gold lines</span></div>
+      <div class="fixture" data-gw-reveal><span class="micro">Fluted panelling</span><span>This dark section</span></div>
+      <div class="fixture" data-gw-reveal><span class="micro">Pendant lighting</span><span>The halo, and your cursor</span></div>
+      <div class="fixture" data-gw-reveal><span class="micro">Taupe walls</span><span>The brand canvas</span></div>
+      <div class="fixture" data-gw-reveal><span class="micro">The neon wings</span><span>The light, the reveal</span></div>
     </div>
   </div>
 </section>
@@ -386,16 +482,16 @@ body:not([data-journey]) .journey--treatments{display:block}
 <!-- ============================================================= PEOPLE -->
 <section class="section" id="people" aria-labelledby="people-h">
   <div class="wrap">
-    <div class="stack" data-reveal>
-      <p class="micro micro--gold">The team</p>
-      <h2 id="people-h" class="display d2">people who know <b>what they're doing.</b></h2>
+    <div class="stack">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">The team</span></p>
+      <h2 id="people-h" class="display d2" data-gw-reveal="mask"><span class="mask">people who know <b>what they're doing.</b></span></h2>
     </div>
-    <div class="people__grid" data-stagger>
-      <div class="person" data-reveal>
+    <div class="people__grid" data-gw-stagger>
+      <div class="person" data-gw-reveal>
         <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><img src="photos/jessica.jpg" alt="Jessica" onerror="this.remove()"><div class="photo__tag"><i>Portrait</i><i>Jessica</i></div></div></div>
         <div><h3>Jessica</h3><p class="micro micro--gold">Founder · Practitioner · Educator</p><p>Runs the Hub and teaches in the Academy. Clients mention her by name for the care and precision of her work, and for explaining everything before she starts.</p></div>
       </div>
-      <div class="person" data-reveal>
+      <div class="person" data-gw-reveal>
         <div class="frame"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><img src="photos/hollie.jpg" alt="Hollie" onerror="this.remove()"><div class="photo__tag"><i>Portrait</i><i>Hollie</i></div></div></div>
         <div><h3>Hollie</h3><p class="micro micro--gold">Practitioner · Educator</p><p>The other name that comes up in review after review. Professional, friendly and reassuring, particularly with clients who arrive nervous.</p></div>
       </div>
@@ -407,15 +503,36 @@ body:not([data-journey]) .journey--treatments{display:block}
 <section class="reviews section" id="reviews" data-surface="taupe" aria-labelledby="rev-h">
   <div class="reviews__halo" aria-hidden="true"></div>
   <div class="wrap reviews__in">
-    <p class="micro" data-reveal>Reviews</p>
-    <h2 id="rev-h" class="loved" data-reveal="mask"><span class="mask">Loved by <b>hundreds</b> of clients.</span></h2>
-    <!-- Quotes below are paraphrased from public reviews for the prototype.
-         Swap for verbatim reviews, with permission, and place each beside the
-         person or treatment it's about. -->
-    <div class="quotes" data-stagger>
-      <blockquote class="quote" data-reveal><p>I've used Beauty Heaven for years. The care, professionalism and precision from Hollie and Jessica is why I keep coming back.</p><cite><span>Long-standing client</span><small>Paraphrased from a public review</small></cite></blockquote>
-      <blockquote class="quote" data-reveal><p>I was nervous for my first treatment and they put me completely at ease. Everything was explained before it happened.</p><cite><span>First-time client</span><small>Paraphrased from a public review</small></cite></blockquote>
-      <blockquote class="quote" data-reveal><p>Professional, friendly and reassuring. You feel comfortable the moment you walk in.</p><cite><span>Regular client</span><small>Paraphrased from a public review</small></cite></blockquote>
+    <p class="micro eyebrow" data-gw-reveal><span class="t">Reviews</span></p>
+    <h2 id="rev-h" class="loved" data-loved>Loved by <b>hundreds</b> of clients.</h2>
+    <!-- Quotes are paraphrased from public reviews for the prototype. Swap for
+         verbatim reviews, with permission, and place each beside the person
+         or treatment it is about. -->
+  </div>
+  <div class="rail" data-gw-reveal>
+    <div class="rail__track" id="railTrack">
+      <blockquote class="quote"><p>I've used Beauty Heaven for years. The care, professionalism and precision from Hollie and Jessica is why I keep coming back.</p><cite><span>Long-standing client</span><small>Paraphrased from a public review</small></cite></blockquote>
+      <blockquote class="quote"><p>I was nervous for my first treatment and they put me completely at ease. Everything was explained before it happened.</p><cite><span>First-time client</span><small>Paraphrased from a public review</small></cite></blockquote>
+      <blockquote class="quote"><p>Professional, friendly and reassuring. You feel comfortable the moment you walk in.</p><cite><span>Regular client</span><small>Paraphrased from a public review</small></cite></blockquote>
+      <blockquote class="quote"><p>The building is beautiful, but it's the people that make it. I wouldn't go anywhere else now.</p><cite><span>Regular client</span><small>Paraphrased from a public review</small></cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ BEFORE YOUR FIRST VISIT -->
+<section class="section" id="first-visit" aria-labelledby="faq-h">
+  <div class="wrap faq__grid">
+    <div class="stack">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Before your first visit</span></p>
+      <h2 id="faq-h" class="display d2" data-gw-reveal="mask"><span class="mask">the things people <b>ask us.</b></span></h2>
+      <p class="lede" data-gw-reveal>Straight answers, no jargon. If yours isn't here, ask when you book. Nothing is a silly question.</p>
+    </div>
+    <div class="acc" id="acc" data-gw-reveal>
+      <div class="acc__item"><button class="acc__q" type="button" aria-expanded="false">I've never had this done before. What actually happens?<span class="acc__ch" aria-hidden="true"></span></button><div class="acc__a"><p>We start with a chat, not a treatment. You'll be told what we'd recommend and why, what it involves, how long it takes and what it costs, before anything starts. Then we go at your pace. You can stop and ask at any point.</p></div></div>
+      <div class="acc__item"><button class="acc__q" type="button" aria-expanded="false">Do I need a consultation first?<span class="acc__ch" aria-hidden="true"></span></button><div class="acc__a"><p>For skin and aesthetics, yes, always, and it's part of the appointment rather than an extra. For most beauty and hair treatments the conversation happens in the chair. Either way, nobody picks anything up until you're happy.</p></div></div>
+      <div class="acc__item"><button class="acc__q" type="button" aria-expanded="false">I'm nervous. Is that normal?<span class="acc__ch" aria-hidden="true"></span></button><div class="acc__a"><p>Completely. Most people are, the first time. Our reviews are full of clients who arrived anxious and left wondering what they were worried about. Tell us when you book and we'll take a little longer over the explanation.</p></div></div>
+      <div class="acc__item"><button class="acc__q" type="button" aria-expanded="false">Can I bring someone with me?<span class="acc__ch" aria-hidden="true"></span></button><div class="acc__a"><p>Yes. There's a lounge, and a friend in the building often makes a first visit easier. For some aesthetic treatments they'll wait outside the room, and we'll tell you if that's the case.</p></div></div>
+      <div class="acc__item"><button class="acc__q" type="button" aria-expanded="false">I'd like to train but I've no experience. Where do I start?<span class="acc__ch" aria-hidden="true"></span></button><div class="acc__a"><p>With a foundation course, and a conversation with Jessica or Hollie about where you'd like to end up. Every route through the Academy starts from nothing, and every course comes with support after you've qualified.</p></div></div>
     </div>
   </div>
 </section>
@@ -423,12 +540,12 @@ body:not([data-journey]) .journey--treatments{display:block}
 <!-- ======================================================= CLOSING BAND -->
 <section class="close" id="book" data-surface="taupe" aria-labelledby="close-h">
   <div class="close__halo" aria-hidden="true"></div>
-  <div class="wrap close__in" data-stagger>
-    <p class="micro" data-reveal>Ready when you are</p>
-    <h2 id="close-h" class="display d1" data-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h2>
-    <div class="actions" data-reveal>
-      <a class="btn btn--fill" href="#" data-cta="treatments">Book a treatment <span class="arr">→</span></a>
-      <a class="btn" href="#" data-cta="academy">Enquire about a course</a>
+  <div class="wrap close__in">
+    <p class="micro eyebrow" data-gw-reveal><span class="t">Ready when you are</span></p>
+    <h2 id="close-h" class="display d1" data-gw-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h2>
+    <div class="actions" data-gw-reveal>
+      <a class="btn btn--fill gw-shimmer" href="#" data-gw-magnetic="0.25"><span>Book a treatment</span> <span class="arr">→</span></a>
+      <a class="btn" href="#" data-gw-magnetic="0.25"><span>Enquire about a course</span></a>
     </div>
   </div>
 </section>
@@ -446,7 +563,7 @@ body:not([data-journey]) .journey--treatments{display:block}
       </div>
       <div><h4>Treatments</h4><ul><li><a href="#treatments">Beauty</a></li><li><a href="#treatments">Hair</a></li><li><a href="#treatments">Skin</a></li><li><a href="#treatments">Aesthetics</a></li><li><a href="#treatments">Wellness</a></li></ul></div>
       <div><h4>Academy</h4><ul><li><a href="#academy">Foundation courses</a></li><li><a href="#academy">Advanced training</a></li><li><a href="#academy">Masterclasses</a></li><li><a href="#academy">Mentoring</a></li></ul></div>
-      <div><h4>Visit</h4><ul><li><a href="#hub">The Hub</a></li><li><a href="#people">Jessica &amp; Hollie</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#book">Book</a></li></ul></div>
+      <div><h4>Visit</h4><ul><li><a href="#hub">The Hub</a></li><li><a href="#people">Jessica &amp; Hollie</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#first-visit">Before your first visit</a></li><li><a href="#book">Book</a></li></ul></div>
     </div>
     <div class="footer__base">
       <span>© <span id="year"></span> Beauty Heaven Hub</span>
@@ -459,8 +576,11 @@ body:not([data-journey]) .journey--treatments{display:block}
 (function () {
   "use strict";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  /* ---- nav ---- */
+  var nav = document.getElementById("nav");
   var menuBtn = document.querySelector(".nav__menu"), panel = document.getElementById("menu");
   menuBtn.addEventListener("click", function () {
     var open = menuBtn.getAttribute("aria-expanded") === "true";
@@ -468,64 +588,117 @@ body:not([data-journey]) .journey--treatments{display:block}
   });
   panel.addEventListener("click", function (e) { if (e.target.tagName === "A") { panel.hidden = true; menuBtn.setAttribute("aria-expanded", "false"); } });
 
-  /* ---- the fork: choose a journey, the page personalises below it ---- */
+  /* ---- the hero headline rises word by word, once ---- */
+  var rise = document.querySelector("[data-rise]");
+  if (rise && !reduce) {
+    var i = 0;
+    rise.innerHTML = rise.innerHTML.replace(/(<b>[^<]*<\/b>|[^\s<>]+)/g, function (m) {
+      return '<span class="w" style="animation-delay:' + (0.15 + i++ * 0.16) + 's">' + m + "</span>";
+    });
+  }
+
+  /* ---- the fork: choose a world; the page personalises below it ---- */
   var body = document.body;
-  var cards = document.querySelectorAll("[data-choose]");
+  var arches = document.querySelectorAll("[data-choose]");
   function choose(journey, scroll) {
     body.setAttribute("data-journey", journey);
-    cards.forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.choose === journey)); });
+    arches.forEach(function (a) { a.setAttribute("aria-pressed", String(a.dataset.choose === journey)); });
     try { localStorage.setItem("bh-journey", journey); } catch (e) {}
     if (scroll) {
       var target = document.getElementById(journey);
       if (target) target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-      // Freshly shown sections need their reveals wired.
-      requestAnimationFrame(function () { reveal(target); });
     }
   }
-  cards.forEach(function (c) { c.addEventListener("click", function () { choose(c.dataset.choose, true); }); });
-  document.querySelectorAll("[data-journey-link]").forEach(function (a) {
-    a.addEventListener("click", function () { choose(a.dataset.journeyLink, false); });
+  arches.forEach(function (a) {
+    a.addEventListener("click", function () { choose(a.dataset.choose, true); });
+    a.addEventListener("pointermove", function (e) {
+      var r = a.getBoundingClientRect();
+      a.style.setProperty("--sx", ((e.clientX - r.left) / r.width * 100) + "%");
+      a.style.setProperty("--sy2", ((e.clientY - r.top) / r.height * 100) + "%");
+    });
   });
-  // Remember a returning visitor's world without scrolling them anywhere.
+  document.querySelectorAll("[data-journey-link]").forEach(function (l) {
+    l.addEventListener("click", function () { choose(l.dataset.journeyLink, false); });
+  });
   try {
     var saved = localStorage.getItem("bh-journey");
     if (saved === "treatments" || saved === "academy") choose(saved, false);
   } catch (e) {}
 
-  /* ---- reveal on scroll: slow, once, transform + opacity ---- */
-  var io = "IntersectionObserver" in window && !reduce
-    ? new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" })
-    : null;
-  function reveal(root) {
-    (root || document).querySelectorAll("[data-reveal]").forEach(function (el) {
-      if (el.classList.contains("is-in")) return;
-      if (io && el.offsetParent !== null) io.observe(el); else if (!io) el.classList.add("is-in");
-    });
+  /* ---- reviews: the statement sharpens word by word when it arrives ---- */
+  var loved = document.querySelector("[data-loved]");
+  if (loved) {
+    loved.innerHTML = loved.innerHTML.replace(/(<b>[^<]*<\/b>|[^\s<>]+)/g, '<span class="w">$1</span>');
+    var ws = loved.querySelectorAll(".w");
+    var sharpen = function () { ws.forEach(function (w, k) { w.style.transitionDelay = (k * 0.14) + "s"; }); loved.classList.add("on"); };
+    if (reduce || !("IntersectionObserver" in window)) sharpen();
+    else { var lio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { sharpen(); lio.disconnect(); } }, { threshold: 0.5 }); lio.observe(loved); }
+    var track = document.getElementById("railTrack"); track.innerHTML += track.innerHTML;
   }
-  reveal();
 
-  /* ---- the halo: pendant light drifting with the scroll and the cursor ---- */
+  /* ---- the arc gallery: drag, click, arrows, or let it drift ---- */
+  (function () {
+    var root = document.getElementById("gal"); if (!root) return;
+    var cards = Array.prototype.slice.call(root.querySelectorAll(".gal__card"));
+    var N = cards.length, c = 0, timer, down = false, moved = false, sx = 0, sc = 0;
+    function render() {
+      cards.forEach(function (el, k) {
+        var o = k - c; if (o > N / 2) o -= N; if (o < -N / 2) o += N;
+        var w = el.offsetWidth || 240;
+        el.style.transform = "translate(-50%,-50%) translateX(" + (o * w * 0.86) + "px) translateZ(" + (-Math.abs(o) * 140) + "px) rotateY(" + (-o * 26) + "deg)";
+        el.style.opacity = String(Math.max(0, 1 - Math.abs(o) * 0.3));
+        el.style.zIndex = String(20 - Math.abs(o));
+        el.classList.toggle("is-centre", o === 0);
+      });
+    }
+    function set(n) { c = ((n % N) + N) % N; render(); }
+    function reset() { clearInterval(timer); if (!reduce) timer = setInterval(function () { set(c + 1); }, 3600); }
+    cards.forEach(function (el, k) { el.addEventListener("click", function () { if (!moved) { set(k); reset(); } }); });
+    root.addEventListener("pointerdown", function (e) { down = true; moved = false; sx = e.clientX; sc = c; root.classList.add("drag"); clearInterval(timer); });
+    addEventListener("pointermove", function (e) { if (!down) return; var d = e.clientX - sx; if (Math.abs(d) > 6) moved = true; set(Math.round(sc - d / 120)); });
+    addEventListener("pointerup", function () { if (down) { down = false; root.classList.remove("drag"); reset(); } });
+    root.addEventListener("mouseenter", function () { clearInterval(timer); });
+    root.addEventListener("mouseleave", reset);
+    document.querySelectorAll("[data-gal]").forEach(function (b) { b.addEventListener("click", function () { set(c + parseInt(b.dataset.gal, 10)); reset(); }); });
+    addEventListener("resize", render);
+    render(); reset();
+  })();
+
+  /* ---- the accordion ---- */
+  (function () {
+    var acc = document.getElementById("acc"); if (!acc) return;
+    var items = acc.querySelectorAll(".acc__item");
+    function open(it) {
+      items.forEach(function (x) { x.classList.remove("open"); x.querySelector(".acc__a").style.maxHeight = "0"; x.querySelector(".acc__q").setAttribute("aria-expanded", "false"); });
+      if (it) { it.classList.add("open"); var a = it.querySelector(".acc__a"); a.style.maxHeight = a.scrollHeight + "px"; it.querySelector(".acc__q").setAttribute("aria-expanded", "true"); }
+    }
+    acc.querySelectorAll(".acc__q").forEach(function (q) { q.addEventListener("click", function () { var it = q.parentNode; open(it.classList.contains("open") ? null : it); }); });
+    open(items[0]);
+  })();
+
+  /* ---- light that moves: the hero halo with the scroll, the photo halos, the cursor halo ---- */
+  var root = document.documentElement, ticking = false;
+  addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { if (!reduce) root.style.setProperty("--sy", String(scrollY)); nav.classList.toggle("scrolled", scrollY > 24); ticking = false; });
+  }, { passive: true });
   if (!reduce) {
-    var root = document.documentElement;
-    var ticking = false;
-    addEventListener("scroll", function () {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(function () { root.style.setProperty("--sy", String(scrollY)); ticking = false; });
-    }, { passive: true });
     document.querySelectorAll(".frame").forEach(function (p) {
       var halo = p.querySelector(".halo"); if (!halo) return;
       p.addEventListener("pointermove", function (ev) {
         var r = p.getBoundingClientRect();
-        var x = ((ev.clientX - r.left) / r.width - 0.5) * 24;
-        var y = ((ev.clientY - r.top) / r.height - 0.5) * 24;
-        halo.style.setProperty("--hx", x + "px"); halo.style.setProperty("--hy", y + "px");
+        halo.style.setProperty("--hx", (((ev.clientX - r.left) / r.width - 0.5) * 24) + "px");
+        halo.style.setProperty("--hy", (((ev.clientY - r.top) / r.height - 0.5) * 24) + "px");
       });
       p.addEventListener("pointerleave", function () { halo.style.setProperty("--hx", "0px"); halo.style.setProperty("--hy", "0px"); });
     });
+    if (fine) {
+      var cur = document.querySelector(".cursor"), tx = -100, ty = -100, x = -100, y = -100;
+      addEventListener("pointermove", function (e) { tx = e.clientX; ty = e.clientY; cur.classList.add("on"); }, { passive: true });
+      document.addEventListener("pointerleave", function () { cur.classList.remove("on"); });
+      document.addEventListener("pointerover", function (e) { cur.classList.toggle("hot", !!(e.target.closest && e.target.closest("a, button, .gal"))); });
+      (function loop() { x += (tx - x) * 0.16; y += (ty - y) * 0.16; cur.style.transform = "translate(" + x + "px," + y + "px) translate(-50%,-50%)"; requestAnimationFrame(loop); })();
+    }
   }
 })();
 </script>
