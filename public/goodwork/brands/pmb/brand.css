@@ -364,8 +364,8 @@
    transparent at both ends so two stacked light sections never band at the
    join. If you can see where a light gradient starts, it is too strong. */
 :root {
-  --pmb-grad-forest: linear-gradient(135deg, #1B4536 0%, var(--pmb-forest) 48%, var(--pmb-forest-deep) 100%);
-  --pmb-grad-deep:   linear-gradient(160deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 52%, #081511 100%);
+  --pmb-grad-forest: linear-gradient(180deg, #1B4536 0%, var(--pmb-forest) 46%, var(--pmb-forest-deep) 100%);
+  --pmb-grad-deep:   linear-gradient(180deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 54%, #081511 100%);
   --pmb-grad-panel:  linear-gradient(150deg, rgba(30,74,57,.55) 0%, rgba(8,21,17,.72) 100%);
   /* Sage CTA, per the mockup. Every stop clears 4.5:1 against chalk —
      #4E7355 is 4.85 and #3E6245 is 6.24. The mockup's own lighter fill
@@ -434,14 +434,49 @@
   --pmb-settle-dur: 620ms;
 }
 
+/* Seams — how one section becomes the next.
+   Sections used to butt together with a hard horizontal line at every change
+   of ground. A seam is a band that carries the exact edge colour of the
+   section above into the exact edge colour of the one below, so there is no
+   line to see at either end. The dark gradients above are vertical for this
+   reason: it makes each section's top and bottom edge a single colour that a
+   seam can match.
+
+   --pmb-forest tops a forest band, --pmb-forest-deep ends one, and #081511
+   ends a deep-forest band. */
+.seam{height:clamp(44px,6vw,92px);pointer-events:none}
+.seam--to-forest{background:linear-gradient(180deg,var(--pmb-chalk) 0%,#1B4536 100%)}
+.seam--from-forest{background:linear-gradient(180deg,var(--pmb-forest-deep) 0%,var(--pmb-chalk) 100%)}
+.seam--from-deep{background:linear-gradient(180deg,#081511 0%,var(--pmb-chalk) 100%)}
+.seam--forest-to-deep{background:linear-gradient(180deg,var(--pmb-forest-deep) 0%,var(--pmb-forest) 100%)}
+
+/* Soldier course — kept as a component, no longer used as a section divider.
+   Every PMB paving photograph has one: a row of blocks stood on end running
+   as a border between two surfaces. */
+.course{position:relative;height:15px;border-top:1px solid rgba(24,26,24,.16);border-bottom:1px solid rgba(24,26,24,.14);
+  background:repeating-linear-gradient(90deg,
+    #C0A46B 0 3px, #B99C63 3px 27px, #A98D56 27px 30px, rgba(24,26,24,.34) 30px 32px)}
+.course::after{content:"";position:absolute;left:0;right:0;top:100%;height:9px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(24,26,24,.10),transparent)}
+/* on a dark ground the joint reads light and the shadow is dropped */
+[data-surface="forest"] .course,[data-surface="deep-forest"] .course,[data-surface="charcoal"] .course,
+.course--dark{border-top-color:rgba(246,243,236,.18);border-bottom-color:rgba(246,243,236,.14);
+  background:repeating-linear-gradient(90deg,
+    #9C8353 0 3px, #8E7749 3px 27px, #7E6A42 27px 30px, rgba(8,21,17,.55) 30px 32px)}
+[data-surface="forest"] .course::after,[data-surface="deep-forest"] .course::after,
+[data-surface="charcoal"] .course::after,.course--dark::after{display:none}
+
 /* Ready-made helpers. Structure only — every colour above is a token. */
 .pmb-bond { position: relative; }
+/* the texture sits behind whatever the section contains, never over it */
+.pmb-bond > * { position: relative; z-index: 1; }
 .pmb-bond::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background-image: var(--pmb-bond);
   background-size: var(--pmb-bond-w) var(--pmb-bond-w);
   /* Fade the lattice out at the band edges so it never ends on a hard line. */
   mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  z-index: 0;
 }
 [data-surface="forest"] .pmb-bond::before,
 [data-surface="deep-forest"] .pmb-bond::before,
@@ -450,11 +485,13 @@
 }
 
 .pmb-grain { position: relative; }
+.pmb-grain > * { position: relative; z-index: 1; }
 .pmb-grain::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background-image: var(--pmb-grain);
   opacity: var(--pmb-grain-opacity);
   mix-blend-mode: multiply;
+  z-index: 0;
 }
 [data-surface="forest"] .pmb-grain::after,
 [data-surface="deep-forest"] .pmb-grain::after,
