@@ -120,7 +120,7 @@
         (§06), so the filter stays light: enough to hold white type over a
         driveway, not enough to flatten the stone. */
   --scrim-rgb:         13, 33, 26;
-  --hero-media-filter: brightness(0.82) saturate(1.02);
+  --hero-media-filter: brightness(0.94) saturate(1.0);
 
   /* 7 · SHADOWS — tight and cool. Paving sits ON something; the shadow is a
         contact shadow, not a glow. */
