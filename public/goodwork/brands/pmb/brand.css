@@ -10,8 +10,7 @@
      1. accent family   PMB Forest + its cuts
      2. neutrals        chalk ground, charcoal type, concrete lines
      3. fonts           Manrope ExtraBold display / Inter body
-     4. corner radius   near-square — this is a business built from flat,
-                        laid, edged units
+     4. corner radius   softly rounded, per the client's approved mockup
      5. the dark band   Deep Forest, with the ground-layer texture
      6. hero scrim      deep forest wash; photography carries the brand
      7. shadows         cool-neutral, charcoal-tinted, tight
@@ -139,11 +138,15 @@
   --track-micro: 0.14em;      /* small uppercase labels, opened up */
   --track-display: -0.025em;  /* big Manrope, closed up hard       */
 
-  /* 4 · METRICS — near-square. Everything PMB lays is a flat unit with a
-        cut edge, and the interface should agree with that. */
+  /* 4 · METRICS — softly rounded, per the client's approved mockup. An
+        earlier draft of this file ran near-square at 4px on the argument
+        that everything PMB lays is a flat unit with a cut edge; the mockup
+        rounds its buttons, fields, tiles and cards, and the mockup is the
+        agreed direction. Buttons, inputs and image tiles take --radius;
+        large panels and cards take --radius-lg. */
   --container: 1180px;
-  --radius:    4px;
-  --radius-lg: 8px;
+  --radius:    8px;
+  --radius-lg: 12px;
   --ease:      cubic-bezier(0.22, 1, 0.36, 1);
   --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
   --dur:       520ms;

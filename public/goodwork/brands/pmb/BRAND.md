@@ -220,8 +220,14 @@ token, so nothing is decoration for its own sake.
 | Kerbs and edging | One decisive 2px square-cut line, never a fading hairline | `--pmb-edge` |
 | Compaction | The motion signature: things **settle**, they never bounce | `--pmb-settle` |
 
-Corners are near-square (`--radius: 4px`). Everything PMB lays is a flat unit
-with a cut edge, and the interface should agree with that.
+Corners are softly rounded — `--radius: 8px` for buttons, inputs and image
+tiles, `--radius-lg: 12px` for larger panels and cards.
+
+An earlier version of this document ran near-square at 4px, on the argument
+that everything PMB lays is a flat unit with a cut edge. The client's approved
+mockup rounds its buttons and cards, and the mockup is the agreed direction,
+so the token follows it. The kerb line (`--pmb-edge`) stays square-cut — that
+one is a drawn edge, not a container.
 
 ## 06 · Photography
 
@@ -293,7 +299,7 @@ advanced than a standard contractor site.
   scroll. One clear CTA: *Plan My Project*.
 - **Buttons** — solid Forest primary; outline Charcoal secondary; minimum 44px
   touch height; visible focus ring on every surface.
-- **Cards** — minimal borders, near-square corners, large photography. No
+- **Cards** — minimal borders, softly rounded corners, large photography. No
   generic icon grids unless they genuinely aid scanning.
 - **Forms** — large labels, plain English, one decision per step where
   possible.
