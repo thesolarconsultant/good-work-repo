@@ -8,24 +8,25 @@
 <meta name="theme-color" content="#16382C">
 <link rel="stylesheet" href="brand.css">
 <!--
-  PMB homepage prototype — structure, copy direction, brand system and motion.
+  PMB homepage prototype — built to the client's concept mockup.
 
-  PHOTOGRAPHY: every photo slot is labelled with the shot that replaces it.
-  Drop a real PMB photograph into photos/ under the filename in the markup and
-  it takes the slot automatically. No stock, no AI architecture, no unrelated
-  homes — see BRAND.md §06.
+  PHOTOGRAPHY: every photo slot is labelled with the shot that replaces it and
+  loads from photos/ by filename. A missing file removes its <img> and the
+  labelled placeholder comes back, so nothing ever renders as broken. The
+  images currently supplied are AI-generated CONCEPT VISUALS, not PMB's work
+  — see photos/README.md. They must not be presented as portfolio.
 
-  REVIEWS: the review slots are empty and labelled. They take verbatim PMB
-  reviews with permission and attribution. Do not fill them with written-in
-  quotes — BRAND.md §10 rules out invented customer quotes.
+  REVIEWS: the cards match the mockup's layout, but the quotes are slots, not
+  copy. They take verbatim PMB reviews with permission and attribution.
+  BRAND.md §10 rules out invented customer quotes, and the names in the mockup
+  are invented.
 
-  CLAIMS: guarantee, insurance, no-deposit and payment terms are marked with *
-  and carry a footnote. All of them must be reconfirmed with PMB before this
-  goes live — BRAND.md §12.
+  CLAIMS: guarantee, insurance, no-deposit and payment terms are marked * and
+  carry a footnote. Reconfirm with PMB before launch — BRAND.md §12.
 -->
 <style>
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--body);font-family:var(--font-body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{margin:0;background:var(--cream);color:var(--body);font-family:var(--font-body);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 h1,h2,h3,h4,p,ul,ol,figure,fieldset{margin:0}
@@ -34,458 +35,394 @@ fieldset{border:0;padding:0;min-width:0}
 ::selection{background:var(--pmb-forest);color:var(--pmb-chalk)}
 :focus-visible{outline:2px solid transparent;box-shadow:var(--focus-ring);border-radius:var(--radius)}
 
-.wrap{width:min(calc(100% - clamp(1.5rem,5vw,5rem)),1200px);margin-inline:auto}
-.eyebrow{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
-.lede{font-size:1.12rem;max-width:56ch}
+.wrap{width:min(calc(100% - clamp(1.25rem,4vw,4rem)),1320px);margin-inline:auto}
 
 /* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;gap:.6rem;min-height:48px;padding:.8rem 1.5rem;border-radius:var(--radius);
- font-family:var(--font-body);font-weight:600;font-size:.96rem;border:2px solid transparent;cursor:pointer;
- transition:background-color var(--pmb-settle-dur) var(--pmb-settle),color var(--pmb-settle-dur) var(--pmb-settle),border-color var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:46px;padding:.72rem 1.35rem;
+ border-radius:var(--radius);font-family:var(--font-body);font-weight:600;font-size:.92rem;border:1.5px solid transparent;cursor:pointer;
+ transition:background-color var(--pmb-settle-dur) var(--pmb-settle),color var(--pmb-settle-dur) var(--pmb-settle),border-color var(--pmb-settle-dur) var(--pmb-settle)}
 .btn svg{flex:none;transition:transform var(--pmb-settle-dur) var(--pmb-settle)}
 .btn:hover svg{transform:translateX(3px)}
-.btn--primary{background:var(--pmb-forest);color:var(--pmb-chalk);border-color:var(--pmb-forest)}
-.btn--primary:hover{background:#0F2A20;border-color:#0F2A20}
-.btn--ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
-.btn--ghost:hover{background:var(--ink);color:var(--cream)}
-[data-surface="forest"] .btn--primary,[data-surface="deep-forest"] .btn--primary{background:var(--pmb-chalk);color:var(--pmb-forest);border-color:var(--pmb-chalk)}
-[data-surface="forest"] .btn--primary:hover,[data-surface="deep-forest"] .btn--primary:hover{background:var(--pmb-limestone);border-color:var(--pmb-limestone)}
-[data-surface="forest"] .btn--ghost,[data-surface="deep-forest"] .btn--ghost{color:var(--pmb-chalk);border-color:rgba(246,243,236,.5)}
-[data-surface="forest"] .btn--ghost:hover,[data-surface="deep-forest"] .btn--ghost:hover{background:var(--pmb-chalk);color:var(--pmb-forest);border-color:var(--pmb-chalk)}
+.btn--primary{background:#1E4A39;color:var(--pmb-chalk);border-color:#1E4A39}
+.btn--primary:hover{background:#265C48;border-color:#265C48}
+.btn--ghost{background:transparent;color:var(--pmb-chalk);border-color:rgba(246,243,236,.55)}
+.btn--ghost:hover{background:var(--pmb-chalk);color:var(--pmb-forest);border-color:var(--pmb-chalk)}
+.btn--ghost-dark{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn--ghost-dark:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.btn__play{width:24px;height:24px;border-radius:999px;background:var(--pmb-chalk);color:var(--pmb-forest);display:grid;place-items:center}
+.btn--ghost:hover .btn__play{background:var(--pmb-forest);color:var(--pmb-chalk)}
 
 /* ---------- photo slots ---------- */
-/* A labelled placeholder built from the brand's own material tokens. Drop a
-   real photograph in photos/ and it covers the slot; a missing file removes
-   itself and the label comes back. */
-.photo{position:relative;overflow:hidden;border-radius:var(--radius);background:var(--pmb-limestone);isolation:isolate}
-.photo::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond);background-size:var(--pmb-bond-w) var(--pmb-bond-w);opacity:.9}
-.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(13,33,26,.06),rgba(13,33,26,.20))}
-.photo__tag{position:absolute;left:1rem;right:1rem;bottom:1rem;z-index:2;color:var(--pmb-forest)}
-.photo__tag i{font-style:normal;display:block;font-weight:500;font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase}
-.photo__tag i+i{color:var(--pmb-metal-ink);margin-top:.15rem}
+.photo{position:relative;overflow:hidden;background:var(--pmb-limestone);isolation:isolate}
+.photo::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond);background-size:var(--pmb-bond-w) var(--pmb-bond-w)}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(13,33,26,.05),rgba(13,33,26,.18))}
+.photo__tag{position:absolute;left:.8rem;right:.8rem;bottom:.8rem;z-index:2;color:var(--pmb-forest)}
+.photo__tag i{font-style:normal;display:block;font-weight:500;font-size:.6rem;letter-spacing:var(--track-micro);text-transform:uppercase;line-height:1.4}
+.photo__tag i+i{color:var(--pmb-metal-ink)}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
 .photo:has(img)::before,.photo:has(img)::after,.photo:has(img) .photo__tag{display:none}
 
 /* ---------- nav ---------- */
-.nav{position:sticky;top:0;z-index:50;background:transparent;
- transition:background-color var(--pmb-settle-dur) var(--pmb-settle),box-shadow var(--pmb-settle-dur) var(--pmb-settle)}
-.nav__in{display:flex;align-items:center;gap:1.2rem;padding-block:.9rem}
-.nav .pmb-logo{font-size:1.7rem;color:var(--pmb-chalk)}
-.nav__links{display:flex;gap:1.4rem;margin-left:auto;font-weight:500;font-size:.9rem;color:rgba(246,243,236,.86)}
-.nav__links a{padding-block:.4rem;border-bottom:2px solid transparent}
-.nav__links a:hover,.nav__links a[aria-current="page"]{border-bottom-color:var(--pmb-metal)}
-.nav__tel{font-weight:600;font-size:.92rem;color:var(--pmb-chalk);white-space:nowrap}
-.nav .btn{min-height:44px;padding:.6rem 1.15rem;font-size:.9rem}
-.nav[data-stuck="true"]{background:var(--pmb-forest-deep);box-shadow:0 1px 0 rgba(246,243,236,.12)}
-@media(max-width:1000px){.nav__links,.nav__tel{display:none}}
+.nav{position:sticky;top:0;z-index:60;background:var(--pmb-forest-deep)}
+.nav__in{display:flex;align-items:center;gap:1.5rem;padding-block:.8rem}
+.nav .pmb-logo{font-size:1.5rem;color:var(--pmb-metal)}
+.nav .pmb-logo small{letter-spacing:.19em}
+.nav__links{display:flex;gap:1.3rem;margin-inline:auto;font-weight:500;font-size:.86rem;color:rgba(246,243,236,.84)}
+.nav__links a{padding-block:.3rem;border-bottom:2px solid transparent}
+.nav__links a:hover{color:var(--pmb-chalk)}
+.nav__links a[aria-current="page"]{color:var(--pmb-chalk);border-bottom-color:var(--pmb-metal)}
+.nav__tel{display:inline-flex;align-items:center;gap:.45rem;font-weight:600;font-size:.89rem;color:var(--pmb-chalk);white-space:nowrap}
+.nav__tel svg{color:var(--pmb-metal)}
+.nav .btn{min-height:42px;padding:.55rem 1.1rem;font-size:.86rem}
+@media(max-width:1180px){.nav__links{display:none}}
+@media(max-width:640px){.nav__tel{display:none}}
 
 /* ---------- hero ---------- */
-.hero{position:relative;background:var(--pmb-forest-deep);color:var(--pmb-chalk);
- margin-top:calc(var(--nav-h,76px) * -1);padding-top:var(--nav-h,76px)}
-.hero__bg{position:absolute;inset:0;z-index:0;background:var(--pmb-forest-deep)}
+.hero{position:relative;background:var(--pmb-forest-deep);color:var(--pmb-chalk)}
+.hero__bg{position:absolute;inset:0;z-index:0;overflow:hidden}
 .hero__bg::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond-light);background-size:var(--pmb-bond-w) var(--pmb-bond-w);opacity:.8}
 .hero__bg:has(img)::before{display:none}
 .hero__bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:var(--hero-media-filter)}
 .hero__bg::after{content:"";position:absolute;inset:0;
- background:linear-gradient(100deg,rgba(13,33,26,.92) 0 30%,rgba(13,33,26,.62) 58%,rgba(13,33,26,.28) 100%)}
-@media(max-width:900px){.hero__bg::after{background:linear-gradient(180deg,rgba(13,33,26,.86) 0 55%,rgba(13,33,26,.62) 100%)}}
-.hero__in{position:relative;z-index:1;padding-block:clamp(4rem,11vw,8.5rem) clamp(3.5rem,7vw,5.5rem)}
-.hero__copy{display:grid;gap:1.5rem;max-width:46rem}
-.hero h1{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.96;
- font-size:clamp(2.6rem,7.4vw,5.4rem);color:var(--pmb-chalk);text-wrap:balance}
-.hero h1 span{display:block;color:var(--pmb-limestone)}
-.hero p{font-size:clamp(1.05rem,1.6vw,1.2rem);color:rgba(246,243,236,.88);max-width:44ch}
-.hero__cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.4rem}
+ background:linear-gradient(105deg,rgba(13,33,26,.90) 0 26%,rgba(13,33,26,.56) 56%,rgba(13,33,26,.20) 100%),
+            linear-gradient(180deg,rgba(13,33,26,.5) 0 10%,rgba(13,33,26,0) 32%)}
+@media(max-width:820px){.hero__bg::after{background:linear-gradient(180deg,rgba(13,33,26,.88) 0 55%,rgba(13,33,26,.7) 100%)}}
+.hero__in{position:relative;z-index:1;padding-block:clamp(2.5rem,5.5vw,4.25rem) clamp(2.75rem,5.5vw,4.25rem)}
+.hero__copy{display:grid;gap:1.05rem;max-width:40rem}
+.hero h1{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.028em;line-height:.98;
+ font-size:clamp(2.2rem,5.2vw,3.85rem);color:var(--pmb-chalk);text-wrap:balance}
+.hero h1 span{display:block;font-size:.64em;letter-spacing:-.018em}
+.hero__copy>p{font-size:1rem;color:rgba(246,243,236,.9);max-width:34ch}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.45rem}
 
+/* trust strip — in the foot of the hero image, as in the mockup */
+.trust{position:relative;z-index:1;border-top:1px solid rgba(246,243,236,.14);background:rgba(13,33,26,.55)}
+.trust__grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;padding-block:1.1rem}
+.trust__item{display:grid;grid-template-columns:auto 1fr;gap:.65rem;align-items:center;padding-left:1.05rem;border-left:1px solid rgba(246,243,236,.16)}
+.trust__item:first-child{border-left:0;padding-left:0}
+.trust__item>svg{color:var(--pmb-chalk);opacity:.9}
+.trust__item b{display:block;font-family:var(--font-head);font-weight:800;font-size:.9rem;line-height:1.2;color:var(--pmb-chalk);font-variant-numeric:tabular-nums}
+.trust__item em{font-style:normal;display:block;font-size:.77rem;color:rgba(246,243,236,.72);line-height:1.3}
+@media(max-width:1080px){.trust__grid{grid-template-columns:repeat(3,1fr);gap:1.1rem}.trust__item:nth-child(3n+1){border-left:0;padding-left:0}}
+@media(max-width:620px){.trust__grid{grid-template-columns:repeat(2,1fr)}.trust__item{border-left:0;padding-left:0}}
+.trust__note{padding-bottom:.95rem;font-size:.69rem;color:rgba(246,243,236,.55)}
 
-/* ---------- trust strip ---------- */
-.trust{padding-block:2.2rem}
-.trust__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1.6rem 1.2rem}
-.trust__item{display:grid;gap:.15rem;padding-left:1rem;border-left:1px solid rgba(246,243,236,.22)}
-.trust__item b{font-family:var(--font-head);font-weight:800;font-size:1.9rem;line-height:1;color:var(--pmb-chalk);font-variant-numeric:tabular-nums}
-.trust__item span{font-size:.88rem;color:rgba(246,243,236,.8);line-height:1.4}
-.trust__note{margin-top:1.6rem;font-size:.76rem;color:rgba(246,243,236,.62);max-width:70ch}
+/* ---------- section furniture ---------- */
+.sec{padding-block:clamp(2.6rem,5vw,4.25rem)}
+h2.head{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:1.06;
+ font-size:clamp(1.45rem,2.8vw,2.05rem);color:var(--ink);text-wrap:balance}
+.sec__lede{font-size:.96rem;max-width:52ch;margin-top:.55rem}
 
-/* ---------- sections ---------- */
-.sec{padding-block:clamp(3.5rem,7vw,6rem)}
-.sec__head{display:grid;gap:.9rem;max-width:60ch;margin-bottom:clamp(1.8rem,3.5vw,2.8rem)}
-.sec__head h2{font-family:var(--font-head);font-weight:800;letter-spacing:-.028em;line-height:1.04;
- font-size:clamp(1.9rem,4.2vw,3rem);color:var(--ink);text-wrap:balance}
-.sec__head p{font-size:1.06rem}
+/* ---------- services: copy left, five tiles right ---------- */
+.services{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,2.5fr);gap:2.2rem;align-items:center}
+@media(max-width:1060px){.services{grid-template-columns:1fr;gap:1.5rem}}
+.services__copy{display:grid;gap:1rem;justify-items:start}
+.services__copy p{font-size:.96rem;max-width:38ch}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+@media(max-width:860px){.tiles{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{position:relative;display:block;overflow:hidden;border-radius:var(--radius)}
+.tile .photo{aspect-ratio:3/4}
+.tile__scrim{position:absolute;inset:auto 0 0 0;z-index:4;padding:1.4rem .85rem .8rem;
+ background:linear-gradient(180deg,rgba(13,33,26,0),rgba(13,33,26,.85));color:var(--pmb-chalk);pointer-events:none}
+.tile__scrim b{display:block;font-family:var(--font-head);font-weight:800;font-size:.94rem;letter-spacing:-.01em}
+.tile__scrim svg{margin-top:.2rem;transition:transform var(--pmb-settle-dur) var(--pmb-settle)}
+.tile:hover .tile__scrim svg,.tile:focus-visible .tile__scrim svg{transform:translateX(4px)}
 
-/* ---------- services ---------- */
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1.1rem}
-.service{position:relative;display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--radius-lg);
- overflow:hidden;background:var(--card);transition:border-color var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle)}
-.service:hover,.service:focus-within{border-color:var(--pmb-forest);transform:translateY(-3px)}
-.service .photo{aspect-ratio:4/3;border-radius:0}
-.service__body{padding:1.2rem 1.3rem 1.4rem;display:grid;gap:.5rem;align-content:start}
-.service h3{font-family:var(--font-head);font-weight:800;font-size:1.22rem;letter-spacing:-.02em;color:var(--ink)}
-.service p{font-size:.95rem}
-.service__more{margin-top:.3rem;font-weight:600;font-size:.9rem;color:var(--accent-ink);display:inline-flex;align-items:center;gap:.4rem}
-.service a::after{content:"";position:absolute;inset:0}
+/* ---------- transformation band: before/after + estimator ---------- */
+.band{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.06fr)}
+@media(max-width:1060px){.band{grid-template-columns:1fr}}
 
-/* ---------- before / after ---------- */
-/* The two placeholder states have to differ or the scrub reads as broken:
-   tired concrete on the before side, clean bond on the after side. Both stay
-   labelled as slots — a real pair of photographs replaces them. */
-.photo--worn{background:#9C9A93}
-.photo--worn::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='%23181A18' stroke-opacity='0.22' stroke-width='1.5'%3E%3Cpath d='M-4 38l30 10 22-14 34 16 26-8 30 12 26-6'/%3E%3Cpath d='M-4 104l26-6 30 14 24-10 28 8 32-12 28 10'/%3E%3Cpath d='M44 -4l8 42-14 30 10 34-6 32 12 30'/%3E%3Cpath d='M116 -4l-10 36 12 28-8 36 10 28-6 40'/%3E%3C/g%3E%3C/svg%3E");
- background-size:160px 160px;opacity:1}
-.photo--worn::after{background:linear-gradient(160deg,rgba(24,26,24,.14),rgba(24,26,24,.30))}
-.photo--worn .photo__tag{color:var(--pmb-charcoal)}
-.photo--worn .photo__tag i+i{color:#4A4840}
-.ba{display:grid;gap:1.6rem;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center}
-@media(max-width:900px){.ba{grid-template-columns:1fr}}
-.ba__stage{position:relative;aspect-ratio:16/10;border-radius:var(--radius-lg);overflow:hidden;background:var(--pmb-limestone);
- border:1px solid var(--line);touch-action:pan-y}
+.ba{position:relative;min-height:460px;background:var(--pmb-limestone);touch-action:pan-y}
 .ba__layer{position:absolute;inset:0}
-.ba__layer .photo{position:absolute;inset:0;border-radius:0;height:100%}
-/* The after layer is clipped from the left edge to the handle position. */
-.ba__layer--after{clip-path:inset(0 0 0 var(--pos,55%))}
-.ba__chip{position:absolute;top:.9rem;z-index:4;font-weight:500;font-size:.66rem;letter-spacing:var(--track-micro);
- text-transform:uppercase;padding:.34em .7em;border-radius:var(--radius);background:var(--pmb-forest-deep);color:var(--pmb-chalk)}
-.ba__chip--before{left:.9rem}
-.ba__chip--after{right:.9rem;background:var(--pmb-chalk);color:var(--pmb-forest)}
-.ba__divider{position:absolute;top:0;bottom:0;left:var(--pos,55%);width:2px;background:var(--pmb-chalk);z-index:5;pointer-events:none;
- box-shadow:0 0 0 1px rgba(13,33,26,.28)}
-.ba__knob{position:absolute;top:50%;left:var(--pos,55%);transform:translate(-50%,-50%);z-index:6;pointer-events:none;
- width:46px;height:46px;border-radius:999px;background:var(--pmb-chalk);box-shadow:0 2px 10px rgba(13,33,26,.35);
+.ba__layer .photo{position:absolute;inset:0;height:100%}
+.ba__layer--after{clip-path:inset(0 0 0 var(--pos,52%))}
+.ba__chip{position:absolute;bottom:1rem;z-index:4;font-weight:600;font-size:.7rem;padding:.34em .8em;border-radius:var(--radius);
+ background:var(--pmb-chalk);color:var(--pmb-forest)}
+.ba__chip--before{left:1rem}
+.ba__chip--after{right:1rem}
+.ba__divider{position:absolute;top:0;bottom:0;left:var(--pos,52%);width:2px;background:var(--pmb-chalk);z-index:5;pointer-events:none;box-shadow:0 0 0 1px rgba(13,33,26,.25)}
+.ba__knob{position:absolute;top:50%;left:var(--pos,52%);transform:translate(-50%,-50%);z-index:6;pointer-events:none;
+ width:44px;height:44px;border-radius:999px;background:rgba(246,243,236,.94);box-shadow:0 2px 10px rgba(13,33,26,.3);
  display:grid;place-items:center;color:var(--pmb-forest)}
-/* The range input is the real control: pointer, touch and keyboard for free. */
 .ba__range{position:absolute;inset:0;z-index:7;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;appearance:none;background:none}
 .ba__range::-webkit-slider-thumb{appearance:none;width:56px;height:100%}
 .ba__range::-moz-range-thumb{width:56px;height:100%;border:0;background:none}
-.ba__range:focus-visible~.ba__knob{box-shadow:var(--focus-ring),0 2px 10px rgba(13,33,26,.35)}
-.ba__copy{display:grid;gap:1rem;align-content:start}
-.ba__copy h3{font-family:var(--font-head);font-weight:800;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.025em;line-height:1.1;color:var(--ink)}
-.ba__hint{font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+.ba__range:focus-visible~.ba__knob{box-shadow:var(--focus-ring-dark),0 2px 10px rgba(13,33,26,.3)}
 
-/* ---------- craft build-up ---------- */
-.craft{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2.5rem;align-items:start}
-@media(max-width:900px){.craft{grid-template-columns:1fr;gap:1.8rem}}
-.layers{display:grid;gap:2px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line-dark)}
-.layer{position:relative;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:baseline;
- padding:1.15rem 1.3rem;color:rgba(246,243,236,.55);
- transition:color var(--dur) var(--pmb-settle),background-color var(--dur) var(--pmb-settle)}
-.layer[data-on="true"]{color:var(--pmb-chalk)}
-.layer:nth-child(1){background:#0D211A}
-.layer:nth-child(2){background:#14231C}
-.layer:nth-child(3){background:#1A2620}
-.layer:nth-child(4){background:#202A23}
-.layer:nth-child(5){background:#262D26}
-.layer b{font-family:var(--font-head);font-weight:800;font-size:.82rem;font-variant-numeric:tabular-nums;color:var(--pmb-metal-light);opacity:.55;
- transition:opacity var(--dur) var(--pmb-settle)}
-.layer[data-on="true"] b{opacity:1}
-.layer span{display:grid;gap:.15rem}
-.layer strong{font-family:var(--font-head);font-weight:800;font-size:1.02rem;letter-spacing:-.015em;color:inherit}
-.layer small{font-size:.87rem;color:inherit;opacity:.82;line-height:1.5}
+.est{padding:clamp(1.5rem,2.6vw,2.2rem);display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:1.3rem;align-items:start}
+@media(max-width:1180px){.est{grid-template-columns:1fr}}
+.est__eyebrow{font-weight:500;font-size:.67rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--pmb-metal-light)}
+.est h2{font-family:var(--font-head);font-weight:800;font-size:clamp(1.4rem,2.3vw,1.85rem);letter-spacing:-.02em;color:var(--pmb-chalk);margin-top:.35rem}
+.est__sub{font-size:.86rem;color:rgba(246,243,236,.76);margin-top:.28rem;margin-bottom:.95rem}
+.est__form{display:grid;gap:.5rem}
+.field{position:relative;display:grid}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.field__icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--pmb-metal-light);pointer-events:none;z-index:2}
+.field select,.field input[type=text]{width:100%;min-height:48px;padding:.6rem 2.4rem .6rem 2.6rem;font-family:var(--font-body);font-size:.9rem;
+ color:var(--pmb-chalk);background:rgba(246,243,236,.09);border:1px solid rgba(246,243,236,.22);border-radius:var(--radius)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='8' viewBox='0 0 13 8'%3E%3Cpath d='M1 1l5.5 5.5L12 1' fill='none' stroke='%23F6F3EC' stroke-opacity='.8' stroke-width='1.8'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;background-position:right 1rem center}
+.field select option{color:var(--pmb-charcoal);background:var(--pmb-chalk)}
+.field input::placeholder{color:rgba(246,243,236,.5)}
+.field--size{position:relative;background:rgba(246,243,236,.09);border:1px solid rgba(246,243,236,.22);border-radius:var(--radius);
+ padding:.6rem 1rem .7rem 2.6rem;display:grid;grid-template-columns:1fr auto;gap:.5rem .7rem;align-items:center}
+.field--size .lbl{font-size:.9rem;color:rgba(246,243,236,.9)}
+.field--size output{font-weight:600;font-size:.9rem;color:var(--pmb-chalk);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sizerange{grid-column:1/-1;width:100%;appearance:none;height:3px;border-radius:999px;background:rgba(246,243,236,.28);margin:.15rem 0 0}
+.sizerange::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:999px;background:var(--pmb-metal);cursor:pointer;border:0}
+.sizerange::-moz-range-thumb{width:16px;height:16px;border-radius:999px;background:var(--pmb-metal);cursor:pointer;border:0}
+.est__caveat{font-size:.71rem;color:rgba(246,243,236,.68);line-height:1.5;margin-top:.65rem}
+.btn--go{width:100%;background:#1E4A39;border-color:#2E6B52;color:var(--pmb-chalk);margin-top:.25rem}
+.btn--go:hover{background:#265C48;border-color:#3A7D61}
+
+.est__panel{background:rgba(8,21,17,.5);border:1px solid rgba(246,243,236,.16);border-radius:var(--radius);
+ padding:1.35rem 1.25rem;display:grid;gap:.5rem;align-content:start;position:relative;overflow:hidden}
+.est__panel::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond-light);background-size:var(--pmb-bond-w) var(--pmb-bond-w);opacity:.28;pointer-events:none}
+.est__panel>*{position:relative}
+.est__panel .lbl{font-weight:500;font-size:.63rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:rgba(246,243,236,.72);text-align:center}
+.est__range{font-family:var(--font-head);font-weight:800;font-size:clamp(1.65rem,2.9vw,2.2rem);letter-spacing:-.03em;line-height:1.12;
+ color:var(--pmb-chalk);font-variant-numeric:tabular-nums;text-align:center;text-wrap:balance}
+.est__basis{font-size:.75rem;color:rgba(246,243,236,.7);text-align:center}
+.est__rule{border:0;border-top:1px solid rgba(246,243,236,.2);margin:.75rem 0 .25rem;width:100%}
+.est__talk{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:start}
+.est__talk>svg{color:var(--pmb-chalk);opacity:.85;margin-top:.15rem}
+.est__talk b{display:block;font-family:var(--font-head);font-weight:800;font-size:.94rem;color:var(--pmb-chalk)}
+.est__talk em{font-style:normal;display:block;font-size:.77rem;color:rgba(246,243,236,.72);line-height:1.45;margin-top:.12rem}
 
 /* ---------- projects ---------- */
-.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:1.1rem}
-.project{display:grid;gap:.8rem}
-.project .photo{aspect-ratio:3/2}
-.project__meta{display:grid;gap:.2rem}
-.project__meta b{font-family:var(--font-head);font-weight:800;font-size:1.05rem;letter-spacing:-.015em;color:var(--ink)}
-.project__meta span{font-size:.88rem;color:var(--muted)}
-
-/* ---------- estimator ---------- */
-.est{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:2rem}
-@media(max-width:900px){.est{grid-template-columns:1fr}}
-.est__form{display:grid;gap:.85rem;align-content:start}
-.field{display:grid;gap:.35rem}
-.field label{font-weight:500;font-size:.8rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:rgba(246,243,236,.78)}
-.field select,.field input{width:100%;min-height:50px;padding:.7rem .9rem;font-family:var(--font-body);font-size:1rem;
- color:var(--pmb-chalk);background:rgba(246,243,236,.08);border:1px solid rgba(246,243,236,.28);border-radius:var(--radius)}
-.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23F6F3EC' stroke-width='2'/%3E%3C/svg%3E");
- background-repeat:no-repeat;background-position:right .9rem center}
-.field select option{color:var(--pmb-charcoal);background:var(--pmb-chalk)}
-.est__steps{display:flex;align-items:center;gap:.5rem;font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);
- text-transform:uppercase;color:var(--pmb-metal-light)}
-.est__track{flex:1;height:3px;background:rgba(246,243,236,.2);border-radius:999px;overflow:hidden;max-width:180px}
-.est__track i{display:block;height:100%;background:var(--pmb-metal);width:var(--step,33%);transition:width var(--dur) var(--pmb-settle)}
-.est__panel{background:rgba(246,243,236,.07);border:1px solid rgba(246,243,236,.2);border-radius:var(--radius-lg);
- padding:1.5rem;display:grid;gap:1rem;align-content:start}
-.est__range{font-family:var(--font-head);font-weight:800;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1;
- color:var(--pmb-chalk);font-variant-numeric:tabular-nums}
-.est__caveat{font-size:.84rem;color:rgba(246,243,236,.74);line-height:1.55;border-top:1px solid rgba(246,243,236,.18);padding-top:.9rem}
+.projects__head{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;justify-content:space-between;margin-bottom:1.35rem}
+.projects{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem}
+@media(max-width:1060px){.projects{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.projects{grid-template-columns:repeat(2,1fr)}}
+.project{display:grid;gap:.5rem}
+.project .photo{aspect-ratio:4/3;border-radius:var(--radius)}
+.project b{font-family:var(--font-head);font-weight:800;font-size:.91rem;letter-spacing:-.01em;color:var(--ink);line-height:1.25}
+.project em{font-style:normal;font-size:.81rem;color:var(--muted)}
 
 /* ---------- reviews ---------- */
-.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1.1rem}
-.review{border:1px dashed var(--line-strong);border-radius:var(--radius-lg);padding:1.4rem;display:grid;gap:.7rem;align-content:start;background:var(--card)}
-.review__stars{color:var(--pmb-metal-ink);letter-spacing:.14em;font-size:.9rem}
-.review__slot{font-size:.94rem;color:var(--muted);line-height:1.6}
-.review__meta{font-weight:500;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.reviews{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,2.1fr);gap:2rem;align-items:center}
+@media(max-width:1060px){.reviews{grid-template-columns:1fr;gap:1.4rem}}
+.reviews__copy{display:grid;gap:.9rem;justify-items:start}
+.reviews__copy h2{color:var(--pmb-chalk)}
+.reviews__copy p{font-size:.93rem;color:rgba(246,243,236,.8);max-width:36ch}
+.reviews__list{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media(max-width:820px){.reviews__list{grid-template-columns:1fr}}
+.review{align-self:stretch;background:rgba(246,243,236,.06);border:1px solid rgba(246,243,236,.16);border-radius:var(--radius);
+ padding:1.1rem 1.1rem 1rem;display:grid;gap:.65rem;align-content:start}
+.review__stars{color:var(--pmb-metal);letter-spacing:.1em;font-size:.84rem;line-height:1}
+.review__slot{font-size:.86rem;color:rgba(246,243,236,.82);line-height:1.55}
+.review__by{display:flex;align-items:center;gap:.55rem;padding-top:.5rem;border-top:1px solid rgba(246,243,236,.14)}
+.review__by i{font-style:normal;width:22px;height:22px;border-radius:999px;background:rgba(246,243,236,.14);color:var(--pmb-chalk);
+ display:grid;place-items:center;font-family:var(--font-head);font-weight:800;font-size:.68rem;flex:none}
+.review__by em{font-style:normal;font-size:.73rem;color:rgba(246,243,236,.62);line-height:1.35}
 
-/* ---------- closing + footer ---------- */
-.close__in{display:grid;gap:1.3rem;justify-items:start;max-width:46rem}
-.close h2{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:1;
- font-size:clamp(2rem,5.6vw,3.8rem);color:var(--pmb-chalk);text-wrap:balance}
-.foot{padding-block:3rem 2rem}
-.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(246,243,236,.16)}
-.foot h4{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--pmb-metal-light);margin-bottom:.7rem}
-.foot li{font-size:.92rem;color:rgba(246,243,236,.82);padding-block:.18rem}
-.foot__base{padding-top:1.4rem;display:grid;gap:.7rem;font-size:.8rem;color:rgba(246,243,236,.62)}
-.foot__base p{max-width:78ch;line-height:1.6}
-.proto{border:1px solid rgba(246,243,236,.28);border-radius:var(--radius);padding:.9rem 1.1rem;color:rgba(246,243,236,.8);font-size:.82rem;line-height:1.6;max-width:78ch}
+/* ---------- footer ---------- */
+.foot{padding-block:2.4rem 1.7rem}
+.foot__grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.75fr) minmax(0,.75fr) minmax(0,1fr) minmax(0,1.05fr);gap:1.7rem;align-items:start}
+@media(max-width:1060px){.foot__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.foot__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.foot .pmb-logo{font-size:1.65rem;color:var(--pmb-chalk)}
+.foot h4{font-weight:600;font-size:.79rem;color:var(--pmb-chalk);margin-bottom:.6rem}
+.foot li{font-size:.83rem;color:rgba(246,243,236,.72);padding-block:.15rem;overflow-wrap:anywhere}
+.foot li a:hover{color:var(--pmb-chalk)}
+.foot__contact li{display:flex;gap:.5rem;align-items:flex-start}
+.foot__contact svg{color:var(--pmb-metal-light);flex:none;margin-top:.3rem}
+.foot__social{display:flex;gap:.7rem;margin-top:.65rem;color:rgba(246,243,236,.72)}
+.foot__social a:hover{color:var(--pmb-chalk)}
+.foot__cta{justify-self:end}
+@media(max-width:1060px){.foot__cta{justify-self:start;grid-column:1/-1}}
+.foot__base{margin-top:1.9rem;padding-top:1.15rem;border-top:1px solid rgba(246,243,236,.14);display:grid;gap:.55rem;
+ font-size:.75rem;color:rgba(246,243,236,.58)}
+.foot__base p{max-width:84ch;line-height:1.55}
+.proto{border:1px solid rgba(246,243,236,.24);border-radius:var(--radius);padding:.8rem 1rem;color:rgba(246,243,236,.78);line-height:1.55;max-width:84ch}
 
 /* ---------- reveals ---------- */
-/* Content is visible at rest; the reveal only animates from a visible state
-   once JS marks the page ready, so nothing is ever stranded at opacity 0. */
-.js [data-reveal]{opacity:0;transform:translateY(18px)}
+.js [data-reveal]{opacity:0;transform:translateY(14px)}
 .js [data-reveal][data-shown="true"]{opacity:1;transform:none;
- transition:opacity var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle);
- transition-delay:var(--d,0ms)}
+ transition:opacity var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle);transition-delay:var(--d,0ms)}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}
   .js [data-reveal]{opacity:1;transform:none}
-  /* Before/after falls back to a plain side-by-side: both states visible, no scrub. */
-  .ba__stage{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:auto}
-  .ba__layer{position:relative;inset:auto;min-height:230px}
+  .ba{display:grid;grid-template-columns:1fr 1fr;min-height:0}
+  .ba__layer{position:relative;inset:auto;min-height:300px}
   .ba__layer--after{clip-path:none}
   .ba__divider,.ba__knob,.ba__range{display:none}
-  .ba__chip{position:static;justify-self:start;margin:.9rem}
-  .ba__hint{display:none}
-  .layer{color:var(--pmb-chalk)}
-  .layer b{opacity:1}
+  .ba__chip{position:static;justify-self:start;align-self:end;margin:.9rem}
 }
 </style>
 </head>
 <body>
 
-<header class="nav" id="nav">
+<header class="nav">
   <div class="wrap nav__in">
     <a class="pmb-logo" href="#top">PMB<small>Paving &amp; Landscapes</small></a>
     <nav class="nav__links" aria-label="Main">
+      <a href="#top" aria-current="page">Home</a>
       <a href="#services">Our Services</a>
       <a href="#projects">Projects</a>
-      <a href="#craft">How We Build</a>
-      <a href="#estimator">Plan My Project</a>
+      <a href="#reviews">About</a>
+      <a href="#areas">Areas We Cover</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
     </nav>
-    <a class="nav__tel" href="tel:+441279899927">01279 899 927</a>
+    <a class="nav__tel" href="tel:+441279899927">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 1.9.6 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.1a2 2 0 012.1-.5c.9.3 1.8.5 2.8.6a2 2 0 011.7 2z"/></svg>
+      01279 899 927</a>
     <a class="btn btn--primary" href="#estimator">Get a Free Quote
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </header>
 
 <main id="top">
 
 <!-- HERO -->
-<section class="hero" data-surface="deep-forest">
+<section class="hero">
   <div class="hero__bg">
     <img alt="A finished block-paved driveway at twilight, lit by low uplighters, in front of a British bungalow" data-slot="photos/hero-driveway-twilight.jpg">
   </div>
   <div class="wrap hero__in">
    <div class="hero__copy">
-    <p class="eyebrow" style="color:var(--pmb-metal-light)">Family run · Over 25 years in the paving industry</p>
     <h1>Transforming homes<span>from the outside in</span></h1>
     <p>Driveways, patios, landscaping and groundworks across Hertfordshire, Essex, Middlesex and North London.</p>
     <div class="hero__cta">
       <a class="btn btn--primary" href="#estimator">Plan My Project
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn btn--ghost" href="#projects">View Our Work</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--ghost" href="#projects">View Our Work
+        <span class="btn__play"><svg width="9" height="9" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.5l7 4.5-7 4.5z"/></svg></span></a>
     </div>
    </div>
   </div>
-</section>
 
-<!-- TRUST STRIP -->
-<section class="trust pmb-bond" data-surface="forest" aria-label="Why customers choose PMB">
-  <div class="wrap">
-    <div class="trust__grid">
-      <div class="trust__item"><b data-count="25" data-suffix="+">25+</b><span>Years in the paving industry</span></div>
-      <div class="trust__item"><b>Family run</b><span>Not a national franchise</span></div>
-      <div class="trust__item"><b data-count="5" data-suffix="-year">5-year</b><span>Guarantee on all work*</span></div>
-      <div class="trust__item"><b>No deposit</b><span>Pay when the job is finished*</span></div>
-      <div class="trust__item"><b>£1m</b><span>Public liability insurance*</span></div>
-      <div class="trust__item"><b>Free</b><span>Site surveys &amp; written quotations</span></div>
+  <div class="trust">
+    <div class="wrap">
+      <div class="trust__grid">
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l-3 6 6 12 6-12-3-6"/></svg>
+          <span><b data-count="25" data-suffix="+">25+</b><em>Years experience</em></span>
+        </div>
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 20v-2a4 4 0 00-3-3.9"/><path d="M16 3.1a4 4 0 010 7.8"/></svg>
+          <span><b>Family run</b><em>Business</em></span>
+        </div>
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span><b>No deposit</b><em>Required*</em></span>
+        </div>
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L8 22l4-2 4 2-1-7.5"/><path d="M10 9l1.5 1.5L14.5 7.5"/></svg>
+          <span><b data-count="5" data-suffix=" year">5 year</b><em>Guarantee*</em></span>
+        </div>
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+          <span><b>£1m public</b><em>Liability insurance*</em></span>
+        </div>
+        <div class="trust__item">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 15l2 2 4-4"/></svg>
+          <span><b>Free site surveys</b><em>&amp; quotations</em></span>
+        </div>
+      </div>
+      <p class="trust__note">* Guarantee, insurance and payment terms are taken from PMB’s current website and must be reconfirmed with PMB before this page goes live.</p>
     </div>
-    <p class="trust__note">* Guarantee, insurance and payment terms are taken from PMB’s current website and must be reconfirmed with PMB before this page goes live.</p>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section class="sec" id="services">
-  <div class="wrap">
-    <div class="sec__head" data-reveal>
-      <p class="eyebrow">What we do</p>
-      <h2>Complete exterior transformations.</h2>
-      <p>From driveways and patios to full garden transformations — for homeowners and commercial customers across four counties.</p>
+  <div class="wrap services">
+    <div class="services__copy" data-reveal>
+      <h2 class="head">Complete exterior<br>transformations</h2>
+      <p>From stunning driveways to beautiful patios and full garden makeovers, we create outdoor spaces that add value to your home and improve the way you live.</p>
+      <a class="btn btn--primary" href="#estimator">Explore Our Services
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
-    <div class="services">
-
-      <article class="service" data-reveal style="--d:0ms">
-        <div class="photo"><img alt="" data-slot="photos/service-driveways.jpg">
-          <div class="photo__tag"><i>Photo · service</i><i>block-paved driveway, wide</i></div></div>
-        <div class="service__body">
-          <h3><a href="#estimator">Driveways</a></h3>
-          <p>Block paving, resin bound, tarmac, gravel, shingle, imprinted concrete and crazy paving.</p>
-          <span class="service__more">Explore driveways
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </div>
-      </article>
-
-      <article class="service" data-reveal style="--d:80ms">
-        <div class="photo"><img alt="" data-slot="photos/service-patios.jpg">
-          <div class="photo__tag"><i>Photo · service</i><i>Indian sandstone patio, low angle</i></div></div>
-        <div class="service__body">
-          <h3><a href="#estimator">Patios</a></h3>
-          <p>Indian sandstone, natural stone and concrete slabs. Paths, entrances and paved outdoor living areas.</p>
-          <span class="service__more">Explore patios
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </div>
-      </article>
-
-      <article class="service" data-reveal style="--d:160ms">
-        <div class="photo"><img alt="" data-slot="photos/service-landscaping.jpg">
-          <div class="photo__tag"><i>Photo · service</i><i>full garden transformation, after</i></div></div>
-        <div class="service__body">
-          <h3><a href="#estimator">Landscaping</a></h3>
-          <p>Fencing, turfing, garden walls, drainage, groundworks and complete garden transformations.</p>
-          <span class="service__more">Explore landscaping
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </div>
-      </article>
-
-      <article class="service" data-reveal style="--d:240ms">
-        <div class="photo"><img alt="" data-slot="photos/service-restoration.jpg">
-          <div class="photo__tag"><i>Photo · service</i><i>jet washing, mid-clean, hard edge visible</i></div></div>
-        <div class="service__body">
-          <h3><a href="#estimator">Restoration</a></h3>
-          <p>Repairs, maintenance, professional cleaning and jet washing to bring an existing surface back.</p>
-          <span class="service__more">Explore restoration
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </div>
-      </article>
-
+    <div class="tiles" data-reveal style="--d:90ms">
+      <a class="tile" href="#estimator">
+        <div class="photo"><img alt="A finished block paving driveway with a car parked on it" data-slot="photos/service-driveways.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>block-paved driveway</i></div></div>
+        <span class="tile__scrim"><b>Driveways</b>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tile" href="#estimator">
+        <div class="photo"><img alt="An Indian sandstone patio with garden furniture" data-slot="photos/service-patios.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>sandstone patio</i></div></div>
+        <span class="tile__scrim"><b>Patios</b>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tile" href="#estimator">
+        <div class="photo"><img alt="A newly laid striped lawn with planted borders" data-slot="photos/service-landscaping.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>garden transformation</i></div></div>
+        <span class="tile__scrim"><b>Landscaping</b>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tile" href="#estimator">
+        <div class="photo"><img alt="A mini excavator digging out an old driveway" data-slot="photos/service-groundworks.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>excavation &amp; sub-base</i></div></div>
+        <span class="tile__scrim"><b>Groundworks</b>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="tile" href="#estimator">
+        <div class="photo"><img alt="A pressure washer cutting a clean stripe through a dirty driveway" data-slot="photos/service-restoration.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>jet washing</i></div></div>
+        <span class="tile__scrim"><b>Restoration</b>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- BEFORE / AFTER -->
-<section class="sec" data-surface="limestone" id="transformations">
-  <div class="wrap">
-    <div class="ba">
-      <div class="ba__stage" id="ba" style="--pos:55%">
-        <div class="ba__layer ba__layer--before">
-          <div class="photo photo--worn"><img alt="Tired, cracked concrete driveway before work started" data-slot="photos/ba-01-before.jpg">
-            <div class="photo__tag"><i>Photo · before</i><i>existing surface</i></div></div>
-        </div>
-        <div class="ba__layer ba__layer--after">
-          <div class="photo"><img alt="The same driveway after PMB laid block paving" data-slot="photos/ba-01-after.jpg">
-            <div class="photo__tag"><i>Photo · after</i><i>same spot, same lens</i></div></div>
-        </div>
-        <span class="ba__chip ba__chip--before">Before</span>
-        <span class="ba__chip ba__chip--after">After</span>
-        <input class="ba__range" id="ba-range" type="range" min="0" max="100" value="55" step="1"
-               aria-label="Reveal the finished driveway. Use the arrow keys or drag.">
-        <span class="ba__divider" aria-hidden="true"></span>
-        <span class="ba__knob" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
-        </span>
-      </div>
-      <div class="ba__copy" data-reveal>
-        <p class="eyebrow">Before &amp; after</p>
-        <h3>The same drive, from the same spot.</h3>
-        <p>Every job we finish gets photographed from the position we marked before the first spade went in — same spot, same lens. It’s the fairest way to show what actually changed.</p>
-        <p class="ba__hint">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
-          Drag the handle, or use the arrow keys.
-        </p>
-        <a class="btn btn--primary" href="#projects">See more transformations
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
+<!-- BEFORE/AFTER + ESTIMATOR -->
+<section class="band" id="estimator" data-surface="deep-forest">
+  <div class="ba" id="ba" style="--pos:52%">
+    <div class="ba__layer ba__layer--before">
+      <div class="photo"><img alt="A cracked, weed-grown concrete driveway before work started" data-slot="photos/ba-01-before.jpg">
+        <div class="photo__tag"><i>Photo · before</i><i>existing surface</i></div></div>
     </div>
+    <div class="ba__layer ba__layer--after">
+      <div class="photo"><img alt="The same driveway after PMB laid block paving" data-slot="photos/ba-01-after.jpg">
+        <div class="photo__tag"><i>Photo · after</i><i>same spot, same lens</i></div></div>
+    </div>
+    <span class="ba__chip ba__chip--before">Before</span>
+    <span class="ba__chip ba__chip--after">After</span>
+    <input class="ba__range" id="ba-range" type="range" min="0" max="100" value="52" step="1"
+           aria-label="Reveal the finished driveway. Drag, or use the arrow keys.">
+    <span class="ba__divider" aria-hidden="true"></span>
+    <span class="ba__knob" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+    </span>
   </div>
-</section>
 
-<!-- CRAFT -->
-<section class="sec" id="craft">
-  <div class="wrap">
-    <div class="craft">
-      <div class="sec__head" style="margin-bottom:0" data-reveal>
-        <p class="eyebrow">How we build</p>
-        <h2>The finish matters. So does everything underneath it.</h2>
-        <p>Most driveway problems — sinking, pooling, weeds through the joints — start below the surface. This is the build-up we work to on a standard domestic drive.</p>
-        <p style="font-size:.92rem;color:var(--muted)">Depths and specification vary with ground conditions, access and drainage. Your free site survey confirms what your property actually needs.</p>
-      </div>
-      <ol class="layers" id="layers">
-        <li class="layer"><b>01</b><span><strong>Excavation</strong><small>Dig out to the depth the finished level and ground conditions require, and cart the spoil away.</small></span></li>
-        <li class="layer"><b>02</b><span><strong>Type 1 sub-base</strong><small>Clean crushed hardcore laid in layers — the part that actually carries the vehicle.</small></span></li>
-        <li class="layer"><b>03</b><span><strong>Compaction</strong><small>Each layer compacted properly. Skip this and the surface tells on you within a winter.</small></span></li>
-        <li class="layer"><b>04</b><span><strong>Edging &amp; drainage</strong><small>Haunched edge restraints and falls set so water leaves the drive where it should.</small></span></li>
-        <li class="layer"><b>05</b><span><strong>Laying course &amp; surface</strong><small>Screeded bed, then your chosen finish — block, resin, tarmac or stone — cut in and jointed.</small></span></li>
-      </ol>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section class="sec" data-surface="limestone" id="projects">
-  <div class="wrap">
-    <div class="sec__head" data-reveal>
-      <p class="eyebrow">Recent work</p>
-      <h2>Real projects. Real addresses.</h2>
-      <p>Every project below takes a real PMB job — service, material, location and the customer’s own words.</p>
-    </div>
-    <div class="projects">
-      <article class="project" data-reveal style="--d:0ms">
-        <div class="photo"><img alt="" data-slot="photos/project-resin-harlow.jpg">
-          <div class="photo__tag"><i>Photo · project</i><i>resin bound driveway, wide</i></div></div>
-        <div class="project__meta"><b>Resin bound driveway</b><span>Harlow, Essex</span></div>
-      </article>
-      <article class="project" data-reveal style="--d:80ms">
-        <div class="photo"><img alt="" data-slot="photos/project-sandstone-stortford.jpg">
-          <div class="photo__tag"><i>Photo · project</i><i>Indian sandstone patio</i></div></div>
-        <div class="project__meta"><b>Indian sandstone patio</b><span>Bishop’s Stortford</span></div>
-      </article>
-      <article class="project" data-reveal style="--d:160ms">
-        <div class="photo"><img alt="" data-slot="photos/project-garden-chigwell.jpg">
-          <div class="photo__tag"><i>Photo · project</i><i>full garden transformation</i></div></div>
-        <div class="project__meta"><b>Full garden transformation</b><span>Chigwell</span></div>
-      </article>
-      <article class="project" data-reveal style="--d:240ms">
-        <div class="photo"><img alt="" data-slot="photos/project-blockpaving-romford.jpg">
-          <div class="photo__tag"><i>Photo · project</i><i>block paving driveway</i></div></div>
-        <div class="project__meta"><b>Block paving driveway</b><span>Romford</span></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ESTIMATOR -->
-<section class="sec pmb-grain" data-surface="deep-forest" id="estimator">
-  <div class="wrap">
-    <div class="sec__head" data-reveal>
-      <p class="eyebrow" style="color:var(--pmb-metal-light)">Plan My Project</p>
-      <h2 style="color:var(--pmb-chalk)">Get an indicative range in about a minute.</h2>
-      <p style="color:rgba(246,243,236,.84)">Answer a few questions and we’ll give you a realistic range to work with — then a free site survey turns it into a fixed written quotation.</p>
-    </div>
-    <div class="est">
+  <div class="est">
+    <div>
+      <p class="est__eyebrow">Instant estimate</p>
+      <h2>Plan My Project</h2>
+      <p class="est__sub">Get an indicative price for your project in under 60 seconds.</p>
       <form class="est__form" id="est" novalidate>
-        <div class="est__steps">
-          <span>Step <span id="est-step">1</span> of 9</span>
-          <span class="est__track"><i id="est-bar" style="--step:11%"></i></span>
-        </div>
-        <fieldset class="field">
-          <label for="f-type">What are you looking for?</label>
+        <div class="field">
+          <label class="vh" for="f-type">What are you looking for?</label>
+          <span class="field__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>
           <select id="f-type" name="type">
-            <option value="">Choose a project type</option>
+            <option value="">What are you looking for?</option>
             <option>New driveway</option>
             <option>Patio or outdoor living area</option>
             <option>Full garden transformation</option>
             <option>Repair, cleaning or restoration</option>
           </select>
-        </fieldset>
-        <fieldset class="field">
-          <label for="f-size">Approximate size (m²)</label>
-          <input id="f-size" name="size" type="number" inputmode="numeric" min="1" max="2000" placeholder="e.g. 65">
-        </fieldset>
-        <fieldset class="field">
-          <label for="f-finish">Preferred finish</label>
+        </div>
+
+        <div class="field--size">
+          <span class="field__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M3 9h18M9 3v18"/></svg></span>
+          <label class="lbl" for="f-size">Approximate size (m²)</label>
+          <output for="f-size" id="f-size-out">65 m²</output>
+          <input class="sizerange" id="f-size" name="size" type="range" min="10" max="300" step="5" value="65">
+        </div>
+
+        <div class="field">
+          <label class="vh" for="f-finish">Choose your preferred finish</label>
+          <span class="field__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/><path d="M8 3v18M16 3v18" opacity=".5"/></svg></span>
           <select id="f-finish" name="finish">
-            <option value="">Choose a finish</option>
+            <option value="">Choose your preferred finish</option>
             <option>Block paving</option>
             <option>Resin bound</option>
             <option>Tarmac</option>
@@ -493,96 +430,159 @@ fieldset{border:0;padding:0;min-width:0}
             <option>Indian sandstone or natural stone</option>
             <option>Not sure yet — advise me</option>
           </select>
-        </fieldset>
-        <fieldset class="field">
-          <label for="f-postcode">Your postcode</label>
-          <input id="f-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="e.g. CM20">
-        </fieldset>
-        <p style="font-size:.84rem;color:rgba(246,243,236,.7)">Remaining steps: existing surface, additional work, timeframe, photo upload and your contact details.</p>
-      </form>
+        </div>
 
-      <aside class="est__panel">
-        <p class="eyebrow" style="color:var(--pmb-metal-light)">Estimated range</p>
-        <p class="est__range" id="est-out">Add a size to see a range</p>
-        <p style="font-size:.9rem;color:rgba(246,243,236,.84)" id="est-basis">Based on the options you choose above.</p>
-        <p class="est__caveat"><strong style="color:var(--pmb-chalk)">This is an indicative range only.</strong> It is not a quotation. Final pricing depends on ground conditions, access, drainage, levels and final specification, and is confirmed after a free site survey.</p>
-        <a class="btn btn--primary" href="tel:+441279899927">Talk it through — 01279 899 927</a>
-      </aside>
+        <div class="field">
+          <label class="vh" for="f-extra">Any additional work?</label>
+          <span class="field__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15h6M12 12v6"/></svg></span>
+          <select id="f-extra" name="extra">
+            <option value="">Any additional work?</option>
+            <option>Drainage</option>
+            <option>Fencing or walling</option>
+            <option>Turfing or planting</option>
+            <option>Steps or retaining walls</option>
+            <option>None</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="vh" for="f-postcode">Your postcode</label>
+          <span class="field__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <input id="f-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="Your postcode">
+        </div>
+
+        <button class="btn btn--go" type="submit">Get My Estimate
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <p class="est__caveat">This is an indicative price only. A final quote is provided after a free site survey, and depends on ground conditions, access, drainage and final specification.</p>
+    </div>
+
+    <aside class="est__panel">
+      <p class="lbl">Estimated range</p>
+      <p class="est__range" id="est-out">Choose a finish</p>
+      <p class="est__basis" id="est-basis">Based on 65 m² with selected options.</p>
+      <hr class="est__rule">
+      <div class="est__talk">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 01-9 8.5 9.3 9.3 0 01-3.7-.8L3 21l1.9-4.6A8.4 8.4 0 0112 3a8.4 8.4 0 019 8.5z"/></svg>
+        <span><b>Want to talk it through?</b><em>Speak to our AI Project Assistant for expert advice.</em></span>
+      </div>
+      <a class="btn btn--go" href="tel:+441279899927">Talk to PMB</a>
+    </aside>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="wrap">
+    <div class="projects__head" data-reveal>
+      <div>
+        <h2 class="head">Real projects. Real results.</h2>
+        <p class="sec__lede">Take a look at some of our recent transformations across Hertfordshire, Essex and London.</p>
+      </div>
+      <a class="btn btn--ghost-dark" href="#estimator">View All Projects
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="projects">
+      <article class="project" data-reveal style="--d:0ms">
+        <div class="photo"><img alt="A finished resin bound driveway" data-slot="photos/project-resin-harlow.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>resin driveway</i></div></div>
+        <b>Resin Driveway</b><em>Harlow, Essex</em>
+      </article>
+      <article class="project" data-reveal style="--d:70ms">
+        <div class="photo"><img alt="A finished Indian sandstone patio" data-slot="photos/project-sandstone-stortford.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>sandstone patio</i></div></div>
+        <b>Indian Sandstone Patio</b><em>Bishop’s Stortford</em>
+      </article>
+      <article class="project" data-reveal style="--d:140ms">
+        <div class="photo"><img alt="A completed full garden transformation" data-slot="photos/project-garden-chigwell.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>garden transformation</i></div></div>
+        <b>Full Garden Transformation</b><em>Chigwell</em>
+      </article>
+      <article class="project" data-reveal style="--d:210ms">
+        <div class="photo"><img alt="A finished block paving driveway" data-slot="photos/project-blockpaving-enfield.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>block paving</i></div></div>
+        <b>Block Paving Driveway</b><em>Enfield</em>
+      </article>
+      <article class="project" data-reveal style="--d:280ms">
+        <div class="photo"><img alt="A newly surfaced tarmac driveway" data-slot="photos/project-tarmac-romford.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>tarmac driveway</i></div></div>
+        <b>Tarmac Driveway</b><em>Romford</em>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- REVIEWS -->
-<section class="sec" id="reviews">
-  <div class="wrap">
-    <div class="sec__head" data-reveal>
-      <p class="eyebrow">What customers say</p>
-      <h2>Reviews, in the customer’s own words.</h2>
-      <p>These slots take verbatim reviews from PMB’s Google and Checkatrade profiles, used with permission and attributed.</p>
+<section class="sec pmb-grain" id="reviews" data-surface="deep-forest">
+  <div class="wrap reviews">
+    <div class="reviews__copy" data-reveal>
+      <h2 class="head">Trusted by<br>hundreds of homeowners</h2>
+      <p>Our reputation is built on quality workmanship, reliability and exceptional customer service. Here’s what our customers say about working with PMB.</p>
+      <a class="btn btn--ghost" href="#contact">Read More Reviews
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
-    <div class="reviews">
+    <div class="reviews__list">
       <article class="review" data-reveal style="--d:0ms">
-        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
-        <p class="review__slot">Review slot — a driveway customer, on workmanship and the finished result.</p>
-        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+        <p class="review__stars" aria-label="Five star review">★★★★★</p>
+        <p class="review__slot">Review slot — a driveway customer, in their own words, on the workmanship and the finished result.</p>
+        <p class="review__by"><i>G</i><em>Awaiting verbatim Google review — name, area</em></p>
       </article>
-      <article class="review" data-reveal style="--d:80ms">
-        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
-        <p class="review__slot">Review slot — a customer on the quote, the survey and how the job was run day to day.</p>
-        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+      <article class="review" data-reveal style="--d:70ms">
+        <p class="review__stars" aria-label="Five star review">★★★★★</p>
+        <p class="review__slot">Review slot — a customer on the quote, the survey, and how the job was run day to day.</p>
+        <p class="review__by"><i>G</i><em>Awaiting verbatim Google review — name, area</em></p>
       </article>
-      <article class="review" data-reveal style="--d:160ms">
-        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
-        <p class="review__slot">Review slot — a landscaping customer, on the transformation and the team.</p>
-        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+      <article class="review" data-reveal style="--d:140ms">
+        <p class="review__stars" aria-label="Five star review">★★★★★</p>
+        <p class="review__slot">Review slot — a landscaping customer, on the transformation and on the team.</p>
+        <p class="review__by"><i>G</i><em>Awaiting verbatim Google review — name, area</em></p>
       </article>
-    </div>
-  </div>
-</section>
-
-<!-- CLOSING -->
-<section class="sec close pmb-bond" data-surface="forest">
-  <div class="wrap close__in">
-    <h2>Built outside.<br>Built properly.</h2>
-    <p style="color:rgba(246,243,236,.86);font-size:1.1rem;max-width:48ch">Free site survey, free written quotation, no obligation — and no deposit to pay.*</p>
-    <div class="hero__cta">
-      <a class="btn btn--primary" href="#estimator">Plan My Project
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn btn--ghost" href="tel:+441279899927">01279 899 927</a>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer class="foot" data-surface="deep-forest">
+<footer class="foot" id="contact" data-surface="charcoal">
   <div class="wrap">
     <div class="foot__grid">
+      <div><span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span></div>
       <div>
-        <span class="pmb-logo" style="font-size:1.9rem;color:var(--pmb-chalk)">PMB<small>Paving &amp; Landscapes</small></span>
+        <h4>Quick Links</h4>
+        <ul><li><a href="#top">Home</a></li><li><a href="#services">Our Services</a></li><li><a href="#projects">Projects</a></li><li><a href="#reviews">Reviews</a></li></ul>
       </div>
       <div>
         <h4>Services</h4>
-        <ul><li>Driveways</li><li>Patios</li><li>Landscaping</li><li>Groundworks &amp; drainage</li><li>Restoration</li></ul>
+        <ul><li>Driveways</li><li>Patios</li><li>Landscaping</li><li>Groundworks</li><li>Restoration</li></ul>
       </div>
-      <div>
-        <h4>Areas we cover</h4>
+      <div id="areas">
+        <h4>Areas We Cover</h4>
         <ul><li>Hertfordshire</li><li>Essex</li><li>Middlesex</li><li>North London</li><li>Harlow · Bishop’s Stortford · Chigwell · Romford</li></ul>
       </div>
-      <div>
+      <div class="foot__contact">
         <h4>Contact</h4>
         <ul>
-          <li><a href="tel:+442084857610">020 8485 7610</a></li>
-          <li><a href="tel:+441279899927">01279 899 927</a></li>
-          <li><a href="mailto:info@pmbpavingandlandscapes.co.uk">info@pmbpavingandlandscapes.co.uk</a></li>
-          <li>Unit A, 57 Park Road, Crouch End, N8 8SY</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 1.9.6 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.1a2 2 0 012.1-.5c.9.3 1.8.5 2.8.6a2 2 0 011.7 2z"/></svg><a href="tel:+441279899927">01279 899 927</a></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg><a href="mailto:info@pmbpavingandlandscapes.co.uk">info@pmbpavingandlandscapes.co.uk</a></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Unit A, 57 Park Road, Crouch End, N8 8SY</li>
         </ul>
+        <p class="foot__social">
+          <a href="#contact" aria-label="Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a href="#contact" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#contact" aria-label="Google Business"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 11v3h4.2a4.3 4.3 0 01-4.2 3 4.9 4.9 0 110-9.8 4.4 4.4 0 013 1.2l2.2-2.2A7.8 7.8 0 0012 4a8 8 0 100 16c4.6 0 7.8-3.2 7.8-7.8 0-.6 0-.9-.1-1.2z"/></svg></a>
+          <a href="#contact" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12s0-3.2-.4-4.7a2.5 2.5 0 00-1.7-1.8C18.3 5 12 5 12 5s-6.3 0-7.9.5a2.5 2.5 0 00-1.7 1.8C2 8.8 2 12 2 12s0 3.2.4 4.7a2.5 2.5 0 001.7 1.8C5.7 19 12 19 12 19s6.3 0 7.9-.5a2.5 2.5 0 001.7-1.8C22 15.2 22 12 22 12zM10 15V9l5.2 3z"/></svg></a>
+        </p>
+      </div>
+      <div class="foot__cta">
+        <a class="btn btn--primary" href="#estimator">Get a Free Quote
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
+
     <div class="foot__base">
       <p>PMB Paving and Landscapes Ltd · Registered in England, company number 09859691.</p>
       <p>* Five-year guarantee, £1m public liability insurance, no-deposit terms and the seven-day cooling-off period are taken from PMB’s current website and must be reconfirmed with PMB before publication.</p>
-      <p class="proto"><strong style="color:var(--pmb-chalk)">Prototype — concept visuals.</strong> The driveway images on this page are <strong style="color:var(--pmb-chalk)">AI-generated concept visuals, not photographs of PMB’s work</strong>. They show the intended look and feel and are replaced by real PMB photography before launch. Review slots are empty and take verbatim customer reviews. The estimator returns an illustrative range from placeholder rates, not PMB’s pricing. Nothing here should go live until the photography, the reviews, the rates and the claims above are supplied and confirmed by PMB.</p>
+      <p class="proto"><strong style="color:var(--pmb-chalk)">Prototype — concept visuals.</strong> The photography on this page is <strong style="color:var(--pmb-chalk)">AI-generated concept imagery, not photographs of PMB’s work</strong>. It shows the intended look and feel, and is replaced by real PMB photography before launch. Review quotes are empty slots awaiting verbatim customer reviews. The estimator returns an illustrative range from placeholder rates, not PMB’s pricing.</p>
     </div>
   </div>
 </footer>
@@ -593,36 +593,32 @@ fieldset{border:0;padding:0;min-width:0}
   doc.classList.add('js');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* --- photo slots: a real file takes the slot, a missing one restores the label --- */
+  /* photo slots: a real file takes the slot, a missing one restores the label */
   Array.prototype.forEach.call(document.querySelectorAll('img[data-slot]'), function (img) {
     img.addEventListener('error', function () { img.remove(); });
     img.src = img.getAttribute('data-slot');
   });
 
-  /* --- reveals: animate from a visible resting state, once --- */
+  /* reveals: animate from a visible resting state, once */
   if ('IntersectionObserver' in window) {
-    var revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.setAttribute('data-shown', 'true');
-        revealObserver.unobserve(e.target);
+        ro.unobserve(e.target);
       });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) {
-      revealObserver.observe(el);
-    });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) { ro.observe(el); });
   } else {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) {
-      el.setAttribute('data-shown', 'true');
-    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) { el.setAttribute('data-shown', 'true'); });
   }
 
-  /* --- trust counters: fire ONCE on view, never on a loop (BRAND.md §07) --- */
+  /* trust counters: once on view, then unobserve. never a setInterval. */
   function countUp(el) {
     var target = parseFloat(el.getAttribute('data-count'));
     var suffix = el.getAttribute('data-suffix') || '';
     if (reduce.matches) { el.textContent = target + suffix; return; }
-    var t0 = null, dur = 1100;
+    var t0 = null, dur = 1000;
     requestAnimationFrame(function step(ts) {
       if (t0 === null) t0 = ts;
       var p = Math.min(1, (ts - t0) / dur);
@@ -630,35 +626,15 @@ fieldset{border:0;padding:0;min-width:0}
       if (p < 1) requestAnimationFrame(step);
     });
   }
-  var counters = document.querySelectorAll('[data-count]');
   if ('IntersectionObserver' in window) {
-    var countObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        countUp(e.target);
-        countObserver.unobserve(e.target); /* once. no setInterval. */
-      });
+    var co = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } });
     }, { threshold: 0.6 });
-    Array.prototype.forEach.call(counters, function (el) { countObserver.observe(el); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-count]'), function (el) { co.observe(el); });
   }
 
-  /* --- nav: transparent over the hero, deep forest once you leave it --- */
-  var nav = document.getElementById('nav');
-  var sentinel = document.querySelector('.hero');
-  function measureNav() { doc.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
-  function syncNav() {
-    var h = nav.offsetHeight;
-    var past = sentinel ? sentinel.getBoundingClientRect().bottom <= h : window.scrollY > h;
-    nav.setAttribute('data-stuck', past ? 'true' : 'false');
-  }
-  measureNav();
-  syncNav();
-  window.addEventListener('scroll', syncNav, { passive: true });
-  window.addEventListener('resize', function () { measureNav(); syncNav(); }, { passive: true });
-
-  /* --- before / after scrub ---
-     The range input is the control, so pointer, touch and keyboard all work
-     natively and the label is announced. The divider and knob just follow it. */
+  /* before / after — the range input is the control, so pointer, touch and
+     keyboard all work natively and it is announced to a screen reader */
   var stage = document.getElementById('ba');
   var range = document.getElementById('ba-range');
   if (stage && range) {
@@ -667,41 +643,8 @@ fieldset{border:0;padding:0;min-width:0}
     setPos();
   }
 
-  /* --- craft build-up: scroll progress drives which layers have landed --- */
-  var layers = document.getElementById('layers');
-  if (layers) {
-    var items = layers.querySelectorAll('.layer');
-    if (reduce.matches) {
-      Array.prototype.forEach.call(items, function (li) { li.setAttribute('data-on', 'true'); });
-    } else {
-      var ticking = false;
-      var syncLayers = function () {
-        var r = layers.getBoundingClientRect();
-        var vh = window.innerHeight || doc.clientHeight;
-        /* 0 when the block enters the lower third, 1 once it has crossed the middle */
-        var p = (vh * 0.85 - r.top) / (r.height + vh * 0.25);
-        p = Math.max(0, Math.min(1, p));
-        var landed = Math.round(p * items.length);
-        Array.prototype.forEach.call(items, function (li, i) {
-          li.setAttribute('data-on', i < landed ? 'true' : 'false');
-        });
-        ticking = false;
-      };
-      var onScroll = function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(syncLayers);
-      };
-      syncLayers();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
-    }
-  }
-
-  /* --- estimator: illustrative range only ---
-     PLACEHOLDER RATES. These are round numbers chosen to demonstrate the
-     interaction, NOT PMB's pricing. Replace with rates supplied and approved
-     by PMB before this goes anywhere near a customer (BRAND.md build rule 6). */
+  /* estimator — ILLUSTRATIVE RATES, not PMB's pricing. Replace with rates
+     supplied and approved by PMB before this goes near a customer. */
   var RATES = {
     'Block paving':                      [95, 145],
     'Resin bound':                       [80, 130],
@@ -710,36 +653,30 @@ fieldset{border:0;padding:0;min-width:0}
     'Indian sandstone or natural stone': [110, 165],
     'Not sure yet — advise me':          [45, 165]
   };
+  var EXTRA = { 'Drainage': 900, 'Fencing or walling': 1400, 'Turfing or planting': 700, 'Steps or retaining walls': 1600, 'None': 0, '': 0 };
   var form = document.getElementById('est');
   if (form) {
     var out = document.getElementById('est-out');
     var basis = document.getElementById('est-basis');
-    var stepNum = document.getElementById('est-step');
-    var bar = document.getElementById('est-bar');
-    var money = function (n) {
-      return '£' + (Math.round(n / 50) * 50).toLocaleString('en-GB');
-    };
+    var sizeOut = document.getElementById('f-size-out');
+    var money = function (n) { return '£' + (Math.round(n / 50) * 50).toLocaleString('en-GB'); };
     var update = function () {
       var size = parseFloat(form.elements.size.value);
       var finish = form.elements.finish.value;
-      var filled = ['type', 'size', 'finish', 'postcode'].filter(function (k) {
-        return String(form.elements[k].value).trim() !== '';
-      }).length;
-      stepNum.textContent = Math.min(filled + 1, 9);
-      bar.style.setProperty('--step', Math.round((Math.min(filled + 1, 9) / 9) * 100) + '%');
-
-      if (!size || size <= 0 || !finish || !RATES[finish]) {
-        out.textContent = 'Add a size to see a range';
-        basis.textContent = 'Based on the options you choose above.';
+      var extra = EXTRA[form.elements.extra.value] || 0;
+      sizeOut.textContent = size + ' m²';
+      if (!finish || !RATES[finish]) {
+        out.textContent = 'Choose a finish';
+        basis.textContent = 'Based on ' + size + ' m² with selected options.';
         return;
       }
       var r = RATES[finish];
-      out.textContent = money(size * r[0]) + ' – ' + money(size * r[1]);
+      out.textContent = money(size * r[0] + extra) + ' – ' + money(size * r[1] + extra);
       basis.textContent = 'Based on ' + size + ' m² of ' + finish.toLowerCase() + '. Illustrative rates, not PMB’s pricing.';
     };
     form.addEventListener('input', update);
     form.addEventListener('change', update);
-    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
     update();
   }
 })();
