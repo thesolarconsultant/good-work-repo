@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMB Paving &amp; Landscapes — driveways, patios and landscaping</title>
+<meta name="description" content="Family-run paving and landscaping business with over 25 years in the industry. Driveways, patios, landscaping and groundworks across Hertfordshire, Essex, Middlesex and North London.">
+<meta name="theme-color" content="#16382C">
+<link rel="stylesheet" href="brand.css">
+<!--
+  PMB homepage prototype — structure, copy direction, brand system and motion.
+
+  PHOTOGRAPHY: every photo slot is labelled with the shot that replaces it.
+  Drop a real PMB photograph into photos/ under the filename in the markup and
+  it takes the slot automatically. No stock, no AI architecture, no unrelated
+  homes — see BRAND.md §06.
+
+  REVIEWS: the review slots are empty and labelled. They take verbatim PMB
+  reviews with permission and attribution. Do not fill them with written-in
+  quotes — BRAND.md §10 rules out invented customer quotes.
+
+  CLAIMS: guarantee, insurance, no-deposit and payment terms are marked with *
+  and carry a footnote. All of them must be reconfirmed with PMB before this
+  goes live — BRAND.md §12.
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--body);font-family:var(--font-body);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,ul,ol,figure,fieldset{margin:0}
+ul,ol{padding:0;list-style:none}
+fieldset{border:0;padding:0;min-width:0}
+::selection{background:var(--pmb-forest);color:var(--pmb-chalk)}
+:focus-visible{outline:2px solid transparent;box-shadow:var(--focus-ring);border-radius:var(--radius)}
+
+.wrap{width:min(calc(100% - clamp(1.5rem,5vw,5rem)),1200px);margin-inline:auto}
+.eyebrow{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
+.lede{font-size:1.12rem;max-width:56ch}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.6rem;min-height:48px;padding:.8rem 1.5rem;border-radius:var(--radius);
+ font-family:var(--font-body);font-weight:600;font-size:.96rem;border:2px solid transparent;cursor:pointer;
+ transition:background-color var(--pmb-settle-dur) var(--pmb-settle),color var(--pmb-settle-dur) var(--pmb-settle),border-color var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle)}
+.btn svg{flex:none;transition:transform var(--pmb-settle-dur) var(--pmb-settle)}
+.btn:hover svg{transform:translateX(3px)}
+.btn--primary{background:var(--pmb-forest);color:var(--pmb-chalk);border-color:var(--pmb-forest)}
+.btn--primary:hover{background:#0F2A20;border-color:#0F2A20}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:var(--cream)}
+[data-surface="forest"] .btn--primary,[data-surface="deep-forest"] .btn--primary{background:var(--pmb-chalk);color:var(--pmb-forest);border-color:var(--pmb-chalk)}
+[data-surface="forest"] .btn--primary:hover,[data-surface="deep-forest"] .btn--primary:hover{background:var(--pmb-limestone);border-color:var(--pmb-limestone)}
+[data-surface="forest"] .btn--ghost,[data-surface="deep-forest"] .btn--ghost{color:var(--pmb-chalk);border-color:rgba(246,243,236,.5)}
+[data-surface="forest"] .btn--ghost:hover,[data-surface="deep-forest"] .btn--ghost:hover{background:var(--pmb-chalk);color:var(--pmb-forest);border-color:var(--pmb-chalk)}
+
+/* ---------- photo slots ---------- */
+/* A labelled placeholder built from the brand's own material tokens. Drop a
+   real photograph in photos/ and it covers the slot; a missing file removes
+   itself and the label comes back. */
+.photo{position:relative;overflow:hidden;border-radius:var(--radius);background:var(--pmb-limestone);isolation:isolate}
+.photo::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond);background-size:var(--pmb-bond-w) var(--pmb-bond-w);opacity:.9}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(13,33,26,.06),rgba(13,33,26,.20))}
+.photo__tag{position:absolute;left:1rem;right:1rem;bottom:1rem;z-index:2;color:var(--pmb-forest)}
+.photo__tag i{font-style:normal;display:block;font-weight:500;font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+.photo__tag i+i{color:var(--pmb-metal-ink);margin-top:.15rem}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
+.photo:has(img)::before,.photo:has(img)::after,.photo:has(img) .photo__tag{display:none}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:transparent;
+ transition:background-color var(--pmb-settle-dur) var(--pmb-settle),box-shadow var(--pmb-settle-dur) var(--pmb-settle)}
+.nav__in{display:flex;align-items:center;gap:1.2rem;padding-block:.9rem}
+.nav .pmb-logo{font-size:1.7rem;color:var(--pmb-chalk)}
+.nav__links{display:flex;gap:1.4rem;margin-left:auto;font-weight:500;font-size:.9rem;color:rgba(246,243,236,.86)}
+.nav__links a{padding-block:.4rem;border-bottom:2px solid transparent}
+.nav__links a:hover,.nav__links a[aria-current="page"]{border-bottom-color:var(--pmb-metal)}
+.nav__tel{font-weight:600;font-size:.92rem;color:var(--pmb-chalk);white-space:nowrap}
+.nav .btn{min-height:44px;padding:.6rem 1.15rem;font-size:.9rem}
+.nav[data-stuck="true"]{background:var(--pmb-forest-deep);box-shadow:0 1px 0 rgba(246,243,236,.12)}
+@media(max-width:1000px){.nav__links,.nav__tel{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--pmb-forest-deep);color:var(--pmb-chalk);
+ margin-top:calc(var(--nav-h,76px) * -1);padding-top:var(--nav-h,76px)}
+.hero__bg{position:absolute;inset:0;z-index:0;background:var(--pmb-forest-deep)}
+.hero__bg::before{content:"";position:absolute;inset:0;background-image:var(--pmb-bond-light);background-size:var(--pmb-bond-w) var(--pmb-bond-w);opacity:.8}
+.hero__bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:var(--hero-media-filter)}
+.hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(13,33,26,.94) 0 42%,rgba(13,33,26,.55) 100%)}
+.hero__in{position:relative;z-index:1;padding-block:clamp(3.5rem,9vw,7rem) clamp(3rem,6vw,4.5rem);display:grid;gap:2.6rem}
+@media(min-width:1080px){.hero__in{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);align-items:center;gap:3.5rem}}
+.hero__copy{display:grid;gap:1.5rem;max-width:44rem}
+.hero h1{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.96;
+ font-size:clamp(2.6rem,7.4vw,5.4rem);color:var(--pmb-chalk);text-wrap:balance}
+.hero h1 span{display:block;color:var(--pmb-limestone)}
+.hero p{font-size:clamp(1.05rem,1.6vw,1.2rem);color:rgba(246,243,236,.88);max-width:44ch}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.4rem}
+.hero__media{display:none}
+@media(min-width:1080px){.hero__media{display:block}}
+.hero__media .photo{aspect-ratio:4/3;box-shadow:var(--shadow-md)}
+
+/* ---------- trust strip ---------- */
+.trust{padding-block:2.2rem}
+.trust__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1.6rem 1.2rem}
+.trust__item{display:grid;gap:.15rem;padding-left:1rem;border-left:1px solid rgba(246,243,236,.22)}
+.trust__item b{font-family:var(--font-head);font-weight:800;font-size:1.9rem;line-height:1;color:var(--pmb-chalk);font-variant-numeric:tabular-nums}
+.trust__item span{font-size:.88rem;color:rgba(246,243,236,.8);line-height:1.4}
+.trust__note{margin-top:1.6rem;font-size:.76rem;color:rgba(246,243,236,.62);max-width:70ch}
+
+/* ---------- sections ---------- */
+.sec{padding-block:clamp(3.5rem,7vw,6rem)}
+.sec__head{display:grid;gap:.9rem;max-width:60ch;margin-bottom:clamp(1.8rem,3.5vw,2.8rem)}
+.sec__head h2{font-family:var(--font-head);font-weight:800;letter-spacing:-.028em;line-height:1.04;
+ font-size:clamp(1.9rem,4.2vw,3rem);color:var(--ink);text-wrap:balance}
+.sec__head p{font-size:1.06rem}
+
+/* ---------- services ---------- */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:1.1rem}
+.service{position:relative;display:grid;grid-template-rows:auto 1fr;border:1px solid var(--line);border-radius:var(--radius-lg);
+ overflow:hidden;background:var(--card);transition:border-color var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle)}
+.service:hover,.service:focus-within{border-color:var(--pmb-forest);transform:translateY(-3px)}
+.service .photo{aspect-ratio:4/3;border-radius:0}
+.service__body{padding:1.2rem 1.3rem 1.4rem;display:grid;gap:.5rem;align-content:start}
+.service h3{font-family:var(--font-head);font-weight:800;font-size:1.22rem;letter-spacing:-.02em;color:var(--ink)}
+.service p{font-size:.95rem}
+.service__more{margin-top:.3rem;font-weight:600;font-size:.9rem;color:var(--accent-ink);display:inline-flex;align-items:center;gap:.4rem}
+.service a::after{content:"";position:absolute;inset:0}
+
+/* ---------- before / after ---------- */
+/* The two placeholder states have to differ or the scrub reads as broken:
+   tired concrete on the before side, clean bond on the after side. Both stay
+   labelled as slots — a real pair of photographs replaces them. */
+.photo--worn{background:#9C9A93}
+.photo--worn::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg fill='none' stroke='%23181A18' stroke-opacity='0.22' stroke-width='1.5'%3E%3Cpath d='M-4 38l30 10 22-14 34 16 26-8 30 12 26-6'/%3E%3Cpath d='M-4 104l26-6 30 14 24-10 28 8 32-12 28 10'/%3E%3Cpath d='M44 -4l8 42-14 30 10 34-6 32 12 30'/%3E%3Cpath d='M116 -4l-10 36 12 28-8 36 10 28-6 40'/%3E%3C/g%3E%3C/svg%3E");
+ background-size:160px 160px;opacity:1}
+.photo--worn::after{background:linear-gradient(160deg,rgba(24,26,24,.14),rgba(24,26,24,.30))}
+.photo--worn .photo__tag{color:var(--pmb-charcoal)}
+.photo--worn .photo__tag i+i{color:#4A4840}
+.ba{display:grid;gap:1.6rem;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center}
+@media(max-width:900px){.ba{grid-template-columns:1fr}}
+.ba__stage{position:relative;aspect-ratio:16/10;border-radius:var(--radius-lg);overflow:hidden;background:var(--pmb-limestone);
+ border:1px solid var(--line);touch-action:pan-y}
+.ba__layer{position:absolute;inset:0}
+.ba__layer .photo{position:absolute;inset:0;border-radius:0;height:100%}
+/* The after layer is clipped from the left edge to the handle position. */
+.ba__layer--after{clip-path:inset(0 0 0 var(--pos,55%))}
+.ba__chip{position:absolute;top:.9rem;z-index:4;font-weight:500;font-size:.66rem;letter-spacing:var(--track-micro);
+ text-transform:uppercase;padding:.34em .7em;border-radius:var(--radius);background:var(--pmb-forest-deep);color:var(--pmb-chalk)}
+.ba__chip--before{left:.9rem}
+.ba__chip--after{right:.9rem;background:var(--pmb-chalk);color:var(--pmb-forest)}
+.ba__divider{position:absolute;top:0;bottom:0;left:var(--pos,55%);width:2px;background:var(--pmb-chalk);z-index:5;pointer-events:none;
+ box-shadow:0 0 0 1px rgba(13,33,26,.28)}
+.ba__knob{position:absolute;top:50%;left:var(--pos,55%);transform:translate(-50%,-50%);z-index:6;pointer-events:none;
+ width:46px;height:46px;border-radius:999px;background:var(--pmb-chalk);box-shadow:0 2px 10px rgba(13,33,26,.35);
+ display:grid;place-items:center;color:var(--pmb-forest)}
+/* The range input is the real control: pointer, touch and keyboard for free. */
+.ba__range{position:absolute;inset:0;z-index:7;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;appearance:none;background:none}
+.ba__range::-webkit-slider-thumb{appearance:none;width:56px;height:100%}
+.ba__range::-moz-range-thumb{width:56px;height:100%;border:0;background:none}
+.ba__range:focus-visible~.ba__knob{box-shadow:var(--focus-ring),0 2px 10px rgba(13,33,26,.35)}
+.ba__copy{display:grid;gap:1rem;align-content:start}
+.ba__copy h3{font-family:var(--font-head);font-weight:800;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.025em;line-height:1.1;color:var(--ink)}
+.ba__hint{font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+
+/* ---------- craft build-up ---------- */
+.craft{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2.5rem;align-items:start}
+@media(max-width:900px){.craft{grid-template-columns:1fr;gap:1.8rem}}
+.layers{display:grid;gap:2px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line-dark)}
+.layer{position:relative;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:baseline;
+ padding:1.15rem 1.3rem;color:rgba(246,243,236,.55);
+ transition:color var(--dur) var(--pmb-settle),background-color var(--dur) var(--pmb-settle)}
+.layer[data-on="true"]{color:var(--pmb-chalk)}
+.layer:nth-child(1){background:#0D211A}
+.layer:nth-child(2){background:#14231C}
+.layer:nth-child(3){background:#1A2620}
+.layer:nth-child(4){background:#202A23}
+.layer:nth-child(5){background:#262D26}
+.layer b{font-family:var(--font-head);font-weight:800;font-size:.82rem;font-variant-numeric:tabular-nums;color:var(--pmb-metal-light);opacity:.55;
+ transition:opacity var(--dur) var(--pmb-settle)}
+.layer[data-on="true"] b{opacity:1}
+.layer span{display:grid;gap:.15rem}
+.layer strong{font-family:var(--font-head);font-weight:800;font-size:1.02rem;letter-spacing:-.015em;color:inherit}
+.layer small{font-size:.87rem;color:inherit;opacity:.82;line-height:1.5}
+
+/* ---------- projects ---------- */
+.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:1.1rem}
+.project{display:grid;gap:.8rem}
+.project .photo{aspect-ratio:3/2}
+.project__meta{display:grid;gap:.2rem}
+.project__meta b{font-family:var(--font-head);font-weight:800;font-size:1.05rem;letter-spacing:-.015em;color:var(--ink)}
+.project__meta span{font-size:.88rem;color:var(--muted)}
+
+/* ---------- estimator ---------- */
+.est{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:2rem}
+@media(max-width:900px){.est{grid-template-columns:1fr}}
+.est__form{display:grid;gap:.85rem;align-content:start}
+.field{display:grid;gap:.35rem}
+.field label{font-weight:500;font-size:.8rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:rgba(246,243,236,.78)}
+.field select,.field input{width:100%;min-height:50px;padding:.7rem .9rem;font-family:var(--font-body);font-size:1rem;
+ color:var(--pmb-chalk);background:rgba(246,243,236,.08);border:1px solid rgba(246,243,236,.28);border-radius:var(--radius)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23F6F3EC' stroke-width='2'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;background-position:right .9rem center}
+.field select option{color:var(--pmb-charcoal);background:var(--pmb-chalk)}
+.est__steps{display:flex;align-items:center;gap:.5rem;font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);
+ text-transform:uppercase;color:var(--pmb-metal-light)}
+.est__track{flex:1;height:3px;background:rgba(246,243,236,.2);border-radius:999px;overflow:hidden;max-width:180px}
+.est__track i{display:block;height:100%;background:var(--pmb-metal);width:var(--step,33%);transition:width var(--dur) var(--pmb-settle)}
+.est__panel{background:rgba(246,243,236,.07);border:1px solid rgba(246,243,236,.2);border-radius:var(--radius-lg);
+ padding:1.5rem;display:grid;gap:1rem;align-content:start}
+.est__range{font-family:var(--font-head);font-weight:800;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.03em;line-height:1;
+ color:var(--pmb-chalk);font-variant-numeric:tabular-nums}
+.est__caveat{font-size:.84rem;color:rgba(246,243,236,.74);line-height:1.55;border-top:1px solid rgba(246,243,236,.18);padding-top:.9rem}
+
+/* ---------- reviews ---------- */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1.1rem}
+.review{border:1px dashed var(--line-strong);border-radius:var(--radius-lg);padding:1.4rem;display:grid;gap:.7rem;align-content:start;background:var(--card)}
+.review__stars{color:var(--pmb-metal-ink);letter-spacing:.14em;font-size:.9rem}
+.review__slot{font-size:.94rem;color:var(--muted);line-height:1.6}
+.review__meta{font-weight:500;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+
+/* ---------- closing + footer ---------- */
+.close__in{display:grid;gap:1.3rem;justify-items:start;max-width:46rem}
+.close h2{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:1;
+ font-size:clamp(2rem,5.6vw,3.8rem);color:var(--pmb-chalk);text-wrap:balance}
+.foot{padding-block:3rem 2rem}
+.foot__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(246,243,236,.16)}
+.foot h4{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--pmb-metal-light);margin-bottom:.7rem}
+.foot li{font-size:.92rem;color:rgba(246,243,236,.82);padding-block:.18rem}
+.foot__base{padding-top:1.4rem;display:grid;gap:.7rem;font-size:.8rem;color:rgba(246,243,236,.62)}
+.foot__base p{max-width:78ch;line-height:1.6}
+.proto{border:1px solid rgba(246,243,236,.28);border-radius:var(--radius);padding:.9rem 1.1rem;color:rgba(246,243,236,.8);font-size:.82rem;line-height:1.6;max-width:78ch}
+
+/* ---------- reveals ---------- */
+/* Content is visible at rest; the reveal only animates from a visible state
+   once JS marks the page ready, so nothing is ever stranded at opacity 0. */
+.js [data-reveal]{opacity:0;transform:translateY(18px)}
+.js [data-reveal][data-shown="true"]{opacity:1;transform:none;
+ transition:opacity var(--pmb-settle-dur) var(--pmb-settle),transform var(--pmb-settle-dur) var(--pmb-settle);
+ transition-delay:var(--d,0ms)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}
+  .js [data-reveal]{opacity:1;transform:none}
+  /* Before/after falls back to a plain side-by-side: both states visible, no scrub. */
+  .ba__stage{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:auto}
+  .ba__layer{position:relative;inset:auto;min-height:230px}
+  .ba__layer--after{clip-path:none}
+  .ba__divider,.ba__knob,.ba__range{display:none}
+  .ba__chip{position:static;justify-self:start;margin:.9rem}
+  .ba__hint{display:none}
+  .layer{color:var(--pmb-chalk)}
+  .layer b{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="pmb-logo" href="#top">PMB<small>Paving &amp; Landscapes</small></a>
+    <nav class="nav__links" aria-label="Main">
+      <a href="#services">Our Services</a>
+      <a href="#projects">Projects</a>
+      <a href="#craft">How We Build</a>
+      <a href="#estimator">Plan My Project</a>
+    </nav>
+    <a class="nav__tel" href="tel:+441279899927">01279 899 927</a>
+    <a class="btn btn--primary" href="#estimator">Get a Free Quote
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero" data-surface="deep-forest">
+  <div class="hero__bg">
+    <img alt="" data-slot="photos/hero-driveway-twilight.jpg">
+  </div>
+  <div class="wrap hero__in">
+   <div class="hero__copy">
+    <p class="eyebrow" style="color:var(--pmb-metal-light)">Family run · Over 25 years in the paving industry</p>
+    <h1>Transforming homes<span>from the outside in</span></h1>
+    <p>Driveways, patios, landscaping and groundworks across Hertfordshire, Essex, Middlesex and North London.</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#estimator">Plan My Project
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--ghost" href="#projects">View Our Work</a>
+    </div>
+   </div>
+   <div class="hero__media" aria-hidden="true">
+     <div class="photo">
+       <img alt="" data-slot="photos/hero-driveway-twilight.jpg">
+       <div class="photo__tag"><i>Photo · hero</i><i>finished driveway, twilight, whole property in frame</i></div>
+     </div>
+   </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="trust pmb-bond" data-surface="forest" aria-label="Why customers choose PMB">
+  <div class="wrap">
+    <div class="trust__grid">
+      <div class="trust__item"><b data-count="25" data-suffix="+">25+</b><span>Years in the paving industry</span></div>
+      <div class="trust__item"><b>Family run</b><span>Not a national franchise</span></div>
+      <div class="trust__item"><b data-count="5" data-suffix="-year">5-year</b><span>Guarantee on all work*</span></div>
+      <div class="trust__item"><b>No deposit</b><span>Pay when the job is finished*</span></div>
+      <div class="trust__item"><b>£1m</b><span>Public liability insurance*</span></div>
+      <div class="trust__item"><b>Free</b><span>Site surveys &amp; written quotations</span></div>
+    </div>
+    <p class="trust__note">* Guarantee, insurance and payment terms are taken from PMB’s current website and must be reconfirmed with PMB before this page goes live.</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2>Complete exterior transformations.</h2>
+      <p>From driveways and patios to full garden transformations — for homeowners and commercial customers across four counties.</p>
+    </div>
+    <div class="services">
+
+      <article class="service" data-reveal style="--d:0ms">
+        <div class="photo"><img alt="" data-slot="photos/service-driveways.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>block-paved driveway, wide</i></div></div>
+        <div class="service__body">
+          <h3><a href="#estimator">Driveways</a></h3>
+          <p>Block paving, resin bound, tarmac, gravel, shingle, imprinted concrete and crazy paving.</p>
+          <span class="service__more">Explore driveways
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </article>
+
+      <article class="service" data-reveal style="--d:80ms">
+        <div class="photo"><img alt="" data-slot="photos/service-patios.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>Indian sandstone patio, low angle</i></div></div>
+        <div class="service__body">
+          <h3><a href="#estimator">Patios</a></h3>
+          <p>Indian sandstone, natural stone and concrete slabs. Paths, entrances and paved outdoor living areas.</p>
+          <span class="service__more">Explore patios
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </article>
+
+      <article class="service" data-reveal style="--d:160ms">
+        <div class="photo"><img alt="" data-slot="photos/service-landscaping.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>full garden transformation, after</i></div></div>
+        <div class="service__body">
+          <h3><a href="#estimator">Landscaping</a></h3>
+          <p>Fencing, turfing, garden walls, drainage, groundworks and complete garden transformations.</p>
+          <span class="service__more">Explore landscaping
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </article>
+
+      <article class="service" data-reveal style="--d:240ms">
+        <div class="photo"><img alt="" data-slot="photos/service-restoration.jpg">
+          <div class="photo__tag"><i>Photo · service</i><i>jet washing, mid-clean, hard edge visible</i></div></div>
+        <div class="service__body">
+          <h3><a href="#estimator">Restoration</a></h3>
+          <p>Repairs, maintenance, professional cleaning and jet washing to bring an existing surface back.</p>
+          <span class="service__more">Explore restoration
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="sec" data-surface="limestone" id="transformations">
+  <div class="wrap">
+    <div class="ba">
+      <div class="ba__stage" id="ba" style="--pos:55%">
+        <div class="ba__layer ba__layer--before">
+          <div class="photo photo--worn"><img alt="Tired, cracked concrete driveway before work started" data-slot="photos/ba-01-before.jpg">
+            <div class="photo__tag"><i>Photo · before</i><i>existing surface</i></div></div>
+        </div>
+        <div class="ba__layer ba__layer--after">
+          <div class="photo"><img alt="The same driveway after PMB laid block paving" data-slot="photos/ba-01-after.jpg">
+            <div class="photo__tag"><i>Photo · after</i><i>same angle, same light</i></div></div>
+        </div>
+        <span class="ba__chip ba__chip--before">Before</span>
+        <span class="ba__chip ba__chip--after">After</span>
+        <input class="ba__range" id="ba-range" type="range" min="0" max="100" value="55" step="1"
+               aria-label="Reveal the finished driveway. Use the arrow keys or drag.">
+        <span class="ba__divider" aria-hidden="true"></span>
+        <span class="ba__knob" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+      <div class="ba__copy" data-reveal>
+        <p class="eyebrow">Before &amp; after</p>
+        <h3>The same drive. Same angle, same light.</h3>
+        <p>Every job we finish gets photographed from the position we marked before the first spade went in. It’s the fairest way to show what actually changed.</p>
+        <p class="ba__hint">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+          Drag the handle, or use the arrow keys.
+        </p>
+        <a class="btn btn--primary" href="#projects">See more transformations
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRAFT -->
+<section class="sec" id="craft">
+  <div class="wrap">
+    <div class="craft">
+      <div class="sec__head" style="margin-bottom:0" data-reveal>
+        <p class="eyebrow">How we build</p>
+        <h2>The finish matters. So does everything underneath it.</h2>
+        <p>Most driveway problems — sinking, pooling, weeds through the joints — start below the surface. This is the build-up we work to on a standard domestic drive.</p>
+        <p style="font-size:.92rem;color:var(--muted)">Depths and specification vary with ground conditions, access and drainage. Your free site survey confirms what your property actually needs.</p>
+      </div>
+      <ol class="layers" id="layers">
+        <li class="layer"><b>01</b><span><strong>Excavation</strong><small>Dig out to the depth the finished level and ground conditions require, and cart the spoil away.</small></span></li>
+        <li class="layer"><b>02</b><span><strong>Type 1 sub-base</strong><small>Clean crushed hardcore laid in layers — the part that actually carries the vehicle.</small></span></li>
+        <li class="layer"><b>03</b><span><strong>Compaction</strong><small>Each layer compacted properly. Skip this and the surface tells on you within a winter.</small></span></li>
+        <li class="layer"><b>04</b><span><strong>Edging &amp; drainage</strong><small>Haunched edge restraints and falls set so water leaves the drive where it should.</small></span></li>
+        <li class="layer"><b>05</b><span><strong>Laying course &amp; surface</strong><small>Screeded bed, then your chosen finish — block, resin, tarmac or stone — cut in and jointed.</small></span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" data-surface="limestone" id="projects">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow">Recent work</p>
+      <h2>Real projects. Real addresses.</h2>
+      <p>Every project below takes a real PMB job — service, material, location and the customer’s own words.</p>
+    </div>
+    <div class="projects">
+      <article class="project" data-reveal style="--d:0ms">
+        <div class="photo"><img alt="" data-slot="photos/project-resin-harlow.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>resin bound driveway, wide</i></div></div>
+        <div class="project__meta"><b>Resin bound driveway</b><span>Harlow, Essex</span></div>
+      </article>
+      <article class="project" data-reveal style="--d:80ms">
+        <div class="photo"><img alt="" data-slot="photos/project-sandstone-stortford.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>Indian sandstone patio</i></div></div>
+        <div class="project__meta"><b>Indian sandstone patio</b><span>Bishop’s Stortford</span></div>
+      </article>
+      <article class="project" data-reveal style="--d:160ms">
+        <div class="photo"><img alt="" data-slot="photos/project-garden-chigwell.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>full garden transformation</i></div></div>
+        <div class="project__meta"><b>Full garden transformation</b><span>Chigwell</span></div>
+      </article>
+      <article class="project" data-reveal style="--d:240ms">
+        <div class="photo"><img alt="" data-slot="photos/project-blockpaving-romford.jpg">
+          <div class="photo__tag"><i>Photo · project</i><i>block paving driveway</i></div></div>
+        <div class="project__meta"><b>Block paving driveway</b><span>Romford</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ESTIMATOR -->
+<section class="sec pmb-grain" data-surface="deep-forest" id="estimator">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow" style="color:var(--pmb-metal-light)">Plan My Project</p>
+      <h2 style="color:var(--pmb-chalk)">Get an indicative range in about a minute.</h2>
+      <p style="color:rgba(246,243,236,.84)">Answer a few questions and we’ll give you a realistic range to work with — then a free site survey turns it into a fixed written quotation.</p>
+    </div>
+    <div class="est">
+      <form class="est__form" id="est" novalidate>
+        <div class="est__steps">
+          <span>Step <span id="est-step">1</span> of 9</span>
+          <span class="est__track"><i id="est-bar" style="--step:11%"></i></span>
+        </div>
+        <fieldset class="field">
+          <label for="f-type">What are you looking for?</label>
+          <select id="f-type" name="type">
+            <option value="">Choose a project type</option>
+            <option>New driveway</option>
+            <option>Patio or outdoor living area</option>
+            <option>Full garden transformation</option>
+            <option>Repair, cleaning or restoration</option>
+          </select>
+        </fieldset>
+        <fieldset class="field">
+          <label for="f-size">Approximate size (m²)</label>
+          <input id="f-size" name="size" type="number" inputmode="numeric" min="1" max="2000" placeholder="e.g. 65">
+        </fieldset>
+        <fieldset class="field">
+          <label for="f-finish">Preferred finish</label>
+          <select id="f-finish" name="finish">
+            <option value="">Choose a finish</option>
+            <option>Block paving</option>
+            <option>Resin bound</option>
+            <option>Tarmac</option>
+            <option>Gravel or shingle</option>
+            <option>Indian sandstone or natural stone</option>
+            <option>Not sure yet — advise me</option>
+          </select>
+        </fieldset>
+        <fieldset class="field">
+          <label for="f-postcode">Your postcode</label>
+          <input id="f-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="e.g. CM20">
+        </fieldset>
+        <p style="font-size:.84rem;color:rgba(246,243,236,.7)">Remaining steps: existing surface, additional work, timeframe, photo upload and your contact details.</p>
+      </form>
+
+      <aside class="est__panel">
+        <p class="eyebrow" style="color:var(--pmb-metal-light)">Estimated range</p>
+        <p class="est__range" id="est-out">Add a size to see a range</p>
+        <p style="font-size:.9rem;color:rgba(246,243,236,.84)" id="est-basis">Based on the options you choose above.</p>
+        <p class="est__caveat"><strong style="color:var(--pmb-chalk)">This is an indicative range only.</strong> It is not a quotation. Final pricing depends on ground conditions, access, drainage, levels and final specification, and is confirmed after a free site survey.</p>
+        <a class="btn btn--primary" href="tel:+441279899927">Talk it through — 01279 899 927</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec" id="reviews">
+  <div class="wrap">
+    <div class="sec__head" data-reveal>
+      <p class="eyebrow">What customers say</p>
+      <h2>Reviews, in the customer’s own words.</h2>
+      <p>These slots take verbatim reviews from PMB’s Google and Checkatrade profiles, used with permission and attributed.</p>
+    </div>
+    <div class="reviews">
+      <article class="review" data-reveal style="--d:0ms">
+        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
+        <p class="review__slot">Review slot — a driveway customer, on workmanship and the finished result.</p>
+        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+      </article>
+      <article class="review" data-reveal style="--d:80ms">
+        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
+        <p class="review__slot">Review slot — a customer on the quote, the survey and how the job was run day to day.</p>
+        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+      </article>
+      <article class="review" data-reveal style="--d:160ms">
+        <p class="review__stars" aria-label="Five star review placeholder">★★★★★</p>
+        <p class="review__slot">Review slot — a landscaping customer, on the transformation and the team.</p>
+        <p class="review__meta">Awaiting verbatim review · name, area, service</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="sec close pmb-bond" data-surface="forest">
+  <div class="wrap close__in">
+    <h2>Built outside.<br>Built properly.</h2>
+    <p style="color:rgba(246,243,236,.86);font-size:1.1rem;max-width:48ch">Free site survey, free written quotation, no obligation — and no deposit to pay.*</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#estimator">Plan My Project
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn--ghost" href="tel:+441279899927">01279 899 927</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot" data-surface="deep-forest">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <span class="pmb-logo" style="font-size:1.9rem;color:var(--pmb-chalk)">PMB<small>Paving &amp; Landscapes</small></span>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul><li>Driveways</li><li>Patios</li><li>Landscaping</li><li>Groundworks &amp; drainage</li><li>Restoration</li></ul>
+      </div>
+      <div>
+        <h4>Areas we cover</h4>
+        <ul><li>Hertfordshire</li><li>Essex</li><li>Middlesex</li><li>North London</li><li>Harlow · Bishop’s Stortford · Chigwell · Romford</li></ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+442084857610">020 8485 7610</a></li>
+          <li><a href="tel:+441279899927">01279 899 927</a></li>
+          <li><a href="mailto:info@pmbpavingandlandscapes.co.uk">info@pmbpavingandlandscapes.co.uk</a></li>
+          <li>Unit A, 57 Park Road, Crouch End, N8 8SY</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__base">
+      <p>PMB Paving and Landscapes Ltd · Registered in England, company number 09859691.</p>
+      <p>* Five-year guarantee, £1m public liability insurance, no-deposit terms and the seven-day cooling-off period are taken from PMB’s current website and must be reconfirmed with PMB before publication.</p>
+      <p class="proto"><strong style="color:var(--pmb-chalk)">Prototype.</strong> Photography slots and review slots are labelled and empty — they take real PMB photographs and verbatim customer reviews. The estimator returns an illustrative range from placeholder rates, not PMB’s pricing. Nothing here should go live until the photography, the reviews, the rates and the claims above are supplied and confirmed by PMB.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var doc = document.documentElement;
+  doc.classList.add('js');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* --- photo slots: a real file takes the slot, a missing one restores the label --- */
+  Array.prototype.forEach.call(document.querySelectorAll('img[data-slot]'), function (img) {
+    img.addEventListener('error', function () { img.remove(); });
+    img.src = img.getAttribute('data-slot');
+  });
+
+  /* --- reveals: animate from a visible resting state, once --- */
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.setAttribute('data-shown', 'true');
+        revealObserver.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-reveal]'), function (el) {
+      el.setAttribute('data-shown', 'true');
+    });
+  }
+
+  /* --- trust counters: fire ONCE on view, never on a loop (BRAND.md §07) --- */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduce.matches) { el.textContent = target + suffix; return; }
+    var t0 = null, dur = 1100;
+    requestAnimationFrame(function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    });
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if ('IntersectionObserver' in window) {
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        countUp(e.target);
+        countObserver.unobserve(e.target); /* once. no setInterval. */
+      });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(counters, function (el) { countObserver.observe(el); });
+  }
+
+  /* --- nav: transparent over the hero, deep forest once you leave it --- */
+  var nav = document.getElementById('nav');
+  var sentinel = document.querySelector('.hero');
+  function measureNav() { doc.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
+  function syncNav() {
+    var h = nav.offsetHeight;
+    var past = sentinel ? sentinel.getBoundingClientRect().bottom <= h : window.scrollY > h;
+    nav.setAttribute('data-stuck', past ? 'true' : 'false');
+  }
+  measureNav();
+  syncNav();
+  window.addEventListener('scroll', syncNav, { passive: true });
+  window.addEventListener('resize', function () { measureNav(); syncNav(); }, { passive: true });
+
+  /* --- before / after scrub ---
+     The range input is the control, so pointer, touch and keyboard all work
+     natively and the label is announced. The divider and knob just follow it. */
+  var stage = document.getElementById('ba');
+  var range = document.getElementById('ba-range');
+  if (stage && range) {
+    var setPos = function () { stage.style.setProperty('--pos', range.value + '%'); };
+    range.addEventListener('input', setPos);
+    setPos();
+  }
+
+  /* --- craft build-up: scroll progress drives which layers have landed --- */
+  var layers = document.getElementById('layers');
+  if (layers) {
+    var items = layers.querySelectorAll('.layer');
+    if (reduce.matches) {
+      Array.prototype.forEach.call(items, function (li) { li.setAttribute('data-on', 'true'); });
+    } else {
+      var ticking = false;
+      var syncLayers = function () {
+        var r = layers.getBoundingClientRect();
+        var vh = window.innerHeight || doc.clientHeight;
+        /* 0 when the block enters the lower third, 1 once it has crossed the middle */
+        var p = (vh * 0.85 - r.top) / (r.height + vh * 0.25);
+        p = Math.max(0, Math.min(1, p));
+        var landed = Math.round(p * items.length);
+        Array.prototype.forEach.call(items, function (li, i) {
+          li.setAttribute('data-on', i < landed ? 'true' : 'false');
+        });
+        ticking = false;
+      };
+      var onScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(syncLayers);
+      };
+      syncLayers();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+  }
+
+  /* --- estimator: illustrative range only ---
+     PLACEHOLDER RATES. These are round numbers chosen to demonstrate the
+     interaction, NOT PMB's pricing. Replace with rates supplied and approved
+     by PMB before this goes anywhere near a customer (BRAND.md build rule 6). */
+  var RATES = {
+    'Block paving':                      [95, 145],
+    'Resin bound':                       [80, 130],
+    'Tarmac':                            [60, 95],
+    'Gravel or shingle':                 [45, 75],
+    'Indian sandstone or natural stone': [110, 165],
+    'Not sure yet — advise me':          [45, 165]
+  };
+  var form = document.getElementById('est');
+  if (form) {
+    var out = document.getElementById('est-out');
+    var basis = document.getElementById('est-basis');
+    var stepNum = document.getElementById('est-step');
+    var bar = document.getElementById('est-bar');
+    var money = function (n) {
+      return '£' + (Math.round(n / 50) * 50).toLocaleString('en-GB');
+    };
+    var update = function () {
+      var size = parseFloat(form.elements.size.value);
+      var finish = form.elements.finish.value;
+      var filled = ['type', 'size', 'finish', 'postcode'].filter(function (k) {
+        return String(form.elements[k].value).trim() !== '';
+      }).length;
+      stepNum.textContent = Math.min(filled + 1, 9);
+      bar.style.setProperty('--step', Math.round((Math.min(filled + 1, 9) / 9) * 100) + '%');
+
+      if (!size || size <= 0 || !finish || !RATES[finish]) {
+        out.textContent = 'Add a size to see a range';
+        basis.textContent = 'Based on the options you choose above.';
+        return;
+      }
+      var r = RATES[finish];
+      out.textContent = money(size * r[0]) + ' – ' + money(size * r[1]);
+      basis.textContent = 'Based on ' + size + ' m² of ' + finish.toLowerCase() + '. Illustrative rates, not PMB’s pricing.';
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    form.addEventListener('submit', function (e) { e.preventDefault(); });
+    update();
+  }
+})();
+</script>
+
+</body>
+</html>
