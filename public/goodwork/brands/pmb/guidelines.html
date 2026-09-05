@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMB Paving &amp; Landscapes — brand guidelines</title>
+<meta name="description" content="Working v1 brand guidelines for PMB Paving &amp; Landscapes: modern heritage, the forest and limestone palette, Manrope and Inter, materials as a design language, motion from construction, and the claims that need reconfirming before launch.">
+<meta name="theme-color" content="#16382C">
+<link rel="stylesheet" href="brand.css">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--body);font-family:var(--font-body);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;background:var(--cream-2);border:1px solid var(--line);padding:.1em .4em;border-radius:var(--radius)}
+::selection{background:var(--pmb-forest);color:var(--pmb-chalk)}
+
+.wrap{width:min(calc(100% - clamp(2.5rem,7vw,6rem)),1080px);margin-inline:auto}
+.lede{font-size:1.1rem;max-width:62ch;color:var(--body)}
+.prose{max-width:66ch;display:grid;gap:1rem}
+.prose strong{color:var(--ink);font-weight:600}
+
+/* cover */
+.cover{padding-block:clamp(4rem,10vw,7.5rem);position:relative;overflow:hidden}
+.cover__in{position:relative;display:grid;gap:1.5rem;z-index:1}
+.cover .pmb-logo{font-size:clamp(3rem,9vw,6.5rem)}
+.cover h1{font-family:var(--font-head);font-weight:800;letter-spacing:var(--track-display);line-height:1.02;font-size:clamp(1.9rem,4.4vw,3.2rem);color:var(--ink);max-width:18ch}
+.cover .words{display:flex;flex-wrap:wrap;gap:.55rem 1.4rem;font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
+
+/* contents */
+.toc{border-block:1px solid var(--line);padding-block:1.1rem}
+.toc ul{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
+.toc a{font-weight:500;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body)}
+.toc a:hover{color:var(--accent-ink)}
+
+/* sections */
+.sec{padding-block:clamp(3.2rem,6.5vw,5.5rem);border-bottom:1px solid var(--line)}
+.sec:last-of-type{border-bottom:0}
+.sec__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.2rem 1.8rem;align-items:baseline;margin-bottom:clamp(1.5rem,3vw,2.4rem)}
+.sec__num{font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--accent-ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sec__head h2{font-family:var(--font-head);font-weight:800;letter-spacing:var(--track-display);line-height:1.04;font-size:clamp(1.8rem,3.8vw,2.8rem);color:var(--ink)}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.25rem;margin-top:1.6rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.3rem 1.35rem 1.4rem;display:grid;gap:.6rem;align-content:start}
+.card h3{font-family:var(--font-head);font-weight:800;font-size:1.05rem;color:var(--ink);letter-spacing:-.015em}
+.card p,.card li{font-size:.94rem}
+.do,.dont{display:grid;gap:.45rem}
+.do li::before{content:"— ";color:var(--accent-ink)}
+.dont li::before{content:"\00d7  ";color:var(--state-error)}
+
+/* character pairs */
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin-top:1.6rem}
+.pair{border:1px solid var(--line);border-left:var(--pmb-edge);border-radius:0 var(--radius) var(--radius) 0;padding:.75rem .95rem;background:var(--card)}
+.pair b{display:block;font-family:var(--font-head);font-weight:800;color:var(--ink);font-size:1rem;letter-spacing:-.015em}
+.pair span{font-size:.85rem;color:var(--muted)}
+
+/* colour */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:1rem;margin-top:1.6rem}
+.sw{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--card)}
+.sw__chip{height:104px;border-bottom:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(24,26,24,.06)}
+.sw__body{padding:.8rem .95rem .95rem;display:grid;gap:.1rem}
+.sw__body>b{font-weight:600;color:var(--ink);font-size:.95rem}
+.sw__body small b{font-weight:600;color:var(--ink);font-size:inherit}
+.sw__body code{background:none;border:0;padding:0;color:var(--muted);font-size:.8rem}
+.sw__body small{font-size:.78rem;color:var(--muted);line-height:1.45}
+
+/* balance bar */
+.balance{display:flex;height:46px;border-radius:var(--radius);overflow:hidden;margin-top:1.6rem;border:1px solid var(--line)}
+.balance i{display:block;height:100%;box-shadow:inset -1px 0 0 rgba(24,26,24,.12)}
+.balance i:last-child{box-shadow:none}
+.balance-key{display:flex;flex-wrap:wrap;gap:.4rem 1.3rem;margin-top:.7rem;font-size:.76rem;color:var(--muted)}
+.balance-key span{display:inline-flex;align-items:center;gap:.4rem}
+.balance-key i{width:10px;height:10px;border-radius:2px;border:1px solid var(--line)}
+
+/* contrast table */
+.tbl{width:100%;border-collapse:collapse;margin-top:1.6rem;font-size:.92rem}
+.tbl th,.tbl td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-weight:500;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.tbl td b{font-weight:600;color:var(--ink)}
+.tbl code{background:none;border:0;padding:0;font-size:.85em}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pass{color:var(--state-success);font-weight:600}
+.fail{color:var(--state-error);font-weight:600}
+
+/* live contrast demo */
+.demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.2rem}
+.demo div{padding:1.1rem 1.2rem;border-radius:var(--radius-lg);border:1px solid var(--line)}
+.demo p{font-size:.95rem}
+.demo small{display:block;margin-top:.5rem;font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+
+/* type specimens */
+.spec-hero{font-family:var(--font-head);font-weight:800;letter-spacing:-.03em;line-height:.98;font-size:clamp(2.4rem,7.5vw,5rem);color:var(--ink);margin-top:1.6rem;text-transform:uppercase}
+.spec-row{display:grid;gap:.35rem;padding-block:1.1rem;border-bottom:1px solid var(--line)}
+.spec-row:last-child{border-bottom:0}
+.spec-row .lbl{font-weight:500;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.2rem;margin-top:1.6rem}
+.figures div{display:grid;gap:.2rem}
+.figures .pmb-figure{font-size:clamp(2.4rem,5vw,3.4rem)}
+.figures small{font-size:.8rem;color:var(--muted)}
+
+/* logo specimens */
+.logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.6rem}
+.lspec{border-radius:var(--radius-lg);border:1px solid var(--line);overflow:hidden}
+.lspec__stage{min-height:150px;display:grid;place-items:center;padding:1.5rem}
+.lspec__stage .pmb-logo{font-size:2.4rem}
+.lspec figcaption{padding:.65rem .9rem;border-top:1px solid var(--line);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted);background:var(--card)}
+
+/* material tokens */
+.mats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1.6rem}
+.mat{border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.mat__stage{height:120px;background:var(--cream-2);position:relative}
+.mat__stage.pmb-ground{background:var(--pmb-ground)}
+.mat figcaption{padding:.7rem .9rem;border-top:1px solid var(--line);background:var(--card);display:grid;gap:.15rem}
+.mat figcaption b{font-weight:600;color:var(--ink);font-size:.92rem}
+.mat figcaption small{font-size:.78rem;color:var(--muted)}
+
+/* callouts */
+.note{margin-top:1.6rem;border-left:var(--pmb-edge);background:var(--cream-2);padding:1.1rem 1.3rem;border-radius:0 var(--radius-lg) var(--radius-lg) 0;display:grid;gap:.6rem}
+.note h4{font-family:var(--font-head);font-weight:800;font-size:1rem;color:var(--ink);letter-spacing:-.015em}
+.note p{font-size:.94rem;max-width:64ch}
+.note--warn{border-left-color:var(--state-warn);background:var(--state-warn-bg)}
+.note--alert{border-left-color:var(--state-error);background:var(--state-error-bg)}
+
+/* status pills */
+.pill{display:inline-block;font-weight:500;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:.2em .6em;border-radius:999px;white-space:nowrap}
+.pill--ok{background:var(--state-success-bg);color:var(--state-success)}
+.pill--part{background:var(--state-warn-bg);color:var(--state-warn)}
+.pill--gap{background:var(--state-error-bg);color:var(--state-error)}
+
+/* voice */
+.voice{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem;margin-top:1.6rem}
+.voice div{padding:1.2rem 1.3rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:var(--card);display:grid;gap:.5rem}
+.voice q{font-family:var(--font-head);font-weight:800;font-size:1.15rem;line-height:1.3;color:var(--ink);letter-spacing:-.015em;quotes:"\201c" "\201d"}
+.voice small{font-weight:500;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase}
+
+/* dark bands */
+.band{padding-block:clamp(3rem,6vw,5rem);position:relative;overflow:hidden}
+.band .sec__head h2,.band .pmb-figure{color:var(--ink)}
+.band .lede{color:var(--body)}
+
+/* proposition */
+.prop{font-family:var(--font-head);font-weight:800;text-transform:uppercase;letter-spacing:-.025em;line-height:1;font-size:clamp(2rem,6.5vw,4.4rem);color:var(--ink);position:relative;z-index:1}
+.prop span{display:block;color:var(--muted)}
+
+/* checklist */
+.checks{counter-reset:c;display:grid;gap:.65rem;margin-top:1.6rem;max-width:72ch}
+.checks li{counter-increment:c;display:grid;grid-template-columns:auto 1fr;gap:.9rem;font-size:.96rem}
+.checks li::before{content:counter(c,decimal-leading-zero);font-family:var(--font-head);font-weight:800;color:var(--accent-ink);font-variant-numeric:tabular-nums;font-size:.9rem;padding-top:.15rem}
+
+footer.foot{padding-block:clamp(2.5rem,5vw,4rem)}
+footer.foot .wrap{display:grid;gap:1rem}
+footer.foot p{font-size:.9rem;max-width:64ch}
+footer.foot a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+
+@media (prefers-reduced-motion: no-preference){
+  html{scroll-behavior:smooth}
+}
+</style>
+</head>
+<body>
+
+<header class="cover pmb-grain">
+  <div class="wrap cover__in">
+    <span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span>
+    <h1>Brand guidelines &amp; visual style guide</h1>
+    <p class="lede">A modern heritage system for an established exterior transformation business. Working v1 — derived from the client style guide and PMB’s live website, with the contrast cuts, state colours and motion audit the build actually needs.</p>
+    <p class="words"><span>Established</span><span>Engineered</span><span>Organised</span><span>Visual</span><span>Premium</span></p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <ul>
+      <li><a href="#idea">01 Brand idea</a></li>
+      <li><a href="#logo">02 Logo</a></li>
+      <li><a href="#colour">03 Colour</a></li>
+      <li><a href="#type">04 Typography</a></li>
+      <li><a href="#material">05 Materials</a></li>
+      <li><a href="#photo">06 Photography</a></li>
+      <li><a href="#motion">07 Motion</a></li>
+      <li><a href="#ui">08 Interface</a></li>
+      <li><a href="#voice">09 Voice</a></li>
+      <li><a href="#facts">10 Facts</a></li>
+      <li><a href="#rules">11 Build rules</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- 01 -->
+<section class="sec" id="idea">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">01</span><h2>Modern heritage. Built outside.</h2></div>
+    <div class="prose">
+      <p class="lede">PMB already has the hard part: 25+ years, a family business, a substantial body of completed work and customers who say so. The identity’s job is to make the digital presentation equal to the reputation built offline.</p>
+      <p>Rooted in craft and materials, contemporary enough to carry motion design, an interactive estimator, AI qualification and premium photography. <strong>Make PMB look online as good as its reputation says it is offline.</strong></p>
+    </div>
+
+    <div class="pairs">
+      <div class="pair"><b>Established</b><span>not old-fashioned</span></div>
+      <div class="pair"><b>Premium</b><span>not pretentious</span></div>
+      <div class="pair"><b>Masculine</b><span>not aggressive</span></div>
+      <div class="pair"><b>Natural</b><span>not rustic</span></div>
+      <div class="pair"><b>Engineered</b><span>not sterile</span></div>
+      <div class="pair"><b>Local and personal</b><span>not small-time</span></div>
+      <div class="pair"><b>Confident</b><span>not loud</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band pmb-bond" data-surface="forest">
+  <div class="wrap">
+    <p class="pmb-micro" style="color:var(--accent-ink);margin-bottom:1rem">Working proposition</p>
+    <p class="prop">Transforming homes<span>from the outside in</span></p>
+    <p class="lede" style="margin-top:1.5rem">Alternative campaign line: <strong style="color:var(--ink)">BUILT OUTSIDE. BUILT PROPERLY.</strong></p>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="sec" id="logo">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">02</span><h2>Keep recognition. Improve execution.</h2></div>
+    <div class="prose">
+      <p class="lede">Evolution, not rebrand. PMB has years of recognition on vehicles, workwear, signage and online profiles, and that is an asset — not something to throw away.</p>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Do</h3>
+        <ul class="do">
+          <li>Retain the PMB name and basic visual DNA.</li>
+          <li>Redraw geometry and spacing properly.</li>
+          <li>Fix the relationship between <b>PMB</b> and <i>Paving &amp; Landscapes</i>.</li>
+          <li>Produce horizontal, stacked, monogram and single-colour versions.</li>
+          <li>Produce van livery, embroidery, signage, favicon and avatar applications.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Do not</h3>
+        <ul class="dont">
+          <li>Gradients, gloss, bevels or drop shadows.</li>
+          <li>Fake stone texture inside the mark.</li>
+          <li>Celtic or Irish motifs.</li>
+          <li>A bright green because of the owner’s heritage.</li>
+        </ul>
+        <p style="font-size:.9rem;color:var(--muted)">The brand should feel relevant to the work, not themed around nationality.</p>
+      </div>
+    </div>
+
+    <div class="logos">
+      <figure class="lspec">
+        <div class="lspec__stage" data-surface="chalk"><span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span></div>
+        <figcaption>Forest on chalk — primary</figcaption>
+      </figure>
+      <figure class="lspec">
+        <div class="lspec__stage" data-surface="forest"><span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span></div>
+        <figcaption>Chalk on forest — primary</figcaption>
+      </figure>
+      <figure class="lspec">
+        <div class="lspec__stage" data-surface="limestone"><span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span></div>
+        <figcaption>On limestone — material bands</figcaption>
+      </figure>
+      <figure class="lspec">
+        <div class="lspec__stage" data-surface="charcoal"><span class="pmb-logo">PMB<small>Paving &amp; Landscapes</small></span></div>
+        <figcaption>One colour — livery &amp; print</figcaption>
+      </figure>
+    </div>
+
+    <div class="note note--warn">
+      <h4>The gold question — resolved in favour of the rules</h4>
+      <p>The concept mockup sets the PMB wordmark large and in Warm Metal in both the header and the footer. That contradicts two rules in the same document: Warm Metal is <em>“optional tiny accent only — never a dominant gold”</em>, and the primary logo applications are Forest on Chalk, Chalk on Forest and one-colour.</p>
+      <p>A gold wordmark on a dark green nav is a 4.75:1 pair — legible, but it becomes the visual centre of the page and pulls the brand towards the generic premium-contractor look the positioning is trying to escape. <code>brand.css</code> therefore never sets the logo in metal. If PMB want the gold wordmark, that is a legitimate call — but it is a change to the colour rule, not an exception to it.</p>
+    </div>
+
+    <div class="note">
+      <h4>The lockup here is a stand-in</h4>
+      <p><code>.pmb-logo</code> sets the mark as live text in Manrope ExtraBold. When the redrawn artwork arrives it becomes the master, goes in a <code>logo/</code> folder alongside these files, and the live-text version retires to favicon-sized fallbacks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="sec" id="colour">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">03</span><h2>Forest, limestone, chalk and charcoal.</h2></div>
+    <p class="lede">Away from stark black and white. The palette should feel like landscape, stone, earth and British architecture — with one distinctive signature colour.</p>
+
+    <div class="swatches">
+      <div class="sw"><div class="sw__chip" style="background:#16382C"></div><div class="sw__body"><b>PMB Forest</b><code>#16382C</code><small>Primary brand colour · CTAs · key moments</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#0D211A"></div><div class="sw__body"><b>Deep Forest</b><code>#0D211A</code><small>Hero overlays · footer · cinematic sections</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#E8E1D4"></div><div class="sw__body"><b>Warm Limestone</b><code>#E8E1D4</code><small>Material panels · cards · editorial</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#F6F3EC"></div><div class="sw__body"><b>Chalk</b><code>#F6F3EC</code><small>Primary page background</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#181A18"></div><div class="sw__body"><b>Charcoal</b><code>#181A18</code><small>Typography · dark vehicles · high contrast</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#8D8B84"></div><div class="sw__body"><b>Concrete</b><code>#8D8B84</code><small>Dividers · neutral UI · <b>never body text on light</b></small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#B59A63"></div><div class="sw__body"><b>Warm Metal</b><code>#B59A63</code><small>Tiny accent only — never a dominant gold</small></div></div>
+    </div>
+
+    <h3 style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--ink);margin-top:2.4rem;letter-spacing:-.015em">Balance</h3>
+    <p style="max-width:64ch;margin-top:.5rem">Green is the recognisable PMB signature, not the wallpaper. Most of the site breathes in chalk and limestone; forest is for decisive moments — navigation states, CTAs, the trust strip, the estimator panel and the footer.</p>
+    <div class="balance" aria-hidden="true">
+      <i style="background:#F6F3EC;flex:55"></i><i style="background:#E8E1D4;flex:20"></i><i style="background:#16382C;flex:13"></i><i style="background:#0D211A;flex:7"></i><i style="background:#181A18;flex:5"></i><i style="background:#B59A63;flex:.8"></i>
+    </div>
+    <p class="balance-key">
+      <span><i style="background:#F6F3EC"></i>Chalk 55%</span>
+      <span><i style="background:#E8E1D4"></i>Limestone 20%</span>
+      <span><i style="background:#16382C"></i>Forest + Deep Forest 20%</span>
+      <span><i style="background:#181A18"></i>Charcoal 5%</span>
+      <span><i style="background:#B59A63"></i>Warm Metal &lt;1%</span>
+    </p>
+
+    <h3 style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--ink);margin-top:2.4rem;letter-spacing:-.015em">Working cuts</h3>
+    <p style="max-width:64ch;margin-top:.5rem">The seven brand values are tuned for surfaces and the logo, not for a line of 14px type. Two of them fail as text on a light ground, so <code>brand.css</code> carries lightness-only cuts for the places contrast law applies.</p>
+
+    <div class="scroller">
+      <table class="tbl">
+        <thead><tr><th>Pair</th><th>Ratio</th><th>Verdict</th><th>Use instead</th></tr></thead>
+        <tbody>
+          <tr><td><b>Concrete</b> <code>#8D8B84</code> on Chalk</td><td>3.08:1</td><td class="fail">Fails AA</td><td><code>--pmb-concrete-ink</code> <code>#646259</code> → 5.52:1</td></tr>
+          <tr><td><b>Concrete</b> on Limestone</td><td>2.62:1</td><td class="fail">Fails AA</td><td><code>--pmb-concrete-ink</code> → 4.70:1</td></tr>
+          <tr><td><b>Warm Metal</b> <code>#B59A63</code> on Chalk</td><td>2.44:1</td><td class="fail">Fails AA</td><td><code>--pmb-metal-ink</code> <code>#7C632D</code> → 5.15:1</td></tr>
+          <tr><td><b>Warm Metal</b> on Deep Forest</td><td>6.22:1</td><td class="pass">Passes</td><td>—</td></tr>
+          <tr><td><b>Charcoal</b> on Chalk</td><td>15.79:1</td><td class="pass">Passes</td><td>—</td></tr>
+          <tr><td><b>Forest</b> on Chalk</td><td>11.58:1</td><td class="pass">Passes</td><td>—</td></tr>
+          <tr><td><b>Chalk</b> on Forest</td><td>11.58:1</td><td class="pass">Passes</td><td>the button pair</td></tr>
+          <tr><td><b>Concrete</b> on Deep Forest</td><td>4.93:1</td><td class="pass">Passes</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo">
+      <div style="background:#F6F3EC">
+        <p style="color:#8D8B84">Secondary text in brand Concrete. This is the pairing the source guide specifies, and it does not pass.</p>
+        <small style="color:#8D8B84">3.08:1 — fails</small>
+      </div>
+      <div style="background:#F6F3EC">
+        <p style="color:#646259">Secondary text in the Concrete ink cut. Same hue, moved in lightness only.</p>
+        <small style="color:#646259">5.52:1 — passes</small>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--ink);margin-top:2.4rem;letter-spacing:-.015em">State colours</h3>
+    <p style="max-width:64ch;margin-top:.5rem">The source guide has no semantic palette, and the build has a nine-step estimator with validation and a file upload. Rather than let each form invent its own red, they are defined in <code>brand.css</code>.</p>
+    <div class="swatches">
+      <div class="sw"><div class="sw__chip" style="background:#A33A2A"></div><div class="sw__body"><b>Error</b><code>--state-error</code><small>5.9:1 on chalk</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#8C6D1F"></div><div class="sw__body"><b>Warning</b><code>--state-warn</code><small>4.4:1 on chalk</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#1E6B4A"></div><div class="sw__body"><b>Success</b><code>--state-success</code><small>Deliberately not PMB Forest — a valid field must not read as a brand fill</small></div></div>
+      <div class="sw"><div class="sw__chip" style="background:#16382C;box-shadow:inset 0 0 0 3px rgba(197,172,121,.55)"></div><div class="sw__body"><b>Focus ring</b><code>--focus-ring</code><small>Metal on dark, forest on light. Focus is never carried by fill colour alone.</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="sec" id="type">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">04</span><h2>Architectural, direct and readable.</h2></div>
+    <p class="lede">The type has to work on a van at 30 metres, a phone at 30 centimetres, and a case study with real technical copy.</p>
+
+    <p class="spec-hero">Transforming homes from the outside in</p>
+    <p class="pmb-micro" style="margin-top:.8rem">Manrope ExtraBold · <code>-0.03em</code> tracking · uppercase hero moment</p>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Manrope ExtraBold — display</h3>
+        <p>Large statements, navigation emphasis, numbers and section titles. Tight tracking, strong line breaks, sentence case with short uppercase moments.</p>
+        <p style="font-size:.88rem;color:var(--muted)">A tall x-height and closed apertures that survive extra-bold uppercase at distance.</p>
+      </div>
+      <div class="card">
+        <h3>Inter — body &amp; UI</h3>
+        <p>Body copy, controls, forms, labels, estimator fields and long-form service content.</p>
+        <p style="font-size:.88rem;color:var(--muted)">The estimator is a nine-step form, and Inter was drawn for exactly that.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem">
+      <div class="spec-row"><span class="lbl">Hero — 64–96px desktop / 42–56px mobile</span><span style="font-family:var(--font-head);font-weight:800;font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.03em;line-height:1;color:var(--ink)">Built outside. Built properly.</span></div>
+      <div class="spec-row"><span class="lbl">Section headline — 40–64px / 30–40px</span><span style="font-family:var(--font-head);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.5rem);letter-spacing:-.025em;line-height:1.05;color:var(--ink)">The work is the hero</span></div>
+      <div class="spec-row"><span class="lbl">Card headline — 22–30px</span><span style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink)">Resin bound driveways</span></div>
+      <div class="spec-row"><span class="lbl">Body — 16–18px, generous line-height</span><span style="font-size:1.05rem;max-width:60ch">Proper preparation, quality materials and proven installation methods. The finish matters — and so does everything underneath it.</span></div>
+      <div class="spec-row"><span class="lbl">Micro label — 11–13px uppercase, 0.14em</span><span class="pmb-micro" style="color:var(--accent-ink)">Free site survey · No obligation</span></div>
+    </div>
+
+    <div class="figures">
+      <div><span class="pmb-figure">25+</span><small>Years in the paving industry</small></div>
+      <div><span class="pmb-figure">5</span><small>Year guarantee*</small></div>
+      <div><span class="pmb-figure">£1m</span><small>Public liability*</small></div>
+      <div><span class="pmb-figure">£0</span><small>Deposit required*</small></div>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:.9rem">* Every claim marked with an asterisk must be reconfirmed with PMB before launch — see section 10.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="sec" id="material">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">05</span><h2>The ground, as tokens.</h2></div>
+    <p class="lede">The interface is taken from what PMB builds. Each of these is a token in <code>brand.css</code>, so nothing is decoration for its own sake.</p>
+
+    <div class="mats">
+      <figure class="mat">
+        <div class="mat__stage pmb-bond"></div>
+        <figcaption><b>Stretcher bond</b><small><code>--pmb-bond</code> · a hairline lattice behind a section</small></figcaption>
+      </figure>
+      <figure class="mat">
+        <div class="mat__stage pmb-grain" style="background:var(--pmb-limestone)"></div>
+        <figcaption><b>Limestone grain</b><small><code>--pmb-grain</code> · 0.045 opacity, never over body copy</small></figcaption>
+      </figure>
+      <figure class="mat">
+        <div class="mat__stage pmb-ground"></div>
+        <figcaption><b>Ground layers</b><small><code>--pmb-ground</code> · excavation → Type 1 → compaction → laying course → surface</small></figcaption>
+      </figure>
+      <figure class="mat">
+        <div class="mat__stage" style="display:grid;place-items:center;background:var(--pmb-chalk)"><hr class="pmb-rule" style="width:96px"></div>
+        <figcaption><b>Kerb edge</b><small><code>--pmb-edge</code> · one decisive 2px line, never a fading hairline</small></figcaption>
+      </figure>
+    </div>
+
+    <div class="note">
+      <h4>The motion signature: things settle</h4>
+      <p><code>--pmb-settle</code> is a short travel with a firm stop — compaction, not a spring. Nothing in PMB bounces, floats or drifts. Corners are near-square at 4px, because everything PMB lays is a flat unit with a cut edge and the interface should agree with that.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="sec" id="photo">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">06</span><h2>The work is the hero.</h2></div>
+    <p class="lede">The site should look expensive because the projects look expensive — not because the interface is overloaded with decoration.</p>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Shoot</h3>
+        <ul class="do">
+          <li>Finished driveways, wide enough to show the whole property.</li>
+          <li><b>Before/after pairs — same angle, same lens, same light.</b></li>
+          <li>Low-angle material detail: joints, edging, aggregate, kerbs, steps, drainage.</li>
+          <li>Process: excavation, Type 1 sub-base, compaction, screeding, laying, finishing.</li>
+          <li>Patrick and the crew on real sites. Clean, not staged.</li>
+          <li>Twilight projects where lighting and landscaping do the work.</li>
+          <li>Drone only where it genuinely explains scale and layout.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Never</h3>
+        <ul class="dont">
+          <li>Oversaturated HDR.</li>
+          <li>Obvious AI architecture.</li>
+          <li>Stock photos of unrelated homes.</li>
+          <li>Fabricated customer imagery.</li>
+        </ul>
+        <p style="font-size:.9rem;color:var(--muted)">Natural colour, controlled contrast, deep greens, warm stone, realistic skies. The hero filter is deliberately light — enough to hold type over a driveway, not enough to flatten the stone.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <h4>Before/after is the most valuable asset PMB owns</h4>
+      <p>Every completed job produces one for free, and it is the single best sales device a paving business has. Shoot it deliberately: mark the camera position before work starts, and return to it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="sec" id="motion">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">07</span><h2>Transformation, not decoration.</h2></div>
+    <p class="lede">Motion comes from what PMB physically does. Every major animation either explains construction, reveals a transformation, or makes the interface easier to use. If it does none of those, it doesn’t ship.</p>
+
+    <div class="cols">
+      <div class="card"><h3>Layer 1 · GOOD WORK. UI motion</h3><p>Page reveals, text entrances, counters, tickers, hover and tap states, nav transitions, card reveals, image masks, scroll choreography. <b>This is the default.</b></p></div>
+      <div class="card"><h3>Layer 2 · Material choreography</h3><p>The same patterns, adapted to laying, stacking, revealing and transforming surfaces.</p></div>
+      <div class="card"><h3>Layer 3 · Cinematic assets</h3><p>Higgsfield or equivalent for the impossible shots — paving assembling, surfaces breaking away, aggregate transitions, ground-drop.</p></div>
+      <div class="card"><h3>Layer 4 · Functional motion</h3><p>Estimator progress, AI assistant state, upload confirmation, success states.</p></div>
+    </div>
+
+    <h3 style="font-family:var(--font-head);font-weight:800;font-size:1.2rem;color:var(--ink);margin-top:2.4rem;letter-spacing:-.015em">Library coverage</h3>
+    <p style="max-width:64ch;margin-top:.5rem">The brand guide requires the GOOD WORK. motion library as the primary animation system. Audited against its 170 components: eight of eleven mapped sections are covered, three need building. Full detail in <code>MOTION-AUDIT.md</code>.</p>
+
+    <div class="scroller">
+      <table class="tbl">
+        <thead><tr><th>Section</th><th>Required</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>Hero</b></td><td>Cinematic text / image reveal</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>Trust strip</b></td><td>Counter reveal, once, no loop</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>Services</b></td><td>Staggered cards / image reveal</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>Before &amp; after</b></td><td>Reveal / scrub interaction</td><td><span class="pill pill--gap">Missing</span></td></tr>
+          <tr><td><b>Craft / build-up</b></td><td>Scroll-scrubbed ground sequence</td><td><span class="pill pill--part">Partial</span></td></tr>
+          <tr><td><b>Projects</b></td><td>Masked image reveal</td><td><span class="pill pill--part">Partial</span></td></tr>
+          <tr><td><b>Estimator</b></td><td>Progress / state transition</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>Reviews</b></td><td>Ticker with real pause control</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>AI assistant</b></td><td>Panel transition / response state</td><td><span class="pill pill--part">Partial</span></td></tr>
+          <tr><td><b>Final CTA</b></td><td>Strong reveal / magnetic CTA</td><td><span class="pill pill--ok">Covered</span></td></tr>
+          <tr><td><b>Navigation</b></td><td>Sticky, transparent → forest</td><td><span class="pill pill--ok">Covered</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note note--alert">
+      <h4>Build the before/after scrub first</h4>
+      <p>There is no image comparison component in the library — the nearest match, <code>codecompare</code>, is a source-code diff card. Build rule 4 says before/after is a <em>primary interaction, not a buried gallery feature</em>. Build it into the library rather than as a PMB one-off: every trades, renovation and restoration client will want it.</p>
+    </div>
+
+    <div class="note note--warn">
+      <h4>Reduced motion needs checking per snippet</h4>
+      <p>Only 10 of the ~170 library components carry their own <code>prefers-reduced-motion</code> query. The library’s snippets are standalone by design — they bring their own <code>&lt;style&gt;</code> block, so the engine’s global off-switch does not reach them. Check each snippet’s <em>static end state</em>, not just that it stopped moving. “Still” and “usable” are different tests.</p>
+      <p>The same applies to counters: every one in the library loops on a <code>setInterval</code> because it has to demo itself in the gallery. Copy-pasting the preview code ships an infinitely counting trust strip.</p>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Restraint</h3>
+        <ul class="dont">
+          <li>Floating blobs, tech particles or effects unrelated to paving.</li>
+          <li>Any animation that delays a quote, a call or an estimator step.</li>
+          <li>Animating everything — strong moments need quiet around them.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Always</h3>
+        <ul class="do">
+          <li>Mobile gets simpler, faster versions of heavy sequences.</li>
+          <li>Tap works without hover.</li>
+          <li>The static experience is complete, not just still.</li>
+          <li>Real project imagery is the proof; cinematics are presentation.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="sec" id="ui">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">08</span><h2>Comfortable, premium, conversion-led.</h2></div>
+    <p class="lede">Calm enough for a homeowner making a five-figure decision, and visibly more advanced than a standard contractor site.</p>
+
+    <div class="cols">
+      <div class="card"><h3>Navigation</h3><p>Compact and sticky. Transparent over the hero, deep forest on scroll. One clear CTA: <b>Plan My Project</b>.</p></div>
+      <div class="card"><h3>Buttons</h3><p>Solid Forest primary, outline Charcoal secondary. Minimum 44px touch height. A visible focus ring on every surface.</p></div>
+      <div class="card"><h3>Cards</h3><p>Minimal borders, near-square corners, large photography. No generic icon grids unless they genuinely aid scanning.</p></div>
+      <div class="card"><h3>Forms</h3><p>Large labels, plain English, one decision per step where possible.</p></div>
+      <div class="card"><h3>Reviews</h3><p>Large, specific and contextual — not a carousel of tiny quotes.</p></div>
+      <div class="card"><h3>Texture</h3><p><code>.pmb-grain</code> at 0.045 opacity. Never over body copy.</p></div>
+    </div>
+
+    <div class="note note--warn">
+      <h4>Two things the mockup and the spec disagree about</h4>
+      <p><b>Service count.</b> The copy direction frames four services (Driveways · Patios · Landscaping · Restoration); the mockup shows five, adding Groundworks. Groundworks is real work and it sits under Landscaping in the architecture. Pick one and make the homepage, nav and IA agree.</p>
+      <p><b>Estimator length.</b> The written spec is nine steps; the mockup shows five fields and a resolved range. Decide deliberately — a five-field estimator produces a range wide enough to be useless, a nine-field one loses people. A short qualifying set with progressive disclosure is the likely answer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="sec" id="voice">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">09</span><h2>Straight-talking confidence.</h2></div>
+    <p class="lede">PMB should sound like experienced people who know the work — not an agency writing about dream outdoor sanctuaries.</p>
+
+    <div class="voice">
+      <div style="border-left:var(--pmb-edge);border-radius:0 var(--radius-lg) var(--radius-lg) 0">
+        <small style="color:var(--state-success)">Good</small>
+        <q>The finish matters. So does everything underneath it.</q>
+      </div>
+      <div style="border-left:2px solid var(--state-error);border-radius:0 var(--radius-lg) var(--radius-lg) 0">
+        <small style="color:var(--state-error)">Weak</small>
+        <q>We create stunning outdoor spaces tailored to your unique lifestyle.</q>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Use</h3>
+        <ul class="do">
+          <li>Specific materials and processes.</li>
+          <li>Short statements backed by proof.</li>
+          <li>Real locations and real projects.</li>
+          <li>Plain-English explanations of trade-offs.</li>
+          <li>Genuine customer language, accurately quoted and attributed.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Avoid</h3>
+        <ul class="dont">
+          <li>“Quality you can trust” with no evidence.</li>
+          <li>Unsupported superlatives — “best in Essex”.</li>
+          <li>Invented accreditations, guarantees, prices or quotes.</li>
+          <li>“Bespoke oasis”, “where dreams become reality”.</li>
+          <li>Daily SEO copy with no local or project evidence.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="facts">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">10</span><h2>Facts, and what has to be reconfirmed.</h2></div>
+    <p class="lede">These come from PMB’s live website and form the factual knowledge base for the rebuild — including for the AI assistant.</p>
+
+    <div class="scroller">
+      <table class="tbl">
+        <thead><tr><th>Category</th><th>Current-site fact</th></tr></thead>
+        <tbody>
+          <tr><td><b>Business</b></td><td>PMB Paving and Landscapes Ltd; company registration 09859691</td></tr>
+          <tr><td><b>Experience</b></td><td>Family-run, over 25 years in the paving industry</td></tr>
+          <tr><td><b>Coverage</b></td><td>Hertfordshire, Middlesex, Essex, North London. Named: Harlow, Bishop’s Stortford, Romford, Chigwell, Woodford, Saffron Walden, Dunmow and surrounding areas</td></tr>
+          <tr><td><b>Driveways</b></td><td>Block paving, resin bound, tarmac, gravel, shingle, imprinted concrete, crazy paving</td></tr>
+          <tr><td><b>Patios</b></td><td>Indian sandstone, natural stone, concrete slabs</td></tr>
+          <tr><td><b>Other work</b></td><td>Pathways and entrances, repairs, maintenance, professional cleaning, fencing, turfing, small groundworks, walling, drainage</td></tr>
+          <tr><td><b>Resin</b></td><td>UV-stable resin/aggregate systems, permeability, slip resistance, weed and stain resistance, custom colours and borders, free design service</td></tr>
+          <tr><td><b>Preparation</b></td><td>Type 1 hardcore and professional compaction before the chosen top surface</td></tr>
+          <tr><td><b>Contact</b></td><td>020 8485 7610 · 01279 899 927 · 07931 467924 · info@pmbpavingandlandscapes.co.uk</td></tr>
+          <tr><td><b>Address</b></td><td>Unit A, 57 Park Road, Crouch End, N8 8SY</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note note--alert">
+      <h4>Reconfirm every one of these before launch</h4>
+      <p>The current site states: <b>£1m public liability insurance</b> · <b>five-year guarantee on all work</b> · <b>fully registered and fully insured</b> · <b>no deposit required, payment after completion and satisfaction</b> · <b>free written no-obligation quotations</b> · <b>seven-day cooling-off period</b>.</p>
+      <p>These are the highest-liability content on the site. They appear in the hero trust strip, throughout the service pages, and in the AI assistant’s knowledge base — which means a stale claim gets repeated by a chatbot on demand. Get them confirmed in writing by PMB immediately before launch, and again whenever the knowledge base is refreshed.</p>
+      <p>The material and installer logos (Bradstone, Natural Paving, Marshalls, Hanson, Brett) need the same treatment: confirm what is a genuine approved-installer relationship and what is simply a material PMB buys. Only one of those can be presented as an accreditation.</p>
+      <p><b>Also placeholder:</b> the phone number in the concept mockup — <code>01279 123 456</code> — is not a PMB number.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="rules">
+  <div class="wrap">
+    <div class="sec__head"><span class="sec__num">11</span><h2>Build rules.</h2></div>
+    <p class="lede">The hand-off checklist. If the build drifts, come back here.</p>
+
+    <ol class="checks">
+      <li>Use the forest / limestone / chalk / charcoal palette consistently, from <code>brand.css</code>. Never a raw hex in a component.</li>
+      <li>Use real PMB imagery wherever available. Label concept visuals clearly.</li>
+      <li>The homepage communicates <b>transformation + trust within the first screen</b>.</li>
+      <li>Before/after is a <b>primary interaction</b>, not a buried gallery feature.</li>
+      <li>Motion comes from materials, construction and transformation.</li>
+      <li>The estimator states plainly that pricing is indicative and subject to survey.</li>
+      <li>The AI assistant answers from the PMB knowledge base and escalates uncertainty. It never invents a price, guarantee or accreditation.</li>
+      <li>Every service page carries real proof: a project, a review, a process or a material detail.</li>
+      <li>Location pages carry genuine local relevance, not keyword swaps.</li>
+      <li>Mobile is first-class: large controls, fast load, reduced-motion support, clear tap targets.</li>
+      <li><b>Reconfirm guarantee, insurance, no-deposit and payment terms, accreditations and any price claim with PMB before launch.</b></li>
+      <li>Don’t copy the old site verbatim. Preserve the facts, rewrite the voice.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="band pmb-grain" data-surface="deep-forest">
+  <div class="wrap">
+    <p class="pmb-micro" style="color:var(--accent-ink);margin-bottom:1rem">The final creative test</p>
+    <p class="prop" style="font-size:clamp(1.5rem,3.6vw,2.6rem);text-transform:none;max-width:22ch;letter-spacing:-.02em;line-height:1.1">Does this feel like a 25+ year company with serious workmanship and serious proof — or does it feel like another paving template?</p>
+    <p class="lede" style="margin-top:1.4rem">If it feels generic, it is not finished.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><b style="color:var(--ink)">Working v1.</b> Consolidated from the PMB Brand &amp; Visual Style Guide (client-supplied) and PMB’s live website. Colour values are the client’s specified brand values; the ink cuts and state colours are added here for contrast compliance and are not client-supplied.</p>
+    <p>Full written version: <code>BRAND.md</code> · Motion library audit: <code>MOTION-AUDIT.md</code> · Tokens: <code>brand.css</code></p>
+    <p>GOOD WORK. Motion Library: <a href="../../library.html">goodworkagency.uk/goodwork/library.html</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

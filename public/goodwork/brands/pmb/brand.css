@@ -1,0 +1,484 @@
+/* ============================================================================
+   brand.css — PMB PAVING & LANDSCAPES
+   ----------------------------------------------------------------------------
+   The knob, filled in for PMB. Same token vocabulary as the GOOD WORK. engine
+   (public/goodwork/brand.css), so any engine block or motion-library snippet
+   reskins the moment it points here — plus a short block of tokens the brand
+   owns outright: the ground layers, the paving grid, the limestone grain.
+
+   The seven things a brand owns:
+     1. accent family   PMB Forest + its cuts
+     2. neutrals        chalk ground, charcoal type, concrete lines
+     3. fonts           Manrope ExtraBold display / Inter body
+     4. corner radius   near-square — this is a business built from flat,
+                        laid, edged units
+     5. the dark band   Deep Forest, with the ground-layer texture
+     6. hero scrim      deep forest wash; photography carries the brand
+     7. shadows         cool-neutral, charcoal-tinted, tight
+
+   Colour balance to design around: ~55% chalk / 20% limestone / 20% forest +
+   deep forest / 5% charcoal, with warm metal under 1%. Green is the signature,
+   not the wallpaper (BRAND.md §03).
+
+   Three surfaces ship. :root is the LIGHT theme (chalk). data-theme="dark" is
+   the DEEP FOREST theme. data-surface="forest" / "limestone" / "charcoal" are
+   section-level canvases, applied to a <section> rather than the page.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- TYPE -- */
+/* Manrope for display, Inter for everything you read or type into. Both
+   self-hosted from fonts/ under the SIL Open Font License — see
+   fonts/OFL-Manrope.txt and fonts/OFL-Inter.txt.
+
+   Manrope earns the display role: a tall x-height and closed apertures that
+   hold up as an extra-bold uppercase line on a van at 30 metres, which is the
+   test BRAND.md §04 sets. Inter takes body and UI because the estimator is a
+   nine-step form and Inter was drawn for exactly that. */
+@font-face { font-family: 'Manrope'; font-weight: 700; font-style: normal; font-display: swap; src: url('fonts/Manrope-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'Manrope'; font-weight: 800; font-style: normal; font-display: swap; src: url('fonts/Manrope-ExtraBold.ttf') format('truetype'); }
+@font-face { font-family: 'Inter'; font-weight: 400; font-style: normal; font-display: swap; src: url('fonts/Inter-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Inter'; font-weight: 500; font-style: normal; font-display: swap; src: url('fonts/Inter-Medium.ttf') format('truetype'); }
+@font-face { font-family: 'Inter'; font-weight: 600; font-style: normal; font-display: swap; src: url('fonts/Inter-SemiBold.ttf') format('truetype'); }
+
+/* ---------------------------------------------------------------- PALETTE -- */
+:root {
+  /* The seven from the style guide, unchanged. These are the brand values:
+     use them for surfaces, fills, the logo and large display type. */
+  --pmb-forest:      #16382C;   /* PMB Forest      — primary brand colour, CTAs  */
+  --pmb-forest-deep: #0D211A;   /* Deep Forest     — hero overlays, footer       */
+  --pmb-limestone:   #E8E1D4;   /* Warm Limestone  — material panels, cards      */
+  --pmb-chalk:       #F6F3EC;   /* Chalk           — primary page background     */
+  --pmb-charcoal:    #181A18;   /* Charcoal        — typography, high contrast   */
+  --pmb-concrete:    #8D8B84;   /* Concrete        — dividers, neutral UI        */
+  --pmb-metal:       #B59A63;   /* Warm Metal      — tiny accent only            */
+
+  /* Working cuts. The seven above are tuned for surfaces and the logo, not
+     for a line of 14px type. These are the same hues moved in lightness only,
+     for the places contrast law applies. Measured against Chalk / Limestone:
+
+       concrete on chalk     3.08:1  x   → --pmb-concrete-ink   5.52 / 4.70  ok
+       metal on chalk        2.44:1  x   → --pmb-metal-ink      5.15 / 4.39  ok
+       metal on deep forest  6.22:1  ok  (metal as text is fine on dark)
+       charcoal on chalk    15.79:1  ok
+       forest on chalk      11.58:1  ok
+       chalk on forest      11.58:1  ok  (the button pair)
+
+     Warm Metal never carries body copy on a light ground and never becomes a
+     large gold wordmark — see the note in BRAND.md §02. */
+  --pmb-concrete-ink: #646259;   /* Concrete as small text on chalk/limestone  */
+  --pmb-metal-ink:    #7C632D;   /* Warm Metal as text on a light ground       */
+  --pmb-metal-light:  #C5AC79;   /* Warm Metal lifted, for text on deep forest */
+  --pmb-forest-lift:  #4A9B77;   /* Forest lifted for dark-mode links/borders  */
+  --pmb-chalk-2:      #F0EBE0;   /* Alternating light sections                 */
+  --pmb-chalk-card:   #FDFCF8;   /* Cards lift off the page without a border   */
+  --pmb-limestone-2:  #DCD3C3;
+  --pmb-forest-2:     #1B4536;
+  --pmb-charcoal-2:   #22251F;
+}
+
+/* ------------------------------------------------------------------ LIGHT -- */
+:root {
+  color-scheme: light;
+
+  /* 1 · ACCENT — PMB Forest. Fills, CTAs and active states take the brand
+        green; green as text on a light ground is already past 4.5:1, so the
+        ink slot is the same value. Warm Metal is the second ink and appears
+        as a hairline or a micro-label, never as a fill. */
+  --accent:        var(--pmb-forest);
+  --accent-hover:  #0F2A20;
+  --accent-2:      var(--pmb-forest-2);
+  --accent-ink:    var(--pmb-forest);
+  --accent-ink-2:  var(--pmb-metal-ink);
+  /* The engine's gradient slots. PMB does not have a brand gradient and
+     should not grow one — §05 rules gradients out of the logo and §06 rules
+     them out of the interface. Both slots resolve to flat brand colour so an
+     engine block that reaches for a gradient gets green instead of a rainbow. */
+  --grad-text:     linear-gradient(90deg, var(--pmb-forest) 0%, var(--pmb-forest) 100%);
+  --accent-grad:   linear-gradient(135deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 100%);
+
+  /* 2 · NEUTRALS — chalk ground, charcoal type. Limestone is a surface, not
+        a page colour; it belongs to material-led panels and editorial bands. */
+  --cream:       var(--pmb-chalk);
+  --cream-2:     var(--pmb-chalk-2);
+  --card:        var(--pmb-chalk-card);
+  --line:        #E0DACE;
+  --line-strong: var(--pmb-concrete);
+  --ink:         var(--pmb-charcoal);
+  --body:        #3E423E;
+  --muted:       var(--pmb-concrete-ink);
+
+  /* 5 · DARK BAND — Deep Forest. The footer, the estimator panel and the
+        cinematic full-width sections. Never a neutral near-black: the dark
+        band is where the brand colour does its work. */
+  --dark:         var(--pmb-forest-deep);
+  --dark-2:       var(--pmb-forest);
+  --on-dark:      var(--pmb-chalk);
+  --on-dark-muted:#B8B5AC;
+  --line-dark:    rgba(232,225,212,0.16);
+
+  /* 6 · HERO SCRIM — deep forest wash over photography. The work is the hero
+        (§06), so the filter stays light: enough to hold white type over a
+        driveway, not enough to flatten the stone. */
+  --scrim-rgb:         13, 33, 26;
+  --hero-media-filter: brightness(0.82) saturate(1.02);
+
+  /* 7 · SHADOWS — tight and cool. Paving sits ON something; the shadow is a
+        contact shadow, not a glow. */
+  --shadow-sm: 0 1px 2px rgba(24,26,24,0.06), 0 6px 18px rgba(24,26,24,0.07);
+  --shadow-md: 0 14px 36px rgba(24,26,24,0.14);
+
+  /* 3 · TYPE — Manrope display, Inter body. The logo is Manrope ExtraBold
+        until the redrawn artwork lands (BRAND.md §02). */
+  --font-head: 'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-logo: 'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --weight-display: 800;
+  --weight-emphasis: 800;
+  --weight-body: 400;
+  --weight-micro: 500;
+  --track-micro: 0.14em;      /* small uppercase labels, opened up */
+  --track-display: -0.025em;  /* big Manrope, closed up hard       */
+
+  /* 4 · METRICS — near-square. Everything PMB lays is a flat unit with a
+        cut edge, and the interface should agree with that. */
+  --container: 1180px;
+  --radius:    4px;
+  --radius-lg: 8px;
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur:       520ms;
+  --dur-slow:  900ms;
+
+  /* 8 · STATE — the style guide has no semantic colours and the build has a
+        nine-step estimator with a file upload, so they are defined here
+        rather than invented per-form. Success is a green far enough from
+        PMB Forest that a valid field never reads as a brand fill. */
+  --state-error:      #A33A2A;
+  --state-error-bg:   #F7E9E5;
+  --state-warn:       #8C6D1F;
+  --state-warn-bg:    #F7F0DE;
+  --state-success:    #1E6B4A;
+  --state-success-bg: #E4F0EA;
+  --state-info:       var(--pmb-forest);
+  --state-info-bg:    #E6EDE9;
+  /* Focus ring. Warm Metal against forest fills, forest against light
+     grounds — never rely on the fill colour alone to show focus. */
+  --focus-ring:       0 0 0 3px rgba(22,56,44,0.28);
+  --focus-ring-dark:  0 0 0 3px rgba(197,172,121,0.55);
+}
+
+/* ------------------------------------------------------------------- DARK -- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cream:       var(--pmb-forest-deep);
+  --cream-2:     #0A1A15;
+  --card:        #13291F;
+  --line:        rgba(232,225,212,0.14);
+  --line-strong: rgba(232,225,212,0.28);
+  --ink:         var(--pmb-chalk);
+  --body:        #CFCEC5;
+  --muted:       #B8B5AC;
+
+  /* Forest is the page on dark, so it cannot also be the accent. The lifted
+     cut carries links and outlines; limestone carries the primary fill. */
+  --accent:      var(--pmb-forest-lift);
+  --accent-hover:#57A883;
+  --accent-2:    var(--pmb-metal-light);
+  --accent-ink:  var(--pmb-forest-lift);
+  --accent-ink-2:var(--pmb-metal-light);
+
+  --dark:        #081511;
+  --dark-2:      var(--pmb-forest-deep);
+  --on-dark:     var(--pmb-chalk);
+  --on-dark-muted:#B8B5AC;
+  --line-dark:   rgba(232,225,212,0.14);
+
+  --scrim-rgb:         8, 21, 17;
+  --hero-media-filter: brightness(0.66) saturate(0.98);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.45), 0 6px 20px rgba(0,0,0,0.5);
+  --shadow-md: 0 18px 44px rgba(0,0,0,0.62);
+
+  --state-error:      #E58C7A;
+  --state-error-bg:   rgba(229,140,122,0.14);
+  --state-warn:       #E8B45C;
+  --state-warn-bg:    rgba(232,180,92,0.14);
+  --state-success:    #6FCB9F;
+  --state-success-bg: rgba(111,203,159,0.14);
+  --state-info:       var(--pmb-forest-lift);
+  --state-info-bg:    rgba(74,155,119,0.14);
+  --focus-ring:       var(--focus-ring-dark);
+}
+
+/* Follow the visitor's OS theme until they pick one explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    color-scheme: dark;
+    --cream:var(--pmb-forest-deep); --cream-2:#0A1A15; --card:#13291F;
+    --line:rgba(232,225,212,0.14); --line-strong:rgba(232,225,212,0.28);
+    --ink:var(--pmb-chalk); --body:#CFCEC5; --muted:#B8B5AC;
+    --accent:var(--pmb-forest-lift); --accent-hover:#57A883; --accent-2:var(--pmb-metal-light);
+    --accent-ink:var(--pmb-forest-lift); --accent-ink-2:var(--pmb-metal-light);
+    --dark:#081511; --dark-2:var(--pmb-forest-deep); --on-dark:var(--pmb-chalk);
+    --on-dark-muted:#B8B5AC; --line-dark:rgba(232,225,212,0.14);
+    --scrim-rgb:8,21,17; --hero-media-filter:brightness(0.66) saturate(0.98);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.45),0 6px 20px rgba(0,0,0,0.5);
+    --shadow-md:0 18px 44px rgba(0,0,0,0.62);
+    --state-error:#E58C7A; --state-error-bg:rgba(229,140,122,0.14);
+    --state-warn:#E8B45C;  --state-warn-bg:rgba(232,180,92,0.14);
+    --state-success:#6FCB9F; --state-success-bg:rgba(111,203,159,0.14);
+    --state-info:var(--pmb-forest-lift); --state-info-bg:rgba(74,155,119,0.14);
+    --focus-ring:var(--focus-ring-dark);
+  }
+}
+
+/* ------------------------------------------------------------- SURFACES -- */
+/* Section-level canvases. Put data-surface on a <section> and every engine
+   block inside it re-reads its tokens — the same card, button and line rules,
+   painted for that material.
+
+   The usage rule from §03 lives here: most of the page is chalk. Forest is
+   for decisive moments — the nav on scroll, the trust strip, the estimator
+   panel, the closing CTA and the footer. If more than about a fifth of a
+   scroll is forest, the green has become the wallpaper. */
+
+/* PMB Forest — the brand moment. Type is chalk; Warm Metal is a hairline and
+   a micro-label, never a fill and never a headline. */
+[data-surface="forest"] {
+  color-scheme: dark;
+  --cream:       var(--pmb-forest);
+  --cream-2:     var(--pmb-forest-deep);
+  --card:        rgba(246,243,236,0.06);
+  --line:        rgba(246,243,236,0.16);
+  --line-strong: rgba(246,243,236,0.3);
+  --ink:         var(--pmb-chalk);
+  --body:        rgba(246,243,236,0.84);
+  --muted:       #B8B5AC;
+  --accent:      var(--pmb-chalk);
+  --accent-hover:var(--pmb-limestone);
+  --accent-ink:  var(--pmb-metal-light);
+  --accent-ink-2:var(--pmb-metal-light);
+  --scrim-rgb:   22,56,44;
+  --focus-ring:  var(--focus-ring-dark);
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Deep Forest — hero overlays, the footer and the cinematic bands. Add
+   .pmb-ground for the construction-layer texture. */
+[data-surface="deep-forest"] {
+  color-scheme: dark;
+  --cream:       var(--pmb-forest-deep);
+  --cream-2:     #0A1A15;
+  --card:        #13291F;
+  --line:        rgba(246,243,236,0.14);
+  --line-strong: rgba(246,243,236,0.26);
+  --ink:         var(--pmb-chalk);
+  --body:        rgba(246,243,236,0.82);
+  --muted:       #B8B5AC;
+  --accent:      var(--pmb-chalk);
+  --accent-hover:var(--pmb-limestone);
+  --accent-ink:  var(--pmb-metal-light);
+  --accent-ink-2:var(--pmb-metal-light);
+  --scrim-rgb:   13,33,26;
+  --focus-ring:  var(--focus-ring-dark);
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Warm Limestone — the material band. Editorial sections, service cards and
+   the process explainer. This is where the site should spend its warmth. */
+[data-surface="limestone"] {
+  color-scheme: light;
+  --cream:       var(--pmb-limestone);
+  --cream-2:     var(--pmb-limestone-2);
+  --card:        #F2ECE1;
+  --line:        #D3C9B8;
+  --line-strong: var(--pmb-concrete);
+  --ink:         var(--pmb-charcoal);
+  --body:        #3E423E;
+  --muted:       var(--pmb-concrete-ink);
+  --accent:      var(--pmb-forest);
+  --accent-hover:#0F2A20;
+  --accent-ink:  var(--pmb-forest);
+  --accent-ink-2:var(--pmb-metal-ink);
+  --scrim-rgb:   232,225,212;
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Chalk — for a section that has to go light inside a dark page. */
+[data-surface="chalk"] {
+  color-scheme: light;
+  --cream:       var(--pmb-chalk);
+  --cream-2:     var(--pmb-chalk-2);
+  --card:        var(--pmb-chalk-card);
+  --line:        #E0DACE;
+  --line-strong: var(--pmb-concrete);
+  --ink:         var(--pmb-charcoal);
+  --body:        #3E423E;
+  --muted:       var(--pmb-concrete-ink);
+  --accent:      var(--pmb-forest);
+  --accent-hover:#0F2A20;
+  --accent-ink:  var(--pmb-forest);
+  --accent-ink-2:var(--pmb-metal-ink);
+  --scrim-rgb:   246,243,236;
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* Charcoal — vehicles, workwear and the one genuinely neutral dark moment.
+   Rare on the website; it exists so print and livery share the token file. */
+[data-surface="charcoal"] {
+  color-scheme: dark;
+  --cream:       var(--pmb-charcoal);
+  --cream-2:     var(--pmb-charcoal-2);
+  --card:        #22251F;
+  --line:        rgba(246,243,236,0.14);
+  --line-strong: rgba(246,243,236,0.26);
+  --ink:         var(--pmb-chalk);
+  --body:        #CFCEC5;
+  --muted:       #B8B5AC;
+  --accent:      var(--pmb-chalk);
+  --accent-hover:var(--pmb-limestone);
+  --accent-ink:  var(--pmb-metal-light);
+  --scrim-rgb:   24,26,24;
+  --focus-ring:  var(--focus-ring-dark);
+  background: var(--cream);
+  color: var(--body);
+}
+
+/* --------------------------------------------- THE GROUND, AS TOKENS -- */
+/* Physical → digital. Each of these comes from what PMB actually builds, so
+   the interface agrees with the work rather than decorating it. §07 is
+   explicit: motion and texture derive from construction, or they don't ship. */
+:root {
+  /* Block paving → a real stretcher bond, not a grid. Bed joints every row;
+     head joints offset half a unit on alternate rows, which is what makes it
+     read as paving rather than graph paper. Drawn as an SVG tile because CSS
+     gradients cannot offset alternate rows on their own. Hairline weight, low
+     opacity, behind a section — never behind body copy. */
+  --pmb-bond-w: 46px;
+  --pmb-bond-h: 23px;
+  --pmb-bond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cg stroke='%23181A18' stroke-opacity='0.09' stroke-width='1'%3E%3Cpath d='M0 .5h46M0 23.5h46'/%3E%3Cpath d='M.5 0v23M23.5 23v23'/%3E%3C/g%3E%3C/svg%3E");
+  --pmb-bond-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cg stroke='%23F6F3EC' stroke-opacity='0.12' stroke-width='1'%3E%3Cpath d='M0 .5h46M0 23.5h46'/%3E%3Cpath d='M.5 0v23M23.5 23v23'/%3E%3C/g%3E%3C/svg%3E");
+
+  /* Limestone and resin surfaces → a fine grain. §08 asks for paper/limestone
+     texture at low opacity that never fights legibility, so this is a data
+     URI of monochrome noise rather than an image request. */
+  --pmb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+  --pmb-grain-opacity: 0.045;
+
+  /* The build-up: excavation → Type 1 sub-base → compaction → laying course
+     → surface. The cutaway in §07 is these five bands, top surface last. */
+  --pmb-ground:
+      linear-gradient(180deg,
+        var(--pmb-forest-deep) 0 18%,
+        #14231C 18% 34%,
+        #1A2620 34% 56%,
+        #202A23 56% 78%,
+        #262D26 78% 100%);
+
+  /* Edging → one decisive line. A kerb is a hard edge, so the brand's rule is
+     a square-cut 2px, not a hairline that fades away. */
+  --pmb-edge: 2px solid var(--pmb-forest);
+  --pmb-edge-soft: 1px solid var(--line);
+  --pmb-edge-metal: 1px solid rgba(181,154,99,0.5);
+
+  /* Compaction → the motion signature. Things arrive and SETTLE: a short
+     travel with a firm stop, never a bounce or a float. Everything in §07
+     that "moves into alignment" uses this. */
+  --pmb-settle: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --pmb-settle-dur: 620ms;
+}
+
+/* Ready-made helpers. Structure only — every colour above is a token. */
+.pmb-bond { position: relative; }
+.pmb-bond::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: var(--pmb-bond);
+  background-size: var(--pmb-bond-w) var(--pmb-bond-w);
+  /* Fade the lattice out at the band edges so it never ends on a hard line. */
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+}
+[data-surface="forest"] .pmb-bond::before,
+[data-surface="deep-forest"] .pmb-bond::before,
+[data-surface="charcoal"] .pmb-bond::before {
+  background-image: var(--pmb-bond-light);
+}
+
+.pmb-grain { position: relative; }
+.pmb-grain::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: var(--pmb-grain);
+  opacity: var(--pmb-grain-opacity);
+  mix-blend-mode: multiply;
+}
+[data-surface="forest"] .pmb-grain::after,
+[data-surface="deep-forest"] .pmb-grain::after,
+[data-surface="charcoal"] .pmb-grain::after { mix-blend-mode: overlay; opacity: 0.06; }
+
+.pmb-ground { background: var(--pmb-ground); }
+
+/* Micro label — the small uppercase eyebrow above a section headline. */
+.pmb-micro {
+  font-family: var(--font-body); font-weight: var(--weight-micro);
+  font-size: 0.72rem; letter-spacing: var(--track-micro); text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Display — big Manrope, tracked in. Sentence case by default; uppercase is
+   for the hero and the occasional full-width statement. */
+.pmb-display {
+  font-family: var(--font-head); font-weight: var(--weight-display);
+  letter-spacing: var(--track-display); line-height: 1.02;
+  color: var(--ink);
+}
+
+/* Trust numbers — oversized numerals with short supporting copy (§04). */
+.pmb-figure {
+  font-family: var(--font-head); font-weight: var(--weight-display);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.03em; line-height: 1;
+  color: var(--ink);
+}
+
+/* One kerb line, 64px of it, under an eyebrow or between bands. */
+.pmb-rule { border: 0; border-top: var(--pmb-edge); width: 64px; margin: 0; }
+
+/* The logo as live text, until the redrawn artwork lands. PMB is the mark;
+   the descriptor sits under it, tracked out and much smaller. Never gold —
+   see BRAND.md §02. */
+.pmb-logo {
+  font-family: var(--font-logo); font-weight: 800; letter-spacing: -0.02em;
+  line-height: 0.92; white-space: nowrap; color: var(--ink); text-decoration: none;
+  display: inline-block;
+}
+.pmb-logo small {
+  display: block; font-family: var(--font-body); font-weight: 500;
+  font-size: 0.235em; letter-spacing: 0.2em; text-transform: uppercase;
+  line-height: 1; margin-top: 0.28em; color: inherit; opacity: 0.9;
+}
+
+/* Focus is visible on every surface, including inside a forest panel where
+   the fill colour alone cannot carry it. */
+.pmb-focusable:focus-visible,
+[data-surface] a:focus-visible,
+[data-surface] button:focus-visible,
+[data-surface] input:focus-visible,
+[data-surface] select:focus-visible,
+[data-surface] textarea:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius);
+}
+
+/* Motion. Everything derived from compaction settles rather than bounces,
+   and the whole lot stops for a visitor who asked it to (§07, §15 rule 10). */
+.pmb-settle { transition: transform var(--pmb-settle-dur) var(--pmb-settle), opacity var(--pmb-settle-dur) var(--pmb-settle); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pmb-settle { transition-duration: 1ms; }
+  .pmb-bond::before,
+  .pmb-grain::after { animation: none; }
+}
