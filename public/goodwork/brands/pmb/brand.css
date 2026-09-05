@@ -116,11 +116,12 @@
   --on-dark-muted:#B8B5AC;
   --line-dark:    rgba(232,225,212,0.16);
 
-  /* 6 · HERO SCRIM — deep forest wash over photography. The work is the hero
-        (§06), so the filter stays light: enough to hold white type over a
-        driveway, not enough to flatten the stone. */
+  /* 6 · HERO SCRIM — none. The work is the hero (§06), so the photograph runs
+        clear and the darkening is scoped to sit behind the headline instead of
+        washing the whole frame. --scrim-rgb stays for engine blocks that tint
+        their own media; the hero itself no longer filters. */
   --scrim-rgb:         13, 33, 26;
-  --hero-media-filter: brightness(0.94) saturate(1.0);
+  --hero-media-filter: none;
 
   /* 7 · SHADOWS — tight and cool. Paving sits ON something; the shadow is a
         contact shadow, not a glow. */
