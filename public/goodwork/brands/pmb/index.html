@@ -123,6 +123,9 @@ h2.head{font-family:var(--font-head);font-weight:800;text-transform:uppercase;le
 @media(max-width:560px){.tiles{grid-template-columns:repeat(2,1fr)}}
 .tile{position:relative;display:block;overflow:hidden;border-radius:var(--radius)}
 .tile .photo{aspect-ratio:3/4}
+/* The tile's own label owns the bottom edge, so an empty slot's placeholder
+   caption moves to the top rather than printing through it. */
+.tile .photo__tag{top:.8rem;bottom:auto}
 .tile__scrim{position:absolute;inset:auto 0 0 0;z-index:4;padding:1.4rem .85rem .8rem;
  background:linear-gradient(180deg,rgba(13,33,26,0),rgba(13,33,26,.85));color:var(--pmb-chalk);pointer-events:none}
 .tile__scrim b{display:block;font-family:var(--font-head);font-weight:800;font-size:.94rem;letter-spacing:-.01em}
