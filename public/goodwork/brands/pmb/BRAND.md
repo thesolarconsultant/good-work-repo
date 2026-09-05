@@ -82,8 +82,9 @@ or white where a printer or embroiderer needs it.
 
 ### Do not
 
-No gradients. No gloss, bevels or drop shadows. No fake stone texture inside
-the mark. No Celtic or Irish motifs, and no bright green because of the
+No gradients **in the mark** — this one is absolute, and it holds even though
+the rest of the site now uses them (see §03). No gloss, bevels or drop
+shadows. No fake stone texture inside the mark. No Celtic or Irish motifs, and no bright green because of the
 owner's heritage — the brand should feel relevant to the work, not themed
 around nationality.
 
@@ -158,6 +159,36 @@ Most of the site breathes in chalk and limestone. Forest is for decisive
 moments: navigation states, CTAs, the trust strip, the estimator panel,
 selected full-width sections and the footer. If more than about a fifth of a
 scroll is green, the signature has become the background.
+
+### Gradients
+
+An earlier version of this document read the style guide's gradient ban as
+covering the whole interface. It doesn't — the guide bans gradients **inside
+the logo**, and says nothing about anything else. The site runs gradients;
+the logo never does.
+
+| Token | What it paints |
+| --- | --- |
+| `--pmb-grad-forest` | Forest bands — 135°, `#1B4536` → Forest → Deep Forest |
+| `--pmb-grad-deep` | Deep Forest bands and the footer — 160°, Forest → Deep Forest → `#081511` |
+| `--pmb-grad-btn` | Primary buttons, with `--pmb-grad-btn-hover` for the hover state |
+| `--pmb-grad-panel` | The estimated-range card behind the price |
+| `--pmb-wash-chalk` `--pmb-wash-stone` | Light sections |
+
+Three rules:
+
+1. **One family only.** Green into deeper green, stone into deeper stone.
+   Never two hues, never a rainbow, never the blue-to-violet gradient every
+   other site is wearing. The palette's job is landscape and stone; a
+   gradient that leaves that family stops looking like PMB.
+2. **`#1B4536` is the ceiling.** It is the lightest green any gradient may
+   reach. On it, chalk holds 9.7:1, Warm Metal text 4.9:1 and muted 5.3:1.
+   One step brighter — `#22543F` — drops metal and muted below 4.5:1, so a
+   band using it could no longer carry a gold micro-label. Treat it as a hard
+   stop, not a starting point.
+3. **Light washes stay near-invisible.** They fade to transparent at both
+   ends so two stacked light sections never band where they meet. If you can
+   see where a light gradient begins, it is too strong.
 
 ### State colours
 

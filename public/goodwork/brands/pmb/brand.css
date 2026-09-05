@@ -88,12 +88,13 @@
   --accent-2:      var(--pmb-forest-2);
   --accent-ink:    var(--pmb-forest);
   --accent-ink-2:  var(--pmb-metal-ink);
-  /* The engine's gradient slots. PMB does not have a brand gradient and
-     should not grow one — §05 rules gradients out of the logo and §06 rules
-     them out of the interface. Both slots resolve to flat brand colour so an
-     engine block that reaches for a gradient gets green instead of a rainbow. */
-  --grad-text:     linear-gradient(90deg, var(--pmb-forest) 0%, var(--pmb-forest) 100%);
-  --accent-grad:   linear-gradient(135deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 100%);
+  /* The engine's gradient slots. The style guide bans gradients INSIDE THE
+     LOGO — that rule stands and is absolute. Everywhere else PMB now runs a
+     gradient, but only ever within the forest family: green into deeper
+     green, stone into deeper stone. Never two hues, never a rainbow, never
+     a sheen across the wordmark. */
+  --grad-text:     linear-gradient(100deg, var(--pmb-forest) 0%, #1B4536 55%, var(--pmb-forest) 100%);
+  --accent-grad:   linear-gradient(140deg, #1E4A39 0%, var(--pmb-forest) 55%, var(--pmb-forest-deep) 100%);
 
   /* 2 · NEUTRALS — chalk ground, charcoal type. Limestone is a surface, not
         a page colour; it belongs to material-led panels and editorial bands. */
@@ -264,7 +265,7 @@
   --accent-ink-2:var(--pmb-metal-light);
   --scrim-rgb:   22,56,44;
   --focus-ring:  var(--focus-ring-dark);
-  background: var(--cream);
+  background: var(--pmb-grad-forest);
   color: var(--body);
 }
 
@@ -286,7 +287,7 @@
   --accent-ink-2:var(--pmb-metal-light);
   --scrim-rgb:   13,33,26;
   --focus-ring:  var(--focus-ring-dark);
-  background: var(--cream);
+  background: var(--pmb-grad-deep);
   color: var(--body);
 }
 
@@ -350,6 +351,27 @@
   --focus-ring:  var(--focus-ring-dark);
   background: var(--cream);
   color: var(--body);
+}
+
+/* ------------------------------------------------------ GRADIENTS -- */
+/* One family, tuned to the ceiling contrast allows. #1B4536 is the LIGHTEST
+   green any of these may reach: on it, chalk holds 9.7:1, Warm Metal text
+   4.9:1 and muted 5.3:1. One step brighter (#22543F) drops metal and muted
+   under 4.5:1, so a band using it could no longer carry a gold micro-label.
+   Treat #1B4536 as a hard stop, not a starting point.
+
+   The light washes are deliberately near-invisible — they fade to
+   transparent at both ends so two stacked light sections never band at the
+   join. If you can see where a light gradient starts, it is too strong. */
+:root {
+  --pmb-grad-forest: linear-gradient(135deg, #1B4536 0%, var(--pmb-forest) 48%, var(--pmb-forest-deep) 100%);
+  --pmb-grad-deep:   linear-gradient(160deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 52%, #081511 100%);
+  --pmb-grad-panel:  linear-gradient(150deg, rgba(30,74,57,.55) 0%, rgba(8,21,17,.72) 100%);
+  --pmb-grad-btn:    linear-gradient(140deg, #1E4A39 0%, var(--pmb-forest) 100%);
+  --pmb-grad-btn-hover: linear-gradient(140deg, #2A6149 0%, #1B4536 100%);
+  /* Light sections: a soft rise and fall, transparent at both edges. */
+  --pmb-wash-chalk:  linear-gradient(180deg, rgba(232,225,212,0) 0%, rgba(232,225,212,.55) 50%, rgba(232,225,212,0) 100%);
+  --pmb-wash-stone:  linear-gradient(180deg, rgba(220,211,195,0) 0%, rgba(220,211,195,.6) 50%, rgba(220,211,195,0) 100%);
 }
 
 /* --------------------------------------------- THE GROUND, AS TOKENS -- */
