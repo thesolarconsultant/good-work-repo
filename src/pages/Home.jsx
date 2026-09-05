@@ -12,6 +12,7 @@ import Seo from "../components/Seo";
 import { SITE_URL } from "../lib/site";
 import Stamp from "../components/Stamp";
 import { CASE_STUDIES } from "../data/caseStudies";
+import { DISCIPLINES } from "../data/disciplines";
 
 const WORK = CASE_STUDIES.map((cs) => ({
   to: `/case-studies#${cs.id}`,
@@ -20,13 +21,6 @@ const WORK = CASE_STUDIES.map((cs) => ({
   desc: cs.lede,
   shot: cs.shots[0].src,
 }));
-
-const DISCIPLINES = [
-  { mark: "1", title: "Brand", desc: "Identity, positioning and messaging that make a business instantly recognisable." },
-  { mark: "2", title: "Web", desc: "Websites and digital experiences built around one job: commercial outcomes." },
-  { mark: "3", title: "Creative", desc: "Campaigns, content and advertising that actually gets looked at." },
-  { mark: "4", title: "Systems", desc: "CRM, booking, quoting and content infrastructure that runs without you." },
-];
 
 const TICKER = [
   "Brand identity",

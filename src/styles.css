@@ -160,6 +160,7 @@ button{font-family:inherit;}
 /* ---- Buttons ---- */
 .gw-button{display:inline-flex;align-items:center;justify-content:center;gap:0.6rem;min-height:48px;padding:0.85rem 1.3rem;border:0;border-radius:var(--gw-radius-sm);background:var(--gw-black);color:var(--gw-white);font-size:0.82rem;font-weight:var(--gw-semibold);letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;text-align:center;}
 .gw-button--outline{border:1px solid var(--gw-black);background:transparent;color:var(--gw-black);}
+.gw-dark .gw-button--outline{border-color:rgba(255,255,255,0.5);color:var(--gw-white);}
 
 /* ---- Work grid ---- */
 .gw-work-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.75rem);}
@@ -175,7 +176,7 @@ button{font-family:inherit;}
 .gw-dark{background:var(--gw-black);color:var(--gw-white);}
 .gw-dark .gw-body,.gw-dark .gw-body-large{color:rgba(255,255,255,0.72);}
 .gw-dark .gw-label{color:rgba(255,255,255,0.5);}
-.gw-dark .gw-h2,.gw-dark .gw-h3{color:var(--gw-white);}
+.gw-dark .gw-h1,.gw-dark .gw-h2,.gw-dark .gw-h3{color:var(--gw-white);}
 .gw-dark .gw-features li{color:var(--gw-white);}
 
 /* ---- Stamp ---- (visuals and rotation live in styles/motion.css) */

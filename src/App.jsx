@@ -13,10 +13,15 @@ const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const ContentConsole = lazy(() => import("./pages/ContentConsole"));
 const Services = lazy(() => import("./pages/Services"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Pitch = lazy(() => import("./pages/Pitch"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Static single-file previews (no server rewrites) build with VITE_HASH_ROUTER=1.
 const Router = import.meta.env.VITE_HASH_ROUTER ? HashRouter : BrowserRouter;
+
+// Routes that own the whole viewport themselves — no site nav, no reading
+// progress bar, no page padding. The pitch deck is full-screen by design.
+const CHROMELESS = new Set(["/pitch"]);
 
 const ORGANISATION = {
   "@context": "https://schema.org",
@@ -41,10 +46,32 @@ function RouteFrame({ children }) {
   );
 }
 
-export default function App() {
+const AppRoutes = (
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/work" element={<Work />} />
+    <Route path="/case-studies" element={<CaseStudies />} />
+    <Route path="/content-console" element={<ContentConsole />} />
+    <Route path="/services" element={<Services />} />
+    <Route path="/contact" element={<Contact />} />
+    <Route path="/pitch" element={<Pitch />} />
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+);
+
+function Chrome() {
+  const { pathname } = useLocation();
+
+  if (CHROMELESS.has(pathname)) {
+    return (
+      <Suspense fallback={<div className="gw-route-loading" aria-hidden="true" />}>
+        {AppRoutes}
+      </Suspense>
+    );
+  }
+
   return (
-    <Router>
-      <RouteManager />
+    <>
       <ScrollProgress />
       <a className="gw-skip" href="#gw-main">
         Skip to content
@@ -56,18 +83,19 @@ export default function App() {
           {/* Reserves a viewport of height while a route chunk loads, so the
               footer never flashes up under a half-built page. */}
           <Suspense fallback={<div className="gw-route-loading" aria-hidden="true" />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/work" element={<Work />} />
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/content-console" element={<ContentConsole />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            {AppRoutes}
           </Suspense>
         </RouteFrame>
       </main>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <RouteManager />
+      <Chrome />
 
       <script
         type="application/ld+json"
