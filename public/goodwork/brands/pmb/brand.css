@@ -367,8 +367,24 @@
   --pmb-grad-forest: linear-gradient(135deg, #1B4536 0%, var(--pmb-forest) 48%, var(--pmb-forest-deep) 100%);
   --pmb-grad-deep:   linear-gradient(160deg, var(--pmb-forest) 0%, var(--pmb-forest-deep) 52%, #081511 100%);
   --pmb-grad-panel:  linear-gradient(150deg, rgba(30,74,57,.55) 0%, rgba(8,21,17,.72) 100%);
-  --pmb-grad-btn:    linear-gradient(140deg, #1E4A39 0%, var(--pmb-forest) 100%);
-  --pmb-grad-btn-hover: linear-gradient(140deg, #2A6149 0%, #1B4536 100%);
+  /* Sage CTA, per the mockup. Every stop clears 4.5:1 against chalk —
+     #4E7355 is 4.85 and #3E6245 is 6.24. The mockup's own lighter fill
+     (#688670 once corrected for its JPEG) only reaches 3.62, so the button
+     would have failed as drawn; these are the closest tones that hold. */
+  --pmb-grad-btn:    linear-gradient(180deg, #4E7355 0%, #3E6245 100%);
+  --pmb-grad-btn-hover: linear-gradient(180deg, #446B4D 0%, #365840 100%);
+  --pmb-btn-edge:    #6B8F71;
+
+  /* Slate, drawn rather than photographed: large riven slabs with joints and
+     per-slab tonal variation. It sits behind the estimated range, where the
+     mockup puts a stone photograph. Every tone in it holds chalk text above
+     6.5:1, so the figure stays legible without a heavy scrim burying the
+     texture the way an arbitrary photo would need. */
+  --pmb-slate:
+      repeating-linear-gradient(28deg,  rgba(18,20,16,.5) 0 2px, transparent 2px 104px),
+      repeating-linear-gradient(118deg, rgba(18,20,16,.5) 0 2px, transparent 2px 138px),
+      repeating-linear-gradient(28deg,  rgba(255,255,255,.035) 0 1px, transparent 1px 104px),
+      linear-gradient(118deg, #4E5048 0%, #41433B 34%, #4A4C43 62%, #3C3E36 100%);
   /* Light sections: a soft rise and fall, transparent at both edges. */
   --pmb-wash-chalk:  linear-gradient(180deg, rgba(232,225,212,0) 0%, rgba(232,225,212,.55) 50%, rgba(232,225,212,0) 100%);
   --pmb-wash-stone:  linear-gradient(180deg, rgba(220,211,195,0) 0%, rgba(220,211,195,.6) 50%, rgba(220,211,195,0) 100%);
