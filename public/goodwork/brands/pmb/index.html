@@ -138,15 +138,17 @@ fieldset{border:0;padding:0;min-width:0}
    failed load, and under reduced motion — so the hero is never blank and
    never depends on the video having played. */
 .hero__film{position:absolute;inset:0;z-index:1;opacity:0;transition:opacity 600ms var(--pmb-settle)}
+/* Matched on the attribute, not on one value of it: the hero goes to
+   data-film="done" when the drive is laid, and the film must stay up. */
 .hero__film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:var(--hero-media-filter)}
-.hero[data-film="true"] .hero__film{opacity:1}
-.hero[data-film="true"] .hero__layer--before,
-.hero[data-film="true"] .hero__layer--after,
-.hero[data-film="true"] .hero__pavers{display:none}
+.hero[data-film] .hero__film{opacity:1}
+.hero[data-film] .hero__layer--before,
+.hero[data-film] .hero__layer--after,
+.hero[data-film] .hero__pavers{display:none}
 /* with film, the hero is one screen — there is no scroll timeline to scrub */
-.hero[data-film="true"] .hero__track{height:auto}
-.hero[data-film="true"] .hero__stage{position:relative;height:auto;min-height:min(88vh,46rem)}
-.hero[data-film="true"] .hero__cue{display:none}
+.hero[data-film] .hero__track{height:auto}
+.hero[data-film] .hero__stage{position:relative;height:auto;min-height:min(88vh,46rem)}
+.hero[data-film] .hero__cue{display:none}
 .hero__layer--after img{filter:var(--hero-media-filter)}
 .hero__scrim{position:absolute;inset:0;
  background:
@@ -493,7 +495,7 @@ h2.head{font-family:var(--font-head);font-weight:800;text-transform:uppercase;le
         <img alt="A finished block-paved driveway at twilight in front of a British bungalow" data-slot="photos/hero-driveway-twilight.jpg">
       </div>
       <div class="hero__film" id="hero-film" aria-hidden="true">
-        <video id="hero-video" muted playsinline loop
+        <video id="hero-video" muted playsinline
                poster="photos/hero-driveway-twilight.jpg" preload="auto" autoplay data-src="video/hero-paving.mp4"></video>
       </div>
       <div class="hero__pavers" id="pavers" aria-hidden="true"></div>
@@ -999,7 +1001,13 @@ h2.head{font-family:var(--font-head);font-weight:800;text-transform:uppercase;le
       filmOn = true;
       hero.setAttribute('data-film', 'true');
     };
+    /* The drive is laid once. After the last frame the video holds there — it
+       does not loop and it must not be restarted, so every play path checks
+       this first. Calling play() on an ended video rewinds it to zero, which
+       is exactly the restart we are preventing. */
+    var laid = false;
     var tryPlay = function () {
+      if (laid) return;
       var go = film.play();
       /* autoplay can still be refused. That is not a failure: the first frame
          stays on screen and the hero still reads. */
@@ -1009,6 +1017,17 @@ h2.head{font-family:var(--font-head);font-weight:800;text-transform:uppercase;le
        it. canplay is unreliable here and playing may never fire if autoplay
        is blocked, so neither is the switch. */
     film.addEventListener('loadeddata', function () { handOver(); tryPlay(); });
+    /* Stop on the finished drive. A non-looping video already holds its last
+       frame, so nothing is seeked here — seeking re-fires canplay and would
+       start the whole thing again. */
+    film.addEventListener('ended', function () {
+      laid = true;
+      film.pause();
+      hero.setAttribute('data-film', 'done');
+    });
+    /* Belt and braces: if anything at all sets it going again — a stray
+       canplay, a browser restoring the tab — put it straight back. */
+    film.addEventListener('play', function () { if (laid) film.pause(); });
     film.addEventListener('canplay', tryPlay);
     film.addEventListener('error', function () {}, { once: true });
     film.src = film.getAttribute('data-src');
