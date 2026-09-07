@@ -139,4 +139,38 @@ export const CASE_STUDIES = [
     ],
     services: ["Website", "Full brand identity & logo", "Payment system", "Mobile app"],
   },
+  {
+    id: "omniv",
+    name: "OMNIV",
+    site: "omniv.nl — pre-launch build",
+    sector: "Clean energy installer · Netherlands",
+    tag: "Brand · Web · Systems · Content",
+    accent: "linear-gradient(135deg,#14100C,#FF5722)",
+    lede: "A Netherlands clean-energy installer covering solar, batteries, EV charging and heating & cooling — built to argue 'your whole home, working as one' with five real pages instead of one shared features list.",
+    brief: [
+      "OMNIV doesn't sell a single product. Solar, battery storage, EV charging, heating & cooling, and the smart-energy layer that coordinates them all needed to each stand on their own — a homeowner comparing chargers shouldn't have to wade through solar copy to find their answer.",
+      "The brief also covered what happens after the site launches: a bilingual content operation to keep search traffic coming in both English and Dutch, a mapped email sequence from first enquiry through aftercare, and a month of social content ready to post from day one — while staying honest, inside the tools themselves, about which facts are real and which are still waiting on OMNIV to confirm them.",
+    ],
+    built: [
+      { title: "Five service pages, one system", desc: "Solar, battery, EV charging, heating & cooling and smart energy each get a full page — its own hero, its own real numbers (quotes designed this year, days to a fixed quote, usable discharge, heat moved per unit) and its own call to action, rather than one shared 'services' page." },
+      { title: "A day that actually turns to night", desc: "The homepage and every service page run the same scroll-driven lighting story — morning solar, an after-dark battery, a high-summer cooling shot — so the time of day makes the argument instead of a stock photo." },
+      { title: "A bilingual content pipeline", desc: "A Kanban board tracks every topic from idea through writing, review and published, in English and Dutch side by side, with the search term each article is written to answer attached to the row." },
+      { title: "A 28-email customer journey, mapped honestly", desc: "Enquiry through consultation, design, quote and aftercare, laid out end to end with every fact OMNIV still needs to supply — a booking link, a lead time, a warranty term — flagged inline rather than guessed at. Nothing was invented to fill a gap." },
+      { title: "Thirty carousels, one for every day of a launch month", desc: "Four-slide swipeable social carousels, on-brand and ready to post daily without a design request for each one." },
+      { title: "A blog filed by the question, not the department", desc: "Nine posts under categories homeowners actually search by — sizing, buying & money, self-use & the grid, EV charging, policy — instead of a generic company-news feed." },
+    ],
+    facts: [
+      { figure: "5", label: "service lines, each a full page" },
+      { figure: "28", label: "emails mapped, enquiry to aftercare" },
+      { figure: "20", label: "content topics tracked in EN & NL" },
+      { figure: "30", label: "social carousels scripted for launch" },
+    ],
+    shots: [
+      { src: "/case-studies/omniv-home.jpg", caption: "Homepage — 'your whole home, working as one', over a real home at morning light." },
+      { src: "/case-studies/omniv-solar.jpg", caption: "The solar page — sized around real usage, with its own proof numbers underneath." },
+      { src: "/case-studies/omniv-console.jpg", caption: "The content pipeline — every topic tracked from idea to published, in English and Dutch." },
+      { src: "/case-studies/omniv-smart-energy.jpg", caption: "Smart energy — the layer that ties solar, battery and charging into one system." },
+    ],
+    services: ["Website", "Full brand identity & logo", "Bilingual content pipeline (EN/NL)", "Customer journey & email automation", "Social content system"],
+  },
 ];

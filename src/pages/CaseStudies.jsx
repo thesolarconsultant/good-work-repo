@@ -32,7 +32,7 @@ export default function CaseStudies() {
     <>
       <Seo
         title="Case studies"
-        description="Four real projects, four different problems. Real screenshots of the sites, portals and content systems we built — and what each one had to solve."
+        description="Five real projects, five different problems. Real screenshots of the sites, portals and content systems we built — and what each one had to solve."
         schema={SCHEMA}
       />
 
@@ -50,7 +50,7 @@ export default function CaseStudies() {
           />
           <Reveal variant="rise" delay={240}>
             <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-md">
-              Four real projects, four different problems. Every screenshot below is the
+              Five real projects, five different problems. Every screenshot below is the
               real site, and every claim is something you can go and click on.
             </p>
           </Reveal>

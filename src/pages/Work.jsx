@@ -35,7 +35,7 @@ export default function Work() {
     <>
       <Seo
         title="Selected work"
-        description="Brand, web and systems work across UK energy, US construction and a consumer app — all live, all still running."
+        description="Brand, web and systems work across UK energy, US construction, a consumer app and a Netherlands clean-energy installer — real projects, most already live."
         schema={SCHEMA}
       />
 
@@ -49,8 +49,8 @@ export default function Work() {
           <Headline onMount className="gw-h1 gw-stack-md" lines={["Recent projects"]} />
           <Reveal variant="rise" delay={200}>
             <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-md">
-              Brand, web and systems work across UK energy, US construction and a consumer app —
-              all live, all still running.
+              Brand, web and systems work across UK energy, US construction, a consumer app and a
+              Netherlands clean-energy installer — real projects, most already live.
             </p>
           </Reveal>
           <Reveal variant="rise" delay={300}>

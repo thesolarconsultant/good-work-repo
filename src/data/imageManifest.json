@@ -95,6 +95,50 @@
     "base": "/derived/case-studies/numio-story",
     "flat": "/derived/case-studies/numio-story-960.webp"
   },
+  "/case-studies/omniv-console.jpg": {
+    "width": 1440,
+    "height": 960,
+    "widths": [
+      640,
+      960,
+      1440
+    ],
+    "base": "/derived/case-studies/omniv-console",
+    "flat": "/derived/case-studies/omniv-console-960.webp"
+  },
+  "/case-studies/omniv-home.jpg": {
+    "width": 1440,
+    "height": 960,
+    "widths": [
+      640,
+      960,
+      1440
+    ],
+    "base": "/derived/case-studies/omniv-home",
+    "flat": "/derived/case-studies/omniv-home-960.webp"
+  },
+  "/case-studies/omniv-smart-energy.jpg": {
+    "width": 1440,
+    "height": 960,
+    "widths": [
+      640,
+      960,
+      1440
+    ],
+    "base": "/derived/case-studies/omniv-smart-energy",
+    "flat": "/derived/case-studies/omniv-smart-energy-960.webp"
+  },
+  "/case-studies/omniv-solar.jpg": {
+    "width": 1440,
+    "height": 960,
+    "widths": [
+      640,
+      960,
+      1440
+    ],
+    "base": "/derived/case-studies/omniv-solar",
+    "flat": "/derived/case-studies/omniv-solar-960.webp"
+  },
   "/case-studies/tsc-blog.jpg": {
     "width": 2160,
     "height": 1350,
