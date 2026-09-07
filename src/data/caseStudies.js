@@ -1,6 +1,8 @@
 // Case studies — written from what's actually in each client's repository.
 // Screenshots in public/case-studies are captures of the real, built sites.
 
+import { TSC_AGENT_SCRIPT } from "./agentScripts";
+
 export const CASE_STUDIES = [
   {
     id: "tsc",
@@ -39,6 +41,7 @@ export const CASE_STUDIES = [
       { src: "/case-studies/tsc-blog.jpg", caption: "The blog, built for search: prerendered, structured and on-brand." },
     ],
     services: ["Website", "Full brand identity & logo", "Quick quoting & contracting app", "Open CRM", "AI booking agent", "Meta ads", "GA4 setup", "Content Console"],
+    agentScript: TSC_AGENT_SCRIPT,
   },
   {
     id: "8energy",

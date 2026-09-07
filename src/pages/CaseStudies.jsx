@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Headline from "../components/Headline";
+import PhoneStory from "../components/PhoneStory";
 import Reveal from "../components/Reveal";
 import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
@@ -115,6 +116,17 @@ export default function CaseStudies() {
                   </ul>
                 </Reveal>
               </div>
+
+              {cs.agentScript && (
+                <PhoneStory
+                  kicker="See it work"
+                  title="Booked without anyone picking up the phone"
+                  intro={`This is the shape of a real enquiry landing on ${cs.name}'s AI booking agent — the questions it asks, and the call it books, before a human's involved.`}
+                  contact={cs.agentScript.contact}
+                  subtitle={cs.agentScript.subtitle}
+                  messages={cs.agentScript.messages}
+                />
+              )}
 
               <div className="gw-shot-grid">
                 {cs.shots.slice(1).map((s) => (

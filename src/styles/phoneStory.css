@@ -1,0 +1,134 @@
+/* PhoneStory — a scroll-linked phone-screen conversation. */
+
+.gw-phonestory { position: relative; }
+.gw-phonestory__pin {
+  position: sticky;
+  top: calc(var(--gw-nav-height) + 24px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  padding-block: clamp(2rem, 5vw, 3rem);
+}
+.gw-phonestory__intro { max-width: 460px; }
+
+.gw-phonestory__phone {
+  --phone-w: 300px;
+  --phone-h: 610px;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  border-radius: 42px;
+  background: #0b0b0c;
+  padding: 14px;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  position: relative;
+  flex: none;
+}
+.gw-phonestory__notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 22px;
+  background: #0b0b0c;
+  border-radius: 0 0 16px 16px;
+  z-index: 2;
+}
+.gw-phonestory__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f4f2ee;
+  border-radius: 30px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
+}
+.gw-phonestory__screen::-webkit-scrollbar { display: none; }
+
+.gw-phonestory__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 16px 12px;
+  background: linear-gradient(#f4f2ee 78%, rgba(244, 242, 238, 0));
+}
+.gw-phonestory__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gw-gradient);
+  color: var(--gw-white);
+  font-weight: var(--gw-bold);
+  font-size: 0.85rem;
+  flex: none;
+}
+.gw-phonestory__contact { margin: 0; font-size: 0.85rem; font-weight: var(--gw-semibold); color: var(--gw-black); }
+.gw-phonestory__status { margin: 1px 0 0; font-size: 0.7rem; color: var(--gw-grey-700); }
+
+.gw-phonestory__messages {
+  flex: 1;
+  padding: 0 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gw-phonestory__bubble {
+  max-width: 78%;
+  padding: 9px 13px;
+  border-radius: 16px;
+  font-size: 0.82rem;
+  line-height: 1.42;
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 320ms var(--gw-ease), transform 320ms var(--gw-ease);
+}
+.gw-phonestory__bubble.is-visible { opacity: 1; transform: none; }
+.gw-phonestory__bubble--lead {
+  align-self: flex-start;
+  background: #e6e4df;
+  color: var(--gw-black);
+  border-bottom-left-radius: 4px;
+}
+.gw-phonestory__bubble--agent {
+  align-self: flex-end;
+  background: var(--gw-blue);
+  color: var(--gw-white);
+  border-bottom-right-radius: 4px;
+}
+
+.gw-phonestory__home {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 4px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.gw-phonestory--static {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3rem);
+  padding-block: clamp(2rem, 5vw, 3rem);
+  justify-items: center;
+  text-align: center;
+}
+.gw-phonestory--static .gw-phonestory__intro { max-width: 520px; }
+.gw-phonestory--static .gw-phonestory__phone { --phone-h: 560px; }
+
+@media (max-width: 1000px) {
+  .gw-phonestory__pin { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .gw-phonestory__intro { max-width: 520px; }
+}
