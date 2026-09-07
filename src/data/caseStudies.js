@@ -20,6 +20,7 @@ export const CASE_STUDIES = [
       { title: "A staged, paid funnel", desc: "Free call, then paid stages with their own routes for payment and survey, so someone moves through the service in steps instead of being asked for everything at once." },
       { title: "Lead pipeline wired end to end", desc: "Four server endpoints push enquiries into GoHighLevel and fire conversion events back to Meta, so ad spend is measured against real leads, not clicks." },
       { title: "WhatsApp and automation, documented", desc: "The CRM automations, WhatsApp templates and pipeline stages are written down and aligned to the funnel — the follow-up runs the same way every time." },
+      { title: "An always-on AI booking agent", desc: "A live chat agent, running on its own server with a real API key behind it, qualifies homeowner enquiries around the clock and books discovery calls straight into the pipeline — nobody waiting overnight for a reply." },
       { title: "Creative generated from code", desc: "Six render pipelines produce static ads, animated ads, brand carousels, video covers, social previews and OG images from the same brand system. New campaign, no new design round." },
       { title: "Content and email engine", desc: "A content engine with drafts and roadmaps, plus a set of branded email templates covering booking, discovery calls and reminders." },
       { title: "Pitch decks inside the product", desc: "Customer and installer decks live as routes on the site, so a presentation is a link — always current, never a stale PDF attachment." },
@@ -37,7 +38,7 @@ export const CASE_STUDIES = [
       { src: "/case-studies/tsc-installers.jpg", caption: "The installer side of the business — its own landing page and application journey." },
       { src: "/case-studies/tsc-blog.jpg", caption: "The blog, built for search: prerendered, structured and on-brand." },
     ],
-    services: ["Website", "Full brand identity & logo", "Quick quoting & contracting app", "Open CRM", "Meta ads", "GA4 setup", "Content Console"],
+    services: ["Website", "Full brand identity & logo", "Quick quoting & contracting app", "Open CRM", "AI booking agent", "Meta ads", "GA4 setup", "Content Console"],
   },
   {
     id: "8energy",
@@ -55,6 +56,7 @@ export const CASE_STUDIES = [
       { title: "34 pages, hand-built", desc: "Static HTML and CSS, no CMS and no page-builder weight. It loads fast on a phone in a driveway, which is where these pages actually get read." },
       { title: "Eleven service lines, each a real page", desc: "Solar, batteries, heat pumps, EV chargers, air conditioning, voltage optimisation, energy management, retrofit, maintenance plans, commercial and commercial batteries — each argued on its own terms." },
       { title: "The free energy analysis funnel", desc: "One clear lead route running through the whole site, with a qualifying form that captures what the team needs before a call." },
+      { title: "An AI agent behind the WhatsApp line", desc: "The always-on WhatsApp number is backed by a live AI agent on its own server, qualifying enquiries and booking the free energy analysis without anyone at 8energy picking up a phone." },
       { title: "A projection calculator", desc: "A live solar and battery projection tool, so a visitor gets a real number on the spot instead of a promise that someone will be in touch." },
       { title: "The Content Studio", desc: "A React app on its own subdomain with an email builder and template system, plus a branded login page on the main site — the content operation, running as its own product." },
       { title: "Proof, not adjectives", desc: "Gallery, reviews, FAQ, a published roadmap and a pricing-and-guarantees page that puts the commercial terms in writing." },
@@ -73,7 +75,7 @@ export const CASE_STUDIES = [
       { src: "/case-studies/8energy-calculator.jpg", caption: "The projection calculator — a real number before anyone picks up the phone." },
       { src: "/case-studies/8energy-software.jpg", caption: "The software page: the technology behind every install, sold as a differentiator." },
     ],
-    services: ["Website", "Full brand identity & logo", "Content Console", "Always-on WhatsApp booking", "Google & Meta business verification"],
+    services: ["Website", "Full brand identity & logo", "Content Console", "Always-on AI WhatsApp booking", "Google & Meta business verification"],
   },
   {
     id: "keystone",
@@ -90,7 +92,7 @@ export const CASE_STUDIES = [
     built: [
       { title: "Ten trade pages, one template", desc: "Roofing, siding, tuckpointing, fireplaces, foundations, groundworks, waterproofing, paving, patios and pools each get a full page off one dynamic route, argued on its own terms rather than a shared paragraph." },
       { title: "The 25-year guarantee, made the whole site's argument", desc: "A dedicated guarantee page states the terms in writing, what it covers and what it doesn't — the single strongest thing a residential contractor can say, and the reason the homepage leads with it before anything else." },
-      { title: "Kerry — a Telegram bot that qualifies every lead", desc: "Running on AWS Lambda and DynamoDB, Kerry asks trade, ZIP, whose house, how soon and for photos, books a call window, flags an active leak as urgent, and routes an existing customer straight to the crew's group chat — built because the crew is on roofs during business hours, not by a phone." },
+      { title: "Kerry — an AI-backed Telegram bot that qualifies every lead", desc: "Running on AWS Lambda and DynamoDB, with a live API server behind it, Kerry asks trade, ZIP, whose house, how soon and for photos, books a call window, flags an active leak as urgent, and routes an existing customer straight to the crew's group chat — built because the crew is on roofs during business hours, not by a phone." },
       { title: "Honest about what isn't real yet", desc: "The trade photographs are AI-generated placeholders, and each one is visibly captioned ‘Illustrative — not a Keystone job’ rather than passed off as the company's own work. The day Keystone supplies a real photograph, one flag in the data file removes the caption — no code changes." },
       { title: "A full print and merch system", desc: "Twenty pieces built alongside the site from the same brand file: business cards, letterhead, ID badges, lanyards, a hi-vis hat, a t-shirt, three yard-sign variants, two contract templates and a leaflet." },
       { title: "A visible handoff list", desc: "A document tells Keystone exactly what's still needed before launch — phone number, licence number, real photography — so nothing goes live half-true and nothing gets forgotten." },
@@ -98,14 +100,14 @@ export const CASE_STUDIES = [
     facts: [
       { figure: "10", label: "trade pages, one dynamic route" },
       { figure: "20", label: "print & merch pieces designed" },
-      { figure: "1", label: "Telegram bot qualifying every lead" },
+      { figure: "1", label: "AI Telegram bot qualifying every lead" },
       { figure: "25yr", label: "written guarantee, stated on its own page" },
     ],
     shots: [
       { src: "/case-studies/keystone-home.jpg", caption: "Homepage — the 25-year guarantee stated before anything else, over real Chicago streets." },
       { src: "/case-studies/keystone-guarantee.jpg", caption: "The guarantee page — the terms written down, including what it doesn't cover." },
     ],
-    services: ["Website", "Full brand identity & logo", "Always-on WhatsApp/Telegram booking & qualifying", "Company contracts — wording & design", "ID badge & staff card generator"],
+    services: ["Website", "Full brand identity & logo", "Always-on AI WhatsApp/Telegram booking & qualifying", "Company contracts — wording & design", "ID badge & staff card generator"],
   },
   {
     id: "numio",
