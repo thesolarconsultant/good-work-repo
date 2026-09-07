@@ -1,0 +1,57 @@
+{
+  "lounge-wings": {
+    "native": "506x458",
+    "widths": [
+      {
+        "w": 480
+      },
+      {
+        "w": 506
+      }
+    ]
+  },
+  "reception-portrait": {
+    "native": "373x452",
+    "widths": [
+      {
+        "w": 373
+      }
+    ]
+  },
+  "reception-wide": {
+    "native": "627x376",
+    "widths": [
+      {
+        "w": 480
+      },
+      {
+        "w": 627
+      }
+    ]
+  },
+  "salon-mirrors": {
+    "native": "376x461",
+    "widths": [
+      {
+        "w": 376
+      }
+    ]
+  },
+  "treatment-room": {
+    "native": "1206x1468",
+    "widths": [
+      {
+        "w": 480
+      },
+      {
+        "w": 800
+      },
+      {
+        "w": 1200
+      },
+      {
+        "w": 1206
+      }
+    ]
+  }
+}
