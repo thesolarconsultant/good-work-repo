@@ -47,6 +47,54 @@
     "base": "/derived/case-studies/8energy-solar",
     "flat": "/derived/case-studies/8energy-solar-960.webp"
   },
+  "/case-studies/keystone-guarantee.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/keystone-guarantee",
+    "flat": "/derived/case-studies/keystone-guarantee-960.webp"
+  },
+  "/case-studies/keystone-home.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/keystone-home",
+    "flat": "/derived/case-studies/keystone-home-960.webp"
+  },
+  "/case-studies/numio-home.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/numio-home",
+    "flat": "/derived/case-studies/numio-home-960.webp"
+  },
+  "/case-studies/numio-story.jpg": {
+    "width": 2160,
+    "height": 1350,
+    "widths": [
+      640,
+      960,
+      1440,
+      2000
+    ],
+    "base": "/derived/case-studies/numio-story",
+    "flat": "/derived/case-studies/numio-story-960.webp"
+  },
   "/case-studies/tsc-blog.jpg": {
     "width": 2160,
     "height": 1350,
