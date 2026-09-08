@@ -8,6 +8,7 @@
     "prebuild": "npm run images && npm run sitemap",
     "build": "vite build",
     "lint": "oxlint",
+    "test": "node --test crm/engine/*.test.mjs",
     "preview": "vite preview",
     "preview:file": "VITE_HASH_ROUTER=1 vite build --base ./ && node scripts/build-preview.mjs",
     "images": "node scripts/optimise-images.mjs",
