@@ -91,21 +91,63 @@ export function bookingIntervals(booking) {
 }
 
 /**
+ * The most people a resource can hold at once.
+ *
+ * A treatment room holds one client. The salon floor holds as many as there
+ * are stations, and modelling it as a room-of-one is the mistake that makes a
+ * calendar refuse every booking after the first. Anything we haven't been told
+ * about is assumed exclusive, because that is the safe direction to be wrong in.
+ */
+const DEFAULT_CAPACITY = 1;
+
+/**
+ * Highest number of `others` running at once at any instant inside `target`.
+ *
+ * A sweep rather than a pairwise count: three bookings can each overlap the
+ * candidate while never overlapping each other, which is fine in a room for
+ * two and is a clash in a room for one.
+ */
+function peakConcurrency(target, others) {
+  const points = [];
+  for (const other of others) {
+    const start = Math.max(other.start, target.start);
+    const end = Math.min(other.end, target.end);
+    if (start < end) points.push([start, 1], [end, -1]);
+  }
+  // At a shared instant, ends land before starts — intervals are half-open, so
+  // one booking finishing exactly as another begins is not an overlap.
+  points.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+
+  let running = 0;
+  let peak = 0;
+  for (const [, delta] of points) {
+    running += delta;
+    if (running > peak) peak = running;
+  }
+  return peak;
+}
+
+/**
  * Why a proposed booking can't happen. Empty array means it can.
  *
  * Returns every reason rather than the first, because a receptionist moving an
  * appointment needs to know it clashes with both the stylist *and* the room,
  * not to discover the second problem after fixing the first.
+ *
+ * `options.roomCapacity` maps room id to how many it holds; anything missing
+ * is treated as exclusive.
  */
 export function findConflicts(candidate, existing = [], options = {}) {
   const conflicts = [];
+  const capacities = options.roomCapacity || {};
   const mine = bookingIntervals(candidate);
 
-  for (const other of existing) {
-    // Moving a booking shouldn't collide with where it currently is.
-    if (other.id && candidate.id && other.id === candidate.id) continue;
-    if (other.status === "cancelled") continue;
+  const live = existing.filter(
+    (other) => other.status !== "cancelled" && !(other.id && candidate.id && other.id === candidate.id),
+  );
 
+  // Staff and client are always exclusive — one person, one place.
+  for (const other of live) {
     for (const theirs of bookingIntervals(other)) {
       for (const ours of mine) {
         if (!overlaps(ours.start, ours.end, theirs.start, theirs.end)) continue;
@@ -113,15 +155,29 @@ export function findConflicts(candidate, existing = [], options = {}) {
         if (ours.staff && theirs.staff && ours.staffId && ours.staffId === theirs.staffId) {
           conflicts.push({ kind: "staff", with: other.id ?? null, staffId: ours.staffId });
         }
-        if (ours.room && theirs.room && ours.roomId && ours.roomId === theirs.roomId) {
-          conflicts.push({ kind: "room", with: other.id ?? null, roomId: ours.roomId });
-        }
         // The client is one person and can only be in one chair, even across
         // two different salons on the same marketplace.
         if (candidate.clientId && other.clientId && candidate.clientId === other.clientId) {
           conflicts.push({ kind: "client", with: other.id ?? null, clientId: candidate.clientId });
         }
       }
+    }
+  }
+
+  // Rooms are counted rather than compared, so a shared floor works.
+  for (const ours of mine) {
+    if (!ours.room || !ours.roomId) continue;
+    const capacity = capacities[ours.roomId] ?? DEFAULT_CAPACITY;
+    if (capacity === Infinity) continue;
+
+    const sharing = [];
+    for (const other of live) {
+      for (const theirs of bookingIntervals(other)) {
+        if (theirs.room && theirs.roomId === ours.roomId) sharing.push(theirs);
+      }
+    }
+    if (peakConcurrency(ours, sharing) + 1 > capacity) {
+      conflicts.push({ kind: "room", with: null, roomId: ours.roomId, capacity });
     }
   }
 
@@ -140,7 +196,7 @@ export function findConflicts(candidate, existing = [], options = {}) {
   // Deduplicate: one overlap can trip the same rule across several segments.
   const seen = new Set();
   return conflicts.filter((c) => {
-    const key = `${c.kind}:${c.with ?? ""}`;
+    const key = `${c.kind}:${c.with ?? c.roomId ?? ""}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -172,6 +228,7 @@ export function freeSlots({
   step = 15,
   now = null,
   leadTime = 0,
+  roomCapacity = {},
 }) {
   const slots = [];
   const span = totalDuration(service);
@@ -190,7 +247,7 @@ export function freeSlots({
 
       for (const roomId of rooms) {
         const candidate = { start, service, staffId: shift.staffId, roomId };
-        if (findConflicts(candidate, bookings, { shifts }).length > 0) continue;
+        if (findConflicts(candidate, bookings, { shifts, roomCapacity }).length > 0) continue;
         slots.push({ start, end: start + span, staffId: shift.staffId, roomId });
         break; // One free room is enough to offer the slot.
       }

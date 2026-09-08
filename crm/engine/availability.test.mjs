@@ -134,3 +134,35 @@ test("no slots are offered when every room is taken", () => {
   ];
   assert.deepEqual(freeSlots({ service: CUT, shifts, bookings, roomIds: ["r1", "r2"], step: 15 }), []);
 });
+
+test("a shared floor holds several stylists at once", () => {
+  const roomCapacity = { floor: 4 };
+  const existing = [
+    { id: "a", start: at(10), service: CUT, staffId: "sam", roomId: "floor" },
+    { id: "b", start: at(10), service: CUT, staffId: "alex", roomId: "floor" },
+  ];
+  const third = { start: at(10), service: CUT, staffId: "jo", roomId: "floor" };
+  assert.equal(isBookable(third, existing, { roomCapacity }), true);
+});
+
+test("a shared floor still fills up", () => {
+  const roomCapacity = { floor: 2 };
+  const existing = [
+    { id: "a", start: at(10), service: CUT, staffId: "sam", roomId: "floor" },
+    { id: "b", start: at(10), service: CUT, staffId: "alex", roomId: "floor" },
+  ];
+  const third = { start: at(10), service: CUT, staffId: "jo", roomId: "floor" };
+  assert.deepEqual(findConflicts(third, existing, { roomCapacity }).map((c) => c.kind), ["room"]);
+});
+
+test("capacity counts overlap at an instant, not bookings that merely touch the window", () => {
+  // Two bookings each overlap the candidate but never each other, so a room
+  // for two is fine. A pairwise count would wrongly call this full.
+  const roomCapacity = { room1: 2 };
+  const existing = [
+    { id: "a", start: at(9, 30), service: { duration: 45 }, staffId: "sam", roomId: "room1" },
+    { id: "b", start: at(10, 15), service: { duration: 45 }, staffId: "alex", roomId: "room1" },
+  ];
+  const between = { start: at(10), service: { duration: 30 }, staffId: "jo", roomId: "room1" };
+  assert.equal(isBookable(between, existing, { roomCapacity }), true);
+});
