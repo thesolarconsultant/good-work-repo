@@ -15,13 +15,14 @@ const Services = lazy(() => import("./pages/Services"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Pitch = lazy(() => import("./pages/Pitch"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Crm = lazy(() => import("./pages/Crm"));
 
 // Static single-file previews (no server rewrites) build with VITE_HASH_ROUTER=1.
 const Router = import.meta.env.VITE_HASH_ROUTER ? HashRouter : BrowserRouter;
 
 // Routes that own the whole viewport themselves — no site nav, no reading
 // progress bar, no page padding. The pitch deck is full-screen by design.
-const CHROMELESS = new Set(["/pitch"]);
+const CHROMELESS = new Set(["/pitch", "/app"]);
 
 const ORGANISATION = {
   "@context": "https://schema.org",
@@ -55,6 +56,7 @@ const AppRoutes = (
     <Route path="/services" element={<Services />} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/pitch" element={<Pitch />} />
+    <Route path="/app" element={<Crm />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
