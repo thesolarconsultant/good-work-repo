@@ -147,7 +147,7 @@
 <!-- 06 ─────────────────────────────────────────────────────────────── -->
 <section class="moment" data-ground="ivory" data-chapter="01 Now" data-title="One brand, one experience" data-steps="2">
   <div class="wrap stack" style="gap:clamp(1.4rem,3.4vmin,2.8rem)">
-    <div class="map" data-focus="1" style="opacity:.9">
+    <div class="map sm-hide" data-focus="1" style="opacity:.9">
       <div class="map__item"><i class="arcm"></i><h3>Beauty Heaven now</h3></div>
       <div class="map__item"><i class="arcm"></i><h3>Beauty Heaven owned</h3></div>
       <div class="map__item"><i class="arcm"></i><h3>Something bigger</h3></div>
@@ -168,7 +168,7 @@
     <div class="stack">
       <p class="kicker rise">The website</p>
       <h2 class="display d-md rise">It should feel like visiting Beauty Heaven <b>before you arrive</b>.</h2>
-      <p class="lede rise">Mobile first. The building does the talking. One question at the front, instead of a menu.</p>
+      <p class="lede rise" data-until-sm="0">Mobile first. The building does the talking. One question at the front, instead of a menu.</p>
       <div class="row" data-step="1">
         <span class="chip chip--gold">I want a treatment</span>
         <span class="chip chip--gold">I want to learn</span>
@@ -177,7 +177,7 @@
         Everything after this slide is a concept.</p>
     </div>
     <div class="row row--devices" style="align-items:flex-end;justify-content:flex-end;gap:clamp(.8rem,2vmin,1.6rem);flex-wrap:nowrap">
-      <figure class="win rise" style="flex:1 1 auto;min-width:0">
+      <figure class="win rise sm-hide" style="flex:1 1 auto;min-width:0">
         <div class="win__bar"><i></i><i></i><i></i><span class="win__url">beautyheavenhub.co.uk</span></div>
         <img class="shot" src="site-desktop.jpg" alt="The Beauty Heaven Hub homepage on desktop">
       </figure>
@@ -272,15 +272,15 @@
     <div class="stack">
       <p class="kicker rise">Concept · Beauty Heaven Concierge</p>
       <h2 class="display d-md rise">Most people are <b>nervous</b> before they are a customer.</h2>
-      <p class="lede rise">Not a chatbot on the website. Beauty Heaven, on WhatsApp, answering the way the team would —
-        and handing over the moment it should.</p>
-      <p class="lede" data-step="2" style="color:var(--ink)">Then the same thing on the phone.</p>
-      <h3 class="display d-sm" data-step="3">A missed call doesn't have to become<br>a <b>missed customer</b>.</h3>
+      <p class="lede rise" data-until-sm="1">Not a chatbot on the website. Beauty Heaven, on WhatsApp, answering the way
+        the team would — and handing over the moment it should.</p>
+      <p class="lede" data-step="2" data-until-sm="2" style="color:var(--ink)">Then the same thing on the phone.</p>
+      <h3 class="display d-sm" data-step="3" data-until-sm="3">A missed call doesn't have to become<br>a <b>missed customer</b>.</h3>
       <p class="lede" data-step="4" style="color:var(--ink)">None of this is here to make Beauty Heaven less human.
         It is here to make the team <b>more available</b>.</p>
     </div>
     <div class="row row--devices" style="justify-content:flex-end;align-items:flex-start;gap:clamp(1rem,2.4vmin,2rem)">
-      <div class="phone rise" style="--w:clamp(220px,29vmin,330px)">
+      <div class="phone rise" data-until-sm="1" style="--w:clamp(220px,29vmin,330px)">
         <span class="phone__notch"></span>
         <div class="phone__screen">
           <div class="chat">
@@ -323,14 +323,14 @@
       <div class="stack">
         <p class="kicker">Email</p>
         <h2 class="display d-md">We can <b>fix that</b>.</h2>
-        <p class="lede">Welcome. Appointment preparation. Aftercare. Newsletters. Re-engagement. Academy.
-          All of it in your own brand, sent from your own system.</p>
+        <p class="lede" data-until-sm="2">Welcome. Appointment preparation. Aftercare. Newsletters. Re-engagement.
+          Academy. All of it in your own brand, sent from your own system.</p>
         <div class="stack stack--tight" data-step="3">
           <p class="mono" style="letter-spacing:.14em">Instagram → Website → WhatsApp → Booking → Email</p>
           <h3 class="display d-sm">It should all feel like the <b>same company</b>.</h3>
         </div>
       </div>
-      <div class="row row--devices" style="justify-content:flex-end;align-items:flex-start;gap:clamp(.8rem,2vmin,1.6rem)" data-step="2">
+      <div class="row row--compare" style="justify-content:flex-end;align-items:flex-start;gap:clamp(.8rem,2vmin,1.6rem)" data-step="2">
         <figure class="stack stack--tight" style="width:min(42%,300px)">
           <div class="panel" style="padding:1rem;border-radius:3px;background:#fff;max-height:50vh;overflow:hidden">
             <p class="mono" style="font-size:.6rem;color:#9A9187">From: noreply@</p>
@@ -377,13 +377,13 @@
       <h2 class="display d-md rise" style="max-width:26ch">It does a real job. This is <b>not a teardown</b>.</h2>
     </div>
     <div class="cols cols--3">
-      <div class="card" data-step="1"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route one</span>
+      <div class="card" data-step="1" data-until-sm="1"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route one</span>
         <h3 style="color:var(--ink)">Keep &amp; connect</h3>
         <p style="color:var(--body)">Phorest stays the operational engine. We build better experiences around it and make it talk to everything else.</p></div>
-      <div class="card" data-step="2"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route two</span>
+      <div class="card" data-step="2" data-until-sm="2"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route two</span>
         <h3 style="color:var(--ink)">Augment</h3>
         <p style="color:var(--body)">Keep what Phorest is good at. Build owned Beauty Heaven technology only where you need flexibility it can't give you.</p></div>
-      <div class="card" data-step="3"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route three</span>
+      <div class="card" data-step="3" data-until-sm="3"><span class="ui-tag" style="background:rgba(201,166,92,.16);color:var(--accent)">Route three</span>
         <h3 style="color:var(--ink)">Eventually replace</h3>
         <p style="color:var(--body)">Build an owned operational platform — but only if the commercial and technical case genuinely justifies it.</p></div>
     </div>
@@ -513,7 +513,7 @@
       <span class="chip chip--concept rise">Concept — not built</span>
     </div>
     <div class="row row--phones" style="gap:clamp(.8rem,2.4vmin,2.2rem);align-items:flex-start;justify-content:center">
-      <div class="phone rise" style="--w:clamp(170px,20vmin,250px)">
+      <div class="phone rise" data-until-sm="0" style="--w:clamp(170px,20vmin,250px)">
         <span class="phone__notch"></span>
         <div class="phone__screen"><div class="mk">
           <div class="mk__top"><span class="mono">Step one</span><b>What do you need?</b></div>
@@ -525,7 +525,7 @@
           <div class="mk__cta"><b>Continue</b></div>
         </div></div>
       </div>
-      <div class="phone rise" style="--w:clamp(170px,20vmin,250px)">
+      <div class="phone rise" data-until-sm="1" style="--w:clamp(170px,20vmin,250px)">
         <span class="phone__notch"></span>
         <div class="phone__screen"><div class="mk">
           <div class="mk__top"><span class="mono">Step two &amp; three</span><b>Where, and when?</b></div>

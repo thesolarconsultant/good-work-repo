@@ -109,9 +109,12 @@ b,strong { font-weight:700; }
 /* Progressive reveal. An element with data-step waits for its step. */
 [data-step] { opacity:0; transform:translateY(14px); transition:opacity 620ms var(--ease-slow), transform 620ms var(--ease-slow); }
 [data-step].is-on { opacity:1; transform:none; }
-/* Some steps take something away — a quote that gives way to the answer. */
-[data-until] { transition:opacity 520ms var(--ease), visibility 520ms; }
-[data-until].is-off { opacity:0 !important; visibility:hidden; pointer-events:none; }
+/* Some steps take something away — a quote that gives way to the answer, or,
+   on a phone, a line that gives way to the next one. */
+[data-until],[data-until-sm] { transition:opacity 520ms var(--ease), visibility 520ms; }
+[data-until].is-off,[data-until-sm].is-off { opacity:0 !important; visibility:hidden; pointer-events:none; }
+/* the phone version has to give its space back, not just its ink */
+[data-until-sm].is-off { position:absolute; }
 /* A step that replaces what came before rather than adding to it. */
 [data-step][data-swap] { position:absolute; inset:0; display:grid; align-content:center; }
 
@@ -378,8 +381,12 @@ body[data-bare="1"] .rail { opacity:0; }
   transform:translate(-50%,-50%); }
 
 /* the circular ecosystem */
-.eco { position:relative; width:min(100%,62vh); aspect-ratio:1; margin-inline:auto; padding:0 clamp(2rem,5vmin,4rem); }
-.eco svg { position:absolute; inset:0 clamp(2rem,5vmin,4rem); width:auto; height:100%; aspect-ratio:1; }
+/* The labels sit on a circle of their own, outside the drawn one. The ring was
+   inset by padding while the labels were placed against the whole box, so the
+   two were never concentric — the ring overhung one side and ran through the
+   labels on the other. One box now, and the ring is scaled down inside it. */
+.eco { position:relative; width:min(100%,62vh); aspect-ratio:1; margin-inline:auto; }
+.eco svg { position:absolute; inset:0; width:100%; height:100%; transform:scale(.68); }
 .eco .track { fill:none; stroke:var(--line); stroke-width:1; }
 .eco .arc { fill:none; stroke:var(--accent-bright); stroke-width:1.4; stroke-linecap:round;
   stroke-dasharray:var(--l,100); stroke-dashoffset:var(--l,100); transition:stroke-dashoffset 700ms var(--ease-slow); }
@@ -388,8 +395,13 @@ body[data-bare="1"] .rail { opacity:0; }
   opacity:.25; transition:opacity 600ms var(--ease); }
 .eco__node.on { opacity:1; }
 .eco__node b { font-weight:500; font-size:clamp(.6rem,1.15vmin,.8rem); letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
-.eco__node span { font-size:clamp(.66rem,1.35vmin,.92rem); color:var(--body); white-space:nowrap; }
+.eco__node span { font-size:clamp(.66rem,1.35vmin,.92rem); color:var(--body); max-width:15ch; line-height:1.35; }
 .eco__mid { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; display:grid; gap:.4rem; }
+/* It arrives on a step, and the step rules move things with a transform — which
+   is also the thing holding this in the middle of the ring. It has to carry its
+   own centring through both states or it sits off to one side. */
+.eco__mid[data-step] { transform:translate(-50%, calc(-50% + 14px)); }
+.eco__mid[data-step].is-on { transform:translate(-50%,-50%); }
 
 /* rent vs own, and other two-sided comparisons */
 .versus { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:clamp(1rem,3vmin,3rem); align-items:stretch; }
@@ -487,27 +499,50 @@ body[data-bare="1"] .rail { opacity:0; }
    with it), the chapter rail becomes the one chapter you are actually in, and
    the tap zones do what they do in every story on a phone: right to go on,
    left to go back. */
-/* A screen too small to hold a moment lets it scroll rather than shrinking it
-   past reading — a phone in either hand position, and any window short enough
-   that the projector tightening above still isn't enough. */
+/* A moment is one screen. That is the whole idea of the thing, and it does not
+   stop being true on a phone: a punchline below the fold is a punchline that
+   does not land. So a small screen keeps the fitted card — it carries less
+   (the media is capped, the long product screens show their first cards
+   rather than all of them) and what is left is scaled the last few per cent
+   rather than cut. */
 @media (max-width: 760px), (max-height: 560px) {
-  /* Centre it when it fits, run from the top when it doesn't. The auto margin
-     is the point: justify-content:center would push the top of a tall moment
-     out of the scroll range where it can never be reached. */
-  .moment { display:flex; flex-direction:column; justify-content:flex-start;
-    overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
-    padding-block:calc(var(--pad) * 3.2); scrollbar-width:none; }
-  .moment::-webkit-scrollbar { width:0; height:0; }
-  .wrap { margin-block:auto; }
-  .moment[data-bare] { justify-content:center; }
+  .moment { padding-block:calc(var(--pad) * 3.1); }
 
-  /* Content runs under the chrome on a scrolling moment, so the chrome gets
-     the ground behind it rather than sitting on top of a photograph. */
+  /* the chrome takes the ground with it, so nothing shows through it */
   .rail { left:0; right:0; padding-inline:var(--pad); }
-  .rail--top { top:0; padding-block:calc(var(--pad) * .8) .9rem;
-    background:linear-gradient(to bottom, var(--bg) 58%, transparent); }
-  .rail--bot { bottom:0; padding-block:.9rem calc(var(--pad) * .8);
-    background:linear-gradient(to top, var(--bg) 58%, transparent); }
+  .rail--top { top:0; padding-block:calc(var(--pad) * .8) .7rem; background:var(--bg); }
+  .rail--bot { bottom:0; padding-block:.7rem calc(var(--pad) * .8); background:var(--bg); }
+
+  /* Some things earn their place on a projector and not in a hand: a desktop
+     screenshot beside the phone showing the same page, a chapter marker above
+     the thing it marks. */
+  .sm-hide { display:none; }
+
+  /* Media is measured against the height it has to share, not the width it
+     could fill: a handset is nineteen units tall for every nine across, so
+     sizing one by width is how it eats a screen. */
+  /* an arch that is wider than it is tall is a tunnel; keep the proportion
+     and take the size out of the width instead */
+  .arch { height:26vh; width:auto; aspect-ratio:5/7; margin-inline:auto; }
+  .arch img { height:100%; }
+  .shot, .shot--tall { max-height:22vh; }
+  .phone { height:min(46vh, 400px); width:auto; }
+  .row--devices .phone + .phone { height:min(30vh, 260px); }
+  .row--phones .phone { height:min(38vh, 330px); width:auto; max-width:none; }
+  .row--phones { grid-template-columns:repeat(2,max-content); justify-content:center; }
+  /* before and after only mean anything beside each other */
+  .row--compare { flex-wrap:nowrap; align-items:flex-start !important; }
+  .row--compare > figure { flex:1 1 0; width:auto !important; }
+  .row--compare .panel { max-height:20vh !important; padding:.6rem !important; }
+  .row--compare .panel p { font-size:.62rem !important; }
+
+  /* the components come in a notch, so the type does not have to */
+  .card { padding:.75rem .85rem; gap:.3rem; }
+  .map__item { padding-top:.7rem; gap:.4rem; }
+  .stack--tight { gap:.4rem; }
+  .lede { line-height:1.5; }
+  .stack { gap:.85rem; }
+  .cols { gap:1.1rem; }
 }
 
 @media (max-width: 760px) {
@@ -546,7 +581,9 @@ body[data-bare="1"] .rail { opacity:0; }
   .eco { width:min(100%, 400px); padding:0 3rem; }
   .eco__node b { font-size:.54rem; letter-spacing:.14em; }
   .eco__node span { white-space:normal; font-size:.64rem; max-width:11ch; line-height:1.3; }
-  .eco__mid .d-sm { font-size:1.1rem; }
+  .eco__mid { width:9.5em; }
+  .eco__mid .mono { font-size:.5rem !important; letter-spacing:.12em !important; }
+  .eco__mid .d-sm { font-size:.95rem; }
 
   /* the mark takes the first line to itself, so the × stays with GOOD WORK. */
   .lockup { display:grid; grid-template-columns:auto auto; justify-content:start;
@@ -562,7 +599,13 @@ body[data-bare="1"] .rail { opacity:0; }
   .card p { font-size:.84rem; }
 
   /* A console on a phone collapses its rail the way a real one would: the
-     places it writes from become a strip across the top. */
+     places it writes from become a strip across the top, the frame stops
+     being a 16:10 desktop window, and it shows its first cards whole rather
+     than five of them cut off half way down the third. A cropped product
+     screen reads as a broken one. */
+  .ui { aspect-ratio:4/4.7 !important; }
+  .ui__main .ui__grid + .ui__grid { display:none; }
+  .ui__grid > *:nth-child(n+3) { display:none; }
   .ui--console { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
   .ui__side { border-right:0; border-bottom:1px solid rgba(36,33,30,.09); gap:.55rem; padding:.6rem .7rem; }
   .ui__brand .mark { width:118px; }
@@ -574,10 +617,8 @@ body[data-bare="1"] .rail { opacity:0; }
   .ui__grid { grid-template-columns:minmax(0,1fr) !important; }
   .ui__main { padding:.75rem; }
 
-  /* the ring shrinks to leave the labels room outside it */
-  .eco { padding:0 3.6rem; }
-  .eco svg { inset:auto 3.6rem; top:50%; transform:translateY(-50%);
-    width:calc(100% - 7.2rem); height:auto; }
+  .eco { width:min(90%, 330px); }
+  .eco svg { transform:scale(.66); }
   .eco__node b { font-size:.5rem; }
   .eco__node span { max-width:11ch; font-size:.6rem; }
 
@@ -588,4 +629,18 @@ body[data-bare="1"] .rail { opacity:0; }
 
   .grid-view .gv { grid-template-columns:minmax(0,1fr); }
   .gv button { min-height:0; }
+}
+
+/* A phone turned sideways is a different problem: about 200px of usable height,
+   which no amount of trimming makes a moment fit. Fitting it there would mean
+   scaling to a third, so it scrolls instead — and the rails fade rather than
+   sit flat, because content passes under them. */
+@media (max-height: 560px) {
+  .moment { display:flex; flex-direction:column; justify-content:flex-start;
+    overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .moment::-webkit-scrollbar { width:0; height:0; }
+  .moment > .wrap { margin-block:auto; }
+  .moment[data-bare] { justify-content:center; }
+  .rail--top { background:linear-gradient(to bottom, var(--bg) 62%, transparent); }
+  .rail--bot { background:linear-gradient(to top, var(--bg) 62%, transparent); }
 }

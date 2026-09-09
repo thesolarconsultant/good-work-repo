@@ -63,7 +63,7 @@
           n.classList.remove(n.dataset.add.split(":")[1]);
         });
         el.querySelectorAll("[data-seq] > *").forEach(function (n) { n.classList.remove("on"); });
-        el.querySelectorAll("[data-until]").forEach(function (n) { n.classList.remove("is-off"); });
+        el.querySelectorAll("[data-until],[data-until-sm]").forEach(function (n) { n.classList.remove("is-off"); });
       }
     });
 
@@ -73,6 +73,13 @@
     });
     cur.querySelectorAll("[data-until]").forEach(function (n) {
       n.classList.toggle("is-off", s > parseInt(n.dataset.until, 10));
+    });
+    // On a phone a moment cannot hold everything at once and still be read, so
+    // the earlier lines step aside as the later ones arrive: the headline and
+    // the thing being talked about stay, the commentary takes its turn. On a
+    // projector all of it stands together, which is the point of a projector.
+    cur.querySelectorAll("[data-until-sm]").forEach(function (n) {
+      n.classList.toggle("is-off", hand() && s > parseInt(n.dataset.untilSm, 10));
     });
     cur.querySelectorAll("[data-add]").forEach(function (n) {
       var bits = n.dataset.add.split(":");
@@ -103,7 +110,7 @@
     if (counter) counter.textContent = String(m + 1).padStart(2, "0") + " / " + String(moments.length).padStart(2, "0");
     chapters.forEach(function (b) { b.classList.toggle("on", b.dataset.chapter === cur.dataset.chapter); });
 
-    fit(cur);
+    fitSoon(cur);
     history.replaceState(null, "", "#" + (m + 1) + (s ? "." + s : ""));
   }
 
@@ -112,15 +119,30 @@
      bottom, it is scaled down a few per cent rather than cropped. Anything
      that needs more than a fifth taking off is a design problem, not a
      display problem, so it is reported in the console rather than hidden. */
-  // the sizes where a moment is allowed to scroll instead of being scaled
-  function narrow() { return innerWidth <= 760 || innerHeight <= 560; }
+
+  // A phone in the hand: the moment carries less and may be scaled a little
+  // harder, and it is driven by tapping rather than by a key.
+  function hand() { return innerWidth <= 760; }
+  // A window with no height to speak of — a phone turned sideways. Nothing
+  // fits there at a readable size, so those moments scroll instead.
+  function squat() { return innerHeight <= 560; }
+
+  /* A moment measures short on the frame it becomes live — the ground has just
+     changed, the masks and the aspect-ratio boxes have not settled, and a wrap
+     measured then reports a height it is about to outgrow. That is how a dense
+     moment ended up unscaled and running under the chrome. So it is measured
+     again once the frame has been laid out, and once more after the change of
+     ground has finished. */
+  function fitSoon(cur) {
+    fit(cur);
+    requestAnimationFrame(function () { fit(cur); });
+    setTimeout(function () { fit(cur); }, 300);
+  }
 
   function fit(cur) {
     var wrap = cur.querySelector(".wrap");
     if (!wrap) return;
-    // On a phone the moment scrolls. Scaling it down there would shrink type
-    // that is already at its floor, to fit a screen it is allowed to exceed.
-    if (narrow()) { wrap.style.transform = ""; return; }
+
     // An image that has not loaded yet reports its natural height, which would
     // scale the moment against a size it is never going to be. Measure again
     // when it lands.
@@ -131,6 +153,7 @@
       }
     });
     wrap.style.transform = "";
+    if (squat()) return;             // it scrolls there; scaling would only shrink it
     var cs = getComputedStyle(cur);
     var avail = cur.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
                 - (cur.hasAttribute("data-bare") ? 0 : 76);
@@ -138,11 +161,19 @@
     if (!need || !avail) return;
     var k = need > avail ? avail / need : 1;
     if (k < 1) {
-      wrap.style.transform = "scale(" + Math.max(0.8, k).toFixed(4) + ")";
-      if (k < 0.8) console.warn("moment " + (moments.indexOf(cur) + 1) + " needs " + Math.round(need) + "px in " + Math.round(avail));
+      var floor = hand() ? 0.72 : 0.8;
+      wrap.style.transform = "scale(" + Math.max(floor, k).toFixed(4) + ")";
+      if (k < floor) console.warn("moment " + (moments.indexOf(cur) + 1) + " needs " + Math.round(need) + "px in " + Math.round(avail));
     }
   }
-  addEventListener("resize", function () { fit(moments[m]); });
+  // crossing the small-screen line changes what a moment shows, not just its
+  // scale, so that case needs the whole position applied again
+  var wasHand = null;
+  addEventListener("resize", function () {
+    var now = hand();
+    if (now !== wasHand) { wasHand = now; apply(); }
+    else fit(moments[m]);
+  });
   addEventListener("load", function () { moments.forEach(fit); });
 
   function go(i, step) {
@@ -186,7 +217,7 @@
     if (e.target.closest("button, a, .grid-view")) return;
     // On a phone this is a story: the left third goes back, the rest goes on.
     // On a laptop the whole screen advances, the way a clicker does.
-    if (narrow() && e.clientX < innerWidth * 0.32) prev();
+    if (hand() && e.clientX < innerWidth * 0.32) prev();
     else next();
   });
   var sx = 0, sy = 0;
