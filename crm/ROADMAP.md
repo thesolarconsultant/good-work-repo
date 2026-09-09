@@ -95,6 +95,22 @@ Designed in at phase 2 this is a feature we can sell against incumbents and a
 clean answer in a buyer's diligence. Retrofitted after real clinics have real
 client notes in the system, it is a migration nobody can safely run.
 
+## From prototype to product
+
+Everything on screen today is in memory: refresh and it is gone. Three things
+stand between this and a real product, and only three. Everything else is
+features.
+
+1. **A database.** Done — `schema.sql`, validated against Postgres 16 rather
+   than read. See below.
+2. **Authentication and tenancy.** Who is signed in, which salon they belong
+   to, what their role lets them do. The isolation half is already enforced by
+   row-level security; the identity half is not built.
+3. **An API between the two.** The interface currently imports its data
+   directly. Nothing persists until there is a server in the middle.
+
+After those: payments and deposits, SMS and email, then the marketplace.
+
 ## Where the code is
 
 - `engine/fields.js` — field types, coercion and validation. Tested.
@@ -102,9 +118,42 @@ client notes in the system, it is a migration nobody can safely run.
   to reshape a live workspace in a way that loses data. Tested.
 - `engine/availability.js` — segments, conflicts and free slots. This is the
   arithmetic behind double-booking prevention, processing time and room
-  turnaround, and it is the piece the whole product rests on. 17 tests.
+  turnaround, and it is the piece the whole product rests on. 20 tests.
+- `ui/` — the app: shell, thirteen screens, the appointment book. Mounted at
+  `/app`, and liftable as one folder.
+- `schema.sql` — the database. Hybrid on purpose: the salon domain is real
+  columns, because availability search must be indexed and double-booking must
+  be refused by the database; each salon's *extra* fields are jsonb validated
+  by `engine/schema.js` on the way in.
+- `schema.test.sql` — what the database itself refuses.
 
-Run them with `npm test`.
+Run the JavaScript tests with `npm test`. For the database:
+
+```
+createdb salon
+psql -d salon -f crm/schema.sql
+psql -d salon -f crm/seed.sql
+psql -d salon -f crm/schema.test.sql
+```
+
+### Why the constraints are in the database
+
+The engine stops a double-booking in the interface. Only the database stops it
+under concurrency: two receptionists clicking at the same moment both pass the
+in-process check and both insert. An exclusion constraint is the only thing
+between that and a client arriving to a stylist who is already busy.
+
+It cannot be a constraint on the appointment, though, because a service does
+not hold its people and its rooms uniformly — during the developing window the
+chair is held and the stylist is free. So the constraint lives on
+`appointment_segments`, one row per span, each saying what it holds.
+
+Rooms needed one more turn. An exclusion constraint says "at most one", and a
+salon floor says "at most six", which Postgres cannot express declaratively.
+Exclusive rooms use the constraint; shared rooms are counted by a trigger. The
+segment carries its own `room_exclusive` flag because a constraint predicate
+may not run a subquery to look the capacity up — a trigger sets it, so it
+cannot drift from the room.
 
 ## Still open
 
