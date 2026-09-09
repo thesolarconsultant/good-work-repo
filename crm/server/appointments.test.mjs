@@ -41,6 +41,12 @@ async function attempt(label, run, expect) {
 }
 
 await asWorkspace(WS, async (db) => {
+  // Start from an empty diary. Without this the run only passes once: the
+  // second time, yesterday's bookings occupy the slots and every expectation
+  // inverts. A test whose result depends on how often it has been run before
+  // is not a test.
+  await db.query("TRUNCATE appointments, appointment_segments CASCADE");
+
   console.log("\nBooking against a real database\n");
 
   const balayage = await attempt("balayage at 12:00 for Priya", () =>
