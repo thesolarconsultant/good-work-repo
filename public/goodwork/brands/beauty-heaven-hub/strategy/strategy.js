@@ -87,8 +87,15 @@
       });
     });
 
-    deck.setAttribute("data-ground", cur.dataset.ground || "ivory");
-    // the chrome lives outside the deck, so the flag goes on the body
+    // a new moment always starts at its own top, however far the last was read
+    if (cur.scrollTop) cur.scrollTop = 0;
+
+    // The chrome lives outside the deck, so both the flag and the ground go on
+    // the body — on a phone the rails carry the ground behind them, and they
+    // have to be the ground of the moment, not of the page.
+    var ground = cur.dataset.ground || "ivory";
+    deck.setAttribute("data-ground", ground);
+    document.body.setAttribute("data-ground", ground);
     document.body.setAttribute("data-bare", cur.hasAttribute("data-bare") ? "1" : "0");
 
     var pct = ((m + (stepsOf[m] ? s / stepsOf[m] : 0)) / (moments.length - 1)) * 100;
@@ -105,9 +112,15 @@
      bottom, it is scaled down a few per cent rather than cropped. Anything
      that needs more than a fifth taking off is a design problem, not a
      display problem, so it is reported in the console rather than hidden. */
+  // the sizes where a moment is allowed to scroll instead of being scaled
+  function narrow() { return innerWidth <= 760 || innerHeight <= 560; }
+
   function fit(cur) {
     var wrap = cur.querySelector(".wrap");
     if (!wrap) return;
+    // On a phone the moment scrolls. Scaling it down there would shrink type
+    // that is already at its floor, to fit a screen it is allowed to exceed.
+    if (narrow()) { wrap.style.transform = ""; return; }
     // An image that has not loaded yet reports its natural height, which would
     // scale the moment against a size it is never going to be. Measure again
     // when it lands.
@@ -168,10 +181,13 @@
     }
   });
 
-  /* ---- click and swipe, for presenting from an iPad or a clicker ---- */
+  /* ---- click and swipe, for presenting from an iPad or reading on a phone ---- */
   addEventListener("click", function (e) {
     if (e.target.closest("button, a, .grid-view")) return;
-    next();
+    // On a phone this is a story: the left third goes back, the rest goes on.
+    // On a laptop the whole screen advances, the way a clicker does.
+    if (narrow() && e.clientX < innerWidth * 0.32) prev();
+    else next();
   });
   var sx = 0, sy = 0;
   addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
