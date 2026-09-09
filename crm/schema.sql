@@ -55,6 +55,30 @@ CREATE TABLE memberships (
   PRIMARY KEY (workspace_id, user_id)
 );
 
+-- Sign-in is by emailed link: nothing to store, reset or leak, which matters
+-- more than usual when the same database holds health data. A token is
+-- single-use, short-lived, and stored as a hash — a leaked backup of this
+-- table must not be a set of working keys.
+CREATE TABLE login_tokens (
+  token_hash  bytea PRIMARY KEY,
+  email       citext NOT NULL,
+  expires_at  timestamptz NOT NULL,
+  used_at     timestamptz,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX login_tokens_expiry_idx ON login_tokens (expires_at);
+
+CREATE TABLE sessions (
+  token_hash   bytea PRIMARY KEY,
+  user_id      uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  -- Which salon this session is acting as. A user can belong to several; the
+  -- session picks one, and row-level security is set from it per request.
+  workspace_id uuid REFERENCES workspaces(id) ON DELETE CASCADE,
+  expires_at   timestamptz NOT NULL,
+  created_at   timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX sessions_user_idx ON sessions (user_id);
+
 -- ---------------------------------------------------------
 -- Per-workspace custom fields
 --

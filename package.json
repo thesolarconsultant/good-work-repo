@@ -9,6 +9,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "test": "node --test crm/engine/*.test.mjs",
+    "test:db": "node crm/server/appointments.test.mjs",
     "preview": "vite preview",
     "preview:file": "VITE_HASH_ROUTER=1 vite build --base ./ && node scripts/build-preview.mjs",
     "images": "node scripts/optimise-images.mjs",
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",
+    "pg": "^8.23.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2"
