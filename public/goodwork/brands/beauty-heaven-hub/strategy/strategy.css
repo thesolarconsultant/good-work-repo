@@ -215,8 +215,8 @@ body[data-bare="1"] .rail { opacity:0; }
 /* The brand counts in arches, not in 01 / 02 / 03. Order is carried by
    reading order and by the rules between the rows; the mark is just the
    building, small. */
-.arcm { display:block; width:clamp(10px,1.5vmin,15px); aspect-ratio:3/4; border:1px solid var(--accent);
-  border-bottom:0; border-radius:999px 999px 0 0; opacity:.85; }
+.arcm { display:block; width:clamp(12px,1.8vmin,18px); aspect-ratio:3/4; border:1.5px solid var(--accent);
+  border-bottom:0; border-radius:999px 999px 0 0; }
 .map__item h3 { font-weight:300; font-size:clamp(1.2rem,3.1vmin,2.3rem); color:var(--ink); letter-spacing:-.015em; line-height:1.1; }
 .map__item p { font-size:clamp(.78rem,1.5vmin,1rem); line-height:1.55; color:var(--body); max-width:34ch; }
 .map[data-focus] .map__item { opacity:.32; }
