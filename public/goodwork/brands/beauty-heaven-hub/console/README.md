@@ -8,7 +8,7 @@ Live at `/goodwork/brands/beauty-heaven-hub/console/`.
 
 ## It is running, not mocked
 
-The writing is real. `api/console.js` calls Claude with the brand profile as
+The writing is real. `api/console.js` calls DeepSeek with the brand profile as
 its system prompt and streams the answer back into the panel. There is no
 canned copy anywhere in this folder.
 
@@ -22,10 +22,15 @@ rather than something to assume.
 
 ## Before it can write anything
 
-Set `ANTHROPIC_API_KEY` on the Vercel project. Without it the endpoint returns
-503 and the console says so on screen rather than pretending.
+Set `DEEPSEEK_API_KEY` on the Vercel project — Settings → Environment
+Variables, all environments, then redeploy so the functions pick it up.
+Without it the endpoint returns 503 and the console says so on screen rather
+than pretending.
 
-`CONSOLE_EFFORT` is optional and defaults to `medium`.
+`DEEPSEEK_MODEL` (default `deepseek-chat`) and `DEEPSEEK_BASE_URL` are
+optional. The provider is one file: nothing outside `api/console.js` knows or
+cares which model writes the copy, so swapping it later is a single-file
+change.
 
 ## How the campaign works, and why
 
@@ -34,13 +39,17 @@ panel. Not one request for the lot:
 
 - Each panel fills in on its own, so the screen is visibly working. That is the
   feature.
-- The brand profile is byte-identical across the six and is cached, so five of
-  the six pay about a tenth for the part that matters.
+- The system prompt is byte-identical across the six, and DeepSeek caches
+  repeated prefixes automatically, so five of the six pay a fraction for the
+  part that matters. That is also why the brand goes in `system` and the brief
+  goes in the user turn — mixing them would defeat it.
 - A channel that fails fails alone. One long response that dies at 80% loses
   everything.
 
-The system prompt is the brand and nothing else, which is what makes it
-cacheable. The brief goes in the user turn, after the breakpoint.
+Both functions in this folder are web-standard (`Request -> Response`) on
+Vercel's **edge** runtime, like the other two in `api/`. On the Node runtime
+Vercel would hand the handler `(req, res)` instead and it would throw on the
+first call.
 
 ## The brand profile is the product
 
