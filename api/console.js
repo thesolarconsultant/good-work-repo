@@ -30,6 +30,23 @@
 // function's time limit, and the response has to start arriving before it.
 // =========================================================
 
+/* The key, and where it was found.
+
+   DEEPSEEK_API_KEY is the name this expects and the one the docs give. The
+   variants are here because a key set under a near-miss name is indis-
+   tinguishable, from the browser, from no key at all — and the failure it
+   produces ("this deployment has no key") points at the wrong problem. The
+   health check below reports which name actually matched, so a near-miss is
+   visible rather than silently papered over. */
+const KEY_NAMES = ["DEEPSEEK_API_KEY", "DEEPSEEK_API", "DEEPSEEK_KEY", "deepseek_API", "deepseek_api_key"];
+function findKey() {
+  for (const name of KEY_NAMES) {
+    const v = process.env[name];
+    if (v && v.trim()) return { key: v.trim(), name };
+  }
+  return { key: null, name: null };
+}
+
 const BASE = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").replace(/\/$/, "");
 const MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
 const TEMPERATURE = 1.2;             // copy, not arithmetic — this wants some air
@@ -166,11 +183,32 @@ function json(body, status) {
 
 export default async function handler(request) {
   if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: { allow: "POST, OPTIONS" } });
+    return new Response(null, { status: 204, headers: { allow: "GET, POST, OPTIONS" } });
   }
+
+  /* Is this deployment wired up? Names and settings only — never the key, and
+     never a call to the provider, so it is free to hit and safe to leave open.
+     It exists because "the console will not write" has two very different
+     causes, and guessing between them from the browser wastes an afternoon. */
+  if (request.method === "GET") {
+    const { name } = findKey();
+    return json(
+      {
+        ok: true,
+        configured: Boolean(name),
+        keyFoundAs: name,
+        looksFor: KEY_NAMES,
+        model: MODEL,
+        endpoint: BASE,
+        channels: Object.keys(CHANNELS),
+      },
+      200,
+    );
+  }
+
   if (request.method !== "POST") return json({ error: "Method not allowed." }, 405);
 
-  const key = process.env.DEEPSEEK_API_KEY;
+  const { key, name: keyName } = findKey();
   if (!key) {
     // Deliberately loud. A console that silently returns nothing looks broken;
     // one that says it has no key tells whoever deployed it what to do.
@@ -178,7 +216,8 @@ export default async function handler(request) {
       {
         error: "not_configured",
         message:
-          "DEEPSEEK_API_KEY is not set on this deployment, so the console cannot write anything yet.",
+          "No DeepSeek key is set on this deployment, so the console cannot write anything yet. " +
+          `Looked for: ${KEY_NAMES.join(", ")}.`,
       },
       503,
     );
@@ -240,7 +279,7 @@ export default async function handler(request) {
         error: "upstream_error",
         message:
           upstream.status === 401
-            ? "The DeepSeek key on this deployment was rejected."
+            ? `The DeepSeek key on this deployment (set as ${keyName}) was rejected.`
             : upstream.status === 402
               ? "The DeepSeek account has no credit left."
               : upstream.status === 429
