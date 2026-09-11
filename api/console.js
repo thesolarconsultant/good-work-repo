@@ -190,8 +190,13 @@ export default async function handler(request) {
      never a call to the provider, so it is free to hit and safe to leave open.
      It exists because "the console will not write" has two very different
      causes, and guessing between them from the browser wastes an afternoon. */
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
   if (request.method === "GET") {
-    const { name } = findKey();
+    const { key, name } = findKey();
 
     /* Which DeepSeek-ish variables this deployment can actually see, by NAME.
        Never a value, and nothing outside that filter — the point is to tell
@@ -210,6 +215,46 @@ export default async function handler(request) {
       /* some runtimes do not allow enumerating the environment */
     }
 
+    /* ?probe=1 goes one step further and actually calls the model — one token,
+       the smallest question there is — because "the key is present" and "the
+       key works" are different facts and only the second one matters. It is
+       opt-in rather than part of the plain health check, since it costs a
+       fraction of a penny and a health check should be free to hammer. */
+    let probe = null;
+    if (new URL(request.url).searchParams.get("probe") && key) {
+      if (overLimit(ip)) {
+        probe = { ok: false, message: "Rate limited locally. Wait a minute." };
+      } else {
+        try {
+          const r = await fetch(`${BASE}/chat/completions`, {
+            method: "POST",
+            headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+            body: JSON.stringify({
+              model: MODEL,
+              max_tokens: 1,
+              messages: [{ role: "user", content: "hi" }],
+            }),
+          });
+          const body = await r.text();
+          probe = {
+            ok: r.ok,
+            status: r.status,
+            message: r.ok
+              ? `${MODEL} answered. The key works.`
+              : r.status === 401
+                ? "The key was rejected by DeepSeek."
+                : r.status === 402
+                  ? "The key is valid but the DeepSeek account has no credit."
+                  : r.status === 429
+                    ? "Rate limited by DeepSeek."
+                    : `DeepSeek returned ${r.status}: ${body.slice(0, 200)}`,
+          };
+        } catch (err) {
+          probe = { ok: false, message: `Could not reach ${BASE}: ${err.message}` };
+        }
+      }
+    }
+
     return json(
       {
         ok: true,
@@ -222,6 +267,7 @@ export default async function handler(request) {
         commit: (process.env.VERCEL_GIT_COMMIT_SHA || "").slice(0, 7) || null,
         model: MODEL,
         endpoint: BASE,
+        probe,
         channels: Object.keys(CHANNELS),
       },
       200,
@@ -245,10 +291,6 @@ export default async function handler(request) {
     );
   }
 
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
   if (overLimit(ip)) return json({ error: "rate_limited", message: "Too many requests. Wait a minute." }, 429);
 
   const raw = await request.text();
