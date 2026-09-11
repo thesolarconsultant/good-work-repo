@@ -56,3 +56,51 @@ Signed release from whoever sits for it.
 4. Reshoot the reception wordmark wall at full resolution — the file in
    `../photos/` is 630px and goes soft. That wall is the real final frame if you
    would rather end on the sign than on a card.
+
+---
+
+# v2 — the rooms put through Higgsfield
+
+Six real photographs of the salon taken through `cinematic_studio_video_v2`
+(genre *intimate*, pro, sound off, cfg 0.35) as 5-second moves. The room is
+the real room in every one; the model was asked for camera and grade only —
+same furniture, same products, same walls, nobody entering frame.
+
+| Beat | Shot | Move | Job |
+|---|---|---|---|
+| 2 | SPF 50 on the brass trolley | slow push in | `218c6f7d` |
+| 3 | AlumierMD tray | slow drift | `e2928c01` |
+| 4 | Bouclé waiting chairs | slow push in | `6364ca33` |
+| 5 | Chair at the frosted window | slow pull back | `f96b3d9b` |
+| 6 | Skin room, marble counter | slow push in | `42b10930` |
+| 7 | Wavy-mirror treatment room | slow push in | `81c0cf78` |
+
+Three of the six were refused on first submission with a preset
+recommendation (*IN THE DARK*) instead of a job. Declining it by id and
+resubmitting went through unchanged. Worth knowing: the API will substitute
+a creative decision for yours unless you say no to it explicitly.
+
+## The aspect ratio problem
+
+`aspect_ratio: "9:16"` was accepted, echoed back in the job params as
+768×1344, and then ignored. Five of the six clips came out **1920×1080
+landscape** — the model followed the orientation of the start image, and
+five of the six source photographs are landscape. Only the frosted-window
+shot, which was photographed portrait, came back portrait.
+
+No rotation metadata, so this is real and not a reader artefact.
+
+Cropping a 16:9 frame to 9:16 throws away about two thirds of the picture and
+wrecks compositions that were framed wide on purpose. So v2 is cut **16:9**,
+which costs nothing and shows the grade and the moves honestly.
+
+Three ways to a vertical cut, in the order they are worth doing:
+
+1. **Reshoot the six rooms holding the phone upright.** Free, ten minutes,
+   and the frame is composed for the format instead of rescued into it. Then
+   the same six generations run again from portrait sources.
+2. **`reframe` the five landscape clips** — 48 credits each, 240 total. It
+   expands rather than crops, so the composition survives, but the new edges
+   are invented.
+3. **Keep it 16:9** and run it as a website and YouTube film rather than a
+   Reel.
