@@ -49,7 +49,10 @@
           <p class="eyebrow">This week</p>
           <h1 class="h1" id="dashGreeting">Morning.</h1>
         </div>
-        <button class="btn btn--gold" data-go="campaign">Write something</button>
+        <div class="row">
+          <button class="btn" id="pdfBtn">Approved → PDF</button>
+          <button class="btn btn--gold" data-go="campaign">Write something</button>
+        </div>
       </header>
 
       <div class="stats" id="dashStats"></div>
@@ -240,6 +243,14 @@
 
   </main>
 </div>
+
+<!-- ─────────────────────────────────────────────── the printed document ───
+     Built on demand and only ever seen on paper. The browser's own "Save as
+     PDF" does the rendering, which is why there is no PDF library in here:
+     nothing else gets the real typeface, real hyphenation and selectable text
+     for free, and a generated PDF would be a worse document than the one the
+     browser already knows how to make. -->
+<article class="doc" id="doc" aria-hidden="true"></article>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

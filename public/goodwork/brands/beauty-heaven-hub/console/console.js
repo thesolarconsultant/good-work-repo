@@ -547,6 +547,80 @@ $("#impFile").addEventListener("change", async (e) => {
   e.target.value = "";
 });
 
+/* ====================================================================== PDF == */
+/* Approved work, as a document. The browser does the rendering — its "Save as
+   PDF" keeps the real typeface, keeps the text selectable, and handles page
+   breaks and widows, none of which a PDF library gives you for free.
+
+   Only approved pieces go in. That is the point of the thing: a document of
+   what a person has read and signed off, not a dump of everything a model
+   wrote. */
+function buildDoc() {
+  const withApproved = store
+    .load()
+    .campaigns.map((c) => ({
+      c,
+      pieces: Object.entries(c.pieces).filter(([, p]) => p.state === "approved"),
+    }))
+    .filter((x) => x.pieces.length);
+
+  const total = withApproved.reduce((n, x) => n + x.pieces.length, 0);
+  const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+  const head = `
+    <header class="doc__head">
+      <img src="../logo/beauty-heaven-hub-wordmark-espresso.svg" alt="Beauty Heaven Hub">
+      <div>
+        <b>Approved content</b>
+        <small>${today}</small>
+      </div>
+    </header>`;
+
+  if (!total) {
+    $("#doc").innerHTML = `${head}<p class="doc__empty">Nothing has been approved yet, so there is
+      nothing to put on paper. Approve a piece and it will appear here.</p>`;
+    return 0;
+  }
+
+  $("#doc").innerHTML =
+    head +
+    withApproved
+      .map(
+        ({ c, pieces }) => `
+      <section class="doc__idea">
+        <h2>${esc(c.brief)}</h2>
+        <p class="doc__meta">${pieces.length} approved · written ${when(c.createdAt)}${
+          c.context ? ` · with context` : ""
+        }</p>
+        ${pieces
+          .map(
+            ([ch, p]) => `<div class="doc__piece">
+              <h3>${CHANNELS[ch]}${p.day ? ` · ${p.day}` : ""}</h3>
+              <pre>${esc(p.text)}</pre>
+            </div>`,
+          )
+          .join("")}
+      </section>`,
+      )
+      .join("") +
+    `<footer class="doc__foot">${total} approved ${total === 1 ? "piece" : "pieces"} across
+      ${withApproved.length} ${withApproved.length === 1 ? "idea" : "ideas"}. Written in the Content
+      Console and approved by a person before printing.</footer>`;
+
+  return total;
+}
+
+$("#pdfBtn").addEventListener("click", () => {
+  const n = buildDoc();
+  if (!n) return toast("Nothing approved yet.");
+  /* Let the layout settle and the logo load before the print dialog freezes
+     the page — printing a document mid-render prints the half of it. */
+  const img = $("#doc img");
+  const go = () => setTimeout(() => window.print(), 60);
+  if (img && !img.complete) img.addEventListener("load", go, { once: true });
+  else go();
+});
+
 /* ===================================================================== BOOT == */
 const VIEWS = {
   dashboard: renderDashboard,

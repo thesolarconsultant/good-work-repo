@@ -271,3 +271,67 @@ button, input, textarea, select { font: inherit; color: inherit; }
 /* an idea already written up stays visible and stops competing for attention */
 .idea--used p { color: var(--muted-ink); }
 .idea--used p::after { content: " · written"; font-size: .7em; letter-spacing: .08em; text-transform: uppercase; color: var(--ok); }
+
+/* ============================================================================
+   THE PRINTED DOCUMENT
+
+   Approved work, on paper, as something a salon could hand to someone. It is
+   built into #doc on demand and hidden on screen; print is the only medium it
+   has. No PDF library: the browser already renders this typeface properly,
+   keeps the text selectable and searchable, and handles widows and page
+   breaks — a generated PDF would be a worse document made with more code.
+   ========================================================================== */
+.doc { display: none; }
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 16mm;
+}
+
+@media print {
+  /* the tool disappears; only the document is left */
+  .app, .toast { display: none !important; }
+  .doc { display: block; }
+
+  html, body { height: auto; background: #fff; }
+  body { color: #24211E; font-size: 10.5pt; line-height: 1.55; }
+
+  .doc__head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 12mm;
+    border-bottom: 1px solid var(--bh-gold); padding-bottom: 5mm; margin-bottom: 9mm;
+  }
+  .doc__head img { width: 46mm; height: auto; }
+  .doc__head div { text-align: right; }
+  .doc__head b { display: block; font-weight: 400; font-size: 11pt; color: #24211E; }
+  .doc__head small { font-size: 8pt; color: #6B6257; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* one idea per page: a page that starts mid-thought is a page nobody reads */
+  .doc__idea { break-before: page; }
+  .doc__idea:first-of-type { break-before: auto; }
+  .doc__idea > h2 {
+    font-size: 15pt; font-weight: 300; color: #24211E; letter-spacing: -.01em;
+    margin-bottom: 1mm; break-after: avoid;
+  }
+  .doc__meta {
+    font-size: 8pt; letter-spacing: .1em; text-transform: uppercase; color: #857C72;
+    margin-bottom: 6mm; break-after: avoid;
+  }
+
+  .doc__piece { break-inside: avoid; margin-bottom: 7mm; }
+  .doc__piece > h3 {
+    font-size: 8.5pt; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+    color: #7F6329; border-bottom: 1px solid rgba(36,33,30,.14);
+    padding-bottom: 1.5mm; margin-bottom: 3mm; break-after: avoid;
+  }
+  /* the copy itself, as written — whitespace is meaning in a carousel or a script */
+  .doc__piece > pre {
+    margin: 0; white-space: pre-wrap; word-break: break-word;
+    font-family: inherit; font-size: 10pt; line-height: 1.6; color: #24211E;
+  }
+
+  .doc__foot {
+    margin-top: 10mm; padding-top: 4mm; border-top: 1px solid rgba(36,33,30,.14);
+    font-size: 8pt; color: #857C72;
+  }
+  .doc__empty { font-size: 11pt; color: #6B6257; }
+}
