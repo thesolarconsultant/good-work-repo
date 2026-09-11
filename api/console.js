@@ -192,12 +192,34 @@ export default async function handler(request) {
      causes, and guessing between them from the browser wastes an afternoon. */
   if (request.method === "GET") {
     const { name } = findKey();
+
+    /* Which DeepSeek-ish variables this deployment can actually see, by NAME.
+       Never a value, and nothing outside that filter — the point is to tell
+       "the variable is missing" apart from "the variable is there under a name
+       nothing is looking for", which from the outside look identical and have
+       completely different fixes. envCount is here to prove process.env is
+       populated at all, so an empty `seen` means the variable is absent rather
+       than the environment being empty. */
+    let seen = [];
+    let envCount = 0;
+    try {
+      const keys = Object.keys(process.env || {});
+      envCount = keys.length;
+      seen = keys.filter((k) => /deep|seek/i.test(k)).sort();
+    } catch {
+      /* some runtimes do not allow enumerating the environment */
+    }
+
     return json(
       {
         ok: true,
         configured: Boolean(name),
         keyFoundAs: name,
         looksFor: KEY_NAMES,
+        seen,                                   // names only, never values
+        envCount,
+        vercelEnv: process.env.VERCEL_ENV || null,
+        commit: (process.env.VERCEL_GIT_COMMIT_SHA || "").slice(0, 7) || null,
         model: MODEL,
         endpoint: BASE,
         channels: Object.keys(CHANNELS),
