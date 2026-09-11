@@ -585,54 +585,45 @@ $("#impFile").addEventListener("change", async (e) => {
 });
 
 /* ====================================================================== PDF == */
-/* Approved work, as a document. The browser does the rendering — its "Save as
-   PDF" keeps the real typeface, keeps the text selectable, and handles page
-   breaks and widows, none of which a PDF library gives you for free.
+/* Work, as a document. The browser does the rendering — its "Save as PDF" keeps
+   the real typeface, keeps the text selectable, and handles page breaks and
+   widows, none of which a PDF library gives you for free.
 
-   Only approved pieces go in. That is the point of the thing: a document of
-   what a person has read and signed off, not a dump of everything a model
-   wrote. */
-function buildDoc() {
-  const withApproved = store
-    .load()
-    .campaigns.map((c) => ({
-      c,
-      pieces: Object.entries(c.pieces).filter(([, p]) => p.state === "approved"),
-    }))
-    .filter((x) => x.pieces.length);
-
-  const total = withApproved.reduce((n, x) => n + x.pieces.length, 0);
+   Two documents come out of the same builder, because they are the same object
+   with a different filter on it: everything approved across every idea, or
+   every piece written for the one idea on screen. */
+function renderDoc(groups, title, note) {
+  const total = groups.reduce((n, g) => n + g.pieces.length, 0);
   const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   const head = `
     <header class="doc__head">
       <img src="../logo/beauty-heaven-hub-wordmark-espresso.svg" alt="Beauty Heaven Hub">
       <div>
-        <b>Approved content</b>
+        <b>${esc(title)}</b>
         <small>${today}</small>
       </div>
     </header>`;
 
   if (!total) {
-    $("#doc").innerHTML = `${head}<p class="doc__empty">Nothing has been approved yet, so there is
-      nothing to put on paper. Approve a piece and it will appear here.</p>`;
+    $("#doc").innerHTML = `${head}<p class="doc__empty">${esc(note)}</p>`;
     return 0;
   }
 
   $("#doc").innerHTML =
     head +
-    withApproved
+    groups
       .map(
-        ({ c, pieces }) => `
+        ({ c, pieces, meta }) => `
       <section class="doc__idea">
         <h2>${esc(c.brief)}</h2>
-        <p class="doc__meta">${pieces.length} approved · written ${when(c.createdAt)}${
-          c.context ? ` · with context` : ""
-        }</p>
+        <p class="doc__meta">${meta}</p>
         ${pieces
           .map(
             ([ch, p]) => `<div class="doc__piece">
-              <h3>${CHANNELS[ch]}${p.day ? ` · ${p.day}` : ""}</h3>
+              <h3>${CHANNELS[ch]}${p.day ? ` · ${p.day}` : ""}${
+                p.state !== "approved" ? ` · ${STATES[p.state]}` : ""
+              }</h3>
               <pre>${esc(p.text)}</pre>
             </div>`,
           )
@@ -640,22 +631,60 @@ function buildDoc() {
       </section>`,
       )
       .join("") +
-    `<footer class="doc__foot">${total} approved ${total === 1 ? "piece" : "pieces"} across
-      ${withApproved.length} ${withApproved.length === 1 ? "idea" : "ideas"}. Written in the Content
-      Console and approved by a person before printing.</footer>`;
+    `<footer class="doc__foot">${total} ${total === 1 ? "piece" : "pieces"} across
+      ${groups.length} ${groups.length === 1 ? "idea" : "ideas"}. Written in the Content Console.
+      Anything not marked approved is still a draft.</footer>`;
 
   return total;
 }
 
-$("#pdfBtn").addEventListener("click", () => {
-  const n = buildDoc();
-  if (!n) return toast("Nothing approved yet.");
-  /* Let the layout settle and the logo load before the print dialog freezes
-     the page — printing a document mid-render prints the half of it. */
+/* Everything signed off, across every idea. */
+function buildApprovedDoc() {
+  const groups = store
+    .load()
+    .campaigns.map((c) => {
+      const pieces = Object.entries(c.pieces).filter(([, p]) => p.state === "approved");
+      return { c, pieces, meta: `${pieces.length} approved · written ${when(c.createdAt)}` };
+    })
+    .filter((g) => g.pieces.length);
+
+  return renderDoc(
+    groups,
+    "Approved content",
+    "Nothing has been approved yet, so there is nothing to put on paper. Approve a piece and it will appear here.",
+  );
+}
+
+/* One idea, every channel it was written for, whatever state each is in — the
+   thing on screen, on paper, for reading away from the machine. */
+function buildCampaignDoc(c) {
+  const pieces = Object.entries(c.pieces).filter(([, p]) => p.text.trim());
+  const approved = pieces.filter(([, p]) => p.state === "approved").length;
+  return renderDoc(
+    [{ c, pieces, meta: `${pieces.length} ${pieces.length === 1 ? "piece" : "pieces"} · ${approved} approved · written ${when(c.createdAt)}` }],
+    "One idea, everywhere",
+    "Nothing written for this idea yet.",
+  );
+}
+
+/* The print dialog freezes the page, so it waits for the logo — printing
+   mid-render prints half a document. */
+function toPaper() {
   const img = $("#doc img");
   const go = () => setTimeout(() => window.print(), 60);
   if (img && !img.complete) img.addEventListener("load", go, { once: true });
   else go();
+}
+
+$("#pdfBtn").addEventListener("click", () => {
+  if (!buildApprovedDoc()) return toast("Nothing approved yet.");
+  toPaper();
+});
+
+$("#pdfCampaign").addEventListener("click", () => {
+  if (!current) return toast("Write something first.");
+  if (!buildCampaignDoc(current)) return toast("Nothing written yet.");
+  toPaper();
 });
 
 /* ===================================================================== BOOT == */
