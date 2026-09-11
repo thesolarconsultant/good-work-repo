@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beauty Heaven Hub — Content Console</title>
+<meta name="description" content="One place the business writes from. Social, blogs, email and WhatsApp, in Beauty Heaven's own voice.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F4F0E9">
+<link rel="icon" href="../logo/favicon.svg" type="image/svg+xml">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/Jost-Light.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../fonts/Jost-Medium.woff2" crossorigin>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="console.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="app">
+
+  <!-- ───────────────────────────────────────────────────────── the rail ─── -->
+  <aside class="rail">
+    <a class="rail__brand" href="../index.html" title="Beauty Heaven Hub">
+      <span class="bh-mark" role="img" aria-label="Beauty Heaven Hub"></span>
+    </a>
+
+    <nav class="rail__nav" aria-label="Sections">
+      <button data-view="dashboard" class="on"><i></i>Dashboard</button>
+      <button data-view="campaign"><i></i>Write something</button>
+      <button data-view="approvals"><i></i>Waiting on you <em class="pill" id="waitingPill" hidden>0</em></button>
+      <button data-view="calendar"><i></i>Calendar</button>
+      <button data-view="email"><i></i>Email</button>
+      <button data-view="brand"><i></i>Brand</button>
+    </nav>
+
+    <div class="rail__foot">
+      <button class="link" data-view="about">Where this is kept</button>
+    </div>
+  </aside>
+
+  <!-- ──────────────────────────────────────────────────────── the screen ─── -->
+  <main class="screen" id="main">
+
+    <!-- ═══ DASHBOARD ═══════════════════════════════════════════════════ -->
+    <section class="view on" data-view="dashboard">
+      <header class="head">
+        <div>
+          <p class="eyebrow">This week</p>
+          <h1 class="h1" id="dashGreeting">Morning.</h1>
+        </div>
+        <button class="btn btn--gold" data-go="campaign">Write something</button>
+      </header>
+
+      <div class="stats" id="dashStats"></div>
+
+      <div class="cols">
+        <section class="panel">
+          <h2 class="h3">Ideas captured</h2>
+          <p class="note">The questions people actually ask. This is where content comes from —
+            not from a blank page on a Monday.</p>
+          <form class="addidea" id="addIdea">
+            <input type="text" name="text" placeholder="What did someone ask you today?" aria-label="New idea" required>
+            <button class="btn btn--quiet" type="submit">Add</button>
+          </form>
+          <ul class="ideas" id="ideaList"></ul>
+        </section>
+
+        <section class="panel">
+          <h2 class="h3">Recent work</h2>
+          <p class="note">Everything the console has written, and what state it is in.</p>
+          <ul class="worklist" id="workList"></ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ═══ CAMPAIGN ════════════════════════════════════════════════════ -->
+    <section class="view" data-view="campaign">
+      <header class="head">
+        <div>
+          <p class="eyebrow">One idea, everywhere</p>
+          <h1 class="h1">What shall we write about?</h1>
+        </div>
+      </header>
+
+      <form class="brief" id="briefForm">
+        <label class="field">
+          <span>The idea</span>
+          <textarea name="brief" rows="2" required
+            placeholder="A client asked if lip filler hurts — again."></textarea>
+        </label>
+        <label class="field">
+          <span>Anything the model should know <em>optional</em></span>
+          <textarea name="context" rows="2"
+            placeholder="Hollie does consultations Tuesdays and Thursdays. We use hyaluronic acid filler with lidocaine in it."></textarea>
+        </label>
+
+        <fieldset class="picks">
+          <legend>Write it for</legend>
+          <label><input type="checkbox" name="channel" value="instagram" checked><span>Instagram carousel</span></label>
+          <label><input type="checkbox" name="channel" value="blog" checked><span>Blog post</span></label>
+          <label><input type="checkbox" name="channel" value="email" checked><span>Email</span></label>
+          <label><input type="checkbox" name="channel" value="whatsapp" checked><span>WhatsApp reply</span></label>
+          <label><input type="checkbox" name="channel" value="website" checked><span>Website answer</span></label>
+          <label><input type="checkbox" name="channel" value="reel"><span>Reel script</span></label>
+        </fieldset>
+
+        <div class="brief__go">
+          <button class="btn btn--gold" type="submit" id="writeBtn">Write it</button>
+          <p class="note" id="writeNote">Each one arrives on its own. You can edit anything before it counts.</p>
+        </div>
+      </form>
+
+      <div class="pieces" id="pieces"></div>
+    </section>
+
+    <!-- ═══ APPROVALS ═══════════════════════════════════════════════════ -->
+    <section class="view" data-view="approvals">
+      <header class="head">
+        <div>
+          <p class="eyebrow">Nothing goes out on its own</p>
+          <h1 class="h1">Waiting on you</h1>
+        </div>
+      </header>
+      <div class="queue" id="queue"></div>
+    </section>
+
+    <!-- ═══ CALENDAR ════════════════════════════════════════════════════ -->
+    <section class="view" data-view="calendar">
+      <header class="head">
+        <div>
+          <p class="eyebrow">The week</p>
+          <h1 class="h1">Content calendar</h1>
+        </div>
+      </header>
+      <div class="week" id="week"></div>
+
+      <section class="tray">
+        <h2 class="h3">Approved, not placed</h2>
+        <div id="tray"></div>
+      </section>
+
+      <p class="note" style="margin-top:1.2rem;max-width:62ch">Nothing lands on a day by itself —
+        you put it there. And publishing is still a person pressing a button in the CRM: this
+        console does not post on anyone's behalf.</p>
+    </section>
+
+    <!-- ═══ EMAIL ═══════════════════════════════════════════════════════ -->
+    <section class="view" data-view="email">
+      <header class="head">
+        <div>
+          <p class="eyebrow">Email</p>
+          <h1 class="h1">Built into the template, not into a box.</h1>
+        </div>
+      </header>
+
+      <div class="cols cols--email">
+        <section class="panel">
+          <h2 class="h3">The message</h2>
+          <label class="field"><span>Subject</span><input type="text" id="emSubject" placeholder="Your first treatment — what actually happens"></label>
+          <label class="field"><span>Preheader</span><input type="text" id="emPre" placeholder="Nervous is normal. Here is exactly how it goes."></label>
+          <label class="field"><span>Body</span><textarea id="emBody" rows="10" placeholder="Paste from a piece the console wrote, or write it here."></textarea></label>
+          <div class="row">
+            <button class="btn btn--quiet" id="emFromPiece">Pull in the last email written</button>
+            <button class="btn" id="emCopy">Copy the HTML</button>
+          </div>
+          <p class="note" id="emNote">The merge tags stay intact, so it can go straight into the CRM.</p>
+        </section>
+
+        <section class="panel panel--preview">
+          <div class="preview__bar">
+            <h2 class="h3">Preview</h2>
+            <div class="seg" role="group" aria-label="Preview width">
+              <button class="on" data-w="desktop">Desktop</button>
+              <button data-w="phone">Phone</button>
+            </div>
+          </div>
+          <div class="preview" id="emPreview" data-w="desktop"><iframe title="Email preview" id="emFrame"></iframe></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ═══ BRAND ═══════════════════════════════════════════════════════ -->
+    <section class="view" data-view="brand">
+      <header class="head">
+        <div>
+          <p class="eyebrow">The part that makes it sound like you</p>
+          <h1 class="h1">Brand</h1>
+        </div>
+        <span class="saved" id="brandSaved"></span>
+      </header>
+
+      <p class="note lede">Everything the console writes is written through this. It is not settings —
+        it is the difference between copy that sounds like Beauty Heaven and copy that sounds like
+        every other salon with a chatbot. Change it and the next thing you write changes with it.</p>
+
+      <form class="brandform" id="brandForm">
+        <label class="field"><span>Name</span><input name="name" type="text"></label>
+        <label class="field"><span>What you are</span><textarea name="what" rows="3"></textarea></label>
+        <label class="field"><span>Who you are talking to</span><textarea name="audience" rows="3"></textarea></label>
+        <label class="field"><span>Voice</span><textarea name="voice" rows="4"></textarea></label>
+        <label class="field"><span>What you offer <em>one per line</em></span><textarea name="treatments" rows="7"></textarea></label>
+        <label class="field"><span>The team <em>one per line</em></span><textarea name="team" rows="3"></textarea></label>
+        <label class="field"><span>On at the moment</span><textarea name="offers" rows="2" placeholder="Leave empty if nothing is."></textarea></label>
+        <label class="field field--never"><span>What you would never say <em>one per line</em></span><textarea name="never" rows="8"></textarea></label>
+        <label class="field"><span>Your own words, for the sound of it</span><textarea name="examples" rows="4"></textarea></label>
+        <div class="row"><button class="btn btn--gold" type="submit">Save</button></div>
+      </form>
+    </section>
+
+    <!-- ═══ ABOUT ═══════════════════════════════════════════════════════ -->
+    <section class="view" data-view="about">
+      <header class="head">
+        <div>
+          <p class="eyebrow">Straight answer</p>
+          <h1 class="h1">Where this is kept.</h1>
+        </div>
+      </header>
+      <div class="prose">
+        <p>Everything you write here — the brand, the ideas, the content — is stored
+          <b>in this browser, on this device</b>. It is not on a server, it is not in anyone's
+          account, and it will not follow you to your phone or to anyone else on the team.</p>
+        <p>That is a real limit and it is the next thing to fix. It needs a proper database and
+          logins before more than one person can use it, and that is a decision with a cost
+          attached rather than something to quietly assume.</p>
+        <p>In the meantime nothing here is trapped. The button below gives you the lot as a file.
+          Keep it somewhere, and it loads straight back in.</p>
+        <div class="row">
+          <button class="btn btn--gold" id="expBtn">Download everything</button>
+          <button class="btn btn--quiet" id="impBtn">Load a file back in</button>
+          <input type="file" id="impFile" accept="application/json" hidden>
+        </div>
+        <p class="note" id="storeNote"></p>
+        <hr class="rule">
+        <p class="note">Writing runs through <code>/api/console</code> on Good Work's deployment,
+          which holds the API key. The key is never in this page. If the console says it cannot
+          write, that endpoint has no key set.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="console.js"></script>
+</body>
+</html>

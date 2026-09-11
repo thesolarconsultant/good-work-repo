@@ -1,0 +1,646 @@
+/* ============================================================================
+   BEAUTY HEAVEN × GOOD WORK — strategy session
+   ----------------------------------------------------------------------------
+   Built to be presented live, not scrolled. One moment fills the screen; the
+   arrow keys move through it.
+
+   THE SYSTEM IN ONE IDEA
+   The deck warms up and then cools down. It opens in Beauty Heaven's own
+   world — ivory, taupe, gold, generous space, a drawn line — and as the
+   opportunity gets larger the ground darkens and the type tightens into
+   something closer to a product company. The last moment returns to ivory,
+   because the decision comes back to them.
+
+   Grounds are set per moment with data-ground, and every colour on the page
+   reads from the tokens that ground defines. Nothing is hard-coded twice.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ TYPE -- */
+@font-face { font-family:'Jost'; font-weight:300; font-display:block; src:url('../fonts/Jost-Light.woff2') format('woff2'); }
+@font-face { font-family:'Jost'; font-weight:400; font-display:block; src:url('../fonts/Jost-Regular.woff2') format('woff2'); }
+@font-face { font-family:'Jost'; font-weight:500; font-display:block; src:url('../fonts/Jost-Medium.woff2') format('woff2'); }
+@font-face { font-family:'Jost'; font-weight:700; font-display:block; src:url('../fonts/Jost-Bold.woff2') format('woff2'); }
+
+:root {
+  /* Beauty Heaven's five, from their guidelines. */
+  --ivory:      #F4F0E9;
+  --ivory-2:    #ECE6DD;
+  --taupe:      #746B60;
+  --taupe-deep: #5E564C;
+  --espresso:   #24211E;
+  --black:      #16140F;   /* one step past espresso, for the venture act */
+  --gold:       #C9A65C;
+  --gold-lift:  #E3CD94;
+  --gold-ink:   #7F6329;   /* gold as small text on ivory — 5:1 */
+  --stone:      #B9AFA2;
+
+  --display: 'Jost','Futura','Century Gothic',Helvetica,Arial,sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  --pad: clamp(1.6rem, 5.2vmin, 5rem);
+  --ease: cubic-bezier(.22,1,.36,1);
+  --ease-slow: cubic-bezier(.16,1,.3,1);
+
+  /* Set by [data-ground] below. Defaults to the ivory world. */
+  --bg: var(--ivory);
+  --ink: var(--espresso);
+  --body: #4A443E;
+  --muted: #6B6257;
+  --line: rgba(36,33,30,.14);
+  --accent: var(--gold-ink);      /* gold that is legible as text */
+  --accent-bright: var(--gold);   /* gold for lines, marks and fills */
+  --panel: #FBF9F5;
+  --panel-line: rgba(36,33,30,.10);
+}
+
+/* --------------------------------------------------------------- GROUNDS -- */
+[data-ground="ivory"]    { --bg:var(--ivory);    --panel:#FBF9F5; }
+[data-ground="stone"]    { --bg:var(--ivory-2);  --panel:#F6F2EB; }
+[data-ground="taupe"] {
+  --bg:var(--taupe); --ink:var(--ivory); --body:rgba(244,240,233,.84); --muted:rgba(244,240,233,.66);
+  --line:rgba(244,240,233,.24); --accent:var(--gold-lift); --panel:rgba(244,240,233,.07); --panel-line:rgba(244,240,233,.18);
+}
+[data-ground="espresso"] {
+  --bg:var(--espresso); --ink:var(--ivory); --body:#D6CFC4; --muted:var(--stone);
+  --line:rgba(244,240,233,.16); --accent:var(--gold-lift); --panel:#2C2823; --panel-line:rgba(244,240,233,.12);
+}
+[data-ground="black"] {
+  --bg:var(--black); --ink:var(--ivory); --body:#CFC8BD; --muted:#9A9187;
+  --line:rgba(244,240,233,.14); --accent:var(--gold-lift); --panel:#1E1B16; --panel-line:rgba(244,240,233,.10);
+}
+
+/* ------------------------------------------------------------------ BASE -- */
+*,*::before,*::after { box-sizing:border-box; }
+html,body { height:100%; }
+body {
+  margin:0; background:var(--black); color:var(--body);
+  font-family:var(--display); font-weight:300; -webkit-font-smoothing:antialiased;
+  overflow:hidden; overscroll-behavior:none;
+}
+img,svg { display:block; max-width:100%; }
+h1,h2,h3,p,ul,figure,blockquote { margin:0; }
+ul { list-style:none; padding:0; }
+b,strong { font-weight:700; }
+
+/* --------------------------------------------------------------- THE DECK -- */
+.deck { position:fixed; inset:0; background:var(--bg); transition:background 900ms var(--ease-slow); }
+
+.moment {
+  position:absolute; inset:0; display:grid; align-content:center;
+  padding:calc(var(--pad) * 1.5) var(--pad);
+  background:var(--bg); color:var(--body);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity 620ms var(--ease), visibility 620ms;
+}
+.moment.is-live { opacity:1; visibility:visible; pointer-events:auto; }
+/* The moment that just left slides out of the way instantly once faded. */
+.moment.is-past .rise, .moment.is-past [data-step] { transition:none; }
+
+.wrap { width:min(100%, 1560px); margin-inline:auto; transform-origin:center center; transition:transform 300ms var(--ease); }
+
+/* Everything that arrives does so the same way: a short rise, never a slide. */
+.rise { opacity:0; transform:translateY(16px); transition:opacity 700ms var(--ease-slow), transform 700ms var(--ease-slow); }
+.is-live .rise { opacity:1; transform:none; }
+.is-live .rise:nth-child(2) { transition-delay:80ms; }
+.is-live .rise:nth-child(3) { transition-delay:160ms; }
+.is-live .rise:nth-child(4) { transition-delay:240ms; }
+.is-live .rise:nth-child(5) { transition-delay:320ms; }
+
+/* Progressive reveal. An element with data-step waits for its step. */
+[data-step] { opacity:0; transform:translateY(14px); transition:opacity 620ms var(--ease-slow), transform 620ms var(--ease-slow); }
+[data-step].is-on { opacity:1; transform:none; }
+/* Some steps take something away — a quote that gives way to the answer, or,
+   on a phone, a line that gives way to the next one. */
+[data-until],[data-until-sm] { transition:opacity 520ms var(--ease), visibility 520ms; }
+[data-until].is-off,[data-until-sm].is-off { opacity:0 !important; visibility:hidden; pointer-events:none; }
+/* the phone version has to give its space back, not just its ink */
+[data-until-sm].is-off { position:absolute; }
+/* A step that replaces what came before rather than adding to it. */
+[data-step][data-swap] { position:absolute; inset:0; display:grid; align-content:center; }
+
+/* ------------------------------------------------------------------ TYPE -- */
+.kicker {
+  font-weight:500; font-size:clamp(.62rem,1.15vmin,.78rem); letter-spacing:.28em;
+  text-transform:uppercase; color:var(--accent);
+}
+.kicker--quiet { color:var(--muted); }
+
+.display  { font-weight:300; line-height:1.02; letter-spacing:-.018em; color:var(--ink); }
+.d-xl { font-size:clamp(2.6rem, 9.4vmin, 7.6rem); }
+.d-lg { font-size:clamp(2.1rem, 7.2vmin, 5.6rem); }
+.d-md { font-size:clamp(1.6rem, 4.8vmin, 3.6rem); }
+.d-sm { font-size:clamp(1.25rem, 3.2vmin, 2.2rem); }
+.upper { text-transform:uppercase; letter-spacing:.07em; }
+
+.lede { font-size:clamp(1rem, 2.05vmin, 1.4rem); line-height:1.6; color:var(--body); max-width:46ch; }
+.note { font-size:clamp(.8rem, 1.5vmin, 1rem); line-height:1.55; color:var(--muted); max-width:52ch; }
+.mono { font-family:var(--mono); font-size:clamp(.62rem,1.1vmin,.76rem); letter-spacing:.06em; color:var(--muted); }
+
+.rule { border:0; border-top:1px solid var(--accent-bright); width:56px; margin:0; }
+
+/* --------------------------------------------------------------- CHROME -- */
+/* Quiet. It exists so the presenter knows where they are, and disappears on
+   the moments that should feel like nothing but the idea. */
+.rail { position:fixed; left:var(--pad); right:var(--pad); display:flex; align-items:center; gap:1rem; z-index:20;
+        opacity:.9; transition:opacity 500ms var(--ease); pointer-events:none; }
+.rail--top { top:calc(var(--pad) * .72); }
+.rail--bot { bottom:calc(var(--pad) * .72); }
+body[data-bare="1"] .rail { opacity:0; }
+.rail .mono { color:var(--muted); }
+.rail__sp { flex:1; }
+.chapters { display:flex; gap:1.4rem; pointer-events:auto; }
+.chapters button { appearance:none; background:none; border:0; padding:.2rem 0; cursor:pointer;
+  font-family:var(--display); font-weight:500; font-size:clamp(.58rem,1.05vmin,.72rem); letter-spacing:.22em;
+  text-transform:uppercase; color:var(--muted); opacity:.55; transition:opacity 400ms var(--ease), color 400ms var(--ease); }
+.chapters button.on { opacity:1; color:var(--accent); }
+.chapters button:hover { opacity:1; }
+.bar { position:fixed; left:0; right:0; bottom:0; height:2px; background:transparent; z-index:21; }
+.bar i { display:block; height:100%; width:var(--p,0%); background:var(--accent-bright); transition:width 620ms var(--ease); }
+
+/* ----------------------------------------------------------- THE OVERVIEW -- */
+.grid-view { position:fixed; inset:0; z-index:40; background:var(--black); color:var(--ivory);
+  padding:clamp(1.4rem,4vmin,3rem); overflow:auto; display:none; }
+.grid-view.on { display:block; }
+.grid-view h2 { font-weight:300; font-size:clamp(1.1rem,2.4vmin,1.6rem); color:var(--ivory); margin-bottom:1.4rem; }
+.grid-view h2 span { color:#9A9187; font-family:var(--mono); font-size:.7em; letter-spacing:.08em; margin-left:1rem; }
+.gv { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:.7rem; }
+.gv button { appearance:none; cursor:pointer; text-align:left; display:grid; gap:.45rem; align-content:start;
+  background:#1E1B16; border:1px solid rgba(244,240,233,.12); border-radius:10px; padding:.85rem .9rem; min-height:96px;
+  color:#CFC8BD; font-family:var(--display); transition:border-color 240ms, background 240ms; }
+.gv button:hover, .gv button.on { border-color:var(--gold); background:#26221C; }
+.gv b { font-weight:400; font-size:.94rem; color:var(--ivory); line-height:1.25; }
+.gv .mono { font-size:.6rem; color:#8A8177; }
+
+/* ------------------------------------------------------------- BOTANICAL -- */
+/* The drawn line from the brand system, used sparingly: it marks the opening,
+   the two chapter breaks and the close. Nowhere else. */
+.bot { position:absolute; pointer-events:none; color:var(--accent-bright); opacity:.5; }
+.bot path { fill:none; stroke:currentColor; stroke-width:1.2; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+.bot .bh-bot__stem { stroke-dasharray:var(--len,1200); stroke-dashoffset:var(--len,1200); }
+.is-live .bot .bh-bot__stem { transition:stroke-dashoffset 2600ms var(--ease-slow) 260ms; stroke-dashoffset:0; }
+.bot .bh-bot__leaf, .bot .bh-bot__bloom { opacity:0; transform-box:fill-box; transform-origin:center; transform:scale(.6); }
+.is-live .bot .bh-bot__leaf, .is-live .bot .bh-bot__bloom {
+  opacity:1; transform:none;
+  transition:opacity 700ms var(--ease) calc(360ms + var(--t) * 2300ms), transform 900ms var(--ease-slow) calc(360ms + var(--t) * 2300ms);
+}
+
+/* ------------------------------------------------------------ COMPONENTS -- */
+.stack { display:grid; gap:clamp(.9rem,2vmin,1.6rem); }
+.stack--tight { gap:clamp(.5rem,1.1vmin,.9rem); }
+.row { display:flex; flex-wrap:wrap; gap:clamp(.6rem,1.6vmin,1.2rem); }
+.cols { display:grid; gap:clamp(1.2rem,3vmin,3rem); }
+.cols--2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.cols--3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.cols--4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.cols--split { grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); align-items:center; }
+.cols--copy { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); align-items:center; }
+
+.chip { display:inline-flex; align-items:center; gap:.5em; padding:.42em .85em; border:1px solid var(--line);
+  border-radius:999px; font-family:var(--mono); font-size:clamp(.58rem,1.05vmin,.72rem); letter-spacing:.05em; color:var(--muted); }
+.chip--gold { border-color:var(--accent-bright); color:var(--accent); }
+.chip--concept { border-color:var(--accent-bright); color:var(--accent); text-transform:uppercase; letter-spacing:.16em; }
+
+.panel { background:var(--panel); border:1px solid var(--panel-line); border-radius:10px; }
+.card { background:var(--panel); border:1px solid var(--panel-line); border-radius:10px;
+  padding:clamp(.9rem,2.1vmin,1.6rem); display:grid; gap:.5rem; align-content:start; }
+.card h3 { font-weight:400; font-size:clamp(1rem,2.1vmin,1.4rem); color:var(--ink); letter-spacing:-.01em; }
+.card p { font-size:clamp(.78rem,1.5vmin,.98rem); line-height:1.55; color:var(--body); }
+
+.big-num { font-family:var(--display); font-weight:300; font-size:clamp(2rem,6vmin,4.4rem); color:var(--ink); line-height:1; letter-spacing:-.02em; }
+.big-num sup { font-size:.3em; vertical-align:super; color:var(--muted); }
+
+/* the recurring three-opportunity map, reused as every chapter break */
+.map { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1rem,2.4vmin,2.2rem); }
+.map--five { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.map__item { display:grid; gap:.7rem; align-content:start; padding-top:1.1rem; border-top:1px solid var(--line);
+  transition:opacity 600ms var(--ease), border-color 600ms var(--ease); }
+.map__item .arcm { margin-bottom:-.15rem; }
+
+/* The brand counts in arches, not in 01 / 02 / 03. Order is carried by
+   reading order and by the rules between the rows; the mark is just the
+   building, small. */
+.arcm { display:block; width:clamp(12px,1.8vmin,18px); aspect-ratio:3/4; border:1.5px solid var(--accent);
+  border-bottom:0; border-radius:999px 999px 0 0; }
+.map__item h3 { font-weight:300; font-size:clamp(1.2rem,3.1vmin,2.3rem); color:var(--ink); letter-spacing:-.015em; line-height:1.1; }
+.map__item p { font-size:clamp(.78rem,1.5vmin,1rem); line-height:1.55; color:var(--body); max-width:34ch; }
+.map[data-focus] .map__item { opacity:.32; }
+.map[data-focus="1"] .map__item:nth-child(1),
+.map[data-focus="2"] .map__item:nth-child(2),
+.map[data-focus="3"] .map__item:nth-child(3) { opacity:1; border-color:var(--accent-bright); }
+
+/* ------------------------------------------------------- THE CONSTELLATION -- */
+/* Beauty Heaven at the centre, its tools around it. They begin scattered and
+   unjoined; a step draws the wires. */
+/* Sized from the height of the room it is presented in, so it never pushes
+   the headline off the top of a 768px projector. */
+.constel { position:relative; height:min(44vh, 30vw); aspect-ratio:16/10; width:auto; max-width:100%; margin-inline:auto; }
+.constel svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.constel .wire { stroke:var(--accent-bright); stroke-width:1; fill:none; opacity:0;
+  stroke-dasharray:var(--l,300); stroke-dashoffset:var(--l,300);
+  transition:opacity 400ms var(--ease), stroke-dashoffset 900ms var(--ease-slow); }
+.constel.is-joined .wire { opacity:.55; stroke-dashoffset:0; }
+.constel .wire:nth-child(2n) { transition-delay:120ms; }
+.constel .wire:nth-child(3n) { transition-delay:240ms; }
+.node { position:absolute; transform:translate(-50%,-50%); display:grid; gap:.3rem; justify-items:center; text-align:center;
+  transition:transform 900ms var(--ease-slow), opacity 600ms var(--ease); }
+.node span { font-family:var(--display); font-weight:400; font-size:clamp(.62rem,1.32vmin,.92rem); color:var(--body); white-space:nowrap; }
+.node i { width:7px; height:7px; border-radius:50%; border:1px solid var(--accent-bright); background:var(--bg); display:block; }
+.constel.is-joined .node i { background:var(--accent-bright); }
+.node--core { z-index:2; }
+.node--core .mark { width:clamp(120px,17vmin,230px); }
+.node--core span:not(.mark) { display:none; }
+
+/* A screenshot never dictates the height of a moment: it is cropped from the
+   top and capped, because the top of a page is the part being talked about. */
+.shot { width:100%; max-height:44vh; object-fit:cover; object-position:top; }
+.shot--tall { max-height:50vh; }
+
+/* --------------------------------------------------------------- DEVICES -- */
+/* A phone and a browser, drawn rather than photographed, so the UI inside is
+   real markup and stays crisp on a projector. */
+/* The phone is the container everything inside it is measured against, so a
+   768px projector gets the same phone, just smaller. It cannot be the screen:
+   an element cannot query itself. */
+.phone { position:relative; width:var(--w,290px); aspect-ratio:9/19.3; border-radius:34px; background:#0F0D0B;
+  padding:9px; box-shadow:0 40px 80px -40px rgba(0,0,0,.6); flex:none; container-type:inline-size; }
+.phone__screen { position:relative; width:100%; height:100%; border-radius:26px; overflow:hidden; background:var(--ivory);
+  display:flex; flex-direction:column; }
+.phone__notch { position:absolute; top:7px; left:50%; transform:translateX(-50%); width:34%; height:clamp(10px, 6.6cqw, 20px);
+  border-radius:0 0 12px 12px; background:#0F0D0B; z-index:6; }
+.win { border-radius:12px; overflow:hidden; background:#fff; border:1px solid rgba(0,0,0,.14); box-shadow:0 40px 90px -50px rgba(0,0,0,.55); }
+.win__bar { display:flex; align-items:center; gap:.4rem; padding:.5rem .75rem; background:#EDE9E3; border-bottom:1px solid rgba(0,0,0,.08); }
+.win__bar i { width:9px; height:9px; border-radius:50%; background:#CFC7BC; }
+.win__url { margin-left:.6rem; font-family:var(--mono); font-size:.62rem; color:#8A8177; background:#fff; border-radius:999px;
+  padding:.22rem .6rem; letter-spacing:.02em; }
+.win img, .phone img { width:100%; display:block; }
+
+/* --------------------------------------------------------------- UI KIT -- */
+/* Enough chrome to read as a real product without pretending it is built. */
+.ui { font-family:var(--display); color:#3A342E; background:#FBF9F5; height:100%; display:grid; }
+.ui--console { grid-template-columns:clamp(120px,13vmin,190px) minmax(0,1fr); }
+.ui__side { background:#F1ECE4; border-right:1px solid rgba(36,33,30,.09); padding:clamp(.7rem,1.5vmin,1.2rem); display:grid; gap:.9rem; align-content:start; }
+.ui__brand { display:flex; align-items:center; gap:.45rem; }
+.ui__brand .mark { width:74%; }
+.ui__nav { display:grid; gap:.12rem; }
+.ui__nav a { display:flex; align-items:center; gap:.5rem; padding:.42rem .5rem; border-radius:6px;
+  font-size:clamp(.6rem,1.12vmin,.8rem); color:#5C554D; }
+.ui__nav a.on { background:#E4DCD0; color:#24211E; }
+.ui__nav a i { width:4px; height:4px; border-radius:50%; background:#C0B6A8; }
+.ui__nav a.on i { background:var(--gold); }
+.ui__main { padding:clamp(.8rem,1.7vmin,1.4rem); display:grid; gap:clamp(.6rem,1.3vmin,1rem); align-content:start; overflow:hidden; }
+.ui__top { display:flex; align-items:baseline; gap:.8rem; }
+.ui__top h4 { font-weight:400; font-size:clamp(.85rem,1.8vmin,1.25rem); color:#24211E; }
+.ui__top .mono { font-size:clamp(.55rem,1vmin,.68rem); }
+.ui__grid { display:grid; gap:clamp(.5rem,1.1vmin,.85rem); }
+.ui-card { background:#fff; border:1px solid rgba(36,33,30,.09); border-radius:8px; padding:clamp(.55rem,1.2vmin,.9rem);
+  display:grid; gap:.35rem; align-content:start; }
+.ui-card h5 { font-weight:500; font-size:clamp(.62rem,1.15vmin,.82rem); color:#24211E; }
+.ui-card p { font-size:clamp(.55rem,1.05vmin,.74rem); line-height:1.5; color:#6B6257; }
+.ui-tag { display:inline-flex; align-items:center; padding:.2em .55em; border-radius:999px; font-family:var(--mono);
+  font-size:clamp(.5rem,.95vmin,.62rem); letter-spacing:.04em; background:#EFE7DA; color:#7F6329; width:max-content; }
+.ui-tag--live { background:#E2EBE2; color:#3F6B48; }
+.ui-tag--draft { background:#EDE9E3; color:#6B6257; }
+.ui-tag--wait { background:#F2E4DC; color:#8A5A3F; }
+.ui-bar { height:4px; border-radius:2px; background:#E7DFD3; overflow:hidden; }
+.ui-bar i { display:block; height:100%; background:var(--gold); width:var(--v,50%); }
+
+/* One em is a proportion of the handset. Everything inside — type, padding,
+   the notch the status bar has to clear — is written in em, so the whole UI
+   shrinks together instead of the text outgrowing the screen. */
+.phone__screen { font-size:clamp(7.5px, 5.5cqw, 15px); }
+
+/* WhatsApp-style conversation. Deliberately not a chatbot window. */
+.chat { background:#EAE4DA; height:100%; display:grid; grid-template-rows:auto minmax(0,1fr) auto; }
+.chat__top { background:#075E54; color:#fff; padding:calc(clamp(10px, 6.6cqw, 20px) + .4em) .6em .4em; display:flex; align-items:center; gap:.45em; }
+.chat__top .av { width:1.9em; height:1.9em; border-radius:50%; background:var(--taupe); display:grid; place-items:center;
+  font-size:.72em; color:var(--gold); font-weight:500; letter-spacing:.04em; flex:none; }
+.chat__top b { font-weight:400; font-size:.82em; }
+.chat__top small { display:block; font-size:.6em; opacity:.75; }
+.chat__body { padding:.5em; display:flex; flex-direction:column; gap:.34em; overflow:hidden; justify-content:flex-end; }
+.bubble { max-width:84%; padding:.4em .55em; border-radius:.6em; font-size:.78em; line-height:1.38; color:#24211E;
+  opacity:0; transform:translateY(8px); transition:opacity 420ms var(--ease), transform 420ms var(--ease); }
+.bubble.on { opacity:1; transform:none; }
+.bubble--them { background:#fff; align-self:flex-start; border-top-left-radius:2px; }
+.bubble--us { background:#DCF8C6; align-self:flex-end; border-top-right-radius:2px; }
+.bubble--opts { background:#fff; align-self:flex-start; display:grid; gap:.24em; }
+.bubble--opts b { font-weight:400; font-size:.95em; }
+.bubble--opts u { text-decoration:none; border:1px solid rgba(36,33,30,.14); border-radius:.35em; padding:.28em .45em; font-size:.92em; color:#075E54; }
+.bubble time { display:block; font-size:.66em; color:#8A8177; text-align:right; margin-top:.15em; }
+.chat__in { background:#fff; margin:.42em; border-radius:999px; padding:.4em .7em; font-size:.72em; color:#9A9187; }
+
+/* an incoming call */
+.call { background:linear-gradient(180deg,#2B2721,#16140F); height:100%; display:grid; align-content:center; justify-items:center;
+  gap:.6em; padding:1.2em; text-align:center; color:var(--ivory); }
+.call .av { width:4.6em; height:4.6em; border-radius:50%; background:var(--taupe); display:grid; place-items:center; }
+.call .av img { width:64%; }
+.call b { font-weight:300; font-size:1.15em; }
+.call small { font-size:.72em; color:var(--stone); letter-spacing:.1em; text-transform:uppercase; }
+.call__acts { display:flex; gap:1.3em; margin-top:.7em; }
+.call__acts i { width:2.9em; height:2.9em; border-radius:50%; display:grid; place-items:center; }
+.call__acts .no { background:#C0392B; }
+.call__acts .yes { background:#2E7D32; }
+.call__miss { font-family:var(--mono); font-size:.68em; color:#C0857A; letter-spacing:.06em; }
+
+/* marketplace */
+.mk { background:var(--ivory); height:100%; display:grid; grid-template-rows:auto minmax(0,1fr) auto; }
+.mk__top { padding:calc(clamp(10px, 6.6cqw, 20px) + .5em) .7em .4em; display:grid; gap:.1em; }
+.mk__top .mono { font-size:.6em; letter-spacing:.14em; color:#8A8177; }
+.mk__top b { font-weight:300; font-size:1.1em; color:#24211E; }
+/* A real app screen carries its action at the thumb, and the list sits under
+   the header rather than floating in the middle of the handset. */
+.mk__body { padding:.5em .7em .6em; display:grid; gap:.5em; align-content:start; overflow:hidden; }
+.mk__cta { padding:.6em .7em 1.1em; display:grid; gap:.4em; }
+.mk__cta b { font-weight:400; font-size:.82em; text-align:center; padding:.72em .6em; border-radius:999px;
+  background:var(--espresso); color:var(--ivory); }
+.mk__cta b.gold { background:var(--gold); color:#24211E; }
+.mk__cta b.ghost { background:none; border:1px solid rgba(36,33,30,.16); color:#8A8177; }
+.mk__cta .mono { font-size:.56em; color:#8A8177; text-align:center; letter-spacing:.06em; }
+.mk-opt { border:1px solid rgba(36,33,30,.14); border-radius:.6em; padding:.62em .6em; font-size:.8em; color:#3A342E;
+  display:flex; align-items:center; justify-content:space-between; gap:.4em; }
+.mk-opt.on { border-color:var(--gold); background:rgba(201,166,92,.12); color:#24211E; }
+.mk-opt em { font-style:normal; font-family:var(--mono); font-size:.72em; color:#8A8177; }
+.mk-pro { display:grid; grid-template-columns:2.6em minmax(0,1fr) auto; gap:.45em; align-items:center;
+  border:1px solid rgba(36,33,30,.12); border-radius:.6em; padding:.55em .5em; background:#fff; }
+.mk-pro .av { width:2.6em; height:2.6em; border-radius:.4em; background:linear-gradient(150deg,var(--stone),var(--taupe)); }
+.mk-pro b { display:block; font-weight:400; font-size:.8em; color:#24211E; }
+.mk-pro small { display:block; font-family:var(--mono); font-size:.62em; color:#8A8177; letter-spacing:.02em; }
+.mk-pro .price { font-weight:400; font-size:.86em; color:#24211E; text-align:right; }
+.mk-pro .price small { font-size:.6em; }
+.mk-pro .verified { color:var(--gold-ink); font-size:.62em; }
+
+/* the request pulsing outward to nearby professionals */
+.radar { position:relative; aspect-ratio:1; width:min(100%,52vmin); margin-inline:auto; }
+.radar i.ring { position:absolute; inset:0; border-radius:50%; border:1px solid var(--accent-bright); opacity:0; }
+.is-live .radar i.ring { animation:pulse 3.4s var(--ease-slow) infinite; }
+.is-live .radar i.ring:nth-child(2) { animation-delay:1.1s; }
+.is-live .radar i.ring:nth-child(3) { animation-delay:2.2s; }
+@keyframes pulse { 0% { transform:scale(.18); opacity:.9; } 70% { opacity:.14; } 100% { transform:scale(1); opacity:0; } }
+.radar .pin { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--accent-bright);
+  transform:translate(-50%,-50%); box-shadow:0 0 0 4px rgba(201,166,92,.18); }
+.radar .me { position:absolute; left:50%; top:50%; width:14px; height:14px; border-radius:50%; background:var(--ink);
+  transform:translate(-50%,-50%); }
+
+/* the circular ecosystem */
+/* The labels sit on a circle of their own, outside the drawn one. The ring was
+   inset by padding while the labels were placed against the whole box, so the
+   two were never concentric — the ring overhung one side and ran through the
+   labels on the other. One box now, and the ring is scaled down inside it. */
+.eco { position:relative; width:min(100%,62vh); aspect-ratio:1; margin-inline:auto; }
+.eco svg { position:absolute; inset:0; width:100%; height:100%; transform:scale(.68); }
+.eco .track { fill:none; stroke:var(--line); stroke-width:1; }
+.eco .arc { fill:none; stroke:var(--accent-bright); stroke-width:1.4; stroke-linecap:round;
+  stroke-dasharray:var(--l,100); stroke-dashoffset:var(--l,100); transition:stroke-dashoffset 700ms var(--ease-slow); }
+.eco .arc.is-on { stroke-dashoffset:0; }
+.eco__node { position:absolute; transform:translate(-50%,-50%); display:grid; gap:.2rem; justify-items:center; text-align:center;
+  opacity:.25; transition:opacity 600ms var(--ease); }
+.eco__node.on { opacity:1; }
+.eco__node b { font-weight:500; font-size:clamp(.6rem,1.15vmin,.8rem); letter-spacing:.2em; text-transform:uppercase; color:var(--accent); }
+.eco__node span { font-size:clamp(.66rem,1.35vmin,.92rem); color:var(--body); max-width:15ch; line-height:1.35; }
+.eco__mid { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; display:grid; gap:.4rem; }
+/* It arrives on a step, and the step rules move things with a transform — which
+   is also the thing holding this in the middle of the ring. It has to carry its
+   own centring through both states or it sits off to one side. */
+.eco__mid[data-step] { transform:translate(-50%, calc(-50% + 14px)); }
+.eco__mid[data-step].is-on { transform:translate(-50%,-50%); }
+
+/* rent vs own, and other two-sided comparisons */
+.versus { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:clamp(1rem,3vmin,3rem); align-items:stretch; }
+.versus__side { display:grid; gap:.8rem; align-content:start; padding:clamp(1rem,2.4vmin,2rem);
+  border:1px solid var(--line); border-radius:10px; }
+.versus__side ul { display:grid; gap:.42rem; }
+.versus__side li { font-size:clamp(.8rem,1.6vmin,1.05rem); color:var(--body); }
+.versus__side li.dim { color:var(--muted); }
+.versus__mid { align-self:center; font-family:var(--mono); font-size:clamp(.62rem,1.2vmin,.8rem); color:var(--muted); letter-spacing:.1em; }
+.versus__side--own { border-color:var(--accent-bright); }
+
+/* the ladder: sequential steps that are not numbered like a list */
+.ladder { display:grid; gap:0; }
+.ladder li { display:grid; grid-template-columns:auto minmax(0,1fr); gap:clamp(.8rem,2vmin,1.6rem); align-items:baseline;
+  padding:clamp(.5rem,1.3vmin,1rem) 0; border-top:1px solid var(--line); }
+.ladder li:last-child { border-bottom:1px solid var(--line); }
+.ladder .k { font-family:var(--mono); font-size:clamp(.58rem,1.05vmin,.72rem); color:var(--accent); letter-spacing:.12em; }
+.ladder .arcm { align-self:center; }
+.ladder .v { font-size:clamp(.9rem,2.1vmin,1.4rem); color:var(--ink); font-weight:300; }
+.ladder .v small { display:block; font-size:clamp(.72rem,1.4vmin,.92rem); color:var(--muted); margin-top:.2rem; }
+
+/* a full-bleed statement */
+.statement { display:grid; gap:clamp(1rem,2.6vmin,2rem); justify-items:start; }
+.statement--centre { justify-items:center; text-align:center; }
+.quote { font-size:clamp(1.8rem,6.4vmin,5rem); font-weight:300; line-height:1.08; letter-spacing:-.02em; color:var(--ink); }
+.quote--cite { font-family:var(--mono); font-size:clamp(.66rem,1.2vmin,.84rem); letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+
+/* photography */
+.arch { border-radius:999px 999px 3px 3px; overflow:hidden; position:relative; }
+.arch::after { content:""; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(201,166,92,.5); }
+.arch img { width:100%; height:100%; object-fit:cover; }
+
+/* the question set — the moment the deck stops being a deck */
+.qs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.1rem 3rem; }
+.qs li { padding:clamp(.42rem,1vmin,.7rem) 0; border-bottom:1px solid var(--line); font-size:clamp(.82rem,1.7vmin,1.12rem);
+  color:var(--body); display:flex; gap:.7rem; }
+.qs li::before { content:"—"; color:var(--accent-bright); }
+
+@media (max-width:900px) {
+  .cols--2,.cols--3,.cols--4,.cols--split,.cols--copy,.qs { grid-template-columns:minmax(0,1fr); }
+  .versus { grid-template-columns:minmax(0,1fr); }
+  .map, .map--five { grid-template-columns:minmax(0,1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,[data-step],.bubble { transition:none !important; }
+  .bot .bh-bot__stem { stroke-dashoffset:0 !important; transition:none !important; }
+  .bot .bh-bot__leaf,.bot .bh-bot__bloom { opacity:1 !important; transform:none !important; transition:none !important; }
+  .is-live .radar i.ring { animation:none; opacity:.2; transform:scale(1); }
+  .moment { transition:opacity 1ms; }
+}
+
+/* --------------------------------------------------------------- MARKS -- */
+/* Beauty Heaven's own artwork, masked so it takes the ink of whatever ground
+   it sits on. GOOD WORK. is set quietly in type: in this room it is the
+   force behind the work, not a second logo competing with theirs. */
+.mark { display:block; width:100%; aspect-ratio:2095/267; background-color:currentColor;
+  -webkit-mask:url('../logo/wordmark-mask.png') no-repeat center/contain;
+          mask:url('../logo/wordmark-mask.png') no-repeat center/contain; }
+.gw { font-weight:500; letter-spacing:.34em; text-transform:uppercase; color:var(--ink);
+  font-size:clamp(.7rem,1.5vmin,1.05rem); }
+.lockup { display:flex; align-items:center; gap:clamp(1rem,3vmin,2.4rem); }
+.lockup .mark { width:clamp(180px,34vmin,520px); color:var(--ink); }
+.lockup .x { font-size:clamp(.9rem,2vmin,1.4rem); color:var(--muted); font-weight:300; }
+
+/* ------------------------------------------------- SHORT SCREENS -- */
+/* Most rooms have a 768px or 800px projector, not a studio display. Below
+   860px of height everything tightens by a notch — type, gaps and the
+   screenshots — so no moment ever runs off the top and bottom. */
+@media (max-height: 860px) {
+  :root { --pad: clamp(1.1rem, 4vmin, 3rem); }
+  .moment { padding-block: calc(var(--pad) * 1.15); }
+  .d-xl { font-size:clamp(2.2rem, 8vmin, 5.4rem); }
+  .d-lg { font-size:clamp(1.9rem, 6.2vmin, 4.4rem); }
+  .d-md { font-size:clamp(1.4rem, 4.2vmin, 2.9rem); }
+  .d-sm { font-size:clamp(1.1rem, 2.9vmin, 1.8rem); }
+  .lede { font-size:clamp(.92rem, 1.85vmin, 1.18rem); }
+  .stack { gap:clamp(.6rem, 1.5vmin, 1.1rem); }
+  .cols { gap:clamp(1rem, 2.4vmin, 2.2rem); }
+  .shot { max-height:40vh; }
+  .shot--tall { max-height:44vh; }
+  .ladder li { padding-block:clamp(.34rem,.9vmin,.7rem); }
+  .versus__side { padding:clamp(.8rem,1.9vmin,1.4rem); }
+}
+
+/* the opening line tells you how to drive it, in the words of the thing you
+   are driving it with */
+.hint--hand { display:none; }
+
+/* -------------------------------------------------------------- PORTRAIT -- */
+/* A phone is not a small projector. Nobody presents from one — they read from
+   it, one hand, thumb on the screen. So the moment scrolls when it is taller
+   than the glass rather than being scaled down into illegibility, the type
+   comes off the width (vmin collapses in portrait and every headline shrinks
+   with it), the chapter rail becomes the one chapter you are actually in, and
+   the tap zones do what they do in every story on a phone: right to go on,
+   left to go back. */
+/* A moment is one screen. That is the whole idea of the thing, and it does not
+   stop being true on a phone: a punchline below the fold is a punchline that
+   does not land. So a small screen keeps the fitted card — it carries less
+   (the media is capped, the long product screens show their first cards
+   rather than all of them) and what is left is scaled the last few per cent
+   rather than cut. */
+@media (max-width: 760px), (max-height: 560px) {
+  .moment { padding-block:calc(var(--pad) * 3.1); }
+
+  /* the chrome takes the ground with it, so nothing shows through it */
+  .rail { left:0; right:0; padding-inline:var(--pad); }
+  .rail--top { top:0; padding-block:calc(var(--pad) * .8) .7rem; background:var(--bg); }
+  .rail--bot { bottom:0; padding-block:.7rem calc(var(--pad) * .8); background:var(--bg); }
+
+  /* Some things earn their place on a projector and not in a hand: a desktop
+     screenshot beside the phone showing the same page, a chapter marker above
+     the thing it marks. */
+  .sm-hide { display:none; }
+
+  /* Media is measured against the height it has to share, not the width it
+     could fill: a handset is nineteen units tall for every nine across, so
+     sizing one by width is how it eats a screen. */
+  /* an arch that is wider than it is tall is a tunnel; keep the proportion
+     and take the size out of the width instead */
+  .arch { height:26vh; width:auto; aspect-ratio:5/7; margin-inline:auto; }
+  .arch img { height:100%; }
+  .shot, .shot--tall { max-height:22vh; }
+  .phone { height:min(46vh, 400px); width:auto; }
+  .row--devices .phone + .phone { height:min(30vh, 260px); }
+  .row--phones .phone { height:min(38vh, 330px); width:auto; max-width:none; }
+  .row--phones { grid-template-columns:repeat(2,max-content); justify-content:center; }
+  /* before and after only mean anything beside each other */
+  .row--compare { flex-wrap:nowrap; align-items:flex-start !important; }
+  .row--compare > figure { flex:1 1 0; width:auto !important; }
+  .row--compare .panel { max-height:20vh !important; padding:.6rem !important; }
+  .row--compare .panel p { font-size:.62rem !important; }
+
+  /* the components come in a notch, so the type does not have to */
+  .card { padding:.75rem .85rem; gap:.3rem; }
+  .map__item { padding-top:.7rem; gap:.4rem; }
+  .stack--tight { gap:.4rem; }
+  .lede { line-height:1.5; }
+  .stack { gap:.85rem; }
+  .cols { gap:1.1rem; }
+}
+
+@media (max-width: 760px) {
+  :root { --pad: 1.15rem; }
+  .moment { padding-inline:var(--pad); }
+
+  .d-xl { font-size:clamp(2.4rem, 11.5vw, 3.6rem); }
+  .d-lg { font-size:clamp(2rem, 9.2vw, 3rem); }
+  .d-md { font-size:clamp(1.45rem, 6.4vw, 2.1rem); }
+  .d-sm { font-size:clamp(1.12rem, 4.9vw, 1.55rem); }
+  .lede { font-size:1rem; line-height:1.6; max-width:none; }
+  .note { font-size:.84rem; max-width:none; }
+  .quote { font-size:clamp(1.7rem, 8.6vw, 2.8rem); }
+  .kicker { font-size:.62rem; letter-spacing:.22em; }
+  .mono, .rail .mono { font-size:.58rem; }
+  .stack { gap:1rem; }
+  .cols { gap:1.4rem; }
+
+  /* the rail says which chapter, not all five */
+  .chapters { gap:0; }
+  .chapters button { display:none; font-size:.6rem; }
+  .chapters button.on { display:block; }
+  .rail--top { top:calc(var(--pad) * .8); }
+  .rail--bot { bottom:calc(var(--pad) * .8); }
+
+  /* devices, sized to the hand rather than to the room */
+  .phone { width:min(76vw, 300px); padding:7px; border-radius:28px; }
+  .row--devices { flex-wrap:wrap; justify-content:center; }
+  .row--devices .phone + .phone { width:min(52vw, 200px); }
+  .row--phones { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); justify-items:center; }
+  .row--phones .phone { width:100%; max-width:190px; }
+  .win { width:100%; }
+  .shot, .shot--tall { max-height:none; }
+
+  .constel { height:auto; width:100%; aspect-ratio:1/1.1; }
+  .eco { width:min(100%, 400px); padding:0 3rem; }
+  .eco__node b { font-size:.54rem; letter-spacing:.14em; }
+  .eco__node span { white-space:normal; font-size:.64rem; max-width:11ch; line-height:1.3; }
+  .eco__mid { width:9.5em; }
+  .eco__mid .mono { font-size:.5rem !important; letter-spacing:.12em !important; }
+  .eco__mid .d-sm { font-size:.95rem; }
+
+  /* the mark takes the first line to itself, so the × stays with GOOD WORK. */
+  .lockup { display:grid; grid-template-columns:auto auto; justify-content:start;
+    align-items:center; column-gap:.7rem; row-gap:.55rem; }
+  .lockup .mark { grid-column:1 / -1; width:min(64vw, 250px); }
+  .ladder .v { font-size:1rem; }
+  .versus { grid-template-columns:minmax(0,1fr); }
+  .versus__mid { justify-self:center; }
+  .qs li { font-size:.9rem; }
+  .map__item h3 { font-size:1.4rem; }
+  .map__item p { font-size:.86rem; max-width:none; }
+  .card h3 { font-size:1rem; }
+  .card p { font-size:.84rem; }
+
+  /* A console on a phone collapses its rail the way a real one would: the
+     places it writes from become a strip across the top, the frame stops
+     being a 16:10 desktop window, and it shows its first cards whole rather
+     than five of them cut off half way down the third. A cropped product
+     screen reads as a broken one. */
+  .ui { aspect-ratio:4/4.7 !important; }
+  .ui__main .ui__grid + .ui__grid { display:none; }
+  .ui__grid > *:nth-child(n+3) { display:none; }
+  .ui--console { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
+  .ui__side { border-right:0; border-bottom:1px solid rgba(36,33,30,.09); gap:.55rem; padding:.6rem .7rem; }
+  .ui__brand .mark { width:118px; }
+  .ui__nav { display:flex; gap:.25rem; overflow-x:auto; scrollbar-width:none;
+    -webkit-mask:linear-gradient(to right, #000 84%, transparent);
+            mask:linear-gradient(to right, #000 84%, transparent); }
+  .ui__nav::-webkit-scrollbar { width:0; height:0; }
+  .ui__nav a { white-space:nowrap; padding:.3rem .5rem; border-radius:999px; font-size:.6rem; }
+  .ui__grid { grid-template-columns:minmax(0,1fr) !important; }
+  .ui__main { padding:.75rem; }
+
+  .eco { width:min(90%, 330px); }
+  .eco svg { transform:scale(.66); }
+  .eco__node b { font-size:.5rem; }
+  .eco__node span { max-width:11ch; font-size:.6rem; }
+
+  .hint--room { display:none; }
+  .hint--hand { display:inline; }
+  .bot { display:none; }
+  .moment[data-bare] .bot { display:block; }
+
+  .grid-view .gv { grid-template-columns:minmax(0,1fr); }
+  .gv button { min-height:0; }
+}
+
+/* A phone turned sideways is a different problem: about 200px of usable height,
+   which no amount of trimming makes a moment fit. Fitting it there would mean
+   scaling to a third, so it scrolls instead — and the rails fade rather than
+   sit flat, because content passes under them. */
+@media (max-height: 560px) {
+  .moment { display:flex; flex-direction:column; justify-content:flex-start;
+    overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .moment::-webkit-scrollbar { width:0; height:0; }
+  .moment > .wrap { margin-block:auto; }
+  .moment[data-bare] { justify-content:center; }
+  .rail--top { background:linear-gradient(to bottom, var(--bg) 62%, transparent); }
+  .rail--bot { background:linear-gradient(to top, var(--bg) 62%, transparent); }
+}
