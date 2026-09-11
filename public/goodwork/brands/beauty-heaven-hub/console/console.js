@@ -328,6 +328,8 @@ function renderApprovals() {
           <div class="row">
             <button class="btn btn--tiny btn--gold" data-ok>Approve</button>
             <button class="btn btn--tiny" data-edit>Open and edit</button>
+            <span class="spacer" style="flex:1"></span>
+            <button class="btn btn--tiny btn--bin" data-bin>Discard</button>
           </div>
         </article>`,
           )
@@ -337,6 +339,41 @@ function renderApprovals() {
 $("#queue").addEventListener("click", (e) => {
   const item = e.target.closest(".qitem");
   if (!item) return;
+
+  /* Discarding is the one thing here with no undo, so it asks once — in the
+     button itself rather than in a dialog, which is quicker to confirm and
+     quicker to change your mind about. It gives up after a few seconds so a
+     half-pressed button never sits there armed. */
+  const bin = e.target.closest("[data-bin]");
+  if (bin) {
+    if (bin.dataset.armed) {
+      store.removePiece(item.dataset.c, item.dataset.ch);
+      if (current && current.id === item.dataset.c) {
+        current = store.getCampaign(item.dataset.c);
+        renderPieces();
+      }
+      renderApprovals();
+      renderDashboard();
+      toast("Discarded.");
+    } else {
+      $$("[data-bin]").forEach((b) => {
+        delete b.dataset.armed;
+        b.textContent = "Discard";
+        b.classList.remove("is-armed");
+      });
+      bin.dataset.armed = "1";
+      bin.textContent = "Discard — sure?";
+      bin.classList.add("is-armed");
+      setTimeout(() => {
+        if (!bin.dataset.armed) return;
+        delete bin.dataset.armed;
+        bin.textContent = "Discard";
+        bin.classList.remove("is-armed");
+      }, 4000);
+    }
+    return;
+  }
+
   if (e.target.closest("[data-ok]")) {
     store.setPieceState(item.dataset.c, item.dataset.ch, "approved");
     renderApprovals();

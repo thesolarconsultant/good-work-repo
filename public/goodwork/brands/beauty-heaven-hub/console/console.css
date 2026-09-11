@@ -335,3 +335,9 @@ button, input, textarea, select { font: inherit; color: inherit; }
   }
   .doc__empty { font-size: 11pt; color: #6B6257; }
 }
+
+/* Discard is destructive, so it reads as destructive — but quietly, because it
+   sits next to two things you press far more often. */
+.btn--bin { color: var(--wait); border-color: rgba(138,90,63,.28); }
+.btn--bin:hover { border-color: var(--wait); background: var(--wait-bg); }
+.btn--bin.is-armed { background: var(--wait); border-color: var(--wait); color: #fff; }
