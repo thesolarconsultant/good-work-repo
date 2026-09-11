@@ -102,3 +102,53 @@ site.
 
 The street is still `[street]` in all four. Send the address and
 `node endcard.mjs <outdir>` rebuilds them in about two seconds.
+
+---
+
+## The voiceover, as delivered
+
+`Anaya — Well Spoken, Inviting`, professional voice clone, v3, speed 1.00,
+stability 50, similarity 75. Those settings are right for this.
+
+- **29.15 seconds.** It fits the 30s cut with about a second of air. The
+  length problem above is solved.
+- **128 kbps MP3, 44.1 kHz.** Usable, but it is a lossy file that Instagram
+  will re-encode on the way in. A 48 kHz WAV out of ElevenLabs would arrive
+  one compression better. Worth re-exporting while the generation is still
+  in the history.
+- It is **one file in one voice**, so Hollie's four lines are Anaya too. The
+  flag above stands: either she reads those eight seconds herself, or the
+  caption drops her name and it stays narration. Nothing else needs to change.
+
+Measured off the frame headers, not listened to — no audio playback in this
+environment. Check the read yourself before you cut to it.
+
+## The generated plates
+
+Five shots, two models each, 9:16 at 1536×2752, so the grade can be picked
+rather than argued about. `cinematic_studio_2_5` is the film-look model;
+`nano_banana_2` is the sharper, more literal one.
+
+| Shot | Cinema Studio | Nano Banana |
+|---|---|---|
+| 1 · bare skin, locked off | `902fd28a` | `878555a0` |
+| 2 · gloved hands, tray | `b234ea48` | `1a7ffd9e` |
+| 3 · consultation desk | `308566ba` | `d8eb3ad8` |
+| 4 · near-distance, turned away | `e396888e` | `c0270806` |
+| 5 · signage plate | `acdca610` | `cd2ee04e` |
+
+Every prompt carries the same grade — warm ivory, taupe, deep espresso, a
+little champagne gold — and the same negatives: no logos, no readable text,
+no beauty retouching, no glow.
+
+**Shot 5 is a blank plate, deliberately.** The sign panel is generated empty so
+the real wordmark composites onto it. A generated shopfront with generated
+lettering is a photograph of a building that is not theirs, and text models
+mangle a wordmark anyway. If the actual door gets shot on the phone, use that
+instead and the plate goes in the bin — or just cut to the end card, which is
+the honest version of this shot.
+
+**Shots 1 and 4 need checking by eye.** They must show the *same* pigmentation
+as each other, unchanged. The film's whole argument is that this is managed
+rather than cured; two frames where the second looks better is a
+before-and-after, whatever the voiceover says over the top of it.
