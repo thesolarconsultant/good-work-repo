@@ -895,6 +895,7 @@ async function openShot(text) {
       });
       started = await res.json();
       if (!res.ok) throw new Error(started.message || `The endpoint returned ${res.status}.`);
+      if (started.error) throw new Error(started.message);
     } catch (err) {
       note(err.message);
       $("#shotGo", wrap).disabled = false;

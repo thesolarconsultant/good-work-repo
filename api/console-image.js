@@ -315,21 +315,25 @@ export default async function handler(request) {
 
   const text = await r.text();
   if (!r.ok) {
+    /* Higgsfield answers "out of credit" with a 403, which reads as an auth
+       failure and sent an hour down the wrong path. So the body decides here,
+       not the status code — and the two are reported as the different problems
+       they are, because one is fixed on a billing page and the other is not. */
+    const broke = text.toLowerCase();
+    const outOfCredit = broke.includes("not_enough_credits") || broke.includes("insufficient");
+
     return json(
       {
-        error: "upstream_error",
-        message:
-          r.status === 401 || r.status === 403
-            /* Higgsfield's own words, not a guess. "Rejected" covers a key
-               that is wrong, one that was revoked, and an account without
-               platform API access turned on — three different problems that
-               look identical from here, and only the upstream knows which. */
-            ? `Higgsfield rejected the key set as ${name} (${r.status}). It said: ${text.slice(0, 300) || "nothing"}`
-            : r.status === 402
-              ? "The Higgsfield account is out of credit."
-              : `Higgsfield returned ${r.status}. ${text.slice(0, 300)}`,
+        error: outOfCredit ? "no_credit" : "upstream_error",
+        message: outOfCredit
+          ? "The Higgsfield platform API has no credit on it. That balance is separate from a " +
+            "Plus or Pro subscription — topping up the subscription does not top this up. " +
+            "It is bought against the API key at console.higgsfield.ai."
+          : r.status === 401
+            ? `Higgsfield rejected the key set as ${name}. It said: ${text.slice(0, 240) || "nothing"}`
+            : `Higgsfield returned ${r.status}. ${text.slice(0, 300)}`,
       },
-      r.status === 429 ? 429 : 502,
+      outOfCredit ? 402 : r.status === 429 ? 429 : 502,
     );
   }
 
