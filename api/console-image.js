@@ -35,7 +35,11 @@ const BASE = (process.env.HIGGSFIELD_BASE_URL || "https://api.higgsfield.ai").re
 /* Same forgiving lookup as the writing endpoint, for the same reason: a key
    set under a near-miss name is indistinguishable from no key at all, and the
    two have completely different fixes. */
-const KEY_NAMES = ["HIGGSFIELD_API_KEY", "HIGGSFIELD_API", "HIGGSFIELD_KEY", "higgsfield_API", "higgsfield_api_key"];
+const KEY_NAMES = [
+  "HIGGSFIELD_API_KEY", "HIGGSFIELD_API", "HIGGSFIELD_KEY",
+  "higgsfield_API", "higgsfield_api_key",
+  "HF_API_KEY", "HF_KEY", "hf_API", "hf_api_key",
+];
 function findKey() {
   for (const name of KEY_NAMES) {
     const v = process.env[name];
@@ -187,13 +191,26 @@ export default async function handler(request) {
     if (!id) {
       let seen = [];
       try {
-        seen = Object.keys(process.env || {}).filter((k) => /higgs/i.test(k)).sort();
+        /* Wide on purpose. A key set as HF_KEY is invisible to a filter that
+           only knows the word "higgsfield", and "the variable is missing" and
+           "the variable is there under a name nothing looks for" are identical
+           from out here and have completely different fixes. */
+        seen = Object.keys(process.env || {}).filter((k) => /higgs|^hf[_-]/i.test(k)).sort();
       } catch {
         /* some runtimes will not enumerate the environment */
       }
+      /* envCount proves the environment is populated at all, so an empty
+         `seen` means the variable is genuinely absent from this build rather
+         than the runtime refusing to enumerate. And a Vercel build cannot see
+         a variable added after it was built, which is the usual answer. */
+      let envCount = 0;
+      try { envCount = Object.keys(process.env || {}).length; } catch { /* sealed */ }
+
       return json({
         ok: true,
         configured: Boolean(key),
+        envCount,
+        builtAt: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || null,
         keyFoundAs: name,
         looksFor: KEY_NAMES,
         seen,
