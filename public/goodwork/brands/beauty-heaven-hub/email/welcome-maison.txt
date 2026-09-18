@@ -1,0 +1,32 @@
+Hello {{contact.first_name}}, you're very welcome here.
+
+Thanks for getting in touch. Beauty Heaven Hub brings every beauty discipline
+and a professional academy under one roof — beauty, hair, skin, aesthetics and
+wellness, plus the training if you'd rather be the one holding the brush.
+
+If it's your first treatment, that's most people once. We'll talk you through
+what happens before it happens, and you can stop and ask anything at any point.
+Nervous is normal; you'll be at ease within a few minutes.
+
+Book a treatment: {{custom_values.booking_url}}
+
+
+WHAT ARE YOU HERE FOR?
+
+Treatments — something for me.
+Beauty · Hair · Skin · Aesthetics · Wellness
+
+Academy — something for my future.
+Professional beauty & aesthetics education
+
+
+"I was nervous for my first treatment and they put me completely at ease.
+Everything was explained before it happened." — a first-time client
+
+
+Beauty Heaven Hub
+{{location.full_address}}
+{{location.phone}} · {{location.email}}
+
+You're receiving this because you enquired with Beauty Heaven Hub.
+Unsubscribe: {{unsubscribe_link}}

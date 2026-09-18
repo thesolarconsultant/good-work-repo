@@ -18,7 +18,8 @@
     "merch": "node scripts/build-merch.mjs",
     "brand:logo": "node scripts/build-brand-logo.mjs",
     "brand:photos": "node scripts/build-brand-photos.mjs",
-    "brand:botanicals": "node scripts/build-brand-botanicals.mjs"
+    "brand:botanicals": "node scripts/build-brand-botanicals.mjs",
+    "bh:email-art": "node scripts/build-bh-email-art.mjs"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",

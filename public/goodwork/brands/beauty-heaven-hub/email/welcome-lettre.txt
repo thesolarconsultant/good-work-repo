@@ -1,0 +1,34 @@
+Hello {{contact.first_name}},
+
+Thank you for getting in touch — I'm glad you did. I wanted to write properly
+rather than send you a brochure.
+
+Beauty Heaven Hub is every beauty discipline under one roof — beauty, hair,
+skin, aesthetics and wellness — with a professional academy upstairs, if you'd
+rather be the one holding the brush.
+
+If this would be your first treatment: that's most people, once. We'll talk you
+through what happens before it happens, and you can stop and ask anything at any
+point. Nervous is normal. You'll be at ease within a few minutes — that is the
+part we are best at.
+
+Come and see the place. Book whenever suits you, or simply reply to this email
+and tell me what you're thinking about — I read them myself.
+
+Warmly,
+[Name]
+[Role] · Beauty Heaven Hub
+
+Book a treatment: {{custom_values.booking_url}}
+
+P.S. If it's the training you're after rather than the treatment, the Academy
+runs professional beauty and aesthetics courses in the same building — just say
+the word and I'll send the dates.
+
+
+Beauty Heaven Hub
+{{location.full_address}}
+{{location.phone}} · {{location.email}}
+
+You're receiving this because you enquired with Beauty Heaven Hub.
+Unsubscribe: {{unsubscribe_link}}
