@@ -511,6 +511,19 @@ function withSample(html) {
   return Object.keys(SAMPLE).reduce((out, tag) => out.split(tag).join(SAMPLE[tag]), html);
 }
 
+/* An email has to carry absolute URLs, so the templates point their images and
+   fonts at the live domain. That is right for the send and wrong for the
+   preview: on a branch deployment it would show production's artwork rather
+   than the artwork sitting next to it, and any image added on the branch would
+   simply 404. So the preview — and only the preview — reads them from wherever
+   this console is being served. The copied HTML keeps the live URLs. */
+const LIVE_BRAND = "https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/";
+
+function fromHere(html) {
+  const here = new URL("../", location.href).href;
+  return here === LIVE_BRAND ? html : html.split(LIVE_BRAND).join(here);
+}
+
 /* If the template files cannot be fetched — the console opened from a file://
    path, or the brand folder moved — the tab still works, on a plain shell that
    says so rather than a blank screen. */
@@ -560,7 +573,7 @@ async function renderEmail() {
   }
 
   $("#emTplNote").textContent = TEMPLATES[id].note;
-  $("#emFrame").srcdoc = emailSample ? withSample(emailHtml) : emailHtml;
+  $("#emFrame").srcdoc = fromHere(emailSample ? withSample(emailHtml) : emailHtml);
   return emailHtml;
 }
 
