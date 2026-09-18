@@ -7,7 +7,8 @@
 //
 // The journey the four core packages walk a client through:
 //   look good → work properly → automate it → hand you the control room
-//   — then, if they want it, GOOD GROWTH runs the whole thing for them.
+//   — then, if they want it, GOOD GROWTH runs ongoing growth work for them,
+//   priced per client rather than a flat rate.
 
 export const PACKAGES = [
   {
@@ -76,9 +77,9 @@ export const ADDONS = [
     id: "growth",
     name: "GOOD GROWTH",
     setup: null,
-    monthly: "£1,000/mo",
-    purpose: "We run it for you",
-    pitch: "We've built the machine. You can run it yourself — or for £1,000 a month, Good Work runs it for you.",
-    note: "Management fee only — advertising spend is separate.",
+    monthly: "Custom",
+    purpose: "Ongoing growth, run for you",
+    pitch: "Ads run and optimised, videographers sent in, content made, and monthly builds on your existing software and processes to keep improving them.",
+    note: "Priced per client — this runs on what's actually needed, not a flat rate.",
   },
 ];
