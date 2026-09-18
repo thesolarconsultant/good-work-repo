@@ -216,6 +216,19 @@ export default async function handler(request) {
            a variable that was never saved. Knowing this turns an afternoon of
            guessing into one glance. */
         vercelEnv: process.env.VERCEL_ENV || null,
+        /* The shape of the value, never the value. Higgsfield authenticates
+           with a pair — "Key {id}:{secret}" — and a key that is present but
+           rejected is almost always half of one: the secret pasted on its own.
+           From outside that is indistinguishable from a revoked key, and the
+           two have nothing in common as fixes. Counting the colons settles it
+           without anything sensitive leaving the server. */
+        keyShape: key
+          ? {
+              parts: key.split(":").length,
+              looksLikePair: key.split(":").length === 2 && key.split(":").every((p) => p.trim().length > 8),
+              lengths: key.split(":").map((p) => p.trim().length),
+            }
+          : null,
         keyFoundAs: name,
         looksFor: KEY_NAMES,
         seen,
