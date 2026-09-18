@@ -12,6 +12,7 @@
    ========================================================================== */
 
 import * as store from "./store.js";
+import { makeSet, toBlob } from "./cards.js";
 
 const API = "/api/console";
 const $ = (s, r = document) => r.querySelector(s);
@@ -202,6 +203,9 @@ function renderPieces() {
         <div class="piece__foot">
           <button class="btn btn--tiny" data-copy="${ch}">Copy</button>
           <button class="btn btn--tiny" data-again="${ch}">Write it again</button>
+          ${ch === "instagram" && p.text.trim()
+            ? `<button class="btn btn--tiny" data-slides="${ch}">Make the slides</button>`
+            : ""}
           <span class="spacer"></span>
           ${p.state === "approved"
             ? `<button class="btn btn--tiny" data-unapprove="${ch}">Unapprove</button>`
@@ -215,8 +219,10 @@ function renderPieces() {
 $("#pieces").addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn || !current) return;
-  const { copy, again, approve, unapprove } = btn.dataset;
-  if (copy) {
+  const { copy, again, approve, unapprove, slides } = btn.dataset;
+  if (slides) {
+    openSlides(current.pieces[slides].text);
+  } else if (copy) {
     navigator.clipboard.writeText(current.pieces[copy].text).then(() => toast("Copied."));
   } else if (again) {
     current.pieces[again] = { text: "", state: "writing", movedAt: null };
@@ -725,3 +731,85 @@ function renderAll() {
 store.load();
 renderAll();
 show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "dashboard");
+
+
+/* ------------------------------------------------------------- THE SLIDES --
+   The carousel the console wrote, drawn as the carousel it was describing.
+   Nothing generated, nothing paid for — the brand's own type on the brand's
+   own ground, which is right every time and cannot come back uncanny.
+
+   The overlay is built on demand rather than sitting in the markup: five
+   1080×1350 canvases are real memory, and they should go when it closes. */
+async function openSlides(text) {
+  const wrap = document.createElement("div");
+  wrap.className = "sheet";
+  wrap.innerHTML = `
+    <div class="sheet__box" role="dialog" aria-modal="true" aria-label="Carousel slides">
+      <header class="sheet__top">
+        <div>
+          <p class="eyebrow">Ready to post</p>
+          <h2 class="h3">The slides</h2>
+        </div>
+        <div class="row">
+          <button class="btn btn--gold" id="slidesSave">Save all</button>
+          <button class="btn btn--quiet" id="slidesClose">Close</button>
+        </div>
+      </header>
+      <p class="note">1080 × 1350, the size the feed crops to. Click any one to save it on its own.</p>
+      <div class="sheet__grid" id="slidesGrid"><p class="note">Drawing…</p></div>
+    </div>`;
+  document.body.appendChild(wrap);
+
+  const close = () => wrap.remove();
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) close(); });
+  $("#slidesClose", wrap).addEventListener("click", close);
+  document.addEventListener("keydown", function esc(e) {
+    if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); }
+  });
+
+  let canvases = [];
+  try {
+    canvases = await makeSet(text);
+  } catch (err) {
+    $("#slidesGrid", wrap).innerHTML = `<p class="note">${esc(err.message)}</p>`;
+    return;
+  }
+
+  if (!canvases.length) {
+    $("#slidesGrid", wrap).innerHTML =
+      `<p class="note">No slides found in this one. The carousel needs its slide headings —
+       write it again if they are missing.</p>`;
+    return;
+  }
+
+  const grid = $("#slidesGrid", wrap);
+  grid.innerHTML = "";
+  canvases.forEach((c, i) => {
+    c.className = "slide";
+    c.title = `Slide ${i + 1} — click to save`;
+    c.addEventListener("click", () => save(c, i));
+    grid.appendChild(c);
+  });
+
+  async function save(canvas, i) {
+    const blob = await toBlob(canvas);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `beauty-heaven-slide-${String(i + 1).padStart(2, "0")}.png`;
+    a.click();
+    /* Revoked on the next frame, not immediately: the click is queued and a
+       revoked URL downloads an empty file. */
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  $("#slidesSave", wrap).addEventListener("click", async () => {
+    /* One at a time, with a breath between: a browser that gets five download
+       prompts in the same tick shows one and silently drops four. */
+    for (let i = 0; i < canvases.length; i += 1) {
+      await save(canvases[i], i);
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    toast(`${canvases.length} slides saved.`);
+  });
+}

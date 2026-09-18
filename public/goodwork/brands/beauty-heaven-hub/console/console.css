@@ -341,3 +341,40 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .btn--bin { color: var(--wait); border-color: rgba(138,90,63,.28); }
 .btn--bin:hover { border-color: var(--wait); background: var(--wait-bg); }
 .btn--bin.is-armed { background: var(--wait); border-color: var(--wait); color: #fff; }
+
+/* ---------------------------------------------------------------- SLIDES ---
+   The carousel, drawn. It sits over the console rather than inside a panel
+   because five 1080×1350 cards want the whole screen to be judged properly,
+   and because they are a finished thing rather than a step. */
+.sheet {
+  position: fixed; inset: 0; z-index: 60; display: grid; place-items: start center;
+  padding: clamp(1rem, 4vw, 3rem) 1rem; overflow-y: auto;
+  background: rgba(36, 33, 30, .62); backdrop-filter: blur(3px);
+  animation: sheetIn 180ms ease-out;
+}
+@keyframes sheetIn { from { opacity: 0 } to { opacity: 1 } }
+@media (prefers-reduced-motion: reduce) { .sheet { animation: none } }
+
+.sheet__box {
+  width: min(1180px, 100%); background: var(--bh-ivory);
+  border-radius: var(--r); padding: clamp(1.1rem, 3vw, 1.9rem);
+  box-shadow: 0 40px 90px -30px rgba(36, 33, 30, .45);
+}
+.sheet__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.sheet__top .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.sheet__box > .note { margin-top: .5rem; }
+
+.sheet__grid {
+  margin-top: 1.2rem; display: grid; gap: .9rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+.slide {
+  width: 100%; height: auto; display: block; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 6px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.slide:hover, .slide:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px -14px rgba(36, 33, 30, .5);
+}
+@media (prefers-reduced-motion: reduce) { .slide { transition: none } .slide:hover { transform: none } }
