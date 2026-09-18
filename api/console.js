@@ -49,7 +49,11 @@ function findKey() {
 
 const BASE = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").replace(/\/$/, "");
 const MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
-const TEMPERATURE = 1.2;             // copy, not arithmetic — this wants some air
+/* Copy wants air, so this is not 0.2 — but 1.2 was buying the personality at
+   the price of the occasional sentence that does not parse, and one garbled
+   line at the end of an email undoes the whole email. 1.0 keeps the voice and
+   loses the wobble. */
+const TEMPERATURE = 1.0;
 const MAX_BODY = 64 * 1024;          // a brand profile plus a brief; slack, not a target
 const MAX_BRIEF = 4000;
 const RATE_LIMIT = 30;               // per IP per window
@@ -219,7 +223,15 @@ so it has to sound like them and not like a marketing department.`,
 - Short sentences are allowed to be short.
 - Never invent a price, a qualification, a result, a guarantee or a statistic. If a number would
   help and you have not been given it, leave a bracketed gap like [price] for a human to fill.
+- Never invent a fact about this business either. The building, the rooms, who teaches, who does
+  what, what a course includes, how long anything has been running, awards, partnerships — if it
+  is not written above or in the brief, you do not know it. Leave a gap like [how long] or write
+  around it. A plausible invention is worse than an obvious gap, because nobody catches it.
 - Never claim a medical or clinical outcome.
+- Where a length is given, it is a limit and not a target. Cut to fit it. Running over is a
+  failure even when the extra sentence is a good one.
+- Read the last line back before you finish it. A sentence that does not parse undoes everything
+  above it.
 - Write the thing asked for and nothing else. No preamble, no "here is your post", no sign-off
   about how you hope this helps. Do not wrap the whole answer in a code fence.`,
   );
