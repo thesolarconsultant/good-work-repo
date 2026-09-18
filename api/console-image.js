@@ -320,7 +320,11 @@ export default async function handler(request) {
         error: "upstream_error",
         message:
           r.status === 401 || r.status === 403
-            ? `The Higgsfield key on this deployment (set as ${name}) was rejected. It has to be the pair, {key_id}:{key_secret}.`
+            /* Higgsfield's own words, not a guess. "Rejected" covers a key
+               that is wrong, one that was revoked, and an account without
+               platform API access turned on — three different problems that
+               look identical from here, and only the upstream knows which. */
+            ? `Higgsfield rejected the key set as ${name} (${r.status}). It said: ${text.slice(0, 300) || "nothing"}`
             : r.status === 402
               ? "The Higgsfield account is out of credit."
               : `Higgsfield returned ${r.status}. ${text.slice(0, 300)}`,
