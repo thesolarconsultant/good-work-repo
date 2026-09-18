@@ -43,7 +43,10 @@ const MARK_ESPRESSO = "../logo/beauty-heaven-hub-wordmark-espresso.svg";
 
    Everything after a "Caption" or "Hashtags" heading is not a slide. */
 export function parseSlides(text) {
-  const stop = /^\s*(?:\*\*)?(?:caption|hashtags|hash tags)\b/i;
+  /* Where the slides end. The model marks it three ways depending on its
+     mood — a Caption heading, a Hashtags heading, or just a horizontal rule —
+     and without the rule the whole caption ends up as the body of slide five. */
+  const stop = /^\s*(?:(?:\*\*)?(?:caption|hashtags|hash tags)\b|[-–—*_]{3,}\s*$)/i;
   const marker = /^\s*(?:\*\*)?\s*slide\s*(\d+)\s*[:.)]?\s*(?:\*\*)?\s*(.*)$/i;
 
   const slides = [];
