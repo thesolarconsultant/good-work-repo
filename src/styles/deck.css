@@ -393,6 +393,48 @@
   color: rgba(255, 255, 255, 0.42);
 }
 
+/* ---- one full slide per package ---- */
+.gw-deck .gw-deck__pkg-solo-price {
+  margin-top: clamp(1rem, 3vh, 1.75rem);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.gw-deck .gw-deck__pkg-solo-figure.gw-display {
+  font-size: clamp(2.75rem, 9vw, 6.5rem);
+  letter-spacing: -0.03em;
+}
+.gw-deck .gw-deck__pkg-solo-monthly {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: var(--gw-medium);
+  color: rgba(255, 255, 255, 0.5);
+}
+.gw-deck .gw-deck__pkg-ladder {
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gw-deck .gw-deck__pkg-step {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.68rem;
+  font-weight: var(--gw-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+.gw-deck .gw-deck__pkg-step.is-active {
+  border-color: transparent;
+  background: var(--gw-gradient);
+  color: var(--gw-white);
+}
+
 .gw-deck .gw-deck__actions {
   display: flex;
   gap: 14px;

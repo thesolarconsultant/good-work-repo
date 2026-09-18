@@ -165,23 +165,32 @@ const SLIDES = [
     content: (
       <>
         <span className="gw-deck__kicker">How it's packaged</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["Look good.", "Work properly.", "Automate it.", "Hand you control."]} />
-        <div className="gw-deck__grid4">
-          {PACKAGES.map((pkg, i) => (
-            <div className="gw-deck__card gw-deck__card--pkg" key={pkg.id} style={{ "--gw-deck-i": i }}>
-              <strong>{pkg.name}</strong>
-              <span className="gw-deck__pkg-price">
-                {pkg.setup}
-                <small>+ {pkg.monthly}</small>
-              </span>
-              <span className="gw-deck__pkg-purpose">{pkg.purpose}</span>
-              <span>&ldquo;{pkg.pitch}&rdquo;</span>
-            </div>
+        <Headline onMount as="h2" className="gw-h1" lines={["Look good.", "Work properly.", "Automate it.", "Hand you control."]} />
+        <p className="gw-deck__lede">Four packages. Each one builds on the last — pick where you get on.</p>
+      </>
+    ),
+  },
+  ...PACKAGES.map((pkg, i) => ({
+    label: pkg.name,
+    content: (
+      <>
+        <span className="gw-deck__kicker">Package {i + 1} of {PACKAGES.length} · {pkg.purpose}</span>
+        <Headline onMount as="h2" className="gw-h1" lines={[pkg.name]} />
+        <div className="gw-deck__pkg-solo-price">
+          <Display as="span" className="gw-deck__pkg-solo-figure">{pkg.setup}</Display>
+          <span className="gw-deck__pkg-solo-monthly">+ {pkg.monthly}</span>
+        </div>
+        <p className="gw-deck__lede">&ldquo;{pkg.pitch}&rdquo;</p>
+        <div className="gw-deck__pkg-ladder">
+          {PACKAGES.map((p) => (
+            <span key={p.id} className={`gw-deck__pkg-step${p.id === pkg.id ? " is-active" : ""}`}>
+              {p.name}
+            </span>
           ))}
         </div>
       </>
     ),
-  },
+  })),
   {
     label: "Add-ons",
     content: (
