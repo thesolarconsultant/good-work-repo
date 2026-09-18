@@ -44,8 +44,9 @@ export const PACKAGES = [
   },
 ];
 
-// Not steps on the ladder — one's optional infrastructure, the other is an
-// entirely different kind of engagement (we run it, rather than build it).
+// Not steps on the ladder — infrastructure and always-on cover you add on
+// top of a package, or an entirely different kind of engagement (we run
+// it, rather than build it).
 export const ADDONS = [
   {
     id: "crm",
@@ -54,6 +55,22 @@ export const ADDONS = [
     monthly: "+£100/mo",
     purpose: "CRM, if required",
     pitch: "Already got a CRM? We'll use yours. Don't have one? We'll provide it for £100 a month.",
+  },
+  {
+    id: "chat",
+    name: "GOOD CHAT",
+    setup: null,
+    monthly: "£50/mo",
+    purpose: "Live chat, if required",
+    pitch: "A chatbot on the site that answers the real questions, then points people to book a call or speak to someone — not a dead end that just says 'email us'.",
+  },
+  {
+    id: "voice",
+    name: "GOOD VOICE",
+    setup: null,
+    monthly: "£150/mo",
+    purpose: "Missed calls, answered",
+    pitch: "When a call goes unanswered, this picks it up — professionally, in your company's name — and can book the job there and then.",
   },
   {
     id: "growth",

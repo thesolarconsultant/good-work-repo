@@ -195,9 +195,9 @@ const SLIDES = [
     label: "Add-ons",
     content: (
       <>
-        <span className="gw-deck__kicker">Two ways to go further</span>
+        <span className="gw-deck__kicker">More ways to go further</span>
         <Headline onMount as="h2" className="gw-h2" lines={["If you need it."]} />
-        <div className="gw-deck__grid2">
+        <div className="gw-deck__grid2 gw-deck__grid2--addons">
           {ADDONS.map((a, i) => (
             <div className="gw-deck__card gw-deck__card--pkg" key={a.id} style={{ "--gw-deck-i": i }}>
               <strong>{a.name}</strong>
