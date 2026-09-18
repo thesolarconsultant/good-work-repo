@@ -211,6 +211,11 @@ export default async function handler(request) {
         configured: Boolean(key),
         envCount,
         builtAt: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || null,
+        /* Which environment this build belongs to, because a variable ticked
+           for Production only is invisible to a preview and looks exactly like
+           a variable that was never saved. Knowing this turns an afternoon of
+           guessing into one glance. */
+        vercelEnv: process.env.VERCEL_ENV || null,
         keyFoundAs: name,
         looksFor: KEY_NAMES,
         seen,
