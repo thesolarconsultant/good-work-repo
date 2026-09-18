@@ -206,6 +206,7 @@ function renderPieces() {
           ${ch === "instagram" && p.text.trim()
             ? `<button class="btn btn--tiny" data-slides="${ch}">Make the slides</button>`
             : ""}
+          ${p.text.trim() ? `<button class="btn btn--tiny" data-shot="${ch}">Make a picture</button>` : ""}
           <span class="spacer"></span>
           ${p.state === "approved"
             ? `<button class="btn btn--tiny" data-unapprove="${ch}">Unapprove</button>`
@@ -219,8 +220,10 @@ function renderPieces() {
 $("#pieces").addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn || !current) return;
-  const { copy, again, approve, unapprove, slides } = btn.dataset;
-  if (slides) {
+  const { copy, again, approve, unapprove, slides, shot } = btn.dataset;
+  if (shot) {
+    openShot(current.pieces[shot].text);
+  } else if (slides) {
     openSlides(current.pieces[slides].text);
   } else if (copy) {
     navigator.clipboard.writeText(current.pieces[copy].text).then(() => toast("Copied."));
@@ -811,5 +814,122 @@ async function openSlides(text) {
       await new Promise((r) => setTimeout(r, 250));
     }
     toast(`${canvases.length} slides saved.`);
+  });
+}
+
+
+/* ------------------------------------------------------------ THE PICTURE --
+   Higgsfield, conditioned on a real photograph of the real salon. The looks
+   live on the server, the same as the channels and the styles — this offers
+   the choice between them and never a text box, because an open prompt is how
+   you get generic AI salon stock, which is the one thing the guidelines are
+   explicitly against.
+
+   A job queue, so: submit, then poll. Tens of seconds, and the screen says so
+   rather than spinning and hoping. */
+const IMAGE_API = "/api/console-image";
+
+async function openShot(text) {
+  const wrap = document.createElement("div");
+  wrap.className = "sheet";
+  wrap.innerHTML = `
+    <div class="sheet__box" role="dialog" aria-modal="true" aria-label="Make a picture">
+      <header class="sheet__top">
+        <div><p class="eyebrow">Shot on your own rooms</p><h2 class="h3">Make a picture</h2></div>
+        <button class="btn btn--quiet" id="shotClose">Close</button>
+      </header>
+      <p class="note">Every look is conditioned on a real photograph of the salon, so the walls,
+        fittings and light are yours rather than invented. Nothing here writes its own prompt.</p>
+      <fieldset class="picks" id="shotLooks" style="margin-top:1rem"><legend>The look</legend></fieldset>
+      <div class="row">
+        <button class="btn btn--gold" id="shotGo">Make it</button>
+        <span class="note" id="shotNote"></span>
+      </div>
+      <div class="sheet__grid" id="shotGrid"></div>
+    </div>`;
+  document.body.appendChild(wrap);
+
+  const close = () => { wrap.remove(); clearTimeout(openShot.t); };
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) close(); });
+  $("#shotClose", wrap).addEventListener("click", close);
+
+  const note = (m) => { $("#shotNote", wrap).textContent = m; };
+
+  /* Which looks exist is the server's business, so it is asked rather than
+     assumed. It also answers whether there is a key at all, which is the far
+     more common reason for nothing happening. */
+  let health;
+  try {
+    health = await (await fetch(IMAGE_API)).json();
+  } catch {
+    note("Could not reach the picture endpoint.");
+    return;
+  }
+  if (!health.configured) {
+    $("#shotLooks", wrap).remove();
+    $("#shotGo", wrap).disabled = true;
+    note("This deployment has no Higgsfield key set, so it cannot make pictures yet.");
+    return;
+  }
+
+  const suggested = health.styleLook?.[current?.style || "answer"] || "treatment";
+  $("#shotLooks", wrap).insertAdjacentHTML("beforeend",
+    Object.entries(health.looks).map(([k, label]) =>
+      `<label><input type="radio" name="look" value="${k}"${k === suggested ? " checked" : ""}>
+        <span>${esc(label)}</span></label>`).join(""));
+  note(`Suggested for this kind of post. About a minute.`);
+
+  $("#shotGo", wrap).addEventListener("click", async () => {
+    const look = wrap.querySelector("input[name=look]:checked")?.value;
+    $("#shotGo", wrap).disabled = true;
+    note("Sending…");
+
+    let started;
+    try {
+      const res = await fetch(IMAGE_API, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        /* The copy goes in as a subject, not as a prompt: it colours the shot
+           without the model trying to illustrate a sentence literally. */
+        body: JSON.stringify({ look, style: current?.style, subject: current?.brief || text.slice(0, 200) }),
+      });
+      started = await res.json();
+      if (!res.ok) throw new Error(started.message || `The endpoint returned ${res.status}.`);
+    } catch (err) {
+      note(err.message);
+      $("#shotGo", wrap).disabled = false;
+      return;
+    }
+
+    const began = Date.now();
+    (function poll() {
+      openShot.t = setTimeout(async () => {
+        if (!document.body.contains(wrap)) return;
+        const secs = Math.round((Date.now() - began) / 1000);
+        try {
+          const r = await (await fetch(`${IMAGE_API}?request=${encodeURIComponent(started.request_id)}`)).json();
+          if (r.status === "completed" && r.images?.length) {
+            note(`${started.lookLabel} · ${secs}s`);
+            $("#shotGrid", wrap).innerHTML = r.images
+              .map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener">
+                             <img class="slide" src="${esc(u)}" alt="Generated picture"></a>`).join("");
+            $("#shotGo", wrap).disabled = false;
+            return;
+          }
+          if (["failed", "canceled", "nsfw"].includes(r.status)) {
+            note(r.status === "nsfw"
+              ? "Higgsfield refused that one. Try a different look."
+              : `It did not finish: ${r.error || r.status}`);
+            $("#shotGo", wrap).disabled = false;
+            return;
+          }
+          note(`${r.status === "queued" ? "Queued" : "Drawing"}… ${secs}s`);
+          poll();
+        } catch {
+          note("Lost the connection while it was working.");
+          $("#shotGo", wrap).disabled = false;
+        }
+      }, 3000);
+    })();
   });
 }
