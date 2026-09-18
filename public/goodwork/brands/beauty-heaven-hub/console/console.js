@@ -416,7 +416,105 @@ $("#week").addEventListener("click", (e) => {
 });
 
 /* ==================================================================== EMAIL == */
-const EMAIL_SHELL = (subject, pre, body) => `<!doctype html><html><head><meta charset="utf-8">
+/* The email tab renders the brand's real templates — the same four files that
+   go to the CRM — rather than a lookalike built in here. Each template marks
+   its editable regions with `<!-- bh:slot name -->` and this fills them, which
+   keeps the template the single source of truth for the design and leaves the
+   console as only the thing that types into it. Change a colour in
+   ../email/welcome.html and this screen changes with it. */
+
+const TEMPLATES = {
+  arch: {
+    name: "Arch",
+    file: "../email/welcome.html",
+    note: "The one that is live. Taupe masthead, arch hero, both worlds as picture cards.",
+  },
+  maison: {
+    name: "Maison",
+    file: "../email/welcome-maison.html",
+    note: "Centred and printed, on the paper rather than in a band. The button is outlined, so it asks rather than shouts.",
+  },
+  noir: {
+    name: "Noir",
+    file: "../email/welcome-noir.html",
+    note: "Espresso throughout — evening, launches, the Academy. The only one that needs no defending against a client's dark mode.",
+  },
+  lettre: {
+    name: "Lettre",
+    file: "../email/welcome-lettre.html",
+    note: "A signed letter, no photography, and the only one that invites a reply. Sign it before it sends: it ships with [Name] and [Role] as gaps.",
+  },
+};
+
+/* What the CRM merges in at send time. It fills the preview so the wording can
+   be read the way a customer reads it, and never touches the copied HTML,
+   which keeps the tags intact. The address, phone and email are placeholders —
+   the real ones come from the CRM's location record. */
+const SAMPLE = {
+  "{{contact.first_name}}": "Sophie",
+  "{{custom_values.booking_url}}": "#",
+  "{{location.full_address}}": "1 Example Street, Wombwell, Barnsley S73 0AA",
+  "{{location.phone}}": "01226 000000",
+  "{{location.email}}": "hello@beautyheavenhub.co.uk",
+  "{{unsubscribe_link}}": "#",
+  "[Name]": "Jess",
+  "[Role]": "Owner",
+};
+
+const SLOT = /<!-- bh:slot (\w+) -->([\s\S]*?)<!-- bh:endslot -->/g;
+const templates = new Map();
+
+async function templateHtml(id) {
+  if (!templates.has(id)) {
+    const res = await fetch(TEMPLATES[id].file, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`${res.status} on ${TEMPLATES[id].file}`);
+    templates.set(id, await res.text());
+  }
+  return templates.get(id);
+}
+
+/* One paragraph per blank line, wearing the opening tag the template already
+   uses — so the copy arrives in the template's own type rather than in this
+   file's idea of it, and the last paragraph keeps the wider gap that sits
+   above the button. */
+function paragraphs(slot, text) {
+  const opens = slot.match(/<p\b[^>]*>/g) || [];
+  const parts = text.split(/\n{2,}/).map((t) => t.trim()).filter(Boolean);
+  if (!parts.length || !opens.length) return slot;
+  const first = opens[0];
+  const last = opens[opens.length - 1];
+  return parts
+    .map((t, i) => `${i === parts.length - 1 ? last : first}${esc(t).replace(/\n/g, "<br>")}</p>`)
+    .join("\n\n        ");
+}
+
+/* Every headline in the brand is light with one word bold. *asterisks* mark
+   that word, and it is set in whatever bold the template itself uses. */
+function headline(slot, text) {
+  const bold = (slot.match(/<b\b[^>]*>/) || ['<b style="font-weight:700;">'])[0];
+  return esc(text)
+    .replace(/\*([^*]+)\*/g, (m, word) => `${bold}${word}</b>`)
+    .replace(/\n/g, "<br>");
+}
+
+function fill(html, fields) {
+  return html.replace(SLOT, (whole, name, inner) => {
+    let out = inner;
+    if (name === "preheader" && fields.preheader) out = esc(fields.preheader);
+    if (name === "headline" && fields.headline) out = headline(inner, fields.headline);
+    if (name === "body" && fields.body) out = paragraphs(inner, fields.body);
+    return `<!-- bh:slot ${name} -->${out}<!-- bh:endslot -->`;
+  });
+}
+
+function withSample(html) {
+  return Object.keys(SAMPLE).reduce((out, tag) => out.split(tag).join(SAMPLE[tag]), html);
+}
+
+/* If the template files cannot be fetched — the console opened from a file://
+   path, or the brand folder moved — the tab still works, on a plain shell that
+   says so rather than a blank screen. */
+const FALLBACK_SHELL = (pre, body) => `<!doctype html><html><head><meta charset="utf-8">
 <style>
   body{margin:0;background:#ECE6DD;font-family:'Century Gothic',Futura,Helvetica,Arial,sans-serif;}
   .w{max-width:600px;margin:0 auto;background:#F4F0E9;}
@@ -429,11 +527,11 @@ const EMAIL_SHELL = (subject, pre, body) => `<!doctype html><html><head><meta ch
   .ft{background:#24211E;color:#B9AFA2;padding:22px 30px;font-size:11px;line-height:1.7;}
   .pre{display:none;font-size:1px;color:#F4F0E9;}
 </style></head><body>
-<div class="pre">${pre}</div>
+<div class="pre">${esc(pre)}</div>
 <div class="w">
   <div class="hd"><b>beauty <strong>heaven</strong> hub</b></div>
   <div class="bd">
-    ${body.split(/\n{2,}/).filter(Boolean).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("\n    ")}
+    ${body.split(/\n{2,}/).filter(Boolean).map((t) => `<p>${esc(t).replace(/\n/g, "<br>")}</p>`).join("\n    ")}
     <a class="cta" href="{{custom_values.booking_url}}">Book a treatment</a>
   </div>
   <div class="ft">Beauty Heaven Hub<br>{{location.full_address}}<br>
@@ -442,23 +540,69 @@ const EMAIL_SHELL = (subject, pre, body) => `<!doctype html><html><head><meta ch
   </div>
 </div></body></html>`;
 
-function renderEmail() {
-  const html = EMAIL_SHELL(
-    $("#emSubject").value || "Subject line",
-    $("#emPre").value || "",
-    $("#emBody").value || "The body of the email goes here.",
-  );
-  $("#emFrame").srcdoc = html;
-  return html;
-}
-["#emSubject", "#emPre", "#emBody"].forEach((sel) => $(sel).addEventListener("input", renderEmail));
+let emailHtml = "";      // the copyable version: real merge tags, no sample data
+let emailSample = true;
 
-$$(".seg button").forEach((b) =>
-  b.addEventListener("click", () => {
-    $$(".seg button").forEach((x) => x.classList.toggle("on", x === b));
-    $("#emPreview").dataset.w = b.dataset.w;
-  }),
-);
+async function renderEmail() {
+  const id = store.load().email.template;
+  const fields = {
+    preheader: $("#emPre").value.trim(),
+    headline: $("#emHead").value.trim(),
+    body: $("#emBody").value.trim(),
+  };
+
+  try {
+    emailHtml = fill(await templateHtml(id), fields);
+    $("#emNote").textContent = "The merge tags stay intact, so it can go straight into the CRM.";
+  } catch (err) {
+    emailHtml = FALLBACK_SHELL(fields.preheader, fields.body || "The body of the email goes here.");
+    $("#emNote").textContent = `Couldn't load ${TEMPLATES[id].file} (${err.message}) — showing a plain shell instead.`;
+  }
+
+  $("#emTplNote").textContent = TEMPLATES[id].note;
+  $("#emFrame").srcdoc = emailSample ? withSample(emailHtml) : emailHtml;
+  return emailHtml;
+}
+
+/* A keystroke should not reload the iframe. */
+let emailTimer;
+function renderEmailSoon() {
+  clearTimeout(emailTimer);
+  emailTimer = setTimeout(renderEmail, 180);
+}
+
+["#emPre", "#emHead", "#emBody"].forEach((sel) => $(sel).addEventListener("input", renderEmailSoon));
+
+/* One picker, scoped to its own group — there are three of them on this screen. */
+function seg(id, pick) {
+  const group = $(id);
+  $$("button", group).forEach((b) =>
+    b.addEventListener("click", () => {
+      $$("button", group).forEach((x) => x.classList.toggle("on", x === b));
+      pick(b);
+    }),
+  );
+}
+
+seg("#emTemplate", (b) => {
+  store.setEmailTemplate(b.dataset.t);
+  renderEmail();
+});
+seg("#emData", (b) => {
+  emailSample = b.dataset.d === "sample";
+  renderEmail();
+});
+seg("#emWidth", (b) => {
+  $("#emPreview").dataset.w = b.dataset.w;
+});
+
+/* Opening the tab: the picker catches up with whichever template was last
+   chosen, then the preview draws. */
+function renderEmailView() {
+  const id = store.load().email.template;
+  $$("button", $("#emTemplate")).forEach((b) => b.classList.toggle("on", b.dataset.t === id));
+  renderEmail();
+}
 
 $("#emFromPiece").addEventListener("click", () => {
   const found = store
@@ -481,7 +625,12 @@ $("#emFromPiece").addEventListener("click", () => {
 });
 
 $("#emCopy").addEventListener("click", () => {
-  navigator.clipboard.writeText(renderEmail()).then(() => toast("HTML copied — merge tags intact."));
+  renderEmail().then((html) =>
+    navigator.clipboard
+      .writeText(html)
+      .then(() => toast(`${TEMPLATES[store.load().email.template].name} copied — merge tags intact.`))
+      .catch(() => toast("Couldn't reach the clipboard.")),
+  );
 });
 
 /* ==================================================================== BRAND == */
@@ -553,7 +702,7 @@ const VIEWS = {
   campaign: renderPieces,
   approvals: renderApprovals,
   calendar: renderCalendar,
-  email: renderEmail,
+  email: renderEmailView,
   brand: renderBrand,
   about: renderAbout,
 };

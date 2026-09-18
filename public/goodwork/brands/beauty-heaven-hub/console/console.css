@@ -213,6 +213,11 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .seg { display: flex; border: 1px solid var(--line-2); border-radius: 999px; overflow: hidden; }
 .seg button { background: none; border: 0; padding: .32rem .8rem; font-size: .76rem; cursor: pointer; color: var(--muted-ink); }
 .seg button.on { background: var(--bh-espresso); color: var(--bh-ivory); }
+/* Four template names need to wrap on a narrow panel, and a pill that wraps
+   looks broken — so this one squares off. */
+.seg--wrap { flex-wrap: wrap; width: fit-content; border-radius: 8px; }
+.row--tight { gap: .45rem; }
+.note--tpl { margin: -.5rem 0 1.15rem; max-width: 52ch; }
 .preview { background: var(--bh-ivory-2); padding: 1rem; display: grid; justify-items: center; }
 .preview iframe { width: 100%; max-width: 620px; height: 62vh; border: 1px solid var(--line); border-radius: 6px; background: #fff; transition: max-width 320ms cubic-bezier(.2,.7,.3,1); }
 .preview[data-w="phone"] iframe { max-width: 390px; }

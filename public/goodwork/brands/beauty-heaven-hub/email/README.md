@@ -11,8 +11,10 @@ without one scores worse with spam filters.
 | `welcome-noir.html` | `welcome-noir.txt` | **Noir** — espresso throughout. The room at night dissolving into the ground, gold hairlines, a solid gold pill. |
 | `welcome-lettre.html` | `welcome-lettre.txt` | **Lettre** — no photography. A signed letter, a drawn sprig, the Academy as a P.S. |
 
-Built for the Content Console: paste the HTML in, preview desktop and mobile
-with sample data on, then copy it into the CRM with the merge tags intact.
+The Content Console's Email tab renders these four files directly — pick a
+template, type, preview it desktop or phone with sample data on, then copy it
+into the CRM with the merge tags intact. The files are the source of truth for
+the design; the console only types into them.
 
 ## Which one to send
 
@@ -52,6 +54,27 @@ something else, find and replace — they appear nowhere else in the files.
 this per custom value) or the greeting reads "hello ,". If that can't be
 guaranteed, change the headline to something that doesn't need a name —
 "you're very welcome here." works on its own.
+
+## The slots the console fills
+
+Three regions in each file are marked for the console:
+
+```
+<!-- bh:slot preheader -->…<!-- bh:endslot -->
+<!-- bh:slot headline -->…<!-- bh:endslot -->
+<!-- bh:slot body -->…<!-- bh:endslot -->
+```
+
+**Don't delete the markers.** They are HTML comments, so every email client
+ignores them, and the copied HTML keeps them — which means a template that has
+been through the console can go through it again. What's inside them is the
+default copy, used whenever the console leaves that field blank.
+
+The console takes its paragraph styling from the `<p>` tags already inside the
+body slot, and its bold from the `<b>` inside the headline slot, so the copy
+arrives in the template's own type rather than in the console's idea of it.
+That means each file stays free to style its own paragraphs — but a body slot
+with no `<p>` in it has nothing to copy, so leave at least one.
 
 ## What's editable, and what isn't
 

@@ -13,7 +13,8 @@ its system prompt and streams the answer back into the panel. There is no
 canned copy anywhere in this folder.
 
 Everything else is real too — the approvals queue, the calendar, the email
-preview, the brand profile. The one thing that is not yet real enough is
+preview, the brand profile. The email tab renders the brand's actual templates
+from `../email/`, not a lookalike built in here. The one thing that is not yet real enough is
 **where it all lives**, which the console says itself under *Where this is
 kept*: content is in the browser's localStorage, on one device. That is fine
 for one person trying it and not fine for a salon. It needs a database and
@@ -51,6 +52,32 @@ Vercel's **edge** runtime, like the other two in `api/`. On the Node runtime
 Vercel would hand the handler `(req, res)` instead and it would throw on the
 first call.
 
+## The email tab does not own the templates
+
+There are four welcome templates in `../email/`, and the Email tab fetches
+whichever one is picked and fills its `<!-- bh:slot -->` regions with the
+preheader, headline and body typed into the panel. It does not hold a copy of
+the HTML.
+
+That is the whole point. A console that kept its own version of the email would
+drift from the file that actually gets sent within a fortnight, and nobody would
+notice until a customer got the old footer. Change a colour in
+`../email/welcome.html` and this screen changes with it.
+
+Two consequences worth knowing:
+
+- **The slot markers are load-bearing.** They are HTML comments, so mail clients
+  ignore them and the copied HTML keeps them — a template that has been through
+  the console can go through it again. `../email/README.md` says what each one
+  holds.
+- **Opened from a `file://` path, the fetch fails.** The tab falls back to a
+  plain shell and says so on screen rather than showing a blank preview. Serve
+  the folder over HTTP to see the real thing.
+
+**Sample data** fills the merge tags in the preview only — the address, phone
+and email in it are placeholders, and the copied HTML always carries the raw
+`{{tags}}` so nothing can be mangled on the way into the CRM.
+
 ## The brand profile is the product
 
 `Brand` is not a settings screen. It is the difference between copy that sounds
@@ -83,6 +110,6 @@ queue is only worth having if the thing after it is a human.
 | --- | --- |
 | `index.html` | The six views. |
 | `console.css` | Arrangement only — every colour, corner and typeface comes from `../brand.css`. |
-| `console.js` | Views, routing, and the streaming campaign. |
+| `console.js` | Views, routing, the streaming campaign, and the email template filler. |
 | `store.js` | Everything the console knows. The seam: swap `load` and `save` for two fetches and the rest of the app does not change. |
 | `../../../../api/console.js` | The only thing that sees the API key. |

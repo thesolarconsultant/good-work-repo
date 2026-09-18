@@ -42,7 +42,7 @@
 <!-- ══ PREHEADER — the grey line beside the subject. EDITABLE. Under ~90 characters,
         and never a repeat of the subject line. -->
 <div style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">
-  A note before your first visit &mdash; and what happens when you get here.
+  <!-- bh:slot preheader -->A note before your first visit &mdash; and what happens when you get here.<!-- bh:endslot -->
   &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
 </div>
 
@@ -80,10 +80,10 @@
       <td class="bh-pad" bgcolor="#F4F0E9" style="background-color:#F4F0E9; padding:42px 70px 0;">
 
         <p class="bh-open" style="margin:0 0 26px; font-family:'Jost','Century Gothic',Futura,Helvetica,Arial,sans-serif; font-size:27px; line-height:37px; font-weight:300; color:#24211E;">
-          Hello {{contact.first_name}},
+          <!-- bh:slot headline -->Hello {{contact.first_name}},<!-- bh:endslot -->
         </p>
 
-        <p class="bh-body" style="margin:0 0 20px; font-family:'Jost','Century Gothic',Futura,Helvetica,Arial,sans-serif; font-size:16px; line-height:30px; color:#3C3731;">
+        <!-- bh:slot body --><p class="bh-body" style="margin:0 0 20px; font-family:'Jost','Century Gothic',Futura,Helvetica,Arial,sans-serif; font-size:16px; line-height:30px; color:#3C3731;">
           Thank you for getting in touch &mdash; I&rsquo;m glad you did. I wanted to write
           properly rather than send you a brochure.
         </p>
@@ -104,7 +104,7 @@
         <p class="bh-body" style="margin:0 0 30px; font-family:'Jost','Century Gothic',Futura,Helvetica,Arial,sans-serif; font-size:16px; line-height:30px; color:#3C3731;">
           Come and see the place. Book whenever suits you, or simply reply to this
           email and tell me what you&rsquo;re thinking about &mdash; I read them myself.
-        </p>
+        </p><!-- bh:endslot -->
 
         <!-- ══ SIGN-OFF — a letter is signed by a person. Replace the bracketed
                 name and role before this sends; if no one will own it, use the

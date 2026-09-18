@@ -157,9 +157,22 @@
       <div class="cols cols--email">
         <section class="panel">
           <h2 class="h3">The message</h2>
+
+          <div class="field">
+            <span>Template</span>
+            <div class="seg seg--wrap" id="emTemplate" role="group" aria-label="Template">
+              <button class="on" data-t="arch">Arch</button>
+              <button data-t="maison">Maison</button>
+              <button data-t="noir">Noir</button>
+              <button data-t="lettre">Lettre</button>
+            </div>
+          </div>
+          <p class="note note--tpl" id="emTplNote"></p>
+
           <label class="field"><span>Subject</span><input type="text" id="emSubject" placeholder="Your first treatment — what actually happens"></label>
           <label class="field"><span>Preheader</span><input type="text" id="emPre" placeholder="Nervous is normal. Here is exactly how it goes."></label>
-          <label class="field"><span>Body</span><textarea id="emBody" rows="10" placeholder="Paste from a piece the console wrote, or write it here."></textarea></label>
+          <label class="field"><span>Headline <em>blank keeps the template's own · *word* for the bold one</em></span><input type="text" id="emHead" placeholder="hello {{contact.first_name}}, you're very *welcome* here."></label>
+          <label class="field"><span>Body <em>a blank line starts a new paragraph</em></span><textarea id="emBody" rows="10" placeholder="Paste from a piece the console wrote, or write it here."></textarea></label>
           <div class="row">
             <button class="btn btn--quiet" id="emFromPiece">Pull in the last email written</button>
             <button class="btn" id="emCopy">Copy the HTML</button>
@@ -170,9 +183,15 @@
         <section class="panel panel--preview">
           <div class="preview__bar">
             <h2 class="h3">Preview</h2>
-            <div class="seg" role="group" aria-label="Preview width">
-              <button class="on" data-w="desktop">Desktop</button>
-              <button data-w="phone">Phone</button>
+            <div class="row row--tight">
+              <div class="seg" id="emData" role="group" aria-label="Merge tags">
+                <button class="on" data-d="sample">Sample data</button>
+                <button data-d="tags">Raw tags</button>
+              </div>
+              <div class="seg" id="emWidth" role="group" aria-label="Preview width">
+                <button class="on" data-w="desktop">Desktop</button>
+                <button data-w="phone">Phone</button>
+              </div>
             </div>
           </div>
           <div class="preview" id="emPreview" data-w="desktop"><iframe title="Email preview" id="emFrame"></iframe></div>

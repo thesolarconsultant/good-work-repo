@@ -73,6 +73,11 @@ export const SEED = {
     { id: "i4", text: "September academy intake is open.", source: "Jess", used: false },
   ],
 
+  /* The email tab remembers which of the brand's four templates you were last
+     in, because switching template is a decision about the send, not a setting
+     to re-make every time the screen opens. */
+  email: { template: "arch" },
+
   campaigns: [],
   calendar: [
     { id: "c1", day: "Mon", what: "Autumn skin reset — carousel", state: "scheduled" },
@@ -172,6 +177,11 @@ export function setPieceState(campaignId, channel, pieceState) {
 /* A day, or null for "approved but not placed yet". Nothing picks a day on your
    behalf — a calendar that scatters work across the week by itself looks like a
    plan and is actually a shuffle. */
+export function setEmailTemplate(id) {
+  load().email.template = id;
+  save();
+}
+
 export function setPieceDay(campaignId, channel, day) {
   const c = getCampaign(campaignId);
   if (!c || !c.pieces[channel]) return;
