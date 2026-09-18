@@ -155,12 +155,14 @@ $("#briefForm").addEventListener("submit", (e) => {
   const brief = f.elements.brief.value.trim();
   const context = f.elements.context.value.trim();
   const channels = $$("input[name=channel]:checked", f).map((i) => i.value);
+  const style = f.elements.style?.value || "answer";
   if (!brief || channels.length === 0) return;
 
   current = {
     id: store.uid(),
     brief,
     context,
+    style,
     createdAt: new Date().toISOString(),
     pieces: Object.fromEntries(
       channels.map((ch) => [ch, { text: "", state: "writing", movedAt: null }]),
@@ -179,6 +181,9 @@ function openCampaign(id) {
   $("#briefForm").elements.brief.value = current.brief;
   $("#briefForm").elements.context.value = current.context || "";
   $$("input[name=channel]").forEach((i) => { i.checked = !!current.pieces[i.value]; });
+  /* Campaigns written before styles existed have none; they reopen as the
+     straight answer, which is what they were. */
+  $$("input[name=style]").forEach((i) => { i.checked = i.value === (current.style || "answer"); });
   renderPieces();
 }
 
@@ -271,6 +276,7 @@ async function writeOne(channel) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         channel,
+        style: current.style,
         brief: current.brief,
         context: current.context,
         brand: store.load().brand,
@@ -657,11 +663,25 @@ function buildApprovedDoc() {
 
 /* One idea, every channel it was written for, whatever state each is in — the
    thing on screen, on paper, for reading away from the machine. */
+/* The form a piece was written in is part of what it is, so it goes on the
+   paper next to the count. Older campaigns have none and simply don't say. */
+const STYLE_LABEL = {
+  answer: "Straight answer",
+  myth: "Myth, corrected",
+  happens: "What actually happens",
+  question: "A client asked us",
+  behind: "Behind the work",
+  aftercare: "How to look after it",
+  news: "Something has changed",
+  academy: "For the Academy",
+};
+
 function buildCampaignDoc(c) {
   const pieces = Object.entries(c.pieces).filter(([, p]) => p.text.trim());
   const approved = pieces.filter(([, p]) => p.state === "approved").length;
+  const form = STYLE_LABEL[c.style] ? `${STYLE_LABEL[c.style]} · ` : "";
   return renderDoc(
-    [{ c, pieces, meta: `${pieces.length} ${pieces.length === 1 ? "piece" : "pieces"} · ${approved} approved · written ${when(c.createdAt)}` }],
+    [{ c, pieces, meta: `${form}${pieces.length} ${pieces.length === 1 ? "piece" : "pieces"} · ${approved} approved · written ${when(c.createdAt)}` }],
     "One idea, everywhere",
     "Nothing written for this idea yet.",
   );
