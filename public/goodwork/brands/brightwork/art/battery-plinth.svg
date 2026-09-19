@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 660" width="900" height="660" role="img">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#19241f"/><stop offset=".55" stop-color="#121714"/><stop offset="1" stop-color="#0B0D0C"/>
+  </linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#B7F229" stop-opacity=".3"/><stop offset="1" stop-color="#B7F229" stop-opacity="0"/></radialGradient>
+  <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#1b2320"/><stop offset="1" stop-color="#0e1311"/>
+  </linearGradient>
+</defs>
+<rect width="900" height="660" fill="url(#sky)"/>
+
+<rect y="60" width="900" height="600" fill="#111412"/>
+<g fill="#A5A7A3" fill-opacity=".45"><rect x="300" y="132" width="300" height="14" rx="4"/><rect x="300" y="470" width="300" height="14" rx="4"/></g>
+<rect x="320" y="146" width="260" height="330" rx="14" fill="#242826" stroke="#A5A7A3" stroke-opacity=".45"/>
+<g stroke="#0B0D0C" stroke-opacity=".55" stroke-width="6">
+  <line x1="356" y1="196" x2="544" y2="196"/><line x1="356" y1="218" x2="544" y2="218"/><line x1="356" y1="240" x2="544" y2="240"/><line x1="356" y1="262" x2="544" y2="262"/><line x1="356" y1="284" x2="544" y2="284"/><line x1="356" y1="306" x2="544" y2="306"/>
+</g>
+<rect x="356" y="400" width="188" height="8" rx="4" fill="#B7F229"/>
+<circle cx="544" cy="360" r="9" fill="#B7F229" fill-opacity=".8"/>
+<path d="M600 300 H660 V600" stroke="#A5A7A3" stroke-opacity=".5" stroke-width="10" fill="none"/>
+<rect x="620" y="600" width="80" height="14" rx="4" fill="#242826"/>
+<line x1="140" y1="614" x2="800" y2="614" stroke="#F4F1E8" stroke-opacity=".16" stroke-width="2"/>
+<ellipse cx="450" cy="500" rx="150" ry="16" fill="#0B0D0C" fill-opacity=".5"/>
+
+</svg>
