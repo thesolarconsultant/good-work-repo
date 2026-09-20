@@ -126,11 +126,23 @@ section > h2 + p{margin-top:1rem;max-width:60ch}
 @media(prefers-reduced-motion:reduce){.seeit .go{transition:none}.seeit .go:hover{transform:none}}
 @media(max-width:600px){.seeit{grid-template-columns:1fr}}
 
-.also{margin:.6rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:0 1.6rem}
-.also a{font-family:var(--mono);font-size:.78rem;letter-spacing:.02em;color:var(--accent);
-  text-decoration:none;display:inline-flex;align-items:center;min-height:44px;
-  border-bottom:1px solid transparent}
-.also a:hover,.also a:focus-visible{border-bottom-color:var(--accent)}
+/* ---------------- the three you can open ----------------
+   These were three arrow links in a row, which read as a footnote. They are
+   not a footnote: they are the proof that the work exists, and the most
+   persuasive thing in the document. So they get to look like something worth
+   tapping, and on a phone each one is a card rather than a line of text. */
+.peek{margin:1.1rem 0 0;padding:0;list-style:none;display:grid;gap:.8rem;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.peek a{display:flex;flex-direction:column;gap:.3rem;height:100%;
+  border:1px solid var(--line-strong);border-radius:var(--r);
+  padding:1.1rem 1.2rem 1rem;text-decoration:none;background:var(--card);
+  transition:border-color 160ms ease,transform 160ms ease}
+.peek a:hover,.peek a:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
+.peek b{color:var(--ink);font-weight:600;font-size:1.02rem;letter-spacing:-.012em}
+.peek small{font-size:.9rem;line-height:1.5;color:var(--body)}
+.peek span{margin-top:auto;padding-top:.7rem;font-family:var(--mono);font-size:.74rem;
+  letter-spacing:.02em;color:var(--accent-ink)}
+@media(prefers-reduced-motion:reduce){.peek a{transition:none}.peek a:hover{transform:none}}
 
 /* ---------------- highlighted explainer ---------------- */
 .note-box{background:var(--wash);border-radius:var(--r);
@@ -334,13 +346,31 @@ footer{padding-block:2rem 3.2rem;border-top:1px solid var(--line);
        target="_blank" rel="noopener">View the website &rarr;</a>
   </div>
 
-  <ul class="also">
+  <p style="margin-top:1.8rem;font-size:.95rem;max-width:60ch">Three more things are already
+    built and already live. <strong>Tap any of them and have a look</strong> &mdash; none of it
+    is a mock-up, and you do not need me on the phone to walk you round it.</p>
+
+  <ul class="peek">
     <li><a href="https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/console/"
-      target="_blank" rel="noopener">The Content Console &rarr;</a></li>
+      target="_blank" rel="noopener">
+      <b>The Content Console</b>
+      <small>As it stands today. Pick what you want to talk about, it writes it in your voice,
+        and nothing goes anywhere until you have approved it.</small>
+      <span>Open the console &rarr;</span></a></li>
+
     <li><a href="https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/strategy/"
-      target="_blank" rel="noopener">The strategy deck &rarr;</a></li>
+      target="_blank" rel="noopener">
+      <b>The strategy deck</b>
+      <small>Everything we went through together &mdash; what Beauty Heaven could improve,
+        connect, own, and build next &mdash; written down so you are not relying on memory.</small>
+      <span>Read the deck &rarr;</span></a></li>
+
     <li><a href="https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/guidelines.html"
-      target="_blank" rel="noopener">The brand guidelines &rarr;</a></li>
+      target="_blank" rel="noopener">
+      <b>The brand guidelines</b>
+      <small>Your logo, colours, type and the building itself as a design language &mdash; and
+        the rules for anyone who ever makes something for you.</small>
+      <span>See the guidelines &rarr;</span></a></li>
   </ul>
 </section>
 
