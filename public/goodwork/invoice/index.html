@@ -306,7 +306,7 @@ const INVOICE = {
     note: "£1,400 now, £1,400 when it is finished and you have seen it working. " +
           "About ten working days from the day we start.",
     cta: "Pay £1,400 →",
-    href: "#stripe-link-to-be-added",
+    href: "https://buy.stripe.com/7sY00k6Fvgwq2Gz8H53ks01j",
   },
 
   bank: [
@@ -360,6 +360,8 @@ document.getElementById("notes").innerHTML =
 const btn = document.getElementById("payBtn");
 btn.textContent = INVOICE.pay.cta;
 btn.href = INVOICE.pay.href;
+btn.target = "_blank";
+btn.rel = "noopener";
 
 document.title = `${INVOICE.from.name} ${INVOICE.number} — ${INVOICE.to.name}`;
 </script>
