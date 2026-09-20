@@ -49,7 +49,11 @@ function findKey() {
 
 const BASE = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").replace(/\/$/, "");
 const MODEL = process.env.DEEPSEEK_MODEL || "deepseek-chat";
-const TEMPERATURE = 1.2;             // copy, not arithmetic — this wants some air
+/* Copy wants air, so this is not 0.2 — but 1.2 was buying the personality at
+   the price of the occasional sentence that does not parse, and one garbled
+   line at the end of an email undoes the whole email. 1.0 keeps the voice and
+   loses the wobble. */
+const TEMPERATURE = 1.0;
 const MAX_BODY = 64 * 1024;          // a brand profile plus a brief; slack, not a target
 const MAX_BRIEF = 4000;
 const RATE_LIMIT = 30;               // per IP per window
@@ -112,6 +116,76 @@ const CHANNELS = {
   },
 };
 
+/* ------------------------------------------------------------------ STYLES --
+   A channel says what shape a piece is: five slides, 700 words, under sixty.
+   A style says what kind of piece it is, which is a different question and the
+   one that was missing. The same idea written as a myth correction and as an
+   announcement should not come out the same, and until now it did.
+
+   Held here rather than in the browser for the same reason the channels are:
+   these are editorial rules, and a form field is not the place to keep them.
+
+   Eight, because each one changes the actual order of the sentences. A ninth
+   that only changes the topic — "autumn skin", "party season" — belongs in the
+   brief, not in here. */
+const STYLES = {
+  answer: {
+    label: "Straight answer",
+    brief:
+      "Somebody asked this and wants answering. No hook, no angle, no lesson — the answer, in the " +
+      "order a worried person needs to hear it.",
+  },
+  myth: {
+    label: "Myth, corrected",
+    brief:
+      "Name the belief in the first line, in the words people actually use. Say why it gets believed " +
+      "— it is almost always a reasonable mistake. Then what is true instead, and what to do about it. " +
+      "Never make the person who believed it feel stupid: she is the one reading.",
+  },
+  happens: {
+    label: "What actually happens",
+    brief:
+      "Walk through it in order — before, during, after. What it feels like, how long each part takes, " +
+      "what she looks like walking out. Written for someone who is nervous and has not told anybody " +
+      "she is nervous.",
+  },
+  question: {
+    label: "A client asked us",
+    brief:
+      "Open by quoting the question the way it was really asked, in quotation marks, including the " +
+      "hesitation if it was there. Then answer it the way the salon would answer it across the desk. " +
+      "It ends by offering the next step, never by pushing it.",
+  },
+  behind: {
+    label: "Behind the work",
+    brief:
+      "Observational. The room, the tools, the preparation, the part a client never sees. Show the " +
+      "competence instead of claiming it. No call to action bolted on the end — this one is for trust, " +
+      "not for bookings.",
+  },
+  aftercare: {
+    label: "How to look after it",
+    brief:
+      "Practical and specific. What to do, what to avoid, for how long, and the one thing people always " +
+      "get wrong. Written to be screenshotted and come back to. Numbered or bulleted wherever the " +
+      "format allows it.",
+  },
+  news: {
+    label: "Something has changed",
+    brief:
+      "An announcement. The news in the first line, the detail underneath, one thing to do. Short. No " +
+      "build-up and no drum roll.",
+  },
+  academy: {
+    label: "For the Academy",
+    brief:
+      "A different reader entirely: someone weighing this up as a career, not booking a treatment. The " +
+      "work, the training, what the days are actually like, what they walk away qualified to do. Never " +
+      "promise an income, a job or a place.",
+  },
+};
+const DEFAULT_STYLE = "answer";
+
 /* ------------------------------------------------------------------- VOICE --
    The part of the prompt that does not change between channels or between
    requests, and therefore the part the provider's prefix cache can reuse.
@@ -149,7 +223,15 @@ so it has to sound like them and not like a marketing department.`,
 - Short sentences are allowed to be short.
 - Never invent a price, a qualification, a result, a guarantee or a statistic. If a number would
   help and you have not been given it, leave a bracketed gap like [price] for a human to fill.
+- Never invent a fact about this business either. The building, the rooms, who teaches, who does
+  what, what a course includes, how long anything has been running, awards, partnerships — if it
+  is not written above or in the brief, you do not know it. Leave a gap like [how long] or write
+  around it. A plausible invention is worse than an obvious gap, because nobody catches it.
 - Never claim a medical or clinical outcome.
+- Where a length is given, it is a limit and not a target. Cut to fit it. Running over is a
+  failure even when the extra sentence is a good one.
+- Read the last line back before you finish it. A sentence that does not parse undoes everything
+  above it.
 - Write the thing asked for and nothing else. No preamble, no "here is your post", no sign-off
   about how you hope this helps. Do not wrap the whole answer in a code fence.`,
   );
@@ -190,17 +272,86 @@ export default async function handler(request) {
      never a call to the provider, so it is free to hit and safe to leave open.
      It exists because "the console will not write" has two very different
      causes, and guessing between them from the browser wastes an afternoon. */
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
   if (request.method === "GET") {
-    const { name } = findKey();
+    const { key, name } = findKey();
+
+    /* Which DeepSeek-ish variables this deployment can actually see, by NAME.
+       Never a value, and nothing outside that filter — the point is to tell
+       "the variable is missing" apart from "the variable is there under a name
+       nothing is looking for", which from the outside look identical and have
+       completely different fixes. envCount is here to prove process.env is
+       populated at all, so an empty `seen` means the variable is absent rather
+       than the environment being empty. */
+    let seen = [];
+    let envCount = 0;
+    try {
+      const keys = Object.keys(process.env || {});
+      envCount = keys.length;
+      seen = keys.filter((k) => /deep|seek/i.test(k)).sort();
+    } catch {
+      /* some runtimes do not allow enumerating the environment */
+    }
+
+    /* ?probe=1 goes one step further and actually calls the model — one token,
+       the smallest question there is — because "the key is present" and "the
+       key works" are different facts and only the second one matters. It is
+       opt-in rather than part of the plain health check, since it costs a
+       fraction of a penny and a health check should be free to hammer. */
+    let probe = null;
+    if (new URL(request.url).searchParams.get("probe") && key) {
+      if (overLimit(ip)) {
+        probe = { ok: false, message: "Rate limited locally. Wait a minute." };
+      } else {
+        try {
+          const r = await fetch(`${BASE}/chat/completions`, {
+            method: "POST",
+            headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+            body: JSON.stringify({
+              model: MODEL,
+              max_tokens: 1,
+              messages: [{ role: "user", content: "hi" }],
+            }),
+          });
+          const body = await r.text();
+          probe = {
+            ok: r.ok,
+            status: r.status,
+            message: r.ok
+              ? `${MODEL} answered. The key works.`
+              : r.status === 401
+                ? "The key was rejected by DeepSeek."
+                : r.status === 402
+                  ? "The key is valid but the DeepSeek account has no credit."
+                  : r.status === 429
+                    ? "Rate limited by DeepSeek."
+                    : `DeepSeek returned ${r.status}: ${body.slice(0, 200)}`,
+          };
+        } catch (err) {
+          probe = { ok: false, message: `Could not reach ${BASE}: ${err.message}` };
+        }
+      }
+    }
+
     return json(
       {
         ok: true,
         configured: Boolean(name),
         keyFoundAs: name,
         looksFor: KEY_NAMES,
+        seen,                                   // names only, never values
+        envCount,
+        vercelEnv: process.env.VERCEL_ENV || null,
+        commit: (process.env.VERCEL_GIT_COMMIT_SHA || "").slice(0, 7) || null,
         model: MODEL,
         endpoint: BASE,
+        probe,
         channels: Object.keys(CHANNELS),
+        styles: Object.keys(STYLES),
       },
       200,
     );
@@ -223,10 +374,6 @@ export default async function handler(request) {
     );
   }
 
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
   if (overLimit(ip)) return json({ error: "rate_limited", message: "Too many requests. Wait a minute." }, 429);
 
   const raw = await request.text();
@@ -242,11 +389,22 @@ export default async function handler(request) {
   const channel = CHANNELS[body.channel];
   if (!channel) return json({ error: "unknown_channel", allowed: Object.keys(CHANNELS) }, 400);
 
+  /* An unknown style is a silent fallback rather than a 400: a piece written
+     in the wrong form is a worse outcome than one written plainly, but both
+     are better than a panel that fails while the other five fill in. */
+  const style = STYLES[body.style] || STYLES[DEFAULT_STYLE];
+
   const brief = String(body.brief || "").slice(0, MAX_BRIEF).trim();
   if (!brief) return json({ error: "no_brief", message: "Nothing to write about." }, 400);
 
+  /* Form first, then shape, then the subject. The order matters: the channel's
+     constraints sit closest to the brief because they are the ones that must
+     not bend — a myth correction on WhatsApp is still under sixty words. */
   const user =
-    `${channel.brief}\n\n` +
+    `THE FORM\n${style.brief}\n\n` +
+    `THE SHAPE\n${channel.brief}\n` +
+    `Where the form and the shape pull against each other, the shape wins. Length and format ` +
+    `are not negotiable.\n\n` +
     `THE BRIEF\n${brief}` +
     (body.context ? `\n\nCONTEXT THE SALON GAVE\n${String(body.context).slice(0, MAX_BRIEF)}` : "");
 

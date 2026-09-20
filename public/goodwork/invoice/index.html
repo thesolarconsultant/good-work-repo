@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Good Work Invoice</title>
+<meta name="description" content="A GOOD WORK. invoice.">
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* ============================================================================
+   The GOOD WORK. invoice.
+
+   Same tokens as brand.css and the same type as everything else we send out,
+   so an invoice looks like it came from the same place as the proposal rather
+   than out of an accounting package. Every figure is set in JetBrains Mono
+   with tabular numerals: columns of money that do not line up look wrong
+   before anyone has read them.
+
+   Everything that changes from one invoice to the next lives in INVOICE at
+   the bottom. Nothing else needs touching.
+   ========================================================================== */
+:root{
+  --paper:#FFFFFF; --card:#F7F8FA; --ink:#111111; --body:#555555; --muted:#767676;
+  --line:#EAEAEA; --line-strong:#D7D7D7;
+  --accent:#3366FF; --accent-ink:#2E5AE6; --accent-hover:#2B51CC; --wash:#F2F5FF;
+  --dark:#111111; --on-dark:#FFFFFF; --on-dark-muted:#B4B4B4;
+  --face:"Poppins",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --grad:linear-gradient(135deg,#3366FF 0%,#7A5CFF 32%,#FF2DB3 68%,#FF6B5E 100%);
+  --r:12px; --r-lg:18px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111111; --card:#1A1A1A; --ink:#FFFFFF; --body:#C9C9C9; --muted:#9A9A9A;
+    --line:#2B2B2B; --line-strong:#3A3A3A;
+    --accent:#5B84FF; --accent-ink:#8FA9FF; --accent-hover:#7A9BFF; --wash:#161B29;
+    --dark:#1A1A1A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111111; --card:#1A1A1A; --ink:#FFFFFF; --body:#C9C9C9; --muted:#9A9A9A;
+  --line:#2B2B2B; --line-strong:#3A3A3A;
+  --accent:#5B84FF; --accent-ink:#8FA9FF; --accent-hover:#7A9BFF; --wash:#161B29;
+  --dark:#1A1A1A;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--face);
+  font-size:15.5px;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin-inline:auto;padding:0 16px 3rem}
+@media(min-width:720px){.wrap{padding-inline:28px}}
+
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:balance}
+p{margin:0}
+strong{color:var(--ink);font-weight:600}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:2px}
+
+.lbl{font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+  color:var(--ink)}
+
+/* ------------------------------------------------------------------ MARK -- */
+header.top{display:flex;justify-content:space-between;align-items:flex-start;
+  gap:1.2rem 2rem;flex-wrap:wrap;padding-block:clamp(1.8rem,5vw,2.8rem) 1.4rem}
+.mark{display:flex;align-items:center;gap:.7rem}
+.mark svg{display:block;width:44px;height:44px;border-radius:10px;flex:none}
+.mark b{color:var(--ink);font-weight:700;font-size:1.35rem;letter-spacing:-.045em;
+  line-height:1}
+.mark small{display:block;margin-top:.25rem;font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stamp{text-align:right}
+.stamp h1{font-size:clamp(1.5rem,4.6vw,2.1rem);font-weight:700;letter-spacing:-.04em;
+  line-height:1}
+.stamp .no{display:block;margin-top:.45rem;font-family:var(--mono);font-size:.95rem;
+  font-weight:500;color:var(--accent-ink);letter-spacing:.02em}
+@media(max-width:520px){.stamp{text-align:left}}
+
+.rule{height:3px;background:var(--grad);border-radius:2px}
+
+/* ------------------------------------------------------------- THE PARTIES */
+.parties{display:grid;gap:1.4rem 2rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  padding-block:clamp(1.5rem,4vw,2.2rem)}
+.party .lbl{display:block;margin-bottom:.55rem}
+.party b{display:block;color:var(--ink);font-weight:600;font-size:1.05rem;
+  letter-spacing:-.015em}
+.party span{display:block;font-size:.92rem;line-height:1.55}
+.party .num{font-size:.92rem;font-weight:500}
+
+/* ------------------------------------------------------------------ LINES */
+.lines{width:100%;border-collapse:collapse;margin-top:.4rem}
+.lines th{text-align:left;padding:0 0 .7rem;border-bottom:2px solid var(--ink);
+  font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink)}
+.lines th.r,.lines td.r{text-align:right}
+.lines td{padding:1.15rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+.lines td b{display:block;color:var(--ink);font-weight:600;font-size:1.02rem;
+  letter-spacing:-.012em}
+.lines td small{display:block;margin-top:.2rem;font-size:.9rem;line-height:1.5;
+  max-width:52ch;color:var(--body)}
+.lines td.r{white-space:nowrap;padding-left:1.5rem}
+.lines td.r .num{font-size:1.05rem;font-weight:500}
+@media(max-width:520px){
+  .lines,.lines tbody,.lines tr,.lines td{display:block}
+  .lines thead{display:none}
+  .lines td{border-bottom:0;padding:0}
+  .lines tr{padding-block:1.05rem;border-bottom:1px solid var(--line);display:block}
+  .lines td.r{text-align:left;padding-left:0;margin-top:.35rem}
+}
+
+/* ----------------------------------------------------------------- TOTALS */
+.totals{display:flex;justify-content:flex-end;padding-top:1.1rem}
+.totals dl{margin:0;width:min(330px,100%);display:grid;
+  grid-template-columns:1fr auto;gap:.55rem 1.6rem;align-items:baseline}
+.totals dt{font-size:.95rem}
+.totals dd{margin:0;text-align:right;font-family:var(--mono);
+  font-variant-numeric:tabular-nums;color:var(--ink);font-size:.98rem}
+.totals .due{grid-column:1 / -1;display:grid;grid-template-columns:subgrid;
+  align-items:baseline;margin-top:.5rem;padding-top:.9rem;border-top:2px solid var(--ink)}
+.totals .due dt{color:var(--ink);font-weight:700;font-size:1.02rem}
+.totals .due dd{font-size:clamp(1.6rem,5vw,2.1rem);font-weight:700;color:var(--accent);
+  letter-spacing:-.04em;line-height:1}
+@media(max-width:520px){.totals{justify-content:stretch}}
+
+/* -------------------------------------------------------------- HOW TO PAY */
+.pay{margin-top:clamp(1.8rem,4.5vw,2.6rem);background:var(--dark);color:var(--on-dark-muted);
+  border-radius:var(--r-lg);padding:clamp(1.3rem,3.4vw,2rem);
+  display:flex;justify-content:space-between;gap:1.3rem 2rem;flex-wrap:wrap;
+  align-items:flex-start;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pay .lbl{color:var(--on-dark-muted)}
+.pay h2{color:var(--on-dark);font-size:1.22rem;font-weight:700;letter-spacing:-.025em;
+  margin-top:.45rem}
+.pay p{margin-top:.5rem;font-size:.93rem;max-width:40ch}
+.pay .btn{display:inline-block;background:var(--accent);color:#FFF;font-weight:600;
+  font-size:1rem;text-decoration:none;padding:.78rem 1.5rem;border-radius:var(--r);
+  white-space:nowrap}
+.pay .btn:hover{background:var(--accent-hover)}
+
+.bank{margin-top:1.4rem;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:clamp(1.1rem,3vw,1.6rem);
+  display:grid;gap:.9rem 2rem;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.bank .lbl{display:block;margin-bottom:.3rem}
+.bank .num,.bank b{color:var(--ink);font-weight:500;font-size:.98rem}
+.bank b{font-family:var(--face);font-weight:600}
+
+/* ------------------------------------------------------------------ NOTES */
+.notes{margin-top:clamp(1.6rem,4vw,2.2rem);padding-top:1.4rem;border-top:1px solid var(--line)}
+.notes .lbl{display:block;margin-bottom:.7rem}
+.notes ul{margin:0;padding-left:1.1rem;display:grid;gap:.5rem}
+.notes li{font-size:.93rem;line-height:1.55;max-width:66ch}
+
+footer{margin-top:2.2rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:.6rem 2rem;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted)}
+
+/* On paper it is always the light theme, and the black panel keeps its black. */
+@media print{
+  :root{--paper:#FFFFFF;--card:#F7F8FA;--ink:#111111;--body:#555555;--muted:#767676;
+    --line:#EAEAEA;--line-strong:#D7D7D7;--accent:#3366FF;--accent-ink:#2E5AE6;
+    --dark:#111111}
+  body{font-size:14.5px}
+  .wrap{padding:0;max-width:none}
+  .pay,.bank,.lines tr{break-inside:avoid}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="mark">
+      <!-- The GW icon, inline: it has to render in a PDF and in an email
+           client that will not fetch anything. -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Good Work">
+        <defs>
+          <linearGradient id="gw" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#3366FF"/>
+            <stop offset="0.32" stop-color="#7A5CFF"/>
+            <stop offset="0.68" stop-color="#FF2DB3"/>
+            <stop offset="1" stop-color="#FF6B5E"/>
+          </linearGradient>
+        </defs>
+        <rect width="64" height="64" rx="14" fill="url(#gw)"/>
+        <text x="32" y="41.5" text-anchor="middle"
+              font-family="Poppins, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+              font-size="27" font-weight="800" letter-spacing="-1.6" fill="#FFFFFF">GW</text>
+        <circle cx="53" cy="40" r="3.4" fill="#FFFFFF"/>
+      </svg>
+      <div>
+        <b>GOOD WORK.</b>
+        <small data-f="from.tag"></small>
+      </div>
+    </div>
+    <div class="stamp">
+      <h1 data-f="kind"></h1>
+      <span class="no" data-f="number"></span>
+    </div>
+  </header>
+
+  <div class="rule"></div>
+
+  <div class="parties">
+    <div class="party">
+      <span class="lbl">Billed to</span>
+      <b data-f="to.name"></b>
+      <span data-f="to.line1"></span>
+      <span data-f="to.line2"></span>
+      <span data-f="to.email"></span>
+    </div>
+    <div class="party">
+      <span class="lbl">From</span>
+      <b data-f="from.name"></b>
+      <span data-f="from.line1"></span>
+      <span data-f="from.line2"></span>
+      <span data-f="from.email"></span>
+    </div>
+    <div class="party">
+      <span class="lbl">Dates</span>
+      <span>Issued <span class="num" data-f="issued"></span></span>
+      <span>Due <span class="num" data-f="due"></span></span>
+      <span data-f="ref"></span>
+    </div>
+  </div>
+
+  <table class="lines">
+    <thead>
+      <tr><th>Description</th><th class="r">Amount</th></tr>
+    </thead>
+    <tbody id="lines"></tbody>
+  </table>
+
+  <div class="totals">
+    <dl id="totals"></dl>
+  </div>
+
+  <div class="pay">
+    <div>
+      <span class="lbl">How to pay</span>
+      <h2 data-f="pay.head"></h2>
+      <p data-f="pay.note"></p>
+    </div>
+    <a class="btn" id="payBtn" href="#"></a>
+  </div>
+
+  <div class="bank" id="bank"></div>
+
+  <div class="notes">
+    <span class="lbl">Terms</span>
+    <ul id="notes"></ul>
+  </div>
+
+  <footer>
+    <span data-f="from.name"></span>
+    <span data-f="footRight"></span>
+  </footer>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------------- THE DATA --
+   One invoice, one object. Money is held in pence so nothing is ever a
+   floating-point penny out. */
+const INVOICE = {
+  kind: "Invoice",
+  number: "GW-001",
+  issued: "20 September 2026",
+  due: "On receipt",
+  ref: "Ref · Beauty Heaven Hub build",
+  footRight: "Thank you",
+
+  from: {
+    name: "Good Work.",
+    tag: "goodworkagency.uk",
+    line1: "[Registered address]",
+    line2: "[Company no.] · Not VAT registered",
+    email: "support@thesolarconsultant.uk",
+  },
+  to: {
+    name: "Beauty Heaven Hub",
+    line1: "[Address line]",
+    line2: "[Town, postcode]",
+    email: "FAO Jess &amp; Hollie",
+  },
+
+  lines: [
+    {
+      title: "Build — deposit (50%)",
+      note: "Website, Content Console, AI voice agent with booking-system " +
+            "connection, and the WhatsApp chatbot. One-off build fee of " +
+            "£2,800. Work starts on receipt of this deposit.",
+      amount: 140000,
+    },
+  ],
+
+  totals: [
+    { label: "Subtotal", amount: 140000 },
+    { label: "VAT", amount: 0, as: "—" },
+  ],
+  due_amount: 140000,
+
+  pay: {
+    head: "Pay the deposit and we start",
+    note: "£1,400 now, £1,400 when it is finished and you have seen it working. " +
+          "About ten working days from the day we start.",
+    cta: "Pay £1,400 →",
+    href: "https://buy.stripe.com/7sY00k6Fvgwq2Gz8H53ks01j",
+  },
+
+  bank: [
+    { label: "Account name", value: "[Account name]", mono: false },
+    { label: "Sort code",    value: "[00-00-00]",     mono: true  },
+    { label: "Account no.",  value: "[00000000]",     mono: true  },
+    { label: "Reference",    value: "GW-001",         mono: true  },
+  ],
+
+  notes: [
+    "The balance of £1,400 is invoiced on completion and due on receipt. Nothing is " +
+      "charged in between.",
+    "The monthly running cost is billed separately by subscription, starting the month " +
+      "the site goes live. A month's notice either way, no lock-in.",
+    "The work is yours. Everything built stays with you whatever happens after.",
+    "Late payment: interest at 8% above the Bank of England base rate under the Late " +
+      "Payment of Commercial Debts (Interest) Act 1998.",
+  ],
+};
+
+/* ---------------------------------------------------------------- RENDER -- */
+const money = (p) =>
+  "£" + (p / 100).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const dig = (obj, path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
+
+for (const el of document.querySelectorAll("[data-f]")) {
+  const v = dig(INVOICE, el.dataset.f);
+  if (v == null || v === "") { el.remove(); continue; }
+  el.innerHTML = v;
+}
+
+document.getElementById("lines").innerHTML = INVOICE.lines.map((l) => `
+  <tr>
+    <td><b>${l.title}</b>${l.note ? `<small>${l.note}</small>` : ""}</td>
+    <td class="r"><span class="num">${money(l.amount)}</span></td>
+  </tr>`).join("");
+
+document.getElementById("totals").innerHTML =
+  INVOICE.totals.map((t) =>
+    `<dt>${t.label}</dt><dd>${t.as || money(t.amount)}</dd>`).join("") +
+  `<div class="due"><dt>Amount due</dt><dd>${money(INVOICE.due_amount)}</dd></div>`;
+
+document.getElementById("bank").innerHTML = INVOICE.bank.map((b) => `
+  <div><span class="lbl">${b.label}</span>
+    <${b.mono ? 'span class="num"' : "b"}>${b.value}</${b.mono ? "span" : "b"}></div>`).join("");
+
+document.getElementById("notes").innerHTML =
+  INVOICE.notes.map((n) => `<li>${n}</li>`).join("");
+
+const btn = document.getElementById("payBtn");
+btn.textContent = INVOICE.pay.cta;
+btn.href = INVOICE.pay.href;
+btn.target = "_blank";
+btn.rel = "noopener";
+
+document.title = `${INVOICE.from.name} ${INVOICE.number} — ${INVOICE.to.name}`;
+</script>
+</html>

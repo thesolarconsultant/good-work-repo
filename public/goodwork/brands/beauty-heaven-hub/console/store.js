@@ -179,6 +179,17 @@ export function setPieceDay(campaignId, channel, day) {
   save();
 }
 
+/* Throw a piece away. An idea whose last piece has gone goes with it — an
+   entry in the recent list with nothing behind it is just something to click
+   on and be disappointed by. */
+export function removePiece(campaignId, channel) {
+  const c = getCampaign(campaignId);
+  if (!c || !c.pieces[channel]) return;
+  delete c.pieces[channel];
+  if (Object.keys(c.pieces).length === 0) removeCampaign(c.id);
+  else save();
+}
+
 export function setPieceText(campaignId, channel, text) {
   const c = getCampaign(campaignId);
   if (!c || !c.pieces[channel]) return;

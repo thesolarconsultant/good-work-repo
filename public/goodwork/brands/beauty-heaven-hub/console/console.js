@@ -12,6 +12,7 @@
    ========================================================================== */
 
 import * as store from "./store.js";
+import { makeSet, toBlob } from "./cards.js";
 
 const API = "/api/console";
 const $ = (s, r = document) => r.querySelector(s);
@@ -155,12 +156,14 @@ $("#briefForm").addEventListener("submit", (e) => {
   const brief = f.elements.brief.value.trim();
   const context = f.elements.context.value.trim();
   const channels = $$("input[name=channel]:checked", f).map((i) => i.value);
+  const style = f.elements.style?.value || "answer";
   if (!brief || channels.length === 0) return;
 
   current = {
     id: store.uid(),
     brief,
     context,
+    style,
     createdAt: new Date().toISOString(),
     pieces: Object.fromEntries(
       channels.map((ch) => [ch, { text: "", state: "writing", movedAt: null }]),
@@ -179,6 +182,9 @@ function openCampaign(id) {
   $("#briefForm").elements.brief.value = current.brief;
   $("#briefForm").elements.context.value = current.context || "";
   $$("input[name=channel]").forEach((i) => { i.checked = !!current.pieces[i.value]; });
+  /* Campaigns written before styles existed have none; they reopen as the
+     straight answer, which is what they were. */
+  $$("input[name=style]").forEach((i) => { i.checked = i.value === (current.style || "answer"); });
   renderPieces();
 }
 
@@ -197,6 +203,10 @@ function renderPieces() {
         <div class="piece__foot">
           <button class="btn btn--tiny" data-copy="${ch}">Copy</button>
           <button class="btn btn--tiny" data-again="${ch}">Write it again</button>
+          ${ch === "instagram" && p.text.trim()
+            ? `<button class="btn btn--tiny" data-slides="${ch}">Make the slides</button>`
+            : ""}
+          ${p.text.trim() ? `<button class="btn btn--tiny" data-shot="${ch}">Make a picture</button>` : ""}
           <span class="spacer"></span>
           ${p.state === "approved"
             ? `<button class="btn btn--tiny" data-unapprove="${ch}">Unapprove</button>`
@@ -210,8 +220,12 @@ function renderPieces() {
 $("#pieces").addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn || !current) return;
-  const { copy, again, approve, unapprove } = btn.dataset;
-  if (copy) {
+  const { copy, again, approve, unapprove, slides, shot } = btn.dataset;
+  if (shot) {
+    openShot(current.pieces[shot].text);
+  } else if (slides) {
+    openSlides(current.pieces[slides].text);
+  } else if (copy) {
     navigator.clipboard.writeText(current.pieces[copy].text).then(() => toast("Copied."));
   } else if (again) {
     current.pieces[again] = { text: "", state: "writing", movedAt: null };
@@ -271,6 +285,7 @@ async function writeOne(channel) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         channel,
+        style: current.style,
         brief: current.brief,
         context: current.context,
         brand: store.load().brand,
@@ -328,6 +343,8 @@ function renderApprovals() {
           <div class="row">
             <button class="btn btn--tiny btn--gold" data-ok>Approve</button>
             <button class="btn btn--tiny" data-edit>Open and edit</button>
+            <span class="spacer" style="flex:1"></span>
+            <button class="btn btn--tiny btn--bin" data-bin>Discard</button>
           </div>
         </article>`,
           )
@@ -337,6 +354,41 @@ function renderApprovals() {
 $("#queue").addEventListener("click", (e) => {
   const item = e.target.closest(".qitem");
   if (!item) return;
+
+  /* Discarding is the one thing here with no undo, so it asks once — in the
+     button itself rather than in a dialog, which is quicker to confirm and
+     quicker to change your mind about. It gives up after a few seconds so a
+     half-pressed button never sits there armed. */
+  const bin = e.target.closest("[data-bin]");
+  if (bin) {
+    if (bin.dataset.armed) {
+      store.removePiece(item.dataset.c, item.dataset.ch);
+      if (current && current.id === item.dataset.c) {
+        current = store.getCampaign(item.dataset.c);
+        renderPieces();
+      }
+      renderApprovals();
+      renderDashboard();
+      toast("Discarded.");
+    } else {
+      $$("[data-bin]").forEach((b) => {
+        delete b.dataset.armed;
+        b.textContent = "Discard";
+        b.classList.remove("is-armed");
+      });
+      bin.dataset.armed = "1";
+      bin.textContent = "Discard — sure?";
+      bin.classList.add("is-armed");
+      setTimeout(() => {
+        if (!bin.dataset.armed) return;
+        delete bin.dataset.armed;
+        bin.textContent = "Discard";
+        bin.classList.remove("is-armed");
+      }, 4000);
+    }
+    return;
+  }
+
   if (e.target.closest("[data-ok]")) {
     store.setPieceState(item.dataset.c, item.dataset.ch, "approved");
     renderApprovals();
@@ -547,6 +599,123 @@ $("#impFile").addEventListener("change", async (e) => {
   e.target.value = "";
 });
 
+/* ====================================================================== PDF == */
+/* Work, as a document. The browser does the rendering — its "Save as PDF" keeps
+   the real typeface, keeps the text selectable, and handles page breaks and
+   widows, none of which a PDF library gives you for free.
+
+   Two documents come out of the same builder, because they are the same object
+   with a different filter on it: everything approved across every idea, or
+   every piece written for the one idea on screen. */
+function renderDoc(groups, title, note) {
+  const total = groups.reduce((n, g) => n + g.pieces.length, 0);
+  const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+  const head = `
+    <header class="doc__head">
+      <img src="../logo/beauty-heaven-hub-wordmark-espresso.svg" alt="Beauty Heaven Hub">
+      <div>
+        <b>${esc(title)}</b>
+        <small>${today}</small>
+      </div>
+    </header>`;
+
+  if (!total) {
+    $("#doc").innerHTML = `${head}<p class="doc__empty">${esc(note)}</p>`;
+    return 0;
+  }
+
+  $("#doc").innerHTML =
+    head +
+    groups
+      .map(
+        ({ c, pieces, meta }) => `
+      <section class="doc__idea">
+        <h2>${esc(c.brief)}</h2>
+        <p class="doc__meta">${meta}</p>
+        ${pieces
+          .map(
+            ([ch, p]) => `<div class="doc__piece">
+              <h3>${CHANNELS[ch]}${p.day ? ` · ${p.day}` : ""}${
+                p.state !== "approved" ? ` · ${STATES[p.state]}` : ""
+              }</h3>
+              <pre>${esc(p.text)}</pre>
+            </div>`,
+          )
+          .join("")}
+      </section>`,
+      )
+      .join("") +
+    `<footer class="doc__foot">${total} ${total === 1 ? "piece" : "pieces"} across
+      ${groups.length} ${groups.length === 1 ? "idea" : "ideas"}. Written in the Content Console.
+      Anything not marked approved is still a draft.</footer>`;
+
+  return total;
+}
+
+/* Everything signed off, across every idea. */
+function buildApprovedDoc() {
+  const groups = store
+    .load()
+    .campaigns.map((c) => {
+      const pieces = Object.entries(c.pieces).filter(([, p]) => p.state === "approved");
+      return { c, pieces, meta: `${pieces.length} approved · written ${when(c.createdAt)}` };
+    })
+    .filter((g) => g.pieces.length);
+
+  return renderDoc(
+    groups,
+    "Approved content",
+    "Nothing has been approved yet, so there is nothing to put on paper. Approve a piece and it will appear here.",
+  );
+}
+
+/* One idea, every channel it was written for, whatever state each is in — the
+   thing on screen, on paper, for reading away from the machine. */
+/* The form a piece was written in is part of what it is, so it goes on the
+   paper next to the count. Older campaigns have none and simply don't say. */
+const STYLE_LABEL = {
+  answer: "Straight answer",
+  myth: "Myth, corrected",
+  happens: "What actually happens",
+  question: "A client asked us",
+  behind: "Behind the work",
+  aftercare: "How to look after it",
+  news: "Something has changed",
+  academy: "For the Academy",
+};
+
+function buildCampaignDoc(c) {
+  const pieces = Object.entries(c.pieces).filter(([, p]) => p.text.trim());
+  const approved = pieces.filter(([, p]) => p.state === "approved").length;
+  const form = STYLE_LABEL[c.style] ? `${STYLE_LABEL[c.style]} · ` : "";
+  return renderDoc(
+    [{ c, pieces, meta: `${form}${pieces.length} ${pieces.length === 1 ? "piece" : "pieces"} · ${approved} approved · written ${when(c.createdAt)}` }],
+    "One idea, everywhere",
+    "Nothing written for this idea yet.",
+  );
+}
+
+/* The print dialog freezes the page, so it waits for the logo — printing
+   mid-render prints half a document. */
+function toPaper() {
+  const img = $("#doc img");
+  const go = () => setTimeout(() => window.print(), 60);
+  if (img && !img.complete) img.addEventListener("load", go, { once: true });
+  else go();
+}
+
+$("#pdfBtn").addEventListener("click", () => {
+  if (!buildApprovedDoc()) return toast("Nothing approved yet.");
+  toPaper();
+});
+
+$("#pdfCampaign").addEventListener("click", () => {
+  if (!current) return toast("Write something first.");
+  if (!buildCampaignDoc(current)) return toast("Nothing written yet.");
+  toPaper();
+});
+
 /* ===================================================================== BOOT == */
 const VIEWS = {
   dashboard: renderDashboard,
@@ -565,3 +734,203 @@ function renderAll() {
 store.load();
 renderAll();
 show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "dashboard");
+
+
+/* ------------------------------------------------------------- THE SLIDES --
+   The carousel the console wrote, drawn as the carousel it was describing.
+   Nothing generated, nothing paid for — the brand's own type on the brand's
+   own ground, which is right every time and cannot come back uncanny.
+
+   The overlay is built on demand rather than sitting in the markup: five
+   1080×1350 canvases are real memory, and they should go when it closes. */
+async function openSlides(text) {
+  const wrap = document.createElement("div");
+  wrap.className = "sheet";
+  wrap.innerHTML = `
+    <div class="sheet__box" role="dialog" aria-modal="true" aria-label="Carousel slides">
+      <header class="sheet__top">
+        <div>
+          <p class="eyebrow">Ready to post</p>
+          <h2 class="h3">The slides</h2>
+        </div>
+        <div class="row">
+          <button class="btn btn--gold" id="slidesSave">Save all</button>
+          <button class="btn btn--quiet" id="slidesClose">Close</button>
+        </div>
+      </header>
+      <p class="note">1080 × 1350, the size the feed crops to. Click any one to save it on its own.</p>
+      <div class="sheet__grid" id="slidesGrid"><p class="note">Drawing…</p></div>
+    </div>`;
+  document.body.appendChild(wrap);
+
+  const close = () => wrap.remove();
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) close(); });
+  $("#slidesClose", wrap).addEventListener("click", close);
+  document.addEventListener("keydown", function esc(e) {
+    if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); }
+  });
+
+  let canvases = [];
+  try {
+    canvases = await makeSet(text);
+  } catch (err) {
+    $("#slidesGrid", wrap).innerHTML = `<p class="note">${esc(err.message)}</p>`;
+    return;
+  }
+
+  if (!canvases.length) {
+    $("#slidesGrid", wrap).innerHTML =
+      `<p class="note">No slides found in this one. The carousel needs its slide headings —
+       write it again if they are missing.</p>`;
+    return;
+  }
+
+  const grid = $("#slidesGrid", wrap);
+  grid.innerHTML = "";
+  canvases.forEach((c, i) => {
+    c.className = "slide";
+    c.title = `Slide ${i + 1} — click to save`;
+    c.addEventListener("click", () => save(c, i));
+    grid.appendChild(c);
+  });
+
+  async function save(canvas, i) {
+    const blob = await toBlob(canvas);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `beauty-heaven-slide-${String(i + 1).padStart(2, "0")}.png`;
+    a.click();
+    /* Revoked on the next frame, not immediately: the click is queued and a
+       revoked URL downloads an empty file. */
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  $("#slidesSave", wrap).addEventListener("click", async () => {
+    /* One at a time, with a breath between: a browser that gets five download
+       prompts in the same tick shows one and silently drops four. */
+    for (let i = 0; i < canvases.length; i += 1) {
+      await save(canvases[i], i);
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    toast(`${canvases.length} slides saved.`);
+  });
+}
+
+
+/* ------------------------------------------------------------ THE PICTURE --
+   Higgsfield, conditioned on a real photograph of the real salon. The looks
+   live on the server, the same as the channels and the styles — this offers
+   the choice between them and never a text box, because an open prompt is how
+   you get generic AI salon stock, which is the one thing the guidelines are
+   explicitly against.
+
+   A job queue, so: submit, then poll. Tens of seconds, and the screen says so
+   rather than spinning and hoping. */
+const IMAGE_API = "/api/console-image";
+
+async function openShot(text) {
+  const wrap = document.createElement("div");
+  wrap.className = "sheet";
+  wrap.innerHTML = `
+    <div class="sheet__box" role="dialog" aria-modal="true" aria-label="Make a picture">
+      <header class="sheet__top">
+        <div><p class="eyebrow">Shot on your own rooms</p><h2 class="h3">Make a picture</h2></div>
+        <button class="btn btn--quiet" id="shotClose">Close</button>
+      </header>
+      <p class="note">Every look is conditioned on a real photograph of the salon, so the walls,
+        fittings and light are yours rather than invented. Nothing here writes its own prompt.</p>
+      <fieldset class="picks" id="shotLooks" style="margin-top:1rem"><legend>The look</legend></fieldset>
+      <div class="row">
+        <button class="btn btn--gold" id="shotGo">Make it</button>
+        <span class="note" id="shotNote"></span>
+      </div>
+      <div class="sheet__grid" id="shotGrid"></div>
+    </div>`;
+  document.body.appendChild(wrap);
+
+  const close = () => { wrap.remove(); clearTimeout(openShot.t); };
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) close(); });
+  $("#shotClose", wrap).addEventListener("click", close);
+
+  const note = (m) => { $("#shotNote", wrap).textContent = m; };
+
+  /* Which looks exist is the server's business, so it is asked rather than
+     assumed. It also answers whether there is a key at all, which is the far
+     more common reason for nothing happening. */
+  let health;
+  try {
+    health = await (await fetch(IMAGE_API)).json();
+  } catch {
+    note("Could not reach the picture endpoint.");
+    return;
+  }
+  if (!health.configured) {
+    $("#shotLooks", wrap).remove();
+    $("#shotGo", wrap).disabled = true;
+    note("This deployment has no Higgsfield key set, so it cannot make pictures yet.");
+    return;
+  }
+
+  const suggested = health.styleLook?.[current?.style || "answer"] || "treatment";
+  $("#shotLooks", wrap).insertAdjacentHTML("beforeend",
+    Object.entries(health.looks).map(([k, label]) =>
+      `<label><input type="radio" name="look" value="${k}"${k === suggested ? " checked" : ""}>
+        <span>${esc(label)}</span></label>`).join(""));
+  note(`Suggested for this kind of post. About a minute.`);
+
+  $("#shotGo", wrap).addEventListener("click", async () => {
+    const look = wrap.querySelector("input[name=look]:checked")?.value;
+    $("#shotGo", wrap).disabled = true;
+    note("Sending…");
+
+    let started;
+    try {
+      const res = await fetch(IMAGE_API, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        /* The copy goes in as a subject, not as a prompt: it colours the shot
+           without the model trying to illustrate a sentence literally. */
+        body: JSON.stringify({ look, style: current?.style, subject: current?.brief || text.slice(0, 200) }),
+      });
+      started = await res.json();
+      if (!res.ok) throw new Error(started.message || `The endpoint returned ${res.status}.`);
+      if (started.error) throw new Error(started.message);
+    } catch (err) {
+      note(err.message);
+      $("#shotGo", wrap).disabled = false;
+      return;
+    }
+
+    const began = Date.now();
+    (function poll() {
+      openShot.t = setTimeout(async () => {
+        if (!document.body.contains(wrap)) return;
+        const secs = Math.round((Date.now() - began) / 1000);
+        try {
+          const r = await (await fetch(`${IMAGE_API}?request=${encodeURIComponent(started.request_id)}`)).json();
+          if (r.status === "completed" && r.images?.length) {
+            note(`${started.lookLabel} · ${secs}s`);
+            $("#shotGrid", wrap).innerHTML = r.images
+              .map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener">
+                             <img class="slide" src="${esc(u)}" alt="Generated picture"></a>`).join("");
+            $("#shotGo", wrap).disabled = false;
+            return;
+          }
+          if (["failed", "canceled", "nsfw"].includes(r.status)) {
+            note(r.status === "nsfw"
+              ? "Higgsfield refused that one. Try a different look."
+              : `It did not finish: ${r.error || r.status}`);
+            $("#shotGo", wrap).disabled = false;
+            return;
+          }
+          note(`${r.status === "queued" ? "Queued" : "Drawing"}… ${secs}s`);
+          poll();
+        } catch {
+          note("Lost the connection while it was working.");
+          $("#shotGo", wrap).disabled = false;
+        }
+      }, 3000);
+    })();
+  });
+}
