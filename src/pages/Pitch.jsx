@@ -1,51 +1,33 @@
 import Deck from "../components/deck/Deck";
-import Display from "../components/Display";
 import Headline from "../components/Headline";
 import Button from "../components/Button";
-import Stamp from "../components/Stamp";
-import Stat from "../components/Stat";
 import Shot from "../components/Shot";
-import { CASE_STUDIES } from "../data/caseStudies";
-import { CONSOLE_OUTCOMES } from "../data/console";
-import { DISCIPLINES } from "../data/disciplines";
-import { PACKAGES, ADDONS } from "../data/packages";
-import { PROCESS } from "../data/process";
+import { LADDER, OFFER, MANAGED_PLANS, OWNERSHIP_PRINCIPLE, JOURNEY, VALUE_LADDER_SENTENCE } from "../data/offers";
+import { SHOWCASE } from "../data/showcase";
+import { gbp, priceLabel } from "../lib/format";
 
-// A live, presenter-driven pitch for GOOD WORK. itself — built to be shown
-// on a laptop or shared screen, not read cold. Every case-study fact, every
-// Content Console figure and every step of the process is pulled from the
-// same data the public site uses, so the deck can never say something the
-// site doesn't also say.
+// A live, presenter-driven pitch for Goodwork itself. Every price, inclusion
+// and case-study fact is read from the same data the public site uses, so the
+// deck can never say something the site doesn't.
 
-const tsc = CASE_STUDIES.find((c) => c.id === "tsc");
-const eightEnergy = CASE_STUDIES.find((c) => c.id === "8energy");
-
-const PROBLEMS = [
-  "The website needs a developer just to change a sentence.",
-  "The last post went up months ago, because writing one is always last on the list.",
-  "A call missed at 6pm is a lead gone to whoever answers next.",
-  "A quote takes three days to go out — long enough for the customer to have found someone else.",
-];
+const tsc = SHOWCASE.find((c) => c.id === "tsc");
+const eightEnergy = SHOWCASE.find((c) => c.id === "8energy");
 
 function ProofSlide({ cs, reverse = false }) {
-  const shot = (
-    <Shot
-      src={cs.shots[0].src}
-      alt={cs.shots[0].caption}
-      caption={cs.shots[0].caption}
-      sizes="(max-width: 820px) 100vw, 560px"
-    />
-  );
+  const shot = <Shot src={cs.shots[0].src} alt={cs.shots[0].caption} caption={cs.shots[0].caption} sizes="(max-width: 820px) 100vw, 560px" />;
   const copy = (
     <div>
       <span className="gw-deck__kicker">Proof — {cs.name}</span>
       <Headline onMount as="h2" className="gw-h2" lines={[cs.name]} />
       <p className="gw-deck__lede" style={{ marginInline: 0 }}>
-        {cs.lede}
+        {cs.created}
       </p>
       <div className="gw-facts gw-facts--pair" style={{ marginTop: "1.5rem" }}>
-        {cs.facts.slice(0, 2).map((f, i) => (
-          <Stat key={f.label} figure={f.figure} label={f.label} delay={i * 90} />
+        {cs.facts.slice(0, 2).map((f) => (
+          <div key={f.label} className="gw-fact">
+            <span className="gw-fact__figure">{f.figure}</span>
+            <span className="gw-fact__label">{f.label}</span>
+          </div>
         ))}
       </div>
     </div>
@@ -58,133 +40,67 @@ const SLIDES = [
     label: "Open",
     content: (
       <>
-        <Stamp size={104} />
-        <Headline
-          onMount
-          as="h1"
-          className="gw-h1 gw-stack-lg"
-          lines={["We make businesses", "look and work better."]}
-        />
-        <p className="gw-deck__lede">
-          Brand. Websites. Systems. Built properly, once, and kept running after launch.
-        </p>
+        <span className="gw-deck__kicker">Goodwork</span>
+        <Headline onMount as="h1" className="gw-h1 gw-stack-lg" lines={["Build better.", "Launch faster."]} />
+        <p className="gw-deck__lede">Production-ready websites, AI agents and business systems. Use the tools yourself, or let Goodwork build the complete operation for you.</p>
       </>
     ),
   },
   {
-    label: "The problem",
+    label: "Two sides",
     content: (
       <>
-        <span className="gw-deck__kicker">The problem</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["Weak websites.", "Disconnected systems.", "Inconsistent marketing."]} />
-        <p className="gw-deck__lede">
-          Good businesses get let down by all three — not from lack of effort, but because nobody
-          made the pieces work together.
-        </p>
+        <span className="gw-deck__kicker">The business</span>
+        <Headline onMount as="h2" className="gw-h2" lines={["Goodwork Products.", "Goodwork Services."]} />
+        <p className="gw-deck__lede">Reusable code, templates and intelligent systems on one side. Implementation, customisation, infrastructure and agency building on the other. Build with Goodwork, or have Goodwork build it.</p>
       </>
     ),
   },
   {
-    label: "What that costs you",
+    label: "The journey",
     content: (
       <>
-        <span className="gw-deck__kicker">What that actually looks like</span>
-        <Display as="h2">Money on<br />the table</Display>
+        <span className="gw-deck__kicker">The connected system</span>
+        <Headline onMount as="h2" className="gw-h2" lines={["More than pretty sections."]} />
         <ul className="gw-deck__list">
-          {PROBLEMS.map((p, i) => (
-            <li key={p} style={{ "--gw-deck-i": i }}>{p}</li>
+          {JOURNEY.map((j, i) => (
+            <li key={j.id} style={{ "--gw-deck-i": i }}>
+              {j.step}
+            </li>
           ))}
         </ul>
       </>
     ),
   },
+  { label: `Proof — ${tsc.name}`, content: <ProofSlide cs={tsc} /> },
+  { label: `Proof — ${eightEnergy.name}`, content: <ProofSlide cs={eightEnergy} reverse /> },
   {
-    label: `Proof — ${tsc.name}`,
-    content: <ProofSlide cs={tsc} />,
-  },
-  {
-    label: `Proof — ${eightEnergy.name}`,
-    content: <ProofSlide cs={eightEnergy} reverse />,
-  },
-  {
-    label: "What we do",
+    label: "The ladder",
     content: (
       <>
-        <span className="gw-deck__kicker">What we do</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["Four disciplines.", "One standard."]} />
-        <div className="gw-deck__grid4">
-          {DISCIPLINES.map((d, i) => (
-            <div className="gw-deck__card" key={d.title} style={{ "--gw-deck-i": i }}>
-              <strong>{d.title}</strong>
-              <span>{d.desc}</span>
-            </div>
-          ))}
-        </div>
+        <span className="gw-deck__kicker">The offers</span>
+        <Headline onMount as="h2" className="gw-h2" lines={["Start where you are.", "Move up when you need us."]} />
+        <p className="gw-deck__lede">{VALUE_LADDER_SENTENCE}</p>
       </>
     ),
   },
-  {
-    label: "The Content Console",
+  ...LADDER.map((o, i) => ({
+    label: o.short,
     content: (
       <>
-        <span className="gw-deck__kicker">The centrepiece</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["Your business,", "never quiet."]} />
-        <Shot
-          src="/console/tsc-console-pipeline.jpg"
-          alt="The Content Console's pipeline, showing a real client's backlog, drafts and published posts."
-          className="gw-deck__shot--tight"
-          sizes="(max-width: 820px) 100vw, 560px"
-        />
-        <div className="gw-facts" style={{ marginTop: "1.5rem" }}>
-          {CONSOLE_OUTCOMES.map((o, i) => (
-            <Stat key={o.label} figure={o.figure} label={o.label} delay={i * 90} />
-          ))}
-        </div>
-      </>
-    ),
-  },
-  {
-    label: "How it runs",
-    content: (
-      <>
-        <span className="gw-deck__kicker">How it runs</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["Four steps.", "No agency theatre."]} />
-        <div className="gw-deck__grid4">
-          {PROCESS.map((p, i) => (
-            <div className="gw-deck__card" key={p.title} style={{ "--gw-deck-i": i }}>
-              <strong>{p.mark}. {p.title}</strong>
-              <span>{p.desc}</span>
-            </div>
-          ))}
-        </div>
-      </>
-    ),
-  },
-  {
-    label: "The packages",
-    content: (
-      <>
-        <span className="gw-deck__kicker">How it's packaged</span>
-        <Headline onMount as="h2" className="gw-h1" lines={["Look good.", "Work properly.", "Automate it.", "Hand you control."]} />
-        <p className="gw-deck__lede">Four packages. Each one builds on the last — pick where you get on.</p>
-      </>
-    ),
-  },
-  ...PACKAGES.map((pkg, i) => ({
-    label: pkg.name,
-    content: (
-      <>
-        <span className="gw-deck__kicker">Package {i + 1} of {PACKAGES.length} · {pkg.purpose}</span>
-        <Headline onMount as="h2" className="gw-h1" lines={[pkg.name]} />
+        <span className="gw-deck__kicker">
+          Offer {i + 1} of {LADDER.length} · {o.who}
+        </span>
+        <Headline onMount as="h2" className="gw-h1" lines={[o.short]} />
         <div className="gw-deck__pkg-solo-price">
-          <Display as="span" className="gw-deck__pkg-solo-figure">{pkg.setup}</Display>
-          <span className="gw-deck__pkg-solo-monthly">+ {pkg.monthly}</span>
+          <span className="gw-deck__pkg-solo-figure gw-mono">{gbp(o.price)}</span>
+          <span className="gw-deck__pkg-solo-monthly">{o.billing === "monthly" ? "per month" : "one-time"}</span>
         </div>
-        <p className="gw-deck__lede">&ldquo;{pkg.pitch}&rdquo;</p>
+        <p className="gw-deck__lede">{o.line}</p>
         <div className="gw-deck__pkg-ladder">
-          {PACKAGES.map((p) => (
-            <span key={p.id} className={`gw-deck__pkg-step${p.id === pkg.id ? " is-active" : ""}`}>
-              {p.name}
+          {LADDER.map((p) => (
+            <span key={p.id} className={`gw-deck__pkg-step${p.id === o.id ? " is-active" : ""}`}>
+              {p.short}
             </span>
           ))}
         </div>
@@ -192,19 +108,34 @@ const SLIDES = [
     ),
   })),
   {
-    label: "Add-ons",
+    label: "Embedded CRM",
     content: (
       <>
-        <span className="gw-deck__kicker">More ways to go further</span>
-        <Headline onMount as="h2" className="gw-h2" lines={["If you need it."]} />
-        <div className="gw-deck__grid2 gw-deck__grid2--addons">
-          {ADDONS.map((a, i) => (
-            <div className="gw-deck__card gw-deck__card--pkg" key={a.id} style={{ "--gw-deck-i": i }}>
-              <strong>{a.name}</strong>
-              <span className="gw-deck__pkg-price">{a.monthly}</span>
-              <span className="gw-deck__pkg-purpose">{a.purpose}</span>
-              <span>&ldquo;{a.pitch}&rdquo;</span>
-              {a.note && <span className="gw-deck__pkg-note">{a.note}</span>}
+        <span className="gw-deck__kicker">Add-on or standalone · {OFFER.crm.who}</span>
+        <Headline onMount as="h2" className="gw-h1" lines={[OFFER.crm.short]} />
+        <div className="gw-deck__pkg-solo-price">
+          <span className="gw-deck__pkg-solo-figure gw-mono">{gbp(OFFER.crm.price)}</span>
+          <span className="gw-deck__pkg-solo-monthly">one-time · server excluded</span>
+        </div>
+        <p className="gw-deck__lede">
+          {OFFER.crm.outcome} With Built by Goodwork: {gbp(OFFER.built.price + OFFER.crm.price)} plus infrastructure.
+        </p>
+      </>
+    ),
+  },
+  {
+    label: "Managed",
+    content: (
+      <>
+        <span className="gw-deck__kicker">Optional · per month</span>
+        <Headline onMount as="h2" className="gw-h2" lines={["Own the build.", "Choose who runs it."]} />
+        <p className="gw-deck__lede">{OWNERSHIP_PRINCIPLE}</p>
+        <div className="gw-deck__grid4">
+          {MANAGED_PLANS.map((p, i) => (
+            <div className="gw-deck__card" key={p.id} style={{ "--gw-deck-i": i }}>
+              <strong>{p.name}</strong>
+              <span className="gw-mono">{priceLabel(p.price, "monthly")}</span>
+              <span>{p.for}</span>
             </div>
           ))}
         </div>
@@ -215,18 +146,14 @@ const SLIDES = [
     label: "Close",
     content: (
       <>
-        <Stamp size={104} />
-        <Headline onMount as="h2" className="gw-h1 gw-stack-lg" lines={["This could be", "your project next."]} />
-        <p className="gw-deck__lede">
-          One conversation to understand what's leaking, one scope and one fixed price before
-          anything starts.
-        </p>
+        <Headline onMount as="h2" className="gw-h1 gw-stack-lg" lines={["Choose the fastest route", "to better work."]} />
+        <p className="gw-deck__lede">Start with the code, take the complete Studio toolkit or ask Goodwork to build the system with you.</p>
         <div className="gw-deck__actions">
-          <Button to="/services" variant="light" arrow>
-            See services
+          <Button to="/pricing" variant="paper" arrow>
+            Compare every option
           </Button>
-          <Button to="/contact" variant="outline" arrow>
-            Start a project
+          <Button to="/contact" variant="secondary" arrow>
+            Talk to Goodwork
           </Button>
         </div>
       </>
@@ -235,11 +162,5 @@ const SLIDES = [
 ];
 
 export default function Pitch() {
-  return (
-    <Deck
-      slides={SLIDES}
-      title="The GOOD WORK. Pitch"
-      description="A presenter-led walkthrough of what GOOD WORK. does, built from the same case studies and figures published on the site."
-    />
-  );
+  return <Deck slides={SLIDES} title="The Goodwork pitch" description="A presenter-led walkthrough of what Goodwork sells, built from the same offers and showcase data published on the site." />;
 }

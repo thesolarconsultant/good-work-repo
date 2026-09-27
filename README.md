@@ -1,11 +1,19 @@
-# GOOD WORK.
+# Goodwork
 
-The agency site — brand, work, case studies, the Content Console and services.
-React 19 + Vite, no UI framework, no animation library.
+The Goodwork website: a digital product studio and commercial system builder.
+Goodwork Products (Library £280, Studio £888) on one side; Goodwork Services
+(Built by Goodwork £2,800, Embedded CRM £1,888, the Agency programme
+£8,888.88, optional managed infrastructure from £28 per month) on the other.
+
+React 19 + Vite, no UI framework, no animation library, Web-standard edge
+functions in `api/`.
 
 ```bash
 npm install
-npm run dev
+npm run dev        # dev server
+npm run check      # lint + production build (runs the prebuild pipeline)
+npm run test:api     # call the edge functions directly: validation, delivery, Stripe signatures
+npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chromium
 ```
 
 ## Scripts
@@ -13,244 +21,153 @@ npm run dev
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Dev server |
-| `npm run build` | Production build (runs `images` and `sitemap` first) |
+| `npm run build` | Production build. Runs `library`, `images`, `sitemap` and `prices` first |
 | `npm run preview` | Serve the built site |
-| `npm run preview:file` | One self-contained HTML file in `preview/`, for sending a preview to someone with no server |
 | `npm run lint` | Oxlint |
-| `npm run images` | Regenerate responsive image derivatives — **run this after adding a screenshot** |
-| `npm run logo` | Regenerate the logo artwork in `brand/` for printers, suppliers and socials |
+| `npm run library` | Regenerate the Library catalogue from `library-src/components.txt` |
+| `npm run images` | Regenerate responsive image derivatives — run after adding a screenshot |
+| `npm run sitemap` | Regenerate `public/sitemap.xml` and `public/robots.txt` |
+| `npm run prices` | Fail the build if `api/checkout.js` disagrees with `src/data/offers.js` |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
-| `npm run sitemap` | Regenerate `public/sitemap.xml` |
-| `npm run brand:logo -- <slug>` | Rebuild a client brand's logo artwork from `public/goodwork/brands/<slug>/logo.config.mjs` |
-| `npm run brand:photos -- <slug>` | Rebuild a client brand's responsive WebP photography — **run this after adding a photo** |
-| `npm run brand:botanicals -- <slug>` | Regenerate a brand's drawn botanicals (olive sprigs, vines) |
+| `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js` and `api/stripe-webhook.js` in Node against a local webhook sink: 17 checks |
+| `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states |
+| `npm run brand:*`, `logo`, `merch`, `portrait` | Brand asset generators, unchanged from before the rebuild |
 
-## How it's put together
+## Where things live
 
 ```
 src/
-  lib/motion.js        Motion primitives — reveals, count-up, parallax, glow, magnetic hover
-  lib/site.js          SITE_URL, used for canonicals and structured data
-  styles.css           Brand system: colour, type, spacing, components
-  styles/motion.css    Everything that moves, plus the reduced-motion off switch
-  components/          Reusable pieces (Button, Shot, Reveal, Stamp, Seo, …)
-  pages/               One file per route
-  data/                Copy and content — services, case studies, console sections
+  data/offers.js        THE single source of truth: every price, inclusion,
+                        exclusion, CTA, managed plan, comparison row, licence
+                        principle and FAQ answer. Nothing else carries a figure.
+  data/nav.js           Header, dropdowns, footer, announcement
+  data/forms.js         The five enquiry/application schemas
+  data/library.js       Catalogue + templates + Studio systems, filters, related
+  data/libraryCatalogue.json   Generated from library-src/components.txt
+  data/systems.js       The Studio system pages
+  data/showcase.js      Real projects (built on data/caseStudies.js)
+  data/learn.js, docs.js, legal.js, founder.js
+  lib/                  format (GBP), schema (JSON-LD), analytics (provider-agnostic
+                        intent events), auth (session contract), forms (validation)
+  components/           Nav, Footer, EnquiryForm, BuyButton, Library*, OfferLadder,
+                        ComparisonTable, ManagedPlans, SystemJourney, HeroStack …
+  pages/                One file per route
+  styles.css            Design system: dark foundation, warm off-white, one accent
+  styles/motion.css     Everything that moves, and the reduced-motion off switch
+api/
+  enquiry.js            All forms → webhook and/or Resend (503 until configured)
+  checkout.js           Stripe Checkout Session (503 until configured)
+  stripe-webhook.js     Signature-verified; emits entitlement.granted
+  accept.js, console.js, console-image.js, broll.js   Unchanged client tooling
+library-src/            Component source of truth (moved out of public/)
+public/library/items/   One JSON per component, fetched lazily for previews
+public/goodwork/        Client brand deliverables and the engine (starter, motion)
+docs/BACKEND.md         What still has to be built for accounts and downloads
 ```
 
-Content lives in `src/data/`. Changing what the site *says* rarely means touching
-a component.
+## Routes
 
-### Motion
+`/`, `/library`, `/library/:slug`, `/studio`, `/systems`, `/systems/:slug`,
+`/services`, `/built-by-goodwork`, `/crm`, `/agency`, `/managed`, `/pricing`,
+`/showcase`, `/learn`, `/learn/category/:category`, `/learn/:slug`,
+`/docs/:slug`, `/login`, `/dashboard`, `/contact`, `/legal/:slug`, `/pitch`.
+Old routes `/work`, `/case-studies` and `/content-console` redirect.
 
-There's no animation dependency. `src/lib/motion.js` provides hooks built on
-IntersectionObserver and `requestAnimationFrame`; the animation itself is CSS,
-driven by `data-gw-reveal` / `data-gw-visible` attributes. Everything is
-transform and opacity only, so it stays on the compositor.
+## What is live, what needs credentials, what is deliberately configurable
 
-Two rules worth keeping:
+**Fully functional with no configuration**
 
-1. **Never clip the element you're observing.** An element clipped to zero area
-   reports an intersection ratio of 0, so it can never be revealed — it hides
-   itself permanently. Clip an inner wrapper instead (see `.gw-shot__frame`).
-2. **Everything must survive `prefers-reduced-motion`.** The block at the bottom
-   of `styles/motion.css` disables animation; check that content is still
-   visible and usable with it on, not just still.
+- Every public page, the Library with live sandboxed previews, filters and
+  search, the pricing comparison, the offer pages, showcase, learn, docs,
+  legal drafts, 404, error boundary, mobile navigation and dropdowns.
+- Structured data (Organization, WebSite, Product/Service + Offer, FAQPage,
+  BreadcrumbList, Article, ItemList), canonical URLs, Open Graph, sitemap,
+  robots, security headers (`vercel.json` and `public/_headers`).
+- Analytics intent events (`page_view`, `library_preview`, `library_detail`,
+  `library_filter`, `pricing_view`, `checkout_start`, `checkout_unavailable`,
+  `service_enquiry_start/submit`, `agency_application_submit`,
+  `contact_submit`, `access_interest`) pushed to `window.dataLayer`, to
+  `window.gwAnalytics.track` if defined, and as a `gw:track` DOM event. No
+  provider is loaded until one is approved.
 
-### Images
+**Works once credentials are set (see `.env.example`)**
 
-Source screenshots go in `public/case-studies/` or `public/console/` at full
-resolution. `npm run images` generates AVIF and WebP at four widths into
-`public/derived/` and writes `src/data/imageManifest.json`, which the `<Shot>`
-component reads for `srcset` and intrinsic dimensions.
+- Enquiry and application forms: `ENQUIRY_WEBHOOK_URL` and/or
+  `RESEND_API_KEY` + `ENQUIRY_TO` + `ENQUIRY_FROM`. Until then the endpoint
+  returns 503 and every form shows an honest error with a mailto carrying the
+  whole submission. Tested: the crawler drives the contact form into that
+  state and checks the message.
+- Direct purchase of Library and Studio: `STRIPE_SECRET_KEY`,
+  `STRIPE_PRICE_LIBRARY`, `STRIPE_PRICE_STUDIO`, `STRIPE_WEBHOOK_SECRET`, and
+  a Stripe webhook endpoint pointed at `/api/stripe-webhook`. Until then buy
+  buttons show "checkout isn't switched on yet" and take an email. The
+  checkout call has not been exercised against a live Stripe account in this
+  repository; the webhook's signature verification is Stripe's documented
+  scheme implemented with Web Crypto.
+- The Content Console demo pages under `/goodwork/brands/` and the live
+  B-roll panel: `DEEPSEEK_API_KEY`, `HIGGSFIELD_API_KEY`, `HF_CREDENTIALS`.
 
-Always render screenshots through `<Shot>` — that's what keeps a phone pulling
-~15kB per image instead of the 2160px original, and what stops the page
-jumping around as images arrive.
+**Deliberately not built yet, and said so on the site**
 
-Derivatives are committed so deploys don't depend on a working `sharp` install.
-The first generation takes a few minutes; after that it only touches images
-that changed.
+- Customer accounts, sign-in, the protected dashboard's downloads and signed
+  delivery links. `src/lib/auth.js` is the contract; `docs/BACKEND.md` is the
+  work list and data model. `/login` explains the situation and takes an
+  email; `/dashboard` redirects to sign-in.
+- VAT wording. Prices are shown without any VAT statement until the business
+  confirms its treatment.
+- Legal wording. Every legal page is a draft written to the commercial
+  principles in `data/offers.js`, marked for solicitor review on the page and
+  set `noindex` while marked.
 
-### Metadata
+## Things the owner should decide
 
-`<Seo>` renders per-page title, description, canonical, Open Graph, Twitter and
-JSON-LD. React 19 hoists those into `<head>` on its own, so there's no helmet
-library.
+1. **Library originality review.** The catalogue names mirror well-known
+   open-source UI libraries. The snippets are vanilla implementations kept
+   from the previous repository, not copied React source, but the brief asks
+   that released assets be original or correctly licensed. Review before the
+   paid release.
+2. **Preview exposure.** Live previews necessarily send each snippet to the
+   browser (see `docs/BACKEND.md`). Acceptable for a UI gallery; if not
+   acceptable, pre-render previews at build time.
+3. **The motion runtime** (`public/goodwork/motion/`) and the paste-and-go
+   starter (`public/goodwork/index.html`) remain public because the docs and
+   the starter template link to them. Decide whether they stay free.
+4. **Planned templates** are labelled "Coming soon" in the Library. Replace
+   them with real builds or remove them before launch.
+5. **Founder video.** Set `video` in `src/data/founder.js` and the section
+   switches from the photograph to the film.
 
-`index.html` carries a set of site-level fallbacks marked `data-gw-default`, for
-scrapers that don't run JavaScript. `<Seo>` removes them once it mounts so
-JS-capable crawlers don't see two of everything.
+## Content
 
-The site URL is in `src/lib/site.js` and can be overridden at build time with
-`VITE_SITE_URL`. If the domain changes, update it there and in
-`public/robots.txt`, then re-run `npm run sitemap` and `npm run og`.
+Change what the site *says* in `src/data/`. A price changes in exactly one
+place (`offers.js`) and the homepage, offer pages, pricing table, FAQ, pitch
+deck, structured data and the checkout guard all follow; `npm run prices`
+fails the build if the Stripe map drifts.
 
-### Higgsfield — live B-roll
+The Library catalogue is generated. Add a component to
+`library-src/components.txt` and run `npm run library`; map it to a browsing
+category in `scripts/build-library-catalogue.mjs` if the default mapping is
+wrong.
 
-`/content-console` can generate a real clip on demand, using the same brand
-style file the page describes. It's the one claim on that page we can
-demonstrate rather than assert.
+## Motion and accessibility
 
-**It is off until you deploy it.** `BrollStudio` asks `/api/broll` for the
-preset list on mount; if that 404s (function not deployed) or 503s (no
-credentials) it renders nothing, and the page is exactly as it is today.
+No animation dependency. `src/lib/motion.js` provides `useInView` (with a
+safety net so content can never stay hidden if an observer callback is
+delayed), `usePrefersReducedMotion` and `useScrollDirection`. All animation
+is transform and opacity, and the block at the bottom of `styles/motion.css`
+switches it off under `prefers-reduced-motion`. Every page has a skip link,
+visible focus states, labelled controls, accessible errors and native
+`<details>` FAQs.
 
-To turn it on:
+## Hosting
 
-1. Set `HF_CREDENTIALS` (`KEY_ID:KEY_SECRET`, from the Higgsfield dashboard)
-   and `SITE_URL` in the hosting platform's environment settings. **Never** use
-   a `VITE_` prefix — Vite inlines those into the public bundle.
-2. Deploy `api/broll.js`. It's a Web-standard handler (`Request` → `Response`),
-   so it runs as-is on Netlify Functions v2, Cloudflare Workers and Vercel Edge.
-   For a Vercel Node function, wrap it:
-   ```js
-   import handler from "./broll.js";
-   export default async (req, res) => {
-     const r = await handler(new Request(`https://${req.headers.host}${req.url}`, {
-       method: req.method,
-       headers: req.headers,
-       body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
-     }));
-     res.status(r.status).json(await r.json());
-   };
-   ```
-3. Replace the `seedImage` on each preset in `api/broll.js` with real client
-   stills. They currently point at site screenshots, which animate badly —
-   they're there so the wiring can be tested, not so it looks good.
+Single-page app on `BrowserRouter`; the SPA fallback is required.
+`vercel.json` rewrites everything except `/api/`, `/goodwork/` and
+`/library/items/` to `index.html` and sets the security headers.
+`public/_redirects` and `public/_headers` do the same on Netlify/Cloudflare.
+API functions are Web-standard `Request -> Response` handlers declared for
+Vercel's edge runtime.
 
-Two things worth knowing before it goes live:
-
-- **Every click costs money.** A public endpoint that generates video is a free
-  video generator for anyone who finds it, billed to you. The function only
-  accepts a preset id — never arbitrary prompt text — and throttles per IP, but
-  that throttle is per-instance memory and won't survive cold starts or span
-  concurrent instances. **Set a hard spend cap on the Higgsfield account.** That
-  is the control that actually protects the bill; the code is defence in depth.
-- Higgsfield fetches the seed image itself, so it needs a public absolute URL.
-  The panel cannot work against localhost.
-
-Prompts live server-side in `api/broll.js`, including `BRAND_STYLE`, which is
-prepended to every preset. Retune that constant and every clip changes with it.
-
-### Hosting — the SPA fallback is not optional
-
-This is a single-page app on `BrowserRouter`, so `/services` is a route the
-JavaScript invents, not a file on disk. The build produces exactly one HTML
-file. Clicking around works because React Router handles it in the browser; a
-hard refresh or a pasted link asks the *host* for `/services`, finds nothing,
-and returns the host's own 404. Every page except `/` breaks, and only on
-refresh — which is why it survives casual testing and why `vite preview` never
-shows it (it has the fallback built in).
-
-Two files fix it, and both are committed:
-
-- `vercel.json` — rewrites everything except `/api/...` to `/index.html`.
-- `public/_redirects` — the Netlify/Cloudflare Pages equivalent, so moving
-  host doesn't silently reintroduce it.
-
-If you move to a host that uses neither, configure the same fallback there
-before shipping.
-
-The API functions are Web-standard `Request -> Response` handlers, which is
-Vercel's Edge runtime rather than its Node one, so both declare
-`export const config = { runtime: "edge" }`. Netlify Functions v2 and
-Cloudflare Workers ignore that and take them as they are.
-
-### The domain
-
-`SITE_URL` (`src/lib/site.js`) is what canonical tags, the sitemap, `robots.txt`,
-the OG image URL and the schema are all built from. It defaults to
-`https://goodwork.agency`. **Set `VITE_SITE_URL` in the host's environment
-settings to whatever the site actually serves from**, then re-run
-`npm run sitemap` and `npm run og` and commit the result — a canonical tag
-pointing at a domain you don't serve tells Google the real page lives
-somewhere else.
-
-`robots.txt` is generated by `scripts/build-sitemap.mjs` rather than hand-kept,
-so its `Sitemap:` line cannot drift from that value.
-
-### The scope builder — /services
-
-`src/components/ScopeBuilder.jsx` is the interactive route through the
-services: six questions, then a recommendation the client can edit, then their
-details, then a review of the whole thing, then it sends.
-
-The order of steps lives in one `FLOW` array at the top of the component —
-progress, next, back and the review screen's "change this" links are all
-derived from it, so adding or reordering a step is a single edit.
-
-Three files, deliberately separate:
-
-- `src/data/scope.js` — the questions, and the rules that map answers to
-  services. **This is the file to edit** when the offer or the pitch changes;
-  it is copy and commercial judgement, not code. Every `services: [...]` entry
-  is a real id from `data/services.js`, and `validateScope()` proves it — a
-  typo logs an error in dev rather than silently creating a service that can
-  never be recommended.
-- `src/lib/enquiry.js` — turns a finished scope into the plain-text summary
-  that lands in the inbox, and builds the mailto fallback.
-- `api/enquiry.js` — delivery.
-
-**It sends nothing until you configure it.** Set at least one of:
-
-- `ENQUIRY_WEBHOOK_URL` — POSTs the enquiry as JSON. Use this for a CRM
-  (GoHighLevel, Zapier, Make, n8n, your own endpoint). The body is flat at the
-  top level — `name`, `firstName`, `lastName`, `email`, `phone`, `companyName`,
-  `message`, `tags`, `services`, `serviceIds`, `serviceCount` — so a CRM can
-  map it onto a contact record without a transform step. `tags` arrives ready
-  to drop on the record (`website-enquiry`, `scope-builder`, and one
-  `service:<id>` per thing they picked). The nested `contact`, `answers` and
-  the rendered `text` summary are all there too. `ENQUIRY_WEBHOOK_TOKEN` is
-  optional and sent as both `Authorization: Bearer` and `X-Webhook-Token`.
-- `RESEND_API_KEY` with `ENQUIRY_TO` and `ENQUIRY_FROM` — sends it as email.
-  `ENQUIRY_FROM` must be on a domain verified in Resend.
-
-Set both and it does both, and only fails if both fail — a working inbox
-shouldn't be undone by a CRM being down.
-
-With neither set the endpoint returns 503, and the builder shows the client an
-error plus an email link carrying their whole scope, so the lead survives. This
-is deliberate: returning 200 from an unconfigured endpoint would show someone
-"thanks, we'll be in touch" while the enquiry went nowhere. Never make that
-endpoint optimistic.
-
-Deploy `api/enquiry.js` the same way as `api/broll.js` — it is the same
-Web-standard `Request -> Response` handler.
-
-### Contact form
-
-`src/pages/Contact.jsx` validates and then **does not submit anywhere** — it
-just shows the success state. It predates the scope builder and still needs
-wiring; the quickest fix is to point its `handleSubmit` at `/api/enquiry`,
-which already accepts a name, email, phone and message.
-
-### Client brands — `public/goodwork/brands/`
-
-Each client brand built on the engine gets a folder here, served statically
-at `/goodwork/brands/<slug>/` (the `/goodwork/` path is already excluded from
-the SPA rewrite). The folder is the handover: a `brand.css` in the engine's
-token vocabulary, a `BRAND.md` and `guidelines.html` that say the same thing
-as a document and as a page, a prototype `index.html`, the logo artwork in
-`logo/` and the typeface in `fonts/`.
-
-The logo artwork is generated, not drawn: `logo.config.mjs` describes the
-marks (which words, in which weights, on which lines) and the colour
-applications, and `npm run brand:logo -- <slug>` turns every glyph into
-outlined paths with opentype.js and rasterises PNGs from those same paths.
-The SVGs open anywhere with nothing installed; the PNGs are computed edges,
-never upscaled ones. Re-run it after any change to the config, and commit
-the output — like the image derivatives, the deploy must not depend on it.
-
-Photography works the same way: drop a file in `photos/`, run
-`npm run brand:photos -- <slug>`, and the pages pick up the WebP copies
-through `srcset`. Both outputs are committed, for the same reason the image
-derivatives are — a deploy must not depend on a working `sharp` install.
-
-Current brands: `beauty-heaven-hub`.
-
-### Favicon
-
-`public/favicon.svg` is the GOOD WORK. mark. The previous one, inherited from
-the Vite starter, is kept at `public/favicon-legacy.svg` if it's ever wanted
-back.
+`SITE_URL` (`src/lib/site.js`, overridable with `VITE_SITE_URL`) drives
+canonicals, the sitemap, robots and the share image. Change the domain, set
+the variable, re-run `npm run sitemap` and `npm run og`, commit the result.

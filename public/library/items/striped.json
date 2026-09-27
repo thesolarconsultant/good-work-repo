@@ -1,0 +1,1 @@
+{"id":"striped","code":"<style>.strp{width:240px;height:130px;border-radius:14px;border:1px solid var(--line,#262C34);\n background:repeating-linear-gradient(45deg,#0b0e13 0 14px,rgba(51,102,255,.14) 14px 28px);background-size:40px 40px;animation:strm 3s linear infinite}\n@keyframes strm{to{background-position:40px 0}}</style>\n<div class=\"strp\"></div>"}

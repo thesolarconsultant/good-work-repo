@@ -1,0 +1,1 @@
+{"id":"comictext","code":"<style>.cmc{font:900 46px Inter,sans-serif;color:var(--accent,#3366FF);-webkit-text-stroke:2px #0B0E13;\n text-shadow:4px 4px 0 rgba(0,0,0,.45);animation:cmc 1.2s ease-in-out infinite}\n@keyframes cmc{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.06)}}</style>\n<div class=\"cmc\">POW!</div>"}

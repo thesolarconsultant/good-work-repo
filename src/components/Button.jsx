@@ -1,47 +1,39 @@
 import { Link } from "react-router-dom";
-import { useMagnetic, usePrefersReducedMotion } from "../lib/motion";
 
 /**
- * The one button in the system. Renders as a router Link, a plain anchor or a
- * <button> depending on what it's given, so every call-to-action gets the same
- * magnetic lean and gradient sheen without duplicating markup.
+ * The one button. Renders as a router Link, a plain anchor or a <button>
+ * depending on what it's given, so every call-to-action shares one style.
  *
- * variant: solid | outline | light (light = white button for dark sections)
+ * variant: primary | secondary | paper | ghost
+ * size:    sm | md | lg
  */
 export default function Button({
   children,
   to,
   href,
-  variant = "solid",
-  className = "",
+  variant = "primary",
+  size = "md",
   arrow = false,
+  block = false,
+  className = "",
+  type = "button",
   ...rest
 }) {
-  const reduced = usePrefersReducedMotion();
-  const { ref, onPointerMove, onPointerLeave } = useMagnetic({ enabled: !reduced });
-
   const classes = [
-    "gw-button",
-    variant === "outline" && "gw-button--outline",
-    variant === "light" && "gw-button--light",
+    "gw-btn",
+    `gw-btn--${variant}`,
+    size !== "md" && `gw-btn--${size}`,
+    block && "gw-btn--block",
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
-  const props = {
-    ref,
-    className: classes,
-    onPointerMove,
-    onPointerLeave,
-    ...rest,
-  };
-
   const content = (
     <>
-      <span className="gw-button__label">{children}</span>
+      <span>{children}</span>
       {arrow && (
-        <span className="gw-button__arrow" aria-hidden="true">
+        <span className="gw-btn__arrow" aria-hidden="true">
           →
         </span>
       )}
@@ -50,17 +42,27 @@ export default function Button({
 
   if (to) {
     return (
-      <Link to={to} {...props}>
+      <Link to={to} className={classes} {...rest}>
         {content}
       </Link>
     );
   }
   if (href) {
+    const external = /^https?:\/\//.test(href);
     return (
-      <a href={href} {...props}>
+      <a
+        href={href}
+        className={classes}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...rest}
+      >
         {content}
       </a>
     );
   }
-  return <button type="button" {...props}>{content}</button>;
+  return (
+    <button type={type} className={classes} {...rest}>
+      {content}
+    </button>
+  );
 }

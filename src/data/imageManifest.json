@@ -258,5 +258,15 @@
     ],
     "base": "/derived/console/tsc-console-pipeline",
     "flat": "/derived/console/tsc-console-pipeline-960.webp"
+  },
+  "/founder/jordan.jpg": {
+    "width": 1206,
+    "height": 1490,
+    "widths": [
+      640,
+      960
+    ],
+    "base": "/derived/founder/jordan",
+    "flat": "/derived/founder/jordan-960.webp"
   }
 }

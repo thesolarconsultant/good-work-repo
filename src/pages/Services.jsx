@@ -1,136 +1,123 @@
-import Button from "../components/Button";
-import Display from "../components/Display";
-import Footer from "../components/Footer";
-import Headline from "../components/Headline";
-import Reveal from "../components/Reveal";
-import ShaderField from "../components/ShaderField";
+import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
-import { SITE_URL } from "../lib/site";
-import ScopeBuilder from "../components/ScopeBuilder";
-import Stamp from "../components/Stamp";
-import { PROCESS } from "../data/process";
-import { SERVICES } from "../data/services";
+import PageHeader from "../components/PageHeader";
+import SectionHead from "../components/SectionHead";
+import Reveal from "../components/Reveal";
+import Button from "../components/Button";
+import Price from "../components/Price";
+import ManagedPlans from "../components/ManagedPlans";
+import { OFFER, COMBINED } from "../data/offers";
+import { breadcrumbs } from "../lib/schema";
+import { gbp } from "../lib/format";
 
-const CONSOLE_MODULES = SERVICES.filter((s) => s.category === "Content Console" && s.id !== "console");
-
-const SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "OfferCatalog",
-  name: "GOOD WORK. services",
-  url: `${SITE_URL}/services`,
-  provider: { "@id": `${SITE_URL}/#organisation` },
-  itemListElement: SERVICES.map((s) => ({
-    "@type": "Offer",
-    itemOffered: { "@type": "Service", name: s.name, description: s.note, category: s.category },
-  })),
-};
+const SERVICES = [OFFER.built, OFFER.crm, OFFER.agency];
 
 export default function Services() {
+  const crumbs = [{ label: "Home", to: "/" }, { label: "Services" }];
   return (
     <>
-      <Seo
-        title="Services"
-        description="Brand identity, hand-built websites, CRM, booking, quoting, automation and the Content Console. Pick what you need and we'll scope it at a fixed price."
-        schema={SCHEMA}
-      />
+      <Seo title="Services — implementation, CRM, agency building and managed infrastructure" description={`Built by Goodwork (${gbp(OFFER.built.price)}), the Embedded CRM (${gbp(OFFER.crm.price)}), the Agency programme (${gbp(OFFER.agency.price)}) and optional managed infrastructure from ${gbp(28)} per month. Scoped first, then built.`} schema={breadcrumbs(crumbs)} />
 
-      <header className="gw-section--tight gw-hero" style={{ paddingTop: "clamp(2.5rem,6vw,4rem)" }}>
-        <div className="gw-aurora" aria-hidden="true">
-          <span /><span /><span /><span />
+      <PageHeader crumbs={crumbs} eyebrow="Goodwork Services · we build it with you" lines={["I want the outcome,", "not the assembly."]} lead="Give us the business requirements. We customise, connect and launch the system for you, with the scope agreed first and the running costs kept visible.">
+        <div className="gw-actions">
+          <Button to="/built-by-goodwork" arrow>
+            Start with Built by Goodwork
+          </Button>
+          <Button to="/pricing" variant="secondary">
+            Compare every option
+          </Button>
         </div>
-        <ShaderField />
+      </PageHeader>
+
+      <section className="gw-section--tight" aria-labelledby="services-title">
         <div className="gw-container">
-          <p className="gw-label gw-pulse">Services</p>
-          <Headline
-            onMount
-            className="gw-h1 gw-stack-md"
-            lines={["Brand. Websites.", <>Systems<span className="gw-dot" /></>]}
-          />
-          <Reveal variant="rise" delay={240}>
-            <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-md">
-              Everything a business needs to look and work better — built properly, and kept
-              running after launch. Take one thing or the lot.
-            </p>
-          </Reveal>
-        </div>
-      </header>
-
-      <hr className="gw-rule--gradient" style={{ border: 0 }} />
-
-      <ScopeBuilder />
-
-      <section className="gw-dark">
-        {/* The rule sits outside the padded block so it lands on the edge. */}
-        <div className="gw-block__rule" />
-        <div className="gw-block">
-          <div className="gw-container">
-          <Reveal variant="rise">
-            <div className="gw-approved" style={{ marginBottom: 28 }}>
-              <Stamp size={120} />
-              <div>
-                <p className="gw-label">A closer look</p>
-                <Display>The Content<br />Console</Display>
-              </div>
-            </div>
-            <p className="gw-body-large gw-max-copy" style={{ marginBottom: 16 }}>
-              One dashboard that keeps a business looking active, without anyone sitting down to
-              write it.
-            </p>
-            <p className="gw-body gw-max-copy" style={{ marginBottom: 8 }}>
-              Most small businesses go quiet online not because they don't see the point, but
-              because writing posts comes last after a full day on site. The Console does the
-              drafting from what you've already told us about the business — you review it, change
-              what you want, and schedule it. Ten minutes a week instead of an agency retainer.
-            </p>
-          </Reveal>
-          <ul className="gw-features gw-features--detail">
-            {CONSOLE_MODULES.map((m, i) => (
-              <Reveal key={m.id} variant="rise" delay={Math.min(i * 70, 280)} asChild>
-                <li>
-                  <strong>{m.name}</strong>
-                  <span>{m.note}</span>
-                </li>
+          <h2 className="gw-sr-only" id="services-title">
+            The services
+          </h2>
+          <div className="gw-grid gw-grid--3">
+            {SERVICES.map((o, i) => (
+              <Reveal key={o.id} variant="rise" delay={i * 70} asChild>
+                <article className="gw-offer" aria-labelledby={`svc-${o.id}`}>
+                  <div className="gw-offer__top">
+                    <span className="gw-offer__who">{o.who}</span>
+                    {o.addon && <span className="gw-badge gw-badge--muted">Add-on or standalone</span>}
+                  </div>
+                  <div>
+                    <h3 className="gw-offer__name" id={`svc-${o.id}`}>
+                      {o.name}
+                    </h3>
+                    <div className="gw-mt-2">
+                      <Price amount={o.price} billing="one-time" />
+                    </div>
+                    {o.instalments && (
+                      <p className="gw-offer__note gw-mt-1">
+                        or {o.instalments.count} payments of {gbp(o.instalments.amount)}, {o.instalments.note}
+                      </p>
+                    )}
+                  </div>
+                  <p className="gw-offer__copy">{o.outcome}</p>
+                  <ul className="gw-list gw-list--tight">
+                    {o.includes.slice(0, 4).map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                  <div className="gw-offer__foot">
+                    <Button to={o.primaryCta.to} variant={i === 0 ? "primary" : "secondary"} arrow>
+                      {o.primaryCta.label}
+                    </Button>
+                    <Link to={o.route} className="gw-small gw-link">
+                      Scope, inclusions and exclusions
+                    </Link>
+                  </div>
+                </article>
               </Reveal>
             ))}
-          </ul>
-          <Reveal variant="rise">
-            <div className="gw-actions gw-stack-lg">
-              <Button to="/content-console" variant="light" arrow>
-                See the full Content Console
+          </div>
+          <Reveal variant="rise" className="gw-mt-3">
+            <div className="gw-card gw-card--flat" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
+              <p className="gw-body">
+                <span className="gw-strong">{COMBINED.label}:</span> Built by Goodwork {gbp(OFFER.built.price)} + Embedded CRM {gbp(OFFER.crm.price)} ={" "}
+                <span className="gw-mono gw-strong">{gbp(COMBINED.total)}</span> {COMBINED.note}.
+              </p>
+              <Button to="/built-by-goodwork#enquire" variant="secondary" size="sm" arrow>
+                Start Your Build
               </Button>
             </div>
           </Reveal>
         </div>
-        </div>
       </section>
 
-      <section className="gw-section">
+      <section className="gw-section gw-light" aria-labelledby="how-title">
         <div className="gw-container">
-          <Reveal variant="rise">
-            <p className="gw-label">How it runs</p>
-            <h2 className="gw-display gw-stack-sm">What actually<br />happens</h2>
-            <p className="gw-body gw-max-copy gw-text-muted gw-stack-sm">
-              Four steps, no agency theatre. You'll know the scope and the price before we start
-              building.
-            </p>
-          </Reveal>
-          <div className="gw-stack-lg">
-            {PROCESS.map((p, i) => (
-              <Reveal key={p.mark} variant="left" delay={i * 90} asChild>
-                <div className="gw-addon">
-                  <div className="gw-addon-mark">{p.mark}</div>
-                  <div className="gw-addon-body">
-                    <strong>{p.title}</strong>
-                    <span>{p.desc}</span>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+          <div className="gw-split">
+            <SectionHead eyebrow="How every service runs" title={<span id="how-title">Scoped in writing before anything starts.</span>} lead="Page limits, integrations, agent journeys and revision rounds are agreed first. Third-party and operational charges are never inside the fee, so there is nothing to discover later." />
+            <Reveal variant="rise" delay={100}>
+              <ul className="gw-steps">
+                <li><p className="gw-body"><span className="gw-strong">Enquire.</span> A structured form for each service, so the first reply is useful.</p></li>
+                <li><p className="gw-body"><span className="gw-strong">Scope.</span> A written proposal with the fixed fee, the boundaries and the revision allowance.</p></li>
+                <li><p className="gw-body"><span className="gw-strong">Build.</span> The Goodwork system, customised and connected for your business.</p></li>
+                <li><p className="gw-body"><span className="gw-strong">Launch and hand over.</span> You own the build. Running costs are yours or on a managed plan.</p></li>
+              </ul>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      <Footer statement="Make your business look as good as it actually is" />
+      <section className="gw-section" aria-labelledby="managed-title">
+        <div className="gw-container">
+          <div className="gw-pagehead__row">
+            <SectionHead eyebrow="Managed infrastructure · optional" title={<span id="managed-title">Own the build. Choose who runs it.</span>} />
+            <Reveal variant="rise" delay={100}>
+              <Button to="/managed" variant="secondary" arrow>
+                Managed plans in detail
+              </Button>
+            </Reveal>
+          </div>
+          <div className="gw-mt-4">
+            <ManagedPlans cta={false} />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

@@ -29,3 +29,7 @@ dist-ssr
 *.sw?
 
 preview/
+
+# Standalone gallery build, generated from library-src/components.txt; not deployed
+library-src/library.html
+.test-shots/

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run images && npm run sitemap",
+    "prebuild": "npm run library && npm run images && npm run sitemap && npm run prices",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
@@ -18,7 +18,13 @@
     "merch": "node scripts/build-merch.mjs",
     "brand:logo": "node scripts/build-brand-logo.mjs",
     "brand:photos": "node scripts/build-brand-photos.mjs",
-    "brand:botanicals": "node scripts/build-brand-botanicals.mjs"
+    "brand:botanicals": "node scripts/build-brand-botanicals.mjs",
+    "library": "node scripts/build-library-catalogue.mjs",
+    "prices": "node scripts/check-prices.mjs",
+    "check": "npm run lint && npm run build",
+    "test:routes": "node scripts/test-routes.mjs",
+    "test:api": "node scripts/test-api.mjs",
+    "test": "npm run test:api && npm run test:routes"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",
