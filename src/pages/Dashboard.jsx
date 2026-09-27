@@ -36,7 +36,7 @@ export default function Dashboard() {
       <Seo title="Your dashboard" description="Your Goodwork products and downloads." noindex />
       <PageHeader
         eyebrow="Dashboard"
-        lines={[`Hello${session.user?.name ? `, ${session.user.name}` : ""}.`]}
+        lines={[`Hello${session.user?.name && !session.user.name.includes("@") ? `, ${session.user.name}` : ""}.`]}
         lead="Everything your access covers. Each download is authorised on the server when you click it, and logged for security and support."
       />
       <section className="gw-section--tight">
