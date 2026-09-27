@@ -1,11 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-// Self-hosted Poppins — bundled by Vite so it always loads, even with no
-// network access to Google Fonts.
-//
-// Latin subsets only. The full imports also pulled in Devanagari, which is
-// ~195kB of font this site has no glyphs for.
+// Self-hosted Poppins (OFL), bundled by Vite so it always loads. Latin subsets
+// only. Weights 400/500/600/700/800 — the whole site uses these five.
 import "@fontsource/poppins/latin-400.css";
 import "@fontsource/poppins/latin-500.css";
 import "@fontsource/poppins/latin-600.css";

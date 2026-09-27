@@ -1,0 +1,1 @@
+{"id":"lineshadow","code":"<style>.lsh{font:900 44px Inter,sans-serif;color:var(--ink,#fff);animation:lsh 2s ease-in-out infinite}\n@keyframes lsh{0%,100%{text-shadow:3px 3px 0 var(--accent,#3366FF)}50%{text-shadow:8px 8px 0 var(--accent,#3366FF)}}</style>\n<div class=\"lsh\">GOOD WORK.</div>"}

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /pitch
+Disallow: /api/
 
 Sitemap: https://goodwork.agency/sitemap.xml

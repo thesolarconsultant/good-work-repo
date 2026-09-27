@@ -1,0 +1,232 @@
+// Crawls the built site with headless Chromium and checks every route at
+// three breakpoints: no console errors, no horizontal overflow, no broken
+// internal links, a real <title>. Screenshots land in the directory named by
+// GW_SHOTS (default: .test-shots/, gitignored).
+//
+//   npm run build && npm run test:routes
+//
+// Serves dist/ itself with the same SPA fallback the hosts use, and answers
+// /api/* with 503 so forms exercise their honest "not configured" path.
+
+import { createServer } from "node:http";
+import { readFileSync, existsSync, statSync, mkdirSync } from "node:fs";
+import { join, dirname, extname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+let chromium;
+try {
+  ({ chromium } = require("playwright"));
+} catch {
+  ({ chromium } = require("/opt/node22/lib/node_modules/playwright"));
+}
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const dist = join(root, "dist");
+const shots = process.env.GW_SHOTS || join(root, ".test-shots");
+mkdirSync(shots, { recursive: true });
+
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".avif": "image/avif", ".woff2": "font/woff2", ".woff": "font/woff", ".txt": "text/plain", ".xml": "application/xml", ".webm": "video/webm" };
+
+const server = createServer((req, res) => {
+  const url = new URL(req.url, "http://localhost");
+  if (url.pathname.startsWith("/api/")) {
+    res.writeHead(503, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Not configured in the test server." }));
+    return;
+  }
+  let file = join(dist, decodeURIComponent(url.pathname));
+  if (!existsSync(file) || statSync(file).isDirectory()) {
+    const index = join(file, "index.html");
+    file = existsSync(index) ? index : join(dist, "index.html");
+  }
+  res.writeHead(200, { "Content-Type": MIME[extname(file)] || "application/octet-stream" });
+  res.end(readFileSync(file));
+});
+
+const ROUTES = [
+  "/", "/library", "/library?category=heroes", "/library?type=template", "/library/shimmer", "/library/pricingtiers", "/library/paste-and-go-starter", "/library/content-console",
+  "/studio", "/systems", "/systems/content-console", "/systems/whatsapp-bot", "/systems/voice-agent", "/systems/brand-guide", "/systems/automations",
+  "/services", "/built-by-goodwork", "/crm", "/agency", "/managed", "/pricing", "/showcase",
+  "/learn", "/learn/category/content-systems", "/learn/build-a-site-from-the-engine",
+  "/docs", "/docs/getting-started", "/docs/brand-tokens", "/login", "/dashboard", "/contact", "/contact?topic=crm",
+  "/legal/licence", "/legal/terms", "/legal/refunds", "/legal/privacy", "/legal/cookies", "/legal/acceptable-use",
+  "/work", "/case-studies", "/content-console", "/pitch", "/this-page-does-not-exist",
+];
+const VIEWPORTS = [
+  { name: "mobile", width: 390, height: 844 },
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "desktop", width: 1440, height: 900 },
+];
+
+await new Promise((r) => server.listen(0, r));
+const base = `http://localhost:${server.address().port}`;
+console.log(`serving dist at ${base}`);
+
+const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined });
+const problems = [];
+const seenLinks = new Set();
+
+for (const vp of VIEWPORTS) {
+  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
+
+  for (const route of ROUTES) {
+    errors.length = 0;
+    await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+    // Walk the page so every scroll-reveal has entered the viewport once, the
+    // way a reader would, then return to the top for the capture.
+    if (route !== "/pitch") {
+      await page.evaluate(async () => {
+        // The site scrolls smoothly; the walk must not, or the observers see
+        // an animation in progress rather than each position.
+        document.documentElement.style.scrollBehavior = "auto";
+        const step = Math.max(300, Math.floor(window.innerHeight * 0.8));
+        for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+          window.scrollTo({ top: y, behavior: "instant" });
+          await new Promise((r) => setTimeout(r, 60));
+        }
+        window.scrollTo({ top: 0, behavior: "instant" });
+        await new Promise((r) => setTimeout(r, 100));
+        document.documentElement.style.scrollBehavior = "";
+      });
+      await page.waitForFunction(() => window.scrollY === 0);
+    }
+    await page.waitForTimeout(450);
+    const title = await page.title();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const links = await page.$$eval('a[href^="/"]', (as) => as.map((a) => a.getAttribute("href")));
+    for (const l of links) seenLinks.add(l.split("#")[0].split("?")[0]);
+    const label = `${vp.name} ${route}`;
+    if (!title) problems.push(`${label}: empty <title>`);
+    if (route === "/this-page-does-not-exist" ? !/not found/i.test(title) : /not found/i.test(title)) problems.push(`${label}: unexpected title "${title}"`);
+    if (overflow > 1) problems.push(`${label}: horizontal overflow ${overflow}px`);
+    // Preview iframes with sandboxed scripts can log their own noise; only our
+    // document's errors count.
+    // Two known, harmless sources are excluded: the sandbox's TLS proxy
+    // rejecting Google Fonts inside the starter template's iframe (fine in
+    // production), and this test server's deliberate 503 for /api/*.
+    const own = errors.filter((e) => !/srcdoc|about:srcdoc|ERR_CERT_AUTHORITY_INVALID|fonts\.googleapis|status of 503/.test(e));
+    if (own.length) problems.push(`${label}: console errors: ${own.slice(0, 3).join(" | ")}`);
+    const safe = route.replace(/[^a-z0-9]+/gi, "_") || "home";
+    await page.screenshot({ path: join(shots, `${vp.name}-${safe}.png`), fullPage: route !== "/pitch" });
+    process.stdout.write(`${overflow > 1 || own.length ? "✗" : "✓"} ${label}  (${title.slice(0, 60)})\n`);
+  }
+
+  // Mobile drawer and a dropdown, exercised once each.
+  if (vp.name === "mobile") {
+    await page.goto(`${base}/`, { waitUntil: "networkidle" });
+    await page.click('button[aria-controls="gw-drawer"]');
+    await page.waitForSelector("#gw-drawer");
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: join(shots, "mobile-drawer.png") });
+    const drawerOnTop = await page.evaluate(() => {
+      const a = document.querySelector("#gw-drawer a");
+      const r = a.getBoundingClientRect();
+      return Boolean(document.elementFromPoint(r.left + 8, r.top + 8)?.closest("#gw-drawer"));
+    });
+    if (!drawerOnTop) problems.push("mobile drawer: page content paints above the drawer");
+    const drawerLinks = await page.$$eval("#gw-drawer a", (as) => as.length);
+    if (drawerLinks < 10) problems.push(`mobile drawer: only ${drawerLinks} links`);
+    await page.keyboard.press("Escape");
+    // Library filter sheet.
+    await page.goto(`${base}/library`, { waitUntil: "networkidle" });
+    await page.click("text=Filters");
+    await page.waitForSelector(".gw-sheet");
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: join(shots, "mobile-library-filters.png") });
+  }
+  if (vp.name === "desktop") {
+    await page.goto(`${base}/`, { waitUntil: "networkidle" });
+    await page.hover('button[aria-controls="gw-menu-Library"]');
+    await page.waitForSelector("#gw-menu-Library");
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: join(shots, "desktop-menu-products.png") });
+    const menuOnTop = await page.evaluate(() => {
+      const a = document.querySelector("#gw-menu-Library a");
+      const r = a.getBoundingClientRect();
+      return Boolean(document.elementFromPoint(r.left + 8, r.top + 8)?.closest("#gw-menu-Library"));
+    });
+    if (!menuOnTop) problems.push("products menu: page content paints above the dropdown");
+    // Keyboard: Escape closes the menu and returns focus to its button.
+    await page.keyboard.press("Escape");
+    const menuGone = await page.$("#gw-menu-Library");
+    if (menuGone) problems.push("products menu: Escape did not close it");
+    // A form's honest failure path against the 503 API.
+    await page.goto(`${base}/contact`, { waitUntil: "networkidle" });
+    await page.fill('input[name="name"]', "Test Person");
+    await page.fill('input[name="email"]', "test@example.com");
+    await page.selectOption('select[name="topic"]', "library");
+    await page.fill('textarea[name="message"]', "Checking the honest failure state.");
+    await page.click('button[type="submit"]');
+    await page.waitForSelector(".gw-alert", { timeout: 5000 });
+    const alertText = await page.$eval(".gw-alert", (el) => el.textContent);
+    if (!/didn't send/i.test(alertText)) problems.push(`contact form: unexpected alert "${alertText.slice(0, 80)}"`);
+    await page.screenshot({ path: join(shots, "desktop-contact-failed.png"), fullPage: true });
+    // Checkout unavailable state.
+    await page.goto(`${base}/library`, { waitUntil: "networkidle" });
+    await page.click("text=Get Library Access — £280 >> nth=-1");
+    await page.waitForSelector("text=Checkout not switched on yet", { timeout: 5000 });
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: join(shots, "desktop-checkout-unavailable.png") });
+    // Library filters change the URL and the grid.
+    await page.goto(`${base}/library`, { waitUntil: "networkidle" });
+    await page.click("text=Heroes >> nth=0");
+    await page.waitForTimeout(400);
+    if (!page.url().includes("category=heroes")) problems.push("library filters: category chip did not update the URL");
+    const heroCount = await page.$$eval(".gw-lib-card", (els) => els.length);
+    if (heroCount !== 9) problems.push(`library filters: expected 9 hero cards, saw ${heroCount}`);
+    // Search combines with the category: "pricing" inside Heroes is the empty
+    // state, and clearing brings the results back.
+    await page.fill('input[type="search"]', "pricing");
+    await page.waitForTimeout(600);
+    const emptyState = await page.$("text=Nothing matches those filters.");
+    if (!emptyState) problems.push("library search: expected the empty state for 'pricing' within Heroes");
+    await page.click("text=Clear filters");
+    await page.waitForTimeout(500);
+    const restored = await page.$$eval(".gw-lib-card", (els) => els.length);
+    if (restored < 20) problems.push(`library search: clearing filters left only ${restored} cards`);
+    await page.fill('input[type="search"]', "pricing");
+    await page.waitForTimeout(600);
+    const searchCount = await page.$$eval(".gw-lib-card", (els) => els.length);
+    if (searchCount < 3) problems.push(`library search: expected pricing results across the whole library, saw ${searchCount}`);
+    // Live previews actually mount sandboxed iframes with the snippet inside.
+    await page.goto(`${base}/library?category=buttons`, { waitUntil: "networkidle" });
+    await page.waitForTimeout(1200);
+    const frames = await page.$$eval(".gw-lib-card__preview iframe", (els) => els.map((f) => ({ sandbox: f.getAttribute("sandbox"), hasDoc: (f.getAttribute("srcdoc") || "").length > 100 })));
+    if (frames.length < 3) problems.push(`library previews: only ${frames.length} iframes mounted for buttons`);
+    if (frames.some((f) => f.sandbox !== "allow-scripts")) problems.push("library previews: an iframe is missing sandbox=allow-scripts");
+    await page.screenshot({ path: join(shots, "desktop-library-buttons.png") });
+  }
+  await context.close();
+}
+
+// Every internal link seen anywhere must resolve to a real route.
+const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+const page = await context.newPage();
+const linkTargets = [...seenLinks].filter((l) => !l.startsWith("/goodwork/") && !l.startsWith("/api/") && !/\.(html|json|png|jpg|svg)$/.test(l) && !l.startsWith("mailto:"));
+let checked = 0;
+for (const l of linkTargets) {
+  await page.goto(`${base}${l}`, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(250);
+  const title = await page.title();
+  if (/not found/i.test(title)) problems.push(`broken internal link: ${l}`);
+  checked++;
+}
+await context.close();
+await browser.close();
+server.close();
+
+console.log(`\nchecked ${checked} distinct internal links`);
+if (problems.length) {
+  console.log(`\n${problems.length} problem(s):`);
+  for (const p of problems) console.log(`  - ${p}`);
+  process.exit(1);
+}
+console.log("\nall routes clean");

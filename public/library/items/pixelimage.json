@@ -1,0 +1,1 @@
+{"id":"pixelimage","code":"<style>.pix{width:120px;height:120px;border-radius:14px;\n background:conic-gradient(from 45deg,#3366FF,#7A5CFF,#FFD36A,#6C2BD9,#3366FF);\n animation:pixr 3s ease-in-out infinite}\n@keyframes pixr{0%{filter:contrast(2.4) blur(8px);border-radius:14px}45%{filter:contrast(1.5) blur(2px)}75%,100%{filter:none}}</style>\n<div class=\"pix\"></div>"}

@@ -1,51 +1,49 @@
 import { Link } from "react-router-dom";
-import Button from "./Button";
-import Headline from "./Headline";
-import Reveal from "./Reveal";
+import { FOOTER_COLUMNS } from "../data/nav";
+import { WORDMARK, CONTACT_EMAIL, TAGLINE } from "../lib/site";
+import { OWNERSHIP_PRINCIPLE } from "../data/offers";
 
-const LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/work", label: "Work" },
-  { to: "/case-studies", label: "Case studies" },
-  { to: "/content-console", label: "Content Console" },
-  { to: "/services", label: "Services" },
-  { to: "/contact", label: "Contact" },
-];
-
-export default function Footer({ statement = "Got something worth making better" }) {
+export default function Footer() {
   return (
     <footer className="gw-footer">
       <div className="gw-container">
-        <Headline
-          as="p"
-          className="gw-footer__statement"
-          lines={[
-            <>
-              {statement}
-              <span className="gw-dot" />
-            </>,
-          ]}
-        />
-        <Reveal variant="rise" delay={120}>
-          <div className="gw-footer__bottom">
-            <div className="gw-footer__links">
-              {LINKS.map((l) => (
-                <Link key={l.to} to={l.to}>
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-            <Button to="/contact" variant="light" arrow>
-              Start a project
-            </Button>
+        <div className="gw-footer__top">
+          <div className="gw-footer__brand">
+            <Link to="/" className="gw-brand" aria-label="Goodwork, home">
+              <span className="gw-brand__word">{WORDMARK}</span>
+            </Link>
+            <p className="gw-h4">{TAGLINE}</p>
+            <p className="gw-small gw-muted gw-max-sm">
+              Production-ready websites, AI agents and business systems. Use the tools yourself, or let
+              Goodwork build the complete operation for you.
+            </p>
+            <p className="gw-small gw-muted gw-max-sm">{OWNERSHIP_PRINCIPLE}</p>
+            <p className="gw-small">
+              <a className="gw-link" href={`mailto:${CONTACT_EMAIL}`}>
+                {CONTACT_EMAIL}
+              </a>
+            </p>
           </div>
-        </Reveal>
-        <Reveal variant="fade" delay={200}>
-          <p className="gw-footer__fine">
-            © {new Date().getFullYear()} GOOD WORK. — Brand, websites and systems.{" "}
-            <a href="mailto:hello@goodwork.agency">hello@goodwork.agency</a>
+          {FOOTER_COLUMNS.map((col) => (
+            <div key={col.heading} className="gw-footer__col">
+              <h4>{col.heading}</h4>
+              <ul>
+                {col.links.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="gw-footer__bottom">
+          <p>© {new Date().getFullYear()} Goodwork. All prices in GBP. One-time fees are paid once; managed plans are per month and optional.</p>
+          <p>
+            <Link to="/legal/licence">Commercial licence</Link> · <Link to="/legal/privacy">Privacy</Link> ·{" "}
+            <Link to="/legal/terms">Terms</Link>
           </p>
-        </Reveal>
+        </div>
       </div>
     </footer>
   );

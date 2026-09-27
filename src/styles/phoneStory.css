@@ -20,7 +20,7 @@
   border-radius: 42px;
   background: #0b0b0c;
   padding: 14px;
-  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.14) inset;
   position: relative;
   flex: none;
 }
@@ -68,13 +68,13 @@
   align-items: center;
   justify-content: center;
   background: var(--gw-gradient);
-  color: var(--gw-white);
-  font-weight: var(--gw-bold);
+  color: #fff;
+  font-weight: 700;
   font-size: 0.85rem;
   flex: none;
 }
-.gw-phonestory__contact { margin: 0; font-size: 0.85rem; font-weight: var(--gw-semibold); color: var(--gw-black); }
-.gw-phonestory__status { margin: 1px 0 0; font-size: 0.7rem; color: var(--gw-grey-700); }
+.gw-phonestory__contact { margin: 0; font-size: 0.85rem; font-weight: var(--gw-semibold); color: #111317; }
+.gw-phonestory__status { margin: 1px 0 0; font-size: 0.7rem; color: rgba(17,19,23,0.6); }
 
 .gw-phonestory__messages {
   flex: 1;
@@ -97,13 +97,13 @@
 .gw-phonestory__bubble--lead {
   align-self: flex-start;
   background: #e6e4df;
-  color: var(--gw-black);
+  color: #111317;
   border-bottom-left-radius: 4px;
 }
 .gw-phonestory__bubble--agent {
   align-self: flex-end;
-  background: var(--gw-blue);
-  color: var(--gw-white);
+  background: var(--gw-accent);
+  color: #fff;
   border-bottom-right-radius: 4px;
 }
 

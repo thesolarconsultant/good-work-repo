@@ -1,47 +1,29 @@
-import Button from "../components/Button";
-import Footer from "../components/Footer";
-import Headline from "../components/Headline";
-import Reveal from "../components/Reveal";
-import ShaderField from "../components/ShaderField";
 import Seo from "../components/Seo";
+import Button from "../components/Button";
+import Headline from "../components/Headline";
 
 export default function NotFound() {
   return (
     <>
-      <Seo
-        title="Page not found"
-        description="That page isn't here. Head back to the work, the services or get in touch."
-        noindex
-      />
-
-      <header className="gw-section gw-hero" style={{ paddingTop: "clamp(3rem,8vw,6rem)" }}>
-        <div className="gw-aurora" aria-hidden="true">
-          <span /><span /><span /><span />
+      <Seo title="Page not found" description="That page isn't here. Head to the Library, the pricing or get in touch." noindex />
+      <section className="gw-section gw-gridbg">
+        <div className="gw-container--narrow">
+          <p className="gw-eyebrow gw-eyebrow--accent">Error 404</p>
+          <Headline onMount className="gw-h1 gw-mt-2" lines={["That page", "isn't here."]} />
+          <p className="gw-lead gw-max gw-mt-3">Either it moved or the link was wrong. Everything Goodwork sells is a couple of clicks away.</p>
+          <div className="gw-actions gw-mt-4">
+            <Button to="/" arrow>
+              Back to home
+            </Button>
+            <Button to="/library" variant="secondary">
+              Explore the Library
+            </Button>
+            <Button to="/pricing" variant="ghost">
+              Compare every option
+            </Button>
+          </div>
         </div>
-        <ShaderField />
-        <div className="gw-container">
-          <p className="gw-label gw-pulse">Error 404</p>
-          <Headline
-            onMount
-            className="gw-h1 gw-stack-md"
-            lines={["That page isn't", <>here<span className="gw-dot" /></>]}
-          />
-          <Reveal variant="rise" delay={240}>
-            <p className="gw-body-large gw-max-copy gw-text-muted gw-stack-lg">
-              Either it moved or the link was wrong. Everything we've built is a couple of
-              clicks away.
-            </p>
-          </Reveal>
-          <Reveal variant="rise" delay={340}>
-            <div className="gw-actions gw-stack-lg">
-              <Button to="/" arrow>Back to home</Button>
-              <Button to="/case-studies" variant="outline">See the work</Button>
-            </div>
-          </Reveal>
-        </div>
-      </header>
-
-      <Footer statement="Got something worth making better" />
+      </section>
     </>
   );
 }

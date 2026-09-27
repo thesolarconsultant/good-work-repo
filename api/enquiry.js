@@ -1,5 +1,9 @@
 // =========================================================
-// Scope builder enquiries — server-side delivery
+// Enquiries and applications — server-side delivery
+//
+// Every form on the site (Built by Goodwork enquiry, Embedded CRM enquiry,
+// Agency application, general contact, access interest) posts here as
+//   { form: "<id>", fields: {...}, text: "<rendered summary>", page: "/..." }
 //
 // The site is a static build, so nothing here can live in the front end: an
 // email API key in the bundle is a free mail relay for whoever opens devtools.
@@ -7,43 +11,48 @@
 //
 // Two delivery routes, both optional, at least one required:
 //
-//   ENQUIRY_WEBHOOK_URL   POST the enquiry as JSON. This is the one to use
-//                         for a CRM — GoHighLevel, Zapier, Make, n8n, or your
-//                         own endpoint. Whatever is on the other end decides
-//                         what happens to the lead. The body is flat at the
-//                         top level (name, firstName, lastName, email, phone,
-//                         companyName, tags, services) so a CRM can map it
-//                         without a transform step in between.
+//   ENQUIRY_WEBHOOK_URL   POST the enquiry as JSON to a CRM or automation
+//                         tool (GoHighLevel, Zapier, Make, n8n, your own
+//                         endpoint). The body is flat at the top level —
+//                         name, firstName, lastName, email, phone, companyName,
+//                         form, tags — so a CRM maps it without a transform.
 //   ENQUIRY_WEBHOOK_TOKEN Optional. Sent as `Authorization: Bearer <token>`
-//                         and `X-Webhook-Token`, for endpoints that want one.
-//   RESEND_API_KEY        Send it as an email via Resend. Also needs
-//                         ENQUIRY_TO and ENQUIRY_FROM (a domain verified in
-//                         Resend — an unverified from address is rejected).
+//                         and `X-Webhook-Token`.
+//   RESEND_API_KEY        Email it via Resend. Also needs ENQUIRY_TO and
+//                         ENQUIRY_FROM (a domain verified in Resend).
 //
-// Set both and it does both, and only fails if *both* fail: a working inbox
-// should not be undone by a CRM being down.
+// Set both and it does both, and only fails if *both* fail.
 //
 // If neither is configured this returns 503 and the browser shows the email
-// fallback. That is deliberate. Returning 200 from an unconfigured endpoint
-// would show the client "thanks, we'll be in touch" while the enquiry went
+// fallback. That is deliberate: returning 200 from an unconfigured endpoint
+// would show someone "thanks, we'll be in touch" while the enquiry went
 // nowhere, which is worse than any error message.
 //
-// Web-standard handler (Request -> Response): works as-is on Netlify
-// Functions v2, Cloudflare Workers and Vercel Edge. For a Vercel Node
-// function, wrap it — see README.
+// Web-standard handler (Request -> Response): Vercel Edge as-is; Netlify
+// Functions v2 and Cloudflare Workers take it unchanged.
 // =========================================================
 
-const MAX_BODY = 32 * 1024; // A scope enquiry is a couple of kB. This is slack, not a target.
-const MAX_FIELD = 2000;
+const MAX_BODY = 48 * 1024;
+const MAX_FIELD = 4000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Server-side truth about each form: which id is real, which fields must be
+// present, and which field is the honeypot. Mirrors src/data/forms.js.
+const FORMS = {
+  built: { title: "Built by Goodwork enquiry", required: ["name", "business", "email", "phone", "sells", "brandStatus", "launch", "contactMethod"], confirm: "budgetConfirmed" },
+  crm: { title: "Embedded CRM enquiry", required: ["name", "business", "email", "phone", "users", "pipeline", "hosting", "contactMethod"] },
+  agency: { title: "Agency programme application", required: ["name", "email", "phone", "stage", "services", "revenue", "idealClients", "constraint", "launch", "paymentRoute"], confirm: "investmentConfirmed" },
+  contact: { title: "General enquiry", required: ["name", "email", "topic", "message"] },
+  access: { title: "Library access interest", required: ["email", "product"] },
+};
+const HONEYPOT = "website_url";
 
 // Per-IP throttle. Best-effort only: serverless instances don't share memory,
 // so this thins out a naive flood rather than stopping a determined one. The
-// real protection is that the endpoint has no interesting side effects — it
-// posts to a webhook you control and sends to one fixed address.
+// real protection is that the endpoint has no interesting side effects.
 const RATE = new Map();
 const RATE_WINDOW_MS = 60 * 60 * 1000;
-const RATE_MAX = 8;
+const RATE_MAX = 10;
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -52,6 +61,8 @@ const json = (body, status = 200) =>
   });
 
 function clean(value, max = MAX_FIELD) {
+  if (typeof value === "boolean") return value;
+  if (Array.isArray(value)) return value.filter((v) => typeof v === "string").map((v) => v.trim().slice(0, 120)).slice(0, 40);
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
@@ -60,7 +71,6 @@ function rateLimited(ip) {
   const hits = (RATE.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
   hits.push(now);
   RATE.set(ip, hits);
-  // Stop the map growing without bound on a long-lived instance.
   if (RATE.size > 5000) {
     for (const [key, times] of RATE) {
       if (!times.some((t) => now - t < RATE_WINDOW_MS)) RATE.delete(key);
@@ -70,14 +80,11 @@ function rateLimited(ip) {
 }
 
 function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
-  );
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
 async function sendWebhook(url, payload, token) {
   const headers = { "Content-Type": "application/json" };
-  // Two header names because CRMs disagree about which one they read.
   if (token) {
     headers.Authorization = `Bearer ${token}`;
     headers["X-Webhook-Token"] = token;
@@ -87,18 +94,16 @@ async function sendWebhook(url, payload, token) {
 }
 
 async function sendEmail({ key, to, from, payload }) {
-  const { contact, text } = payload;
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       from,
       to: to.split(",").map((a) => a.trim()).filter(Boolean),
-      // So a reply in the inbox goes straight back to the client.
-      reply_to: contact.email,
-      subject: `Enquiry — ${contact.name}${contact.business ? ` (${contact.business})` : ""}`,
-      text,
-      html: `<pre style="font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap">${escapeHtml(text)}</pre>`,
+      reply_to: payload.email,
+      subject: `${payload.formTitle} — ${payload.name || payload.email}${payload.companyName ? ` (${payload.companyName})` : ""}`,
+      text: payload.text,
+      html: `<pre style="font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap">${escapeHtml(payload.text)}</pre>`,
     }),
   });
   if (!response.ok) {
@@ -107,22 +112,13 @@ async function sendEmail({ key, to, from, payload }) {
   }
 }
 
-// Vercel hands Node functions (req, res) but Edge functions a Request and
-// expects a Response, which is what this is — so declare it. Ignored by
-// Netlify Functions v2 and Cloudflare Workers, which are Web-standard
-// already.
 export const config = { runtime: "edge" };
 
 export default async function handler(request) {
   if (request.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: { Allow: "POST, OPTIONS", "Cache-Control": "no-store" },
-    });
+    return new Response(null, { status: 204, headers: { Allow: "POST, OPTIONS", "Cache-Control": "no-store" } });
   }
-  if (request.method !== "POST") {
-    return json({ error: "Use POST." }, 405);
-  }
+  if (request.method !== "POST") return json({ error: "Use POST." }, 405);
 
   const webhookUrl = process.env.ENQUIRY_WEBHOOK_URL;
   const resendKey = process.env.RESEND_API_KEY;
@@ -133,10 +129,7 @@ export default async function handler(request) {
 
   if (!canWebhook && !canEmail) {
     return json(
-      {
-        error:
-          "Enquiry delivery isn't configured on the server yet — set ENQUIRY_WEBHOOK_URL, or RESEND_API_KEY with ENQUIRY_TO and ENQUIRY_FROM.",
-      },
+      { error: "Enquiry delivery isn't configured on the server yet — set ENQUIRY_WEBHOOK_URL, or RESEND_API_KEY with ENQUIRY_TO and ENQUIRY_FROM." },
       503,
     );
   }
@@ -147,9 +140,7 @@ export default async function handler(request) {
     request.headers.get("x-real-ip") ||
     (request.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
     "unknown";
-  if (rateLimited(ip)) {
-    return json({ error: "That's a lot of enquiries. Try again shortly, or email us." }, 429);
-  }
+  if (rateLimited(ip)) return json({ error: "That's a lot of enquiries. Try again shortly, or email us." }, 429);
 
   const raw = await request.text();
   if (raw.length > MAX_BODY) return json({ error: "That's too big to send." }, 413);
@@ -161,62 +152,52 @@ export default async function handler(request) {
     return json({ error: "Malformed request." }, 400);
   }
 
-  const contact = {
-    name: clean(body?.contact?.name, 200),
-    email: clean(body?.contact?.email, 320),
-    phone: clean(body?.contact?.phone, 60),
-    business: clean(body?.contact?.business, 200),
-    message: clean(body?.contact?.message, MAX_FIELD),
-  };
+  const formId = clean(body?.form, 40);
+  const spec = FORMS[formId];
+  if (!spec) return json({ error: "Unknown form." }, 400);
 
-  // The same three the form insists on. Validating again here because the
-  // browser check is a courtesy, not a guarantee — anything can POST.
-  if (!contact.name) return json({ error: "A name is required." }, 400);
-  if (!EMAIL_RE.test(contact.email)) return json({ error: "A valid email is required." }, 400);
-  if (!contact.phone) return json({ error: "A phone number is required." }, 400);
+  const incoming = body?.fields && typeof body.fields === "object" ? body.fields : {};
+  // A filled honeypot is a bot. Say OK and do nothing, so it learns nothing.
+  if (clean(incoming[HONEYPOT])) return json({ ok: true });
 
-  const serviceIds = Array.isArray(body?.serviceIds)
-    ? body.serviceIds.filter((id) => typeof id === "string").slice(0, 60).map((id) => clean(id, 60))
-    : [];
+  const fields = {};
+  for (const [k, v] of Object.entries(incoming)) {
+    if (!/^[a-zA-Z][a-zA-Z0-9_]{0,40}$/.test(k)) continue;
+    fields[k] = clean(v);
+  }
 
-  // The client sends a rendered summary so the inbox reads the way the client
-  // saw it. It is untrusted text, so it is length-capped and only ever used as
-  // a plain-text body or HTML-escaped — never interpolated as markup.
-  const text = clean(body?.text, 16000) || "(no summary)";
+  // The browser validates as a courtesy; anything can POST, so check again.
+  for (const key of spec.required) {
+    const v = fields[key];
+    if (v == null || v === "" || (Array.isArray(v) && v.length === 0)) return json({ error: `${key} is required.` }, 400);
+  }
+  if (fields.email && !EMAIL_RE.test(fields.email)) return json({ error: "A valid email is required." }, 400);
+  if (spec.confirm && fields[spec.confirm] !== true) return json({ error: "The confirmation box must be ticked." }, 400);
 
-  const answers = body?.answers && typeof body.answers === "object" ? body.answers : {};
+  // The rendered summary is untrusted text: length-capped, only ever used as a
+  // plain-text body or HTML-escaped, never interpolated as markup.
+  const text = clean(body?.text, 24000) || "(no summary)";
+  const page = clean(body?.page, 300);
 
-  // Split the name so a CRM has first/last without anyone writing a transform
-  // step. Everything after the first space is the surname — wrong for some
-  // names, but the full name is always there under `name` as the source of
-  // truth, so nothing is lost either way.
-  const [firstName, ...restOfName] = contact.name.split(/\s+/);
+  const name = fields.name || fields.applicantName || "";
+  const [firstName, ...rest] = String(name).split(/\s+/);
 
-  // Flat at the top level on purpose. Most CRM and automation tools map fields
-  // by picking them off the root of the payload, and a nested object means
-  // somebody has to write a transform before a lead can land. The nested
-  // `contact` stays too, so either shape works.
+  // Flat at the top level on purpose: CRM and automation tools map fields by
+  // picking them off the root. The nested `fields` stays too.
   const payload = {
     receivedAt: new Date().toISOString(),
-    source: "scope-builder",
-
-    name: contact.name,
+    source: "goodwork-website",
+    form: formId,
+    formTitle: spec.title,
+    page,
+    name,
     firstName,
-    lastName: restOfName.join(" "),
-    email: contact.email,
-    phone: contact.phone,
-    companyName: contact.business,
-    message: contact.message,
-
-    // Ready to drop straight onto a contact record.
-    tags: ["website-enquiry", "scope-builder", ...serviceIds.map((id) => `service:${id}`)],
-    serviceCount: serviceIds.length,
-    serviceIds,
-    // The same list as one string, for the many fields that only take text.
-    services: serviceIds.join(", "),
-
-    contact,
-    answers,
+    lastName: rest.join(" "),
+    email: fields.email || "",
+    phone: fields.phone || "",
+    companyName: fields.business || fields.agencyName || "",
+    tags: ["website-enquiry", `form:${formId}`, ...(fields.topic ? [`topic:${fields.topic}`] : []), ...(fields.product ? [`product:${fields.product}`] : [])],
+    fields,
     text,
   };
 
@@ -224,21 +205,14 @@ export default async function handler(request) {
     canWebhook ? sendWebhook(webhookUrl, payload, process.env.ENQUIRY_WEBHOOK_TOKEN) : Promise.resolve("skipped"),
     canEmail ? sendEmail({ key: resendKey, to, from, payload }) : Promise.resolve("skipped"),
   ]);
-
   const attempted = [canWebhook, canEmail];
-  const failures = results
-    .filter((r, i) => attempted[i] && r.status === "rejected")
-    .map((r) => r.reason?.message || "unknown error");
+  const failures = results.filter((r, i) => attempted[i] && r.status === "rejected").map((r) => r.reason?.message || "unknown error");
   const delivered = results.some((r, i) => attempted[i] && r.status === "fulfilled");
 
   if (!delivered) {
-    // Log for the platform's function logs; the client gets a usable message.
     console.error("enquiry delivery failed:", failures.join(" | "));
     return json({ error: "We couldn't deliver that just now." }, 502);
   }
-
-  // Partial success is still a delivered enquiry, but it should be visible.
   if (failures.length) console.warn("enquiry partially delivered:", failures.join(" | "));
-
   return json({ ok: true });
 }

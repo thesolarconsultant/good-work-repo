@@ -1,27 +1,27 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { SITE_URL } from "../lib/site";
+import { SITE_URL, SITE_NAME } from "../lib/site";
 
 /**
  * Per-page metadata. React 19 hoists <title>, <meta> and <link> into <head>
- * from wherever they're rendered, so pages can declare their own without a
- * helmet library.
+ * from wherever they're rendered, so pages declare their own without a
+ * helmet library. JSON-LD stays inline: structured data is valid anywhere.
  *
- * JSON-LD stays inline: it isn't hoisted, and structured data is valid
- * anywhere in the document.
+ * `schema` may be one object or an array of objects.
  */
-export default function Seo({ title, description, image = "/og.png", schema, noindex = false }) {
+export default function Seo({ title, description, image = "/og.png", schema, noindex = false, type = "website" }) {
   const { pathname } = useLocation();
 
-  // index.html carries a set of site-level fallbacks for scrapers that never
-  // run JavaScript. Once we're mounted they'd only be duplicates, so they go.
+  // index.html carries site-level fallbacks for scrapers that never run
+  // JavaScript. Once mounted they'd only be duplicates, so they go.
   useEffect(() => {
     document.head.querySelectorAll("meta[data-gw-default]").forEach((el) => el.remove());
   }, []);
 
   const url = `${SITE_URL}${pathname === "/" ? "" : pathname}`;
-  const fullTitle = title.includes("GOOD WORK") ? title : `${title} — GOOD WORK.`;
+  const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}`;
   const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
+  const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
   return (
     <>
@@ -30,8 +30,8 @@ export default function Seo({ title, description, image = "/og.png", schema, noi
       <link rel="canonical" href={url} />
       {noindex && <meta name="robots" content="noindex, follow" />}
 
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="GOOD WORK." />
+      <meta property="og:type" content={type} />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
@@ -45,13 +45,14 @@ export default function Seo({ title, description, image = "/og.png", schema, noi
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
 
-      {schema && (
+      {schemas.map((s, i) => (
         <script
+          key={i}
           type="application/ld+json"
-          // Structured data is authored here, not user input.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          // Structured data is authored in src/lib/schema.js, never user input.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }}
         />
-      )}
+      ))}
     </>
   );
 }

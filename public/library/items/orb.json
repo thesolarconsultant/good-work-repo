@@ -1,0 +1,1 @@
+{"id":"orb","code":"<style>.orb{width:120px;height:120px;border-radius:50%;\n background:radial-gradient(circle at 50% 45%,var(--accent-2,#7A5CFF),var(--accent,#3366FF) 55%,transparent 72%);\n filter:blur(4px);animation:orbb 4s ease-in-out infinite}\n@keyframes orbb{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.14);opacity:1}}</style>\n<div class=\"orb\"></div>"}
