@@ -20,6 +20,7 @@
     "brand:photos": "node scripts/build-brand-photos.mjs",
     "brand:botanicals": "node scripts/build-brand-botanicals.mjs",
     "library": "node scripts/build-library-catalogue.mjs",
+    "library:bundle": "node scripts/build-library-bundle.mjs",
     "prices": "node scripts/check-prices.mjs",
     "check": "npm run lint && npm run build",
     "test:routes": "node scripts/test-routes.mjs",

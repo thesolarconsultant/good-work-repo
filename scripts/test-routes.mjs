@@ -54,11 +54,12 @@ const ROUTES = [
   "/legal/licence", "/legal/terms", "/legal/refunds", "/legal/privacy", "/legal/cookies", "/legal/acceptable-use",
   "/work", "/case-studies", "/content-console", "/pitch", "/this-page-does-not-exist",
 ];
+// GW_VIEWPORTS=desktop (or a comma list) narrows a local run; CI runs all three.
 const VIEWPORTS = [
   { name: "mobile", width: 390, height: 844 },
   { name: "tablet", width: 768, height: 1024 },
   { name: "desktop", width: 1440, height: 900 },
-];
+].filter((v) => !process.env.GW_VIEWPORTS || process.env.GW_VIEWPORTS.split(",").includes(v.name));
 
 await new Promise((r) => server.listen(0, r));
 const base = `http://localhost:${server.address().port}`;
@@ -203,6 +204,82 @@ for (const vp of VIEWPORTS) {
     if (frames.length < 3) problems.push(`library previews: only ${frames.length} iframes mounted for buttons`);
     if (frames.some((f) => f.sandbox !== "allow-scripts")) problems.push("library previews: an iframe is missing sandbox=allow-scripts");
     await page.screenshot({ path: join(shots, "desktop-library-buttons.png") });
+
+    // Signed-in states, with /api/access answered by a mock session (the real
+    // endpoint is covered by test-api). The marker cookie tells the app to
+    // ask; the mock answers as the server would for a Library key.
+    const SESSION = {
+      ok: true,
+      configured: true,
+      user: { id: "abc123def456", name: "test@example.com" },
+      entitlements: [{ productId: "library", source: "access-key" }],
+      downloads: [{ product: "library", name: "Goodwork Library", version: "1.0.0", updated: "2026-09-26", items: 166, filename: "goodwork-library-1.0.0.zip", href: "/api/download?product=library", note: "Every component as a paste-ready file." }],
+      pending: [],
+    };
+    const signedIn = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await signedIn.addCookies([{ name: "gw_signed_in", value: "1", domain: "localhost", path: "/" }]);
+    await signedIn.route("**/api/access", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(SESSION) }));
+    const sp = await signedIn.newPage();
+    const spErrors = [];
+    sp.on("pageerror", (e) => spErrors.push(e.message));
+    // Reveal-on-scroll content only paints once scrolled to, so walk the page
+    // before a full-page screenshot, as the main crawl does.
+    const walk = async (pg) => {
+      await pg.evaluate(async () => {
+        document.documentElement.style.scrollBehavior = "auto";
+        for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
+          window.scrollTo(0, y);
+          await new Promise((r) => setTimeout(r, 40));
+        }
+        window.scrollTo(0, 0);
+      });
+      await pg.waitForTimeout(400);
+    };
+    await sp.goto(`${base}/dashboard`, { waitUntil: "networkidle" });
+    const dashLink = await sp.waitForSelector('a[href="/api/download?product=library"]', { timeout: 5000 }).catch(() => null);
+    if (!dashLink) problems.push("dashboard: a signed-in session did not render the download link");
+    const navLabel = await sp.$eval(".gw-nav__signin", (el) => el.textContent.trim()).catch(() => "");
+    if (navLabel !== "Dashboard") problems.push(`nav: expected the sign-in link to read "Dashboard" when signed in, saw "${navLabel}"`);
+    await walk(sp);
+    await sp.screenshot({ path: join(shots, "desktop-dashboard-signed-in.png"), fullPage: true });
+    // navbar is a 20-line snippet, so the 14-line excerpt and the whole thing differ.
+    await sp.goto(`${base}/library/navbar`, { waitUntil: "networkidle" });
+    const copyBtn = await sp.waitForSelector(".gw-code__copy", { timeout: 5000 }).catch(() => null);
+    if (!copyBtn) problems.push("library item: a signed-in session did not show the full source with Copy code");
+    if (!(await sp.$('a[href="/api/download?product=library"]'))) problems.push("library item: a signed-in session did not show the bundle download");
+    const navbarCode = JSON.parse(readFileSync(join(dist, "library", "items", "navbar.json"), "utf8")).code;
+    const shownCode = await sp.$eval(".gw-code code", (el) => el.textContent).catch(() => "");
+    if (shownCode !== navbarCode) problems.push(`library item: expected the whole snippet when signed in (${navbarCode.split("\n").length} lines), saw ${shownCode.split("\n").length} lines`);
+    await walk(sp);
+    await sp.screenshot({ path: join(shots, "desktop-library-item-signed-in.png"), fullPage: true });
+    if (spErrors.length) problems.push(`signed-in pages: ${spErrors.slice(0, 2).join(" | ")}`);
+    await signedIn.close();
+
+    // The sign-in form: the server takes keys (401 with no cookie), a key is
+    // entered, the POST succeeds and the dashboard follows.
+    const signingIn = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    let posted = null;
+    await signingIn.route("**/api/access", (route) => {
+      const req = route.request();
+      if (req.method() === "POST") {
+        posted = JSON.parse(req.postData() || "{}");
+        return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(SESSION) });
+      }
+      return route.fulfill({ status: 401, contentType: "application/json", body: JSON.stringify({ ok: false, configured: true }) });
+    });
+    const lp = await signingIn.newPage();
+    await lp.goto(`${base}/login?next=/dashboard`, { waitUntil: "networkidle" });
+    const keyInput = await lp.waitForSelector('input[name="key"]', { timeout: 5000 }).catch(() => null);
+    if (!keyInput) problems.push("login: expected the access-key form when the server takes keys");
+    else {
+      await lp.waitForTimeout(600);
+      await lp.screenshot({ path: join(shots, "desktop-login-form.png"), fullPage: true });
+      await lp.fill('input[name="key"]', "gw_test_key_0123456789");
+      await lp.click('button[type="submit"]');
+      await lp.waitForURL("**/dashboard", { timeout: 5000 }).catch(() => problems.push("login: submitting a key did not reach the dashboard"));
+      if (posted?.key !== "gw_test_key_0123456789") problems.push("login: the key was not posted to /api/access as typed");
+    }
+    await signingIn.close();
   }
   await context.close();
 }
