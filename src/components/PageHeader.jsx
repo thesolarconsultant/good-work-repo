@@ -9,7 +9,7 @@ import Reveal from "./Reveal";
  */
 export default function PageHeader({ crumbs, eyebrow, title, lines, lead, children, aside, className = "" }) {
   return (
-    <header className={`gw-pagehead ${className}`.trim()}>
+    <header className={`gw-pagehead gw-wash ${className}`.trim()}>
       <div className="gw-container">
         {crumbs && (
           <nav aria-label="Breadcrumb">
