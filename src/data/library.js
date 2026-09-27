@@ -233,7 +233,9 @@ export const SYSTEM_ITEMS = [
 ];
 
 // Hand-picked featured components: the strongest previews from each family.
-const FEATURED_IDS = new Set(["herobadge", "pricingtiers", "faqsection", "bento", "navbar", "ctabox", "statscount", "testimonialwall", "magiccard", "borderbeam"]);
+// Chosen for previews that paint on load without hover or scroll, so the
+// homepage grid never shows an empty frame.
+const FEATURED_IDS = new Set(["herobadge", "pricingtiers", "statscount", "ctabox", "faqsection", "shimmer", "gradhead", "testimonialwall", "heroavatars", "navbar"]);
 
 export const ITEMS = [
   ...TEMPLATES,

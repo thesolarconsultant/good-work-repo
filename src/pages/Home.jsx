@@ -37,7 +37,7 @@ export default function Home() {
       <Seo title="Goodwork — Build better. Launch faster." description={DESCRIPTION} schema={[website(), faqPage(FAQ)]} />
 
       {/* 3. Hero */}
-      <header className="gw-hero gw-gridbg">
+      <header className="gw-hero gw-gridbg gw-wash gw-wash--brandline">
         <div className="gw-container">
           <div className="gw-hero__grid">
             <div className="gw-hero__copy">
@@ -77,7 +77,7 @@ export default function Home() {
       </header>
 
       {/* 4. Two ways to work with Goodwork */}
-      <section className="gw-section" aria-labelledby="two-ways">
+      <section className="gw-section gw-light" aria-labelledby="two-ways">
         <div className="gw-container">
           <SectionHead eyebrow="Two ways in" title={<span id="two-ways">Build with Goodwork—or have Goodwork build it.</span>} />
           <div className="gw-grid gw-grid--2 gw-mt-4">
@@ -105,7 +105,7 @@ export default function Home() {
       <LibraryPreviewSection />
 
       {/* 6. The offer ladder */}
-      <section className="gw-section" id="offers" aria-labelledby="ladder">
+      <section className="gw-section gw-light" id="offers" aria-labelledby="ladder">
         <div className="gw-container">
           <SectionHead eyebrow="The offers" title={<span id="ladder">Start where you are. Move up when you need us.</span>} lead="Every product and service is paid once. Prices are the same everywhere on this site; what changes is who does the work." />
           <div className="gw-mt-4">
@@ -115,7 +115,7 @@ export default function Home() {
       </section>
 
       {/* 7. Product-system demonstration */}
-      <section className="gw-section gw-surface" aria-labelledby="journey">
+      <section className="gw-section gw-wash" aria-labelledby="journey">
         <div className="gw-container">
           <SectionHead eyebrow="The connected system" title={<span id="journey">More than a collection of pretty sections.</span>} lead="A website is only one part of the operation. Goodwork connects the customer journey—from the first visit and conversation to content, follow-up and sales management." />
           <div className="gw-mt-4">
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* 8. Studio feature section */}
-      <section className="gw-section" aria-labelledby="studio-systems">
+      <section className="gw-section gw-light" aria-labelledby="studio-systems">
         <div className="gw-container">
           <div className="gw-pagehead__row">
             <SectionHead eyebrow={`Goodwork Studio · ${gbp(OFFER.studio.price)} one-time`} title={<span id="studio-systems">The system behind the website.</span>} lead={OFFER.studio.distinction} />
@@ -155,12 +155,12 @@ export default function Home() {
       </section>
 
       {/* 9. Built by Goodwork — contrasting light section */}
-      <section className="gw-section gw-light" aria-labelledby="built">
+      <section className="gw-section" aria-labelledby="built">
         <div className="gw-container">
           <div className="gw-split">
             <SectionHead eyebrow={`Built by Goodwork · ${gbp(OFFER.built.price)} one-time`} title={<span id="built">Do not want to assemble it? We will.</span>} lead={`For ${gbp(OFFER.built.price)}, Goodwork takes the Studio system and turns it into a complete, branded implementation for one business. The scope is agreed first, the build is completed properly and the ongoing running costs remain clear.`}>
               <div className="gw-actions gw-mt-4">
-                <Button to="/built-by-goodwork" variant="paper" arrow>
+                <Button to="/built-by-goodwork" arrow>
                   See the {gbp(OFFER.built.price)} implementation
                 </Button>
                 <Button to="/built-by-goodwork#scope" variant="secondary">
@@ -184,7 +184,7 @@ export default function Home() {
       </section>
 
       {/* 10. Embedded CRM */}
-      <section className="gw-section" aria-labelledby="crm">
+      <section className="gw-section gw-light" aria-labelledby="crm">
         <div className="gw-container">
           <div className="gw-split gw-split--reverse">
             <Reveal variant="rise" delay={100}>
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* 11. Agency programme */}
-      <section className="gw-section gw-surface" aria-labelledby="agency">
+      <section className="gw-section" aria-labelledby="agency">
         <div className="gw-container">
           <div className="gw-split">
             <SectionHead eyebrow="The Agency programme" title={<span id="agency">A website does not make an agency. The operation behind it does.</span>} lead="Goodwork helps shape the positioning, offers, brand, sales process, delivery system, CRM, automation and launch infrastructure required to operate a modern agency.">
@@ -253,7 +253,7 @@ export default function Home() {
       </section>
 
       {/* 12. Managed infrastructure */}
-      <section className="gw-section" aria-labelledby="managed">
+      <section className="gw-section gw-light" aria-labelledby="managed">
         <div className="gw-container">
           <SectionHead eyebrow="Managed infrastructure · optional · per month" title={<span id="managed">Own the build. Choose who runs it.</span>} lead="Run compatible Goodwork products on your own infrastructure, or ask us to host, monitor and maintain the live system. Variable messaging, calling and model usage stays visible instead of being hidden inside vague pricing.">
             <p className="gw-quote gw-mt-4 gw-max">{OWNERSHIP_PRINCIPLE}</p>
@@ -265,12 +265,12 @@ export default function Home() {
       </section>
 
       {/* 13. Showcase */}
-      <section className="gw-section gw-light" aria-labelledby="showcase">
+      <section className="gw-section gw-surface" aria-labelledby="showcase">
         <div className="gw-container">
           <div className="gw-pagehead__row">
             <SectionHead eyebrow="Showcase" title={<span id="showcase">Good work should be visible.</span>} lead="Live projects and completed builds on the Goodwork system, with the problem, what was created and which systems it used. No invented results." />
             <Reveal variant="rise" delay={120}>
-              <Button to="/showcase" variant="paper" arrow>
+              <Button to="/showcase" variant="secondary" arrow>
                 See the showcase
               </Button>
             </Reveal>
@@ -329,7 +329,7 @@ export default function Home() {
       </section>
 
       {/* 15. FAQ */}
-      <section className="gw-section gw-surface" aria-labelledby="faq">
+      <section className="gw-section gw-light" aria-labelledby="faq">
         <div className="gw-container">
           <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,0.7fr) minmax(0,1.3fr)" }}>
             <SectionHead eyebrow="Questions" title={<span id="faq">Straight answers.</span>} lead="Every answer here agrees with the pricing page and the licence. Where a policy is still with our solicitor, it says so." />
@@ -341,7 +341,7 @@ export default function Home() {
       </section>
 
       {/* 16. Final CTA */}
-      <section className="gw-section gw-gridbg" aria-labelledby="final">
+      <section className="gw-section gw-gridbg gw-wash" aria-labelledby="final">
         <div className="gw-container gw-center">
           <SectionHead align="center" eyebrow="Choose your route" title={<span id="final">Choose the fastest route to better work.</span>} lead="Start with the code, take the complete Studio toolkit or ask Goodwork to build the system with you.">
             <div className="gw-actions gw-mt-4" style={{ justifyContent: "center" }}>
