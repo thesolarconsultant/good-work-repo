@@ -30,6 +30,9 @@ dist-ssr
 
 preview/
 
+# Customer bundle, built by `npm run library:bundle` from library-src/components.txt
+dist-library/
+
 # Standalone gallery build, generated from library-src/components.txt; not deployed
 library-src/library.html
 .test-shots/

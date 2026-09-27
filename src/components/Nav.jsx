@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { PRIMARY_NAV, NAV_CTA, NAV_SIGN_IN, PRODUCTS_MENU, SERVICES_MENU } from "../data/nav";
 import { WORDMARK, CONTACT_EMAIL } from "../lib/site";
 import { useScrollDirection } from "../lib/motion";
+import { useSession } from "../lib/auth";
 
 function Chevron() {
   return (
@@ -80,6 +81,8 @@ function MenuItem({ item, active, openId, setOpenId }) {
 }
 
 export default function Nav({ announce = false }) {
+  const session = useSession();
+  const signIn = session.status === "authenticated" ? { to: "/dashboard", label: "Dashboard" } : NAV_SIGN_IN;
   const [open, setOpen] = useState(false);
   const [openId, setOpenId] = useState(null);
   const { pathname } = useLocation();
@@ -155,8 +158,8 @@ export default function Nav({ announce = false }) {
           </ul>
 
           <div className="gw-nav__actions">
-            <Link to={NAV_SIGN_IN.to} className="gw-nav__signin">
-              {NAV_SIGN_IN.label}
+            <Link to={signIn.to} className="gw-nav__signin">
+              {signIn.label}
             </Link>
             <Link to={NAV_CTA.to} className="gw-btn gw-btn--primary gw-btn--sm">
               {NAV_CTA.label}
@@ -201,8 +204,8 @@ export default function Nav({ announce = false }) {
             <Link to={NAV_CTA.to} className="gw-btn gw-btn--primary gw-btn--lg" onClick={() => setOpen(false)}>
               {NAV_CTA.label}
             </Link>
-            <Link to={NAV_SIGN_IN.to} className="gw-btn gw-btn--secondary" onClick={() => setOpen(false)}>
-              {NAV_SIGN_IN.label}
+            <Link to={signIn.to} className="gw-btn gw-btn--secondary" onClick={() => setOpen(false)}>
+              {signIn.label}
             </Link>
             <Link to="/contact" className="gw-btn gw-btn--ghost" onClick={() => setOpen(false)}>
               Talk to Goodwork

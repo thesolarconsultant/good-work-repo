@@ -25,12 +25,13 @@ npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chr
 | `npm run preview` | Serve the built site |
 | `npm run lint` | Oxlint |
 | `npm run library` | Regenerate the Library catalogue from `library-src/components.txt` |
+| `npm run library:bundle` | Build the customer bundle (zip + offline gallery) to `dist-library/`; identical to what `/api/download` serves |
 | `npm run images` | Regenerate responsive image derivatives — run after adding a screenshot |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` and `public/robots.txt` |
 | `npm run prices` | Fail the build if `api/checkout.js` disagrees with `src/data/offers.js` |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
-| `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js` and `api/stripe-webhook.js` in Node against a local webhook sink: 17 checks |
-| `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states |
+| `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js`, `api/stripe-webhook.js`, `api/access.js` and `api/download.js` in Node against a local webhook sink: 26 checks |
+| `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states, the sign-in form, the signed-in dashboard and item pages |
 | `npm run brand:*`, `logo`, `merch`, `portrait` | Brand asset generators, unchanged from before the rebuild |
 
 ## Where things live
@@ -48,7 +49,7 @@ src/
   data/showcase.js      Real projects (built on data/caseStudies.js)
   data/learn.js, docs.js, legal.js, founder.js
   lib/                  format (GBP), schema (JSON-LD), analytics (provider-agnostic
-                        intent events), auth (session contract), forms (validation)
+                        intent events), auth (session store), forms (validation)
   components/           Nav, Footer, EnquiryForm, BuyButton, Library*, OfferLadder,
                         ComparisonTable, ManagedPlans, SystemJourney, HeroStack …
   pages/                One file per route
@@ -58,11 +59,15 @@ api/
   enquiry.js            All forms → webhook and/or Resend (503 until configured)
   checkout.js           Stripe Checkout Session (503 until configured)
   stripe-webhook.js     Signature-verified; emits entitlement.granted
+  access.js             Sign in with an access key: GET session, POST sign-in, DELETE sign-out
+  download.js           The Library bundle, zipped in memory after the key check
   accept.js, console.js, console-image.js, broll.js   Unchanged client tooling
 library-src/            Component source of truth (moved out of public/)
+server/                 Shared by api/ and scripts: access keys, the bundle builder,
+                        generated/ (the catalogue with code, committed)
 public/library/items/   One JSON per component, fetched lazily for previews
 public/goodwork/        Client brand deliverables and the engine (starter, motion)
-docs/BACKEND.md         What still has to be built for accounts and downloads
+docs/BACKEND.md         How access and downloads work, the interim key store, what retires it
 ```
 
 ## Routes
@@ -86,7 +91,8 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
 - Analytics intent events (`page_view`, `library_preview`, `library_detail`,
   `library_filter`, `pricing_view`, `checkout_start`, `checkout_unavailable`,
   `service_enquiry_start/submit`, `agency_application_submit`,
-  `contact_submit`, `access_interest`) pushed to `window.dataLayer`, to
+  `contact_submit`, `access_interest`, `sign_in`, `download`, `library_copy`)
+  pushed to `window.dataLayer`, to
   `window.gwAnalytics.track` if defined, and as a `gw:track` DOM event. No
   provider is loaded until one is approved.
 
@@ -104,15 +110,22 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
   checkout call has not been exercised against a live Stripe account in this
   repository; the webhook's signature verification is Stripe's documented
   scheme implemented with Web Crypto.
+- Customer sign-in and the licensed download: `ACCESS_KEYS`, one
+  `library:<key>` or `studio:<key>` entry per purchase (generate a key with
+  the command in `.env.example`). Until then `/login` says access isn't
+  switched on yet and `/api/download` answers 503. Tested end to end: the API
+  harness signs in, downloads and validates the zip; the crawler drives the
+  sign-in form and the signed-in dashboard and item pages against a mocked
+  session.
 - The Content Console demo pages under `/goodwork/brands/` and the live
   B-roll panel: `DEEPSEEK_API_KEY`, `HIGGSFIELD_API_KEY`, `HF_CREDENTIALS`.
 
 **Deliberately not built yet, and said so on the site**
 
-- Customer accounts, sign-in, the protected dashboard's downloads and signed
-  delivery links. `src/lib/auth.js` is the contract; `docs/BACKEND.md` is the
-  work list and data model. `/login` explains the situation and takes an
-  email; `/dashboard` redirects to sign-in.
+- A database behind customer access. Sign-in, the dashboard and the licensed
+  download are real (above), but entitlements live in the `ACCESS_KEYS`
+  variable and keys are issued by hand from verified payments.
+  `docs/BACKEND.md` says exactly what retires that.
 - VAT wording. Prices are shown without any VAT statement until the business
   confirms its treatment.
 - Legal wording. Every legal page is a draft written to the commercial
@@ -136,6 +149,9 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
    them with real builds or remove them before launch.
 5. **Founder video.** Set `video` in `src/data/founder.js` and the section
    switches from the photograph to the film.
+6. **Issue the first access keys.** Set `ACCESS_KEYS` (see `.env.example`)
+   and redeploy. Your own key gives you the whole Library from the site;
+   each buyer gets one from their verified payment until the database exists.
 
 ## Content
 

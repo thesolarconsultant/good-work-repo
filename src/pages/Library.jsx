@@ -13,11 +13,14 @@ import { OFFER, LICENCE_PRINCIPLES } from "../data/offers";
 import { itemList } from "../lib/schema";
 import { track, EVENTS } from "../lib/analytics";
 import BuyButton from "../components/BuyButton";
+import { useSession } from "../lib/auth";
 import { Link } from "react-router-dom";
 
 const KEYS = ["q", "category", "tier", "type", "stack"];
 
 export default function Library() {
+  const session = useSession();
+  const owns = session.status === "authenticated" && session.entitlements.some((e) => e.productId === "library");
   const [params, setParams] = useSearchParams();
   const filters = useMemo(
     () => ({ q: params.get("q") || "", category: params.get("category") || "", tier: params.get("tier") || "", kind: params.get("type") || "", stack: params.get("stack") || "" }),
@@ -164,10 +167,16 @@ export default function Library() {
               <div className="gw-mt-4" style={{ maxWidth: 420 }}>
                 <Price amount={OFFER.library.price} billing="one-time" size="lg" />
                 <div className="gw-mt-3">
-                  <BuyButton productId="library" label={OFFER.library.primaryCta.label} />
+                  {owns ? (
+                    <Button to="/dashboard" size="lg" arrow>
+                      Open your dashboard
+                    </Button>
+                  ) : (
+                    <BuyButton productId="library" label={OFFER.library.primaryCta.label} />
+                  )}
                 </div>
                 <p className="gw-small gw-muted gw-mt-2">
-                  Already bought it? <Link className="gw-link" to="/login">Sign in</Link>. Want the systems too?{" "}
+                  {owns ? "You already have Library access." : <>Already bought it? <Link className="gw-link" to="/login">Sign in</Link>.</>} Want the systems too?{" "}
                   <Link className="gw-link" to="/studio">
                     Goodwork Studio is £888 one-time
                   </Link>

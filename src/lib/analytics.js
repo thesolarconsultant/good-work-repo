@@ -26,6 +26,9 @@ export const EVENTS = {
   AGENCY_APPLICATION_SUBMIT: "agency_application_submit",
   CONTACT_SUBMIT: "contact_submit",
   ACCESS_INTEREST: "access_interest",
+  SIGN_IN: "sign_in",
+  DOWNLOAD: "download",
+  LIBRARY_COPY: "library_copy",
 };
 
 export function track(name, props = {}) {

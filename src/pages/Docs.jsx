@@ -46,7 +46,7 @@ export default function Docs() {
               </nav>
               <div className="gw-card gw-card--flat">
                 <p className="gw-eyebrow">Customer downloads</p>
-                <p className="gw-small gw-body gw-mt-1">Source bundles are delivered through the customer dashboard once accounts are switched on. Until then, purchases are confirmed by email.</p>
+                <p className="gw-small gw-body gw-mt-1">Source bundles are delivered through the customer dashboard. Sign in with the access key from your purchase email; every download is authorised on the server when you ask for it.</p>
                 <div className="gw-mt-2">
                   <Button to="/login" variant="secondary" size="sm">
                     Sign in

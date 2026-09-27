@@ -14,7 +14,7 @@
 // VAT: no VAT wording anywhere until the business confirms its treatment.
 // =========================================================
 
-import { gbp, priceLabel } from "../lib/format";
+import { gbp, priceLabel } from "../lib/format.js";
 
 export const UPDATE_PERIOD_MONTHS = 12;
 

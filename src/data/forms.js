@@ -238,7 +238,7 @@ export const FORMS = {
   access: {
     id: "access",
     title: "Library access interest",
-    intro: "Online checkout and customer accounts are being switched on with the Library release. Leave an email and we'll tell you the moment they're live. Nothing is charged.",
+    intro: "Online checkout and customer access are being switched on with the Library release. Leave an email and we'll tell you the moment they're live. Nothing is charged.",
     submitLabel: "Tell me when it's live",
     successTitle: "Noted.",
     successCopy: "We'll email you once checkout and accounts are open. No marketing sequence, just that.",

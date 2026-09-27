@@ -12,7 +12,7 @@ export const DOCS = [
         h: "What you receive",
         p: [
           "Goodwork Library gives you the core component library, a curated set of quick-launch templates, responsive source code, live previews and the guidance on this site. Goodwork Studio adds the intelligent systems: WhatsApp bot, voice agent, Content Console, brand-guide system and automation blueprints, each with its own setup guide.",
-          "Downloads are delivered through your customer dashboard once accounts are switched on. Every file you download stays yours under the commercial licence.",
+          "Downloads come from your customer dashboard: sign in with the access key from your purchase email and the current bundle is one click away. Every file you download stays yours under the commercial licence.",
         ],
       },
       {

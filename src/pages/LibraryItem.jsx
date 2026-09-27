@@ -8,6 +8,7 @@ import BuyButton from "../components/BuyButton";
 import LibraryCard from "../components/LibraryCard";
 import LibraryPreview from "../components/LibraryPreview";
 import { useLibraryCode } from "../lib/libraryCode";
+import { useSession } from "../lib/auth";
 import NotFound from "./NotFound";
 import { ITEM_BY_SLUG, related, CATEGORY_NAME, STATUS_LABEL } from "../data/library";
 import { OFFER, LICENCE_PRINCIPLES, UPDATE_PERIOD_MONTHS } from "../data/offers";
@@ -27,6 +28,13 @@ export default function LibraryItem() {
   const [device, setDevice] = useState("desktop");
   const live = item && item.status === "available" && (item.kind === "component" || item.kind === "section");
   const { code } = useLibraryCode(live ? item.id : null, Boolean(live));
+  // Whether this visitor's key covers the item is the server's answer, not a
+  // flag in the browser; the download link goes back through /api/download,
+  // which checks the key again.
+  const session = useSession();
+  const [copied, setCopied] = useState(false);
+  const owns = Boolean(item) && session.status === "authenticated" && session.entitlements.some((e) => e.productId === item.tier || e.productId === "studio");
+  const download = owns && item.tier === "library" ? session.downloads.find((d) => d.product === "library") || null : null;
 
   useEffect(() => {
     if (item) track(EVENTS.LIBRARY_DETAIL, { item: item.slug, from: "page" });
@@ -43,6 +51,17 @@ export default function LibraryItem() {
   ];
   const excerpt = code ? code.split("\n").slice(0, 14).join("\n") : "";
   const truncated = code ? code.split("\n").length > 14 : false;
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      track(EVENTS.LIBRARY_COPY, { item: item.slug });
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   return (
     <>
@@ -135,16 +154,27 @@ export default function LibraryItem() {
                 </ul>
               </Reveal>
 
-              {/* Source excerpt — a look, not a download. Full source ships with access. */}
+              {/* Source: an excerpt for visitors; the whole snippet, with copy, once the server confirms access. */}
               {live && code && (
                 <Reveal variant="rise">
                   <div className="gw-code">
                     <div className="gw-code__bar">
-                      <span>Source excerpt · {item.bytes.toLocaleString("en-GB")} bytes</span>
-                      <span>Full source with {tierOffer.short} access</span>
+                      <span>
+                        {owns ? "Full source" : "Source excerpt"} · {item.bytes.toLocaleString("en-GB")} bytes
+                      </span>
+                      {owns ? (
+                        <button type="button" className="gw-code__copy" onClick={copy}>
+                          {copied ? "Copied" : "Copy code"}
+                        </button>
+                      ) : (
+                        <span>Full source with {tierOffer.short} access</span>
+                      )}
                     </div>
-                    <pre tabIndex={0}>
-                      <code>{excerpt}{truncated ? "\n…" : ""}</code>
+                    <pre tabIndex={0} className={owns ? "gw-code__full" : undefined}>
+                      <code>
+                        {owns ? code : excerpt}
+                        {!owns && truncated ? "\n…" : ""}
+                      </code>
                     </pre>
                   </div>
                 </Reveal>
@@ -163,23 +193,57 @@ export default function LibraryItem() {
 
             {/* Spec + purchase */}
             <aside className="gw-aside" aria-label="Product details">
-              <div className="gw-card">
-                <p className="gw-eyebrow">{item.status === "coming-soon" ? "Planned item" : "Get this item"}</p>
-                <h2 className="gw-h4 gw-mt-1">Included in {tierOffer.name}</h2>
-                <div className="gw-mt-2">
-                  <Price amount={tierOffer.price} billing="one-time" />
+              {owns ? (
+                <div className="gw-card gw-card--accent">
+                  <p className="gw-eyebrow gw-eyebrow--accent">Included in your access</p>
+                  <h2 className="gw-h4 gw-mt-1">{tierOffer.name}</h2>
+                  {download ? (
+                    <>
+                      <p className="gw-small gw-body gw-mt-2">
+                        This item ships in the {download.name} bundle: {download.items} components as paste-ready files, plus the offline gallery.
+                      </p>
+                      <div className="gw-mt-3" style={{ display: "grid", gap: "0.6rem" }}>
+                        <Button href={download.href} download={download.filename} block onClick={() => track(EVENTS.DOWNLOAD, { product: download.product, from: item.slug })}>
+                          Download the bundle <span aria-hidden="true">↓</span>
+                        </Button>
+                        <Button to="/dashboard" variant="secondary" block>
+                          Your dashboard
+                        </Button>
+                      </div>
+                      <p className="gw-small gw-muted gw-mt-2">
+                        <span className="gw-mono">v{download.version}</span> · checked on the server for every download.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="gw-small gw-body gw-mt-2">The system source is released into your dashboard as it ships; you'll be emailed when it does.</p>
+                      <div className="gw-mt-3">
+                        <Button to="/dashboard" variant="secondary" block>
+                          Your dashboard
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <p className="gw-small gw-muted gw-mt-2">{tierOffer.line}</p>
-                <div className="gw-mt-3" style={{ display: "grid", gap: "0.6rem" }}>
-                  <BuyButton productId={tierOffer.id} label={tierOffer.primaryCta.label} size="md" block />
-                  <Button to={`/login?next=/library/${item.slug}`} variant="secondary" block>
-                    Sign in to download
-                  </Button>
+              ) : (
+                <div className="gw-card">
+                  <p className="gw-eyebrow">{item.status === "coming-soon" ? "Planned item" : "Get this item"}</p>
+                  <h2 className="gw-h4 gw-mt-1">Included in {tierOffer.name}</h2>
+                  <div className="gw-mt-2">
+                    <Price amount={tierOffer.price} billing="one-time" />
+                  </div>
+                  <p className="gw-small gw-muted gw-mt-2">{tierOffer.line}</p>
+                  <div className="gw-mt-3" style={{ display: "grid", gap: "0.6rem" }}>
+                    <BuyButton productId={tierOffer.id} label={tierOffer.primaryCta.label} size="md" block />
+                    <Button to={`/login?next=/library/${item.slug}`} variant="secondary" block>
+                      Sign in to download
+                    </Button>
+                  </div>
+                  <p className="gw-small gw-muted gw-mt-2">
+                    Downloads are authorised server-side against your purchase. Nothing here is a public download link.
+                  </p>
                 </div>
-                <p className="gw-small gw-muted gw-mt-2">
-                  Downloads are authorised server-side against your purchase. Nothing here is a public download link.
-                </p>
-              </div>
+              )}
 
               <div className="gw-card gw-card--flat">
                 <dl className="gw-kv">

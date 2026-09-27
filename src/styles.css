@@ -794,3 +794,14 @@ body[data-gw-locked="true"] { overflow: hidden; }
 .gw-stack-sm { margin-top: 0.625rem; } .gw-stack-md { margin-top: 1.125rem; } .gw-stack-lg { margin-top: 2rem; }
 .gw-fact { display: block; }
 .gw-facts--pair { grid-template-columns: 1fr 1fr; }
+
+/* ---- Customer access: full-source panel, dashboard lists, inline loading ---- */
+.gw-code__copy { appearance: none; cursor: pointer; border: 1px solid var(--gw-line-strong); background: transparent; color: var(--gw-text); font-family: var(--gw-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.35rem 0.65rem; border-radius: 6px; transition: border-color var(--gw-fast), color var(--gw-fast); }
+.gw-code__copy:hover { border-color: var(--gw-accent-text); color: var(--gw-accent-text); }
+.gw-code__copy:focus-visible { outline: 2px solid var(--gw-accent-text); outline-offset: 2px; }
+.gw-code pre.gw-code__full { max-height: 720px; }
+.gw-list--plain { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; }
+.gw-list--plain li { padding: 0; }
+.gw-list--plain li::before { content: none; }
+.gw-route-loading--inline { min-height: 160px; }
+.gw-mb-3 { margin-bottom: 1.5rem; }

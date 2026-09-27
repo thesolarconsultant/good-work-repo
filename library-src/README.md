@@ -42,3 +42,12 @@ This folder was moved out of `public/` so the raw source file is no longer
 served at a guessable URL. `build-library.mjs` still builds the standalone
 gallery, now next to itself rather than into `public/goodwork/`; the gallery is
 not deployed.
+
+## The customer bundle
+
+What a customer downloads is generated from the same file: `npm run
+library:bundle` writes `dist-library/goodwork-library-<version>/` and its zip
+(an offline gallery, one paste-ready file per component, `components.json`,
+README and licence summary), and `api/download.js` builds the identical
+archive in memory for anyone whose access key checks out. Both go through
+`server/libraryBundle.js`, so there is one definition of the deliverable.
