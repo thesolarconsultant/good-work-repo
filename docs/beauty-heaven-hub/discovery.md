@@ -105,6 +105,13 @@ and where consent and medical forms are captured.
 peel courses, Profhilo, Hyaluronidase, Microneedling, Multi Vitamin Injectable, Vitamin B12, First Aid & Anaphylaxis,
 an **IQ Level 3 ATA course (£995)** and an **Ultimate Glow Up Course (£2,000)**.
 
+**Pre-course study runs on L3 Matrix** (told to us on 2026-10-01; not yet verified). L3 Matrix is an aesthetic-education
+platform run by Learn Group. This fits what the T&Cs and the Botox course page already say: pre-study must be finished
+before the classroom day, and a cancellation right ends once "login details for the online study platform" are issued.
+**Their L3 Matrix page has not been found.** It is a per-academy address and the platform only says to use the link
+from the academy's email. So the Academy is spread across **three systems that we cannot see joined up**: Phorest
+(booking and deposit), L3 Matrix (study and login), and the old website's empty "online courses" store.
+
 **Student models.** Twenty services such as *Botox Model 1 Area (£60)*, *Lip Filler Model (£50)* and *Lash Model (£20)* are
 **paid bookings for a member of the public to be the practice model** on a course day. That is a real booking channel,
 and the T&Cs already mention students needing models. How it is advertised and who books it is unknown.
