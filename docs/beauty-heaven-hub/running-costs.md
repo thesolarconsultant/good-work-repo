@@ -70,3 +70,22 @@ is covered by the £398 or sits under GOOD GROWTH.
   covers UK data transfers to the US and that call recordings and transcripts can be deleted on request.
 - **Sums:** 1,000 minutes at $0.14 is $140 plus telephony and the number. Against a flat $200 the saving is small once telephony is
   added, and the flat fee may include things this plan does not. Compare like for like.
+
+### Voice as a fallback only (user, 2026-10-01): out of hours and calls nobody answers
+Staff stay the first line, so minutes should be low. At Bland's Start rate of $0.14 a minute, and an assumed average of 2.5 minutes a
+call (an assumption, replace with real figures from interview B2), before number rental and telephony:
+| Calls the agent takes each week | Minutes a month | Cost a month at $0.14 |
+|---|---|---|
+| 20 | about 220 | about $30 |
+| 50 | about 540 | about $76 |
+| 100 | about 1,080 | about $152 |
+| 200 | about 2,170 | about $303 |
+- Break-even against a flat $200 is about 130 calls a week at 2.5 minutes. Below that, per-minute is cheaper.
+- At these volumes the fixed items (number, telephony, any plan fee) matter more than the minutes.
+- Spam and robocalls hit an unanswered line hardest. Keep a maximum call length, a silence timeout and a monthly cap.
+- **Dependency:** the phone provider must be able to forward calls that go unanswered or arrive out of hours (conditional forwarding).
+  Ask in interview B2.
+- **Wording:** the proposal says the agent "answers the calls that come in". A fallback-only role is narrower and lower risk. Say so to
+  Jess and Hollie so they expect the front desk to remain first line.
+- **When the agent cannot book:** it takes name, number and what they want, and a person calls back the next morning (the salon to
+  confirm the promised time).
