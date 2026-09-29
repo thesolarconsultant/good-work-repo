@@ -249,3 +249,17 @@ Notes:
 - **Only list courses confirmed as running.** Certificate and accreditation wording per the rule above.
 - **Give people without WhatsApp another way:** phone number and a short enquiry form, which the assistant also picks up.
 - **Students on L3 Matrix need a computer or tablet**, so the Academy page and the post-deposit email say so.
+
+## Gate: are the practitioners really independent? (user, 2026-10-01)
+The user's working view: practitioners probably control their own booking times, the risk sits with Beauty Heaven, and Beauty
+Heaven should be earning from the bookings it sends them. Whether they are truly self-employed, or self-employed in title but
+working in practice from Beauty Heaven's work, is a matter of the real facts, not the label. We do not decide it. The
+interview now has a **must-answer Part C (C1 to C10)** covering pay, who sets hours and prices, where clients come from,
+who takes payment, substitution, written terms, insurance and complaints. The owners should take advice from an accountant or
+employment adviser on the answers. If the facts show more employment-like control, that is a matter for the salon, and
+we do not raise it with practitioners.
+**Client photos wait for the answer.** We do not build photo intake until Part C is back.
+- If practitioners are genuinely independent: forward-only, and each keeps what they are sent as part of their own records.
+- If in practice they work for the salon: the salon is responsible for those records and must control where images sit.
+  Forwarding into personal WhatsApp is then too loose. Use a controlled store (private storage with short-lived links, or
+  the record in Phorest or the consultation app) with a set retention period.
