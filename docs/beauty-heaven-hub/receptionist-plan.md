@@ -290,3 +290,16 @@ Not the same for this job. The agent core is built channel-agnostic, with one ad
 - **Model access:** direct Anthropic API under a business account, or Amazon Bedrock inside AWS (check that the chosen models are
   available in the London region and what that does to cost).
 - Already on Vercel: the website and current functions. Agents could run there too, so AWS is a choice, not a need.
+
+### Hosting, revised: Vercel is a good fit (user, 2026-10-01)
+Vercel already hosts the site and deploys from `main`, so keeping the agents there means one place, one deploy, one set of
+environment variables. Prefer it unless a need below forces AWS.
+- **Plan:** commercial use needs a paid plan (the free Hobby plan is not for commercial use). Check current pricing. Put the
+  project in a team in Beauty Heaven's name or Good Work's, per the data agreement, with the other side as a member.
+- **Region:** set functions to London (lhr1). The database must also be London or EU.
+- **Database:** Vercel has none of its own. Add a managed Postgres from the Marketplace (for example Neon or Supabase), text only.
+- **Timing:** acknowledge a webhook fast, then finish the agent work after the response or through a queue. Check current function
+  duration limits. Scheduled posts use Vercel Cron plus a table of scheduled items. Use the Node runtime, not edge, for agent code.
+- **Voice:** if a hosted voice platform makes the call and calls our webhooks, no always-on server is needed.
+- **AWS only if:** we need a long-lived process (for example a streaming voice server), tighter audit and access controls, or
+  Bedrock inside the account.
