@@ -125,3 +125,15 @@ The user wants a record of conversations. Text transcripts only, in the small da
   separate logs with separate access.
 - **Calls:** recording audio is a separate decision with a spoken disclosure. Interview B10.
 - **Phorest:** a short summary goes on the booking note, so staff see it where they already look.
+
+## Who holds the records (2026-10-01)
+Beauty Heaven decides what is kept and why, so the salon is the data controller and Good Work, running the server and
+database, acts as its processor. In practice:
+- **A short written data agreement** between Beauty Heaven and Good Work covering what we process, for what, where it is
+  stored, who can see it, how long it is kept, what happens if either side ends the arrangement, and what we do if
+  something goes wrong. To be drafted, then checked by a solicitor.
+- **Hosting:** a UK or EU region, with access limited to named people at Good Work and the two owners.
+- **Their copy:** the owners can export their records on request, and everything is returned or deleted at the end.
+- **Their own notice:** the salon's privacy notice needs a line about the assistant and recorded conversations. We supply
+  the wording; they publish it.
+- The signed proposal does not mention any of this, so it goes in a short follow-up, not a reopening of the proposal.
