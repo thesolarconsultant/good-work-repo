@@ -48,7 +48,10 @@ Don't discuss accreditation as a problem, don't mention rebuilding the courses, 
 Jess or Hollie do every click on their own phone or laptop. You watch. Never log in as them, never take a password.
 - [ ] Meta Business portfolio created, business verification started (papers ready)
 - [ ] WhatsApp Business account created on the new number
+- [ ] **Before the visit, Good Work needs its own Meta Business portfolio and its Business ID** (Business Settings > Business info). Jess needs the ID to add us as a partner.
 - [ ] Good Work added as a partner in the portfolio
+- [ ] Instagram accounts are Professional (business or creator) accounts and linked to their Facebook Page, or posting through a scheduler will not work
+- [ ] Permissions given to Good Work: create and manage content, and the WhatsApp account. No ads, no payments, and Jess stays the owner
 - [ ] Facebook page and Instagram (beautyheavenuk, beautyheavenacademy): partner or task access
 - [ ] Phorest: Jess submits the API access request (text in `email-to-phorest.md`) through Phorest's support form, from the address on the account, with the account number
 - [ ] Phorest: a separate limited user for Good Work (not Jess's own login)
