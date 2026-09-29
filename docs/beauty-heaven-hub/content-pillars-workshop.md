@@ -3,16 +3,25 @@
 **Note:** the five pillars are not written down anywhere in the repo, so the set below is a **suggested starting point**, drawn from the
 strategy deck's own examples. Swap in the user's own five if they differ.
 
-## Suggested five pillars for Beauty Heaven
-1. **What actually happens.** Explain treatments and consultations step by step, bust myths, answer the questions people are afraid to
-   ask. (The deck's own example: "Nobody explains what actually happens at a consultation.")
-2. **The people.** The practitioners, their specialities and stories, a day in the life. Consent from anyone shown.
-3. **The place.** The rooms, the light, the details, what a visit feels like.
-4. **The Academy.** Course days, student journeys, models' experience, what learning here is like. Accurate wording only: no
-   "accredited" or "regulated" unless a certificate proves it.
-5. **Care and practical.** Aftercare, how to prepare, seasonal tips, what's coming up. Offers only for non-prescription treatments.
+## Four fixed pillars plus one surprise (user, 2026-10-01)
+Four pillars stay the same every week. The fifth changes weekly and comes out of that week's chat with Jess and Hollie.
+1. **What actually happens.** Treatments and consultations step by step, myths, the questions people are afraid to ask.
+2. **The people and the place.** The practitioners, their stories and specialities, the rooms, what a visit feels like. Consent from anyone shown.
+3. **The Academy.** Course days, student journeys, what learning here is like. Accurate wording only.
+4. **Care and practical.** Aftercare, preparation, seasonal tips, what's coming up. Offers only for non-prescription treatments.
+5. **The surprise pillar.** Each week the bot asks Jess and Hollie three or four quick questions in the chat (for example "what made you
+   laugh this week?", "what did a client ask that surprised you?", "what are you loving right now?"). Their answers become that week's
+   fifth theme. It can be posted as a recurring series with its own name, so followers look out for it.
 
-**Rules across all five:** no promises of results, no prices or offers for prescription-only treatments, nothing that identifies a
+**How the weekly chat works:** the bot asks on the agreed day; voice notes are fine; the bot turns the answers into 2 or 3 post ideas;
+they approve as usual. If nobody replies, the week runs on the four fixed pillars and nothing is invented.
+**Guardrails for the surprise pillar:** it is built only from what they said; no client names, stories or photos without written
+consent; the same advertising rules apply.
+
+**The bot's name:** pick together on the call. Ideas that fit "Heaven": Halo, Angel, Cloud, Hebe (the goddess of youth), Honey. Decide
+whether the client-facing receptionist uses the same name, and either way it tells clients it is an AI assistant.
+
+**Rules across all pillars:** no promises of results, no prices or offers for prescription-only treatments, nothing that identifies a
 client without written consent, real footage or clearly generated imagery only. Every item goes through the owners' approval.
 
 ## Homework for Jess and Hollie (message to send)
@@ -27,8 +36,8 @@ client without written consent, real footage or clearly generated imagery only. 
 > Ask the team too if anyone has a favourite thing to talk about or show. No polish needed, rough notes are perfect.
 
 ## In the session (about an hour)
-1. Read the five pillars and swap, rename or replace them. (10 min)
-2. For each pillar, pull 5 ideas from their homework. That gives 25 ideas, roughly a month. (25 min)
+1. Confirm the four fixed pillars, name the surprise series and pick the bot's name. (10 min)
+2. For each fixed pillar, pull 5 ideas from their homework, and agree the bank of weekly questions for the surprise pillar. (25 min)
 3. Agree the tone of voice and the never-say list. (10 min)
 4. Agree the weekly rhythm: which day the plan goes to them, when they approve, when posts go out. Start smaller than the target
    (for example 3 reels and 2 blogs a week) and scale on results. (10 min)

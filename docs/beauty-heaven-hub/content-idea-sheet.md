@@ -13,27 +13,26 @@ Explain a treatment or a visit step by step.
 - What is a myth you're tired of correcting?
 - What do people get wrong about consultations?
 
-## 2. The people
+## 2. The people and the place
 - Who on the team has a story worth telling, and what is it? (Ask them first.)
 - What is a treatment you're proud of, and why?
-- What does a normal day look like for you?
-
-## 3. The place
 - What would surprise someone walking in for the first time?
-- Which room, corner or detail do you love?
-- What do clients say about how it feels?
 
-## 4. The Academy
+## 3. The Academy
 - A moment from a course day you loved (only if everyone's happy to share it).
 - What do students say they were worried about beforehand?
 - What is it like to learn here that you can't get elsewhere?
 
-## 5. Care and practical
+## 4. Care and practical
 - The one aftercare tip you repeat every day.
 - How should someone prepare for their appointment?
 - What's coming up (seasons, events, new treatments)?
 
 ---
+
+## 5. The surprise pillar
+- Three questions you'd enjoy being asked each week (for example "what made you laugh this week?").
+- A name for the weekly series, and a name for the bot (ideas: Halo, Angel, Cloud, Hebe, Honey).
 
 ## Two more things
 - **Never post or say:** anything you'd hate to see on your page.
