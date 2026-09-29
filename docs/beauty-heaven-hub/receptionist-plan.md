@@ -326,3 +326,19 @@ environment variables. Prefer it unless a need below forces AWS.
 - **Housekeeping:** a second admin at Good Work for continuity, 2-step sign-in on every account, least-privilege access, and
   secrets kept separate per project.
 - If the future product idea goes ahead and Beauty Heaven owns the code, the project moves to their account then.
+
+## Marketing (GOOD GROWTH): the gate (user, 2026-10-01)
+Marketing is considered only once the build is running and only if the numbers make sense. If practitioners are self-employed, the
+cost could be split per person.
+- **Test before selling:** for each service line, average price, margin, how often a client returns, and what a booking is
+  worth. Break-even is spend divided by margin per booking, so we know how many extra bookings a month must be won.
+  Data needed from Phorest (export or API): revenue by staff and service, client counts, last-visit dates, and marketing consent.
+- **Source tags from day one** (site, phone, WhatsApp, own link) so that in a few months we can show which channels bring
+  bookings. Without them the numbers cannot be judged.
+- **Cheapest first:** organic content, then email and WhatsApp to lapsed clients who have opted in, then paid ads.
+- **Paid ads:** Meta has tight rules on health and injectable treatments. Check before promising any.
+- **Splitting the cost:** pooled budgets work better than a small budget per person, so run one campaign and allocate cost by
+  agreed share (for example bookings or opt-in tier). Options: (1) base package for the salon plus optional practitioner
+  add-ons (recommended); (2) each practitioner buys directly from Good Work; (3) the salon buys and recharges (the salon-control
+  and status question applies).
+- **Opt-in only**, in writing, and the owners' decision.
