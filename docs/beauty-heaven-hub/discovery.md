@@ -174,11 +174,12 @@ and the old website's empty "online courses" store.
   Certificates must come from somewhere else (made by the Academy, or issued by an awarding body). The library does
   contain items named "Certificate Time" and "CONGRATS LET GET A CERTIFICATE", which may be a step telling students to
   request one. Who issues certificates, in what format, and under whose name is unknown.
-- **Idea (user, 2026-10-01): offer a branded certificate template as an unpriced extra**, not a replacement for L3 Matrix.
-  Fits the finding that the platform issues no certificates. Rules if we build it: it must say only what the Academy can
-  prove (for example "Certificate of Completion"); no accreditation wording or logos unless they hold the right to use
-  them; a unique reference number on each; issued only when the Academy confirms completion; we produce the design and
-  the file, and the Academy decides who gets one. Inputs are asked in interview question A17.
+- **Idea (user, 2026-10-01): a branded certificate template, held back as a possible unpriced extra.** We do **not**
+  raise it in the interview or offer it up front. If Jess or Hollie ask, we agree a design with them, then a certificate is
+  produced from a few typed details (student name, course, date, hours, reference number). It fits the finding that the
+  platform issues no certificates. Rules if we build it: it says only what the Academy can prove (for example
+  "Certificate of Completion"); no accreditation wording or logos unless they hold the right to use them; a unique
+  reference number on each; issued only when the Academy confirms completion.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
