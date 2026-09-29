@@ -26,3 +26,22 @@ Not needed now: card-payment accounts. Treatment payments run through Phorest.
 > site, your Google Business Profile, Facebook and Instagram, and a new WhatsApp Business account for the assistant, which we'll
 > walk you through creating. And when you're ready, the email to Phorest asking for API access, which I'll send you the wording for.
 > I'll write down exactly what we've been given and when.
+
+## Doing it in person (decided 2026-10-01)
+Jess or Hollie do every click on their own phone or laptop. We watch, and we never log in as them or take a password.
+
+**Have ready before you start**
+- Phones charged and to hand (login codes), and a charger.
+- **For Meta business verification:** the legal business name, the address, and a company number, VAT number or recent utility bill in the
+  business's name. Also one email address at their own domain to use for the account. They have three, so pick the real one.
+- **The WhatsApp number.** Start with a **new dedicated number** for the assistant (it cannot already be registered on the ordinary
+  WhatsApp app). Decide later whether to move the main salon number across, and check whether Meta lets the Business app and the
+  assistant share a number.
+- **For the Phorest request:** Jess sends it from the address that is on the Phorest account, with the account number.
+- Who holds the domain, Google and Wix logins (interview A14), or their names so we can chase them.
+
+**Order:** Meta Business portfolio and WhatsApp Business account first (verification takes days), then Phorest email, then Google and
+Facebook and Instagram partner access, then the domain, then the rest.
+
+**Phorest and L3 Matrix:** ask each of them to create a separate limited user for Good Work, and don't use Jess's own login.
+Tick each item off the table above as it is done and note the date.
