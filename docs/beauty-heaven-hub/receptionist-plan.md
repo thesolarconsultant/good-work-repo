@@ -137,3 +137,18 @@ database, acts as its processor. In practice:
 - **Their own notice:** the salon's privacy notice needs a line about the assistant and recorded conversations. We supply
   the wording; they publish it.
 - The signed proposal does not mention any of this, so it goes in a short follow-up, not a reopening of the proposal.
+
+### Caveat: most practitioners are self-employed (2026-10-01)
+The section above assumes the salon alone decides what is kept. Self-employed practitioners run their own businesses, so for
+their own clients they may be **separate controllers**, or **joint controllers** with the salon. It depends on whose
+clients they are, who holds the client relationship, and who keeps the treatment records. Working assumption to check with
+an adviser:
+- **The salon** controls the enquiry and booking side: the WhatsApp number, the phone line, the diary in Phorest and the
+  conversation records.
+- **Each practitioner** is responsible for their own clinical records once a client proceeds, including any photo they
+  choose to save, and for their own insurance.
+- **Routing a client's photo to a practitioner is a disclosure to another business.** The consent message must say who will
+  see it ("the practitioner who will do your consultation"), not just "the salon".
+- The salon may need a short agreement with its practitioners about client data, and the membership idea would sit
+  alongside that. Keep this separate from any fee tied to bookings, which raises the HMRC status point above.
+Interview B15 now asks whose clients they are and who keeps the records.
