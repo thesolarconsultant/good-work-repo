@@ -12,7 +12,7 @@ and remove it when the work ends. Good Work should use a shared team address, no
 | 4 | Meta Business portfolio | Jess (to create) | Partner access for Good Work; task access to the Facebook page and Instagram | WhatsApp Business account, posting |
 | 5 | WhatsApp Business account and number | Jess (to create in the portfolio) | Admin on the account in their portfolio | Client and staff assistant |
 | 6 | Google Business Profile, Analytics, Search Console | ? | Manager or user invites | Site, reviews, search |
-| 7 | Social accounts to post to (Instagram, Facebook, TikTok, others) | ? | Connected to the posting scheduler by an owner signing in themselves | Scheduled content |
+| 7 | Social accounts to post to: Instagram and Facebook (Meta), TikTok, YouTube | ? | Each in the salon's name, with **two owners** (Jess and Hollie). TikTok: a business account. YouTube: a **Brand Account** channel so managers can be added without sharing a login. Each connected to the posting scheduler by an owner signing in themselves. | Scheduled content |
 | 8 | Phone provider | ? | An authorised person asks for call forwarding to the voice agent number | Voice agent |
 | 9 | Consultation app | ? | Its name, and read-only access if it stays | Consultation and consent records |
 | 10 | L3 Matrix | Jess | A view-only or learner account by invitation | Academy pages, post-deposit email |
@@ -45,3 +45,11 @@ Facebook and Instagram partner access, then the domain, then the rest.
 
 **Phorest and L3 Matrix:** ask each of them to create a separate limited user for Good Work, and don't use Jess's own login.
 Tick each item off the table above as it is done and note the date.
+
+### Channels decided so far: Meta (Facebook and Instagram), TikTok, YouTube, Google Business Profile
+- **Check before promising:** what the chosen scheduler supports on each (Instagram Reels, TikTok, YouTube Shorts, Google Business posts).
+  TikTok in particular has approval rules for apps that post on someone's behalf, so posts through an unapproved tool may be private only.
+- **Repurpose, don't duplicate:** one reel cut for Instagram, Facebook, TikTok and YouTube Shorts, each with its own caption, exported
+  clean (no other platform's watermark). Google Business gets a short post with a photo and a booking link.
+- **The advertising rules for prescription-only treatments apply on every platform.**
+- **Two owners on every account**, and 2-step sign-in on each.
