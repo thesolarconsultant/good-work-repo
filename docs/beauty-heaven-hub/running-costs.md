@@ -89,3 +89,24 @@ call (an assumption, replace with real figures from interview B2), before number
   Jess and Hollie so they expect the front desk to remain first line.
 - **When the agent cannot book:** it takes name, number and what they want, and a person calls back the next morning (the salon to
   confirm the promised time).
+
+## Estimate of the monthly running cost (Claude's estimate, 2026-10-01; not quotes)
+Excludes the user's time and the optional images add-on. Rough pounds; exchange rates move. Subscription prices are from memory
+(Vercel Pro about $20 a seat, Supabase Pro about $25, Resend paid about $20): check each.
+| Line | Lean | Expected | Busy |
+|---|---|---|---|
+| Voice, fallback only (about 20 / 50 / 100+ calls a week) | £25 | £60 | £120 |
+| Model usage: receptionist chats | £15 | £35 | £80 |
+| Model usage: content (blogs, captions, ideas) | £10 | £20 | £40 |
+| WhatsApp messages we start | £5 | £15 | £30 |
+| Vercel | £16 | £16 | £30 |
+| Supabase | £20 | £20 | £20 |
+| Posting scheduler | £10 | £20 | £30 |
+| Email sending | £15 | £15 | £25 |
+| Phone number, telephony, domain | £10 | £15 | £20 |
+| **Total** | **about £125** | **about £215** | **about £395** |
+- **Not included:** AI video (could add £50 to £300 or more a month at 5 reels a week; avoid by using practitioners' clips) and the
+  images add-on.
+- **Time:** setup is large. Ongoing work (monitoring, approvals, fixes, the monthly report) might be 4 to 8 hours a month. At £50 an
+  hour that is £200 to £400, which is why £398 leaves little or no margin once time is counted, especially in the first three months.
+- **Biggest swings:** voice volume, content volume, and any AI video.
