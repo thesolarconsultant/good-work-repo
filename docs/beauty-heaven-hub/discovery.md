@@ -117,6 +117,25 @@ not log in and did not use password reset (it emails the account owner). What is
 spread across **three systems that we cannot see joined up**: Phorest (booking and deposit), L3 Matrix (study and login),
 and the old website's empty "online courses" store.
 
+**Inside L3 Matrix: the course library** (pasted by the user from Jessica's account on 2026-10-01; full list in
+`l3-matrix-course-list.txt`). Course names only; nothing else seen, and no student data.
+- **About 100 items, not 30 courses.** Each Phorest course is built from several separate items: a *welcome video*, a
+  *pre-study*, a *timed exam*, sometimes a *Part 2*, a *certificate* item and a *please read* notice. Roughly 9 welcome
+  videos, 19 pre-study items and 33 exam or quiz items.
+- **It is a working library, not a tidy catalogue.** Names like "Copy of…", "…new", "…f1", "…-PP", "…SP" and trailing
+  dashes point to old versions and duplicates: 5 items start "Copy of", 12 are First Aid variants, 10 are B12 variants,
+  and there are at least 3 welcome videos for the same purpose. We cannot tell which are live and which are retired.
+- **Subjects covered:** foundation and advanced anti-wrinkle (chin, jaw, cheek), foundation fillers, Sunekos, Profhilo,
+  B12, biotin, fat dissolve, first aid, microneedling, mesotherapy, PDO, PRP, phlebotomy, IV, non-surgical rhinoplasty,
+  tear trough, hyaluronidase, lido, polynucleotides, Kenalog, microblading, dermaplaning, Lumi Eyes, BBL, Russian lip,
+  NYTOX, anatomy and physiology, vascular system of the face, and a Level 3 conversion course.
+- **Some of these do not match a course in the Phorest export.** A first check found no Phorest course named Sunekos,
+  PRP, PDO, phlebotomy, Kenalog, polynucleotides, tear trough, fat dissolve, mesotherapy or IV (that search only looked at
+  course-like items, so treat it as "ask", not "missing"). Either they are taught but sold another way, or they are
+  old. The site must not list a course until we know it is running.
+- **Not yet known:** whether the list has more pages (the screen shows 100 per page), what "Action" allows, how a student
+  is enrolled, and what the platform costs.
+
 **Student models.** Twenty services such as *Botox Model 1 Area (£60)*, *Lip Filler Model (£50)* and *Lash Model (£20)* are
 **paid bookings for a member of the public to be the practice model** on a course day. That is a real booking channel,
 and the T&Cs already mention students needing models. How it is advertised and who books it is unknown.
