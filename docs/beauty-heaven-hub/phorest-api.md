@@ -159,3 +159,35 @@ from Phorest and write changes back into it.
 - **A switch per automation**, so any one can be paused instantly.
 - **A dedicated test client** for anything that writes to the diary.
 - **The agent only books what Phorest marks bookable online** (`internetEnabled`) and follows the consultation rules.
+
+---
+
+## Online booking today, and how the website should link to it
+
+Read from the live booking page and Phorest's help centre on 2026-10-01. **Read-only. Nothing was booked and no
+details were entered.**
+
+- **Their page:** `https://www.phorest.com/salon/beautyheaven1`. The Phorest subdomain is **`beautyheaven1`**.
+- **The flow a customer sees:** one long list of all **33 categories** with the services inside, then **Select
+  Staff**, then date and time. Choosing *Dermal Fillers > Consultation* offers only **Hollie**, **Jessica** or "no
+  preference", so online consultations for fillers appear to be with those two. **Confirm with them.**
+- **Floating "Book Now" widget:** a two-line snippet, `new OBWidget('beautyheaven1')`. **It works on desktop only.
+  On mobile it opens Phorest's page in a new tab.** Their brand colour and the widget colour are set under
+  Manager > Settings > Online.
+- **iFrame embed:** possible, but Phorest itself recommends against it.
+- **Direct links exist** for a service (copied from Manager > Services > Online & App), a **category**
+  (`https://www.phorest.com/salon/beautyheaven1/book/categories/<categoryID>`), a package, an offer, a product
+  and a **staff member**.
+- **The booking page itself is hosted by Phorest.** The only styling we control is the brand colour.
+
+### What that means for the site
+
+1. **Send people to the right place, not the bare booking page.** Every treatment page gets "Book this
+   treatment" pointing at its category or service link. Every team page points at that person's link. This skips
+   the 33-category list, which is long and awkward on a phone.
+2. **Use our own buttons, not the floating widget.** Most clicks come from phones, and on a phone the widget just
+   opens a new tab anyway. Our buttons behave the same everywhere.
+3. **Set Phorest's brand colour to match the site**, since it is the only control we get.
+4. **Category IDs can be listed through the API** once we have access. Until then they have to be read from
+   Manager. Service links can only be copied one at a time, so start with the 33 categories and around ten
+   headline services.
