@@ -44,6 +44,16 @@ Everything for the day in one place. Print it. Nothing here is for Jess and Holl
 5. **Leave the rest** (the website part, the rest of the bookings part, the Drive setup, TikTok and YouTube) for a second short call or for them to finish at home.
 Ask at the start how long they really have, and plan to that.
 
+### Thursday shortlist, if access setup and the pillar ideas are done beforehand (script question numbers)
+- **Website part, ask in person (about 10 min):** A1 who is answering, A2 the goal, A3 the mock-up reaction, A5 location (Hoddesdon or
+  Wombwell), A7 what to do about prices, A9 proof, A11 how the Academy works, A13 contact and rules, A16 approvals and launch date.
+- **Leave for them at home, or for Claude to draft and them to approve:** A4, A6, A8, A10, A12. Already covered by the pre-visit tasks: A14, A15.
+- **How the practitioners work:** C1 to C10, all of them (about 15 min).
+- **Bookings part, ask in person (about 20 min):** B1 to B7, B9, B10, B12, B13, B14. Skip B11 (the request is already sent) and B8 (they bring the
+  ten questions).
+- **Then:** Meta Business and WhatsApp setup (about 30 min), and the closing Academy question.
+Total about 80 to 90 minutes, plus the break.
+
 ## 3. Talking about the Academy, honestly
 You don't need to seem naive. You are genuinely new to how the Academy works, so ask like it:
 - "Walk me through what happens when someone wants a course, from the first message to their last day, so the website explains it properly."
