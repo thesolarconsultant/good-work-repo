@@ -75,3 +75,50 @@ Bookings can be `ACTIVE` or `RESERVED`. A reserved booking holds a slot until ac
 >
 > Thank you,
 > [Name]
+
+---
+
+## Triggered email: what Phorest lets us detect
+
+Read from the API spec on 2026-10-01. **Not tested**, because we have no credentials.
+
+Phorest has **no webhooks in its docs**, so triggers work by **polling for what changed**:
+
+- **Appointments** can be listed with `updated_from` / `updated_to`, `from_date` / `to_date`, `client_id`, and `fetch_canceled`.
+  Each has `state` (`BOOKED`, `CHECKED_IN`, `PAID`), `activationState` (`RESERVED`, `ACTIVE`, `CANCELED`),
+  `createdAt`, `updatedAt`, `serviceName`, `serviceId`, `clientId`, `confirmed`, and `depositAmount`.
+- **Clients** can be listed with `updatedAfter` / `updatedBefore`, `email`, `phone`. Each has `clientSince`,
+  `firstVisit`, `lastVisit`, `emailMarketingConsent`, `smsMarketingConsent`, and `clientCategoryIds`.
+
+The API returns current state, not events. To spot a transition (for example `CHECKED_IN` to `PAID`), we keep
+the last state we saw, so we need a small database. The same store records what we have already sent, which
+stops duplicates.
+
+| Trigger | How we spot it | Email |
+|---|---|---|
+| New client | `clientSince` recent, nothing sent before | Welcome |
+| Treatment finished | Appointment `state` becomes `PAID` | Aftercare for that treatment, then a review request a few days later |
+| Annual top-up due | `PAID` semi-permanent appointment about 11 months ago (Phorest lists "Annual Top Up" at £140) | Top-up reminder |
+| Lapsed client | `lastVisit` older than N months | Re-engagement (**needs marketing consent**) |
+| Cancellation | `activationState` becomes `CANCELED` | Rebooking nudge |
+
+`PAID` means paid at the till, which is close to "treatment finished" but not the same thing.
+
+### Rules
+
+- **Marketing-type emails go only to clients with `emailMarketingConsent: true`.** Aftercare with no promotion
+  is service information, but keep it clean. Every marketing email carries an unsubscribe that **writes back**
+  to Phorest. The client update endpoint exists. **Confirm the consent fields are writable before promising this.**
+- **Phorest's own automated emails keep sending unless switched off.** Replacing one means disabling the
+  Phorest version, or the client gets both. Keep Phorest's reminders and confirmations if they carry
+  confirm, cancel or reschedule links (**check that they do**).
+- **Whether Phorest offers an event feed** (the FAQ hints at one) would replace polling with instant triggers.
+  It is already asked in the access-request email.
+- **Scope:** define a fixed set of automations in the build (welcome, aftercare, review request, top-up
+  reminder). Extra flows and campaign content sit under GOOD GROWTH.
+
+### Templates
+
+Our welcome email is table-based with inline styles and Outlook conditionals, so it survives real email
+clients. Its merge tags are **GoHighLevel syntax**, but Beauty Heaven uses Phorest, so they need remapping to
+whichever sender we choose. It has no dark-mode support yet.
