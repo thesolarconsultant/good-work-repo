@@ -214,6 +214,7 @@ Prices are as shown on the public Phorest page on 2026-09-29. "from" means Phore
 - Refresh Toner with Autumn — £15
 - Regrowth Tint with Louise — £65
 - Root Smudge and Toner with Louise — £32
+- Root Tint with Autumn — £40
 - Root Smudge Toner With Anastasia — £0 listed (no price set)
 - Roots Only Tint With Anastasia — £0 listed (no price set)
 - Scalp Bleach with Louise — £72
