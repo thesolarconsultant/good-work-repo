@@ -170,6 +170,10 @@ and the old website's empty "online courses" store.
   was too generous. "L3" in course names may just be the platform brand, not a Level 3 qualification.
   **Until a certificate shows a named body, the site should say "certificate of completion", not "accredited" or
   "regulated".**
+- **Certification page is empty (user, 2026-10-01).** So no certificates are set up or issued through this account.
+  Certificates must come from somewhere else (made by the Academy, or issued by an awarding body). The library does
+  contain items named "Certificate Time" and "CONGRATS LET GET A CERTIFICATE", which may be a step telling students to
+  request one. Who issues certificates, in what format, and under whose name is unknown.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
