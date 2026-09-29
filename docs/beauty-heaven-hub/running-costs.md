@@ -105,8 +105,20 @@ Excludes the user's time and the optional images add-on. Rough pounds; exchange 
 | Email sending | £15 | £15 | £25 |
 | Phone number, telephony, domain | £10 | £15 | £20 |
 | **Total** | **about £125** | **about £215** | **about £395** |
-- **Not included:** AI video (could add £50 to £300 or more a month at 5 reels a week; avoid by using practitioners' clips) and the
-  images add-on.
+- **Not included:** AI video and images from Higgsfield. The earlier figure of £50 to £300 a month was a guess and is withdrawn: the real
+  cost depends on the user's own Higgsfield plan (currently Plus, about 480 credits) and what each clip costs in credits, which we have
+  not checked. Working from real photos on an existing plan may cost very little.
 - **Time:** setup is large. Ongoing work (monitoring, approvals, fixes, the monthly report) might be 4 to 8 hours a month. At £50 an
   hour that is £200 to £400, which is why £398 leaves little or no margin once time is counted, especially in the first three months.
 - **Biggest swings:** voice volume, content volume, and any AI video.
+
+## Models: API, not a Claude subscription (2026-10-01)
+The user suggested putting the salon on a Claude membership at about £150 a month to run the bots, and also using it themselves.
+- A subscription login is for one person using Claude interactively, with usage limits. It is not built for an unattended service
+  answering a business's customers. Check Anthropic's current terms, but the safe route is the API under a business account, billed
+  per use.
+- Sharing one login between the salon's bots and the user's own work mixes client conversations into a personal account, which is a
+  data-protection problem, and a usage cap could silently stop the receptionist mid-day.
+- The API line in the estimate above (receptionist about £15 to £80, content about £10 to £40) is likely cheaper than £150 anyway.
+- The user's total of about £220 (servers £70 plus £150 for Claude) and the estimate of about £215 agree on the total but not on what
+  is in it: the £150 line becomes API usage, and the rest goes on voice, WhatsApp messages, the scheduler and email.
