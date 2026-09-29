@@ -56,3 +56,17 @@ is covered by the £398 or sits under GOOD GROWTH.
   data location and a data agreement.
 - **Protect against spikes:** maximum call length, silence timeout, spam-call filtering, and a monthly spend cap with an alert.
 - **Real volume:** the salon's calls per week and length are asked in interview B2. Use that, not a guess.
+
+### What Bland's public pricing page says (read in this session; prices change, re-check before deciding)
+- **Start:** $0.14 a minute, $0 platform fee, transfer minutes $0.05, 10 concurrent calls, **100 calls a day cap** (a plan limit, not a
+  volume), an inbound number included in the sign-up credits (valued at $15 a month).
+- **Build:** $0.12 a minute plus **$299 a month**, 2,000 calls a day, 50 concurrent calls.
+- **The per-minute rate covers the model, speech-to-text and text-to-speech. Telephony is billed separately**, either Bland's Twilio at
+  pass-through cost or your own carrier. So $0.14 is not all-in.
+- **Marked as Enterprise-only on the comparison table** (not on Start or Build): warm and live transfers, guardrails ("protected calls"),
+  alarm and monitoring, the appointment scheduling node, in-call SMS, **data residency**, BAA and SSO. Confirm whether a basic transfer
+  to a human works on Start, since a transfer rate is listed.
+- They state SOC 2, HIPAA-eligible with a BAA, GDPR and PCI compliance, and publish a DPA and a sub-processor list. Check that the DPA
+  covers UK data transfers to the US and that call recordings and transcripts can be deleted on request.
+- **Sums:** 1,000 minutes at $0.14 is $140 plus telephony and the number. Against a flat $200 the saving is small once telephony is
+  added, and the flat fee may include things this plan does not. Compare like for like.
