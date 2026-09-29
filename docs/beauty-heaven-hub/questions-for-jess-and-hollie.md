@@ -1,5 +1,7 @@
 # Questions for Jess and Hollie
 
+> **Superseded** by `chatgpt-interview-prompt.md` (a ChatGPT interview in two parts). Kept as a WhatsApp fallback.
+
 Paste into WhatsApp as one message. Formatted with WhatsApp bold (`*like this*`). Answers come back
 in the same thread, so nothing else is needed to get a copy.
 
