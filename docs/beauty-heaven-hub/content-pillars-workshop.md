@@ -45,3 +45,13 @@ client without written consent, real footage or clearly generated imagery only. 
 
 ## Output to the console
 Pillars, the ideas bank, the tone and never-say lists, the approval rules and the weekly schedule go into the Content Console as its templates.
+
+## Stories and posting volume (user idea, 2026-09-29)
+User's idea: promo items on Stories, and 3 posts a day with Stories inside that.
+- **Stories are the right home for promos:** they disappear in 24 hours, can be lighter and more frequent, and carry polls, questions,
+  countdowns and link stickers. Daily Stories (3 to 5 frames) can sit on top of the feed plan.
+- **Feed volume:** 3 feed posts a day is about 21 a week, each needing approval. Suggest starting at 1 feed post a day plus daily Stories,
+  and scaling if engagement and approvals keep up. Save the best to Highlights (treatments, Academy, reviews, aftercare).
+- **Check before promising:** whether the scheduler can publish Stories automatically, and whether link stickers and polls survive
+  automated posting. If not, Stories are drafted by the bot and posted by the team by hand, a two-minute job.
+- **Promo rules:** offers only for non-prescription treatments; no prices or offers for anti-wrinkle, fillers or weight-loss injections.
