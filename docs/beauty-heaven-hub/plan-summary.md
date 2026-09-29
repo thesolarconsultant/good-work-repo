@@ -22,7 +22,8 @@ Files: `receptionist-plan.md`, `content-pillars-workshop.md`.
 - **Fifth, the surprise pillar:** the bot asks three or four quick questions each week; the answers become that week's theme and a named series.
 - **Bot name:** chosen with them (ideas: Halo, Angel, Cloud, Hebe, Honey). It always tells clients it is an AI.
 - **Channels:** Instagram and Facebook, TikTok, YouTube (Shorts), Google Business. One reel cut for each, own caption, no watermarks.
-- **Volume:** start around 3 reels and 2 blogs a week, then scale on results. Real clips from the team over AI video.
+- **Volume (decided):** 1 feed post a day, 1 Story a day, 3 reels a week, 2 blogs a week, approved in one weekly batch. Stories carry the
+  promos. Real clips from the team over AI video.
 - **Rules:** no results promises, no prices or offers for prescription-only treatments, consent for anyone shown.
 Files: `content-pillars-workshop.md`, `content-idea-sheet.md`.
 

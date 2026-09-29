@@ -55,3 +55,9 @@ User's idea: promo items on Stories, and 3 posts a day with Stories inside that.
 - **Check before promising:** whether the scheduler can publish Stories automatically, and whether link stickers and polls survive
   automated posting. If not, Stories are drafted by the bot and posted by the team by hand, a two-minute job.
 - **Promo rules:** offers only for non-prescription treatments; no prices or offers for anti-wrinkle, fillers or weight-loss injections.
+
+## Decided weekly volume (user, 2026-09-29)
+**1 feed post a day, 1 Story a day, 3 reels a week, plus 2 blogs a week** (blogs as before; confirm on the call).
+Read as: 7 posts (carousels or single images), 7 Stories and 3 reels each week. Reels are cut once and shared to TikTok, YouTube Shorts
+and Facebook. Stories carry the promos (non-prescription treatments only) and the surprise-pillar questions.
+**Approval:** the whole week goes to Jess and Hollie in one batch on their agreed day, so it is one sitting, not a daily task.
