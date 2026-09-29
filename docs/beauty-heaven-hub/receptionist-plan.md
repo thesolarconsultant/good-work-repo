@@ -109,3 +109,19 @@ Limits to be honest about, and to reflect in the consent message (never promise 
   between messages), consent records and the routing log.
 - **If a stored copy is ever wanted,** use a private bucket with short-lived links and auto-delete. Google Drive only as
   a pilot, on a business Workspace account with link sharing off.
+
+## Conversation records (decided 2026-10-01: we keep them)
+The user wants a record of conversations. Text transcripts only, in the small database we already need.
+- **What is kept:** WhatsApp messages and call transcripts, with time, channel and the phone number. A photo appears only
+  as a placeholder ("photo sent, forwarded to X at 14:02"). Audio is not kept unless the salon decides to record calls.
+- **Why:** proof of what was said and agreed (deposits, cancellation, consent), context when a person takes over,
+  reviewing the assistant's mistakes, and the agent's own memory between messages.
+- **These are personal data, and sometimes health data** (clients describe conditions in text). Needs: a plain notice at
+  the start ("this chat is handled by an assistant and the conversation is recorded"), a stated purpose, a retention period
+  the salon chooses (for example 12 months for general enquiries, longer where it feeds a clinical record, confirmed with
+  their insurer), a way to find and delete one person's messages on request, and access limited to the owners and the
+  practitioner a client was routed to. Confirm the wording with a data-protection adviser. This is not legal advice.
+- **Never used for:** training, marketing, or the content agents. Client chats and the owners' operator chat are kept in
+  separate logs with separate access.
+- **Calls:** recording audio is a separate decision with a spoken disclosure. Interview B10.
+- **Phorest:** a short summary goes on the booking note, so staff see it where they already look.
