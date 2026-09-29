@@ -315,3 +315,14 @@ environment variables. Prefer it unless a need below forces AWS.
 - **Ownership:** create the Supabase organisation in the name agreed in the data agreement, with the other side as a member.
   Both vendors go on the privacy notice as sub-processors.
 - **First tables:** staff allowlist; contacts; messages; consent records; routing log; content calendar and approvals; audit log.
+
+### Decision: whose accounts (2026-10-01)
+- **Runs under Good Work's Vercel team and Supabase organisation, one separate project per client**, never a shared database.
+  Hosting is included in the £398, so Good Work pays and it is simplest to bill. Named clearly, London region.
+- **Beauty Heaven's business assets stay in Beauty Heaven's name:** the domain, the Meta Business portfolio and the WhatsApp
+  Business account, the social accounts, Google Business Profile, Stripe and the Phorest account. Good Work is given access.
+- **Written into the data agreement:** Good Work is the processor, hosting is described, and on request or at the end the
+  project is transferred to Beauty Heaven's own account (both vendors support project transfers; confirm) or exported and deleted.
+- **Housekeeping:** a second admin at Good Work for continuity, 2-step sign-in on every account, least-privilege access, and
+  secrets kept separate per project.
+- If the future product idea goes ahead and Beauty Heaven owns the code, the project moves to their account then.
