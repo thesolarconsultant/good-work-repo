@@ -58,6 +58,7 @@ Jess or Hollie do every click on their own phone or laptop. You watch. Never log
 - [ ] Wix site: collaborator invite
 - [ ] Phone provider: who to call about forwarding unanswered and out-of-hours calls
 - [ ] Consultation app: its name, and what they pay
+- [ ] Google Drive: a shared content folder in a Google account the salon owns, with `Inbox` and `Approved` folders and a consent sheet (see `receptionist-plan.md`, content inbox)
 Record each item with the date and who did it.
 
 ## 5. What to look at while you are there
@@ -66,6 +67,7 @@ Record each item with the date and who did it.
 - A client card in Phorest: does it hold photos or forms?
 - The consultation app (screen only, no client data).
 - The salon's insurance certificate on the wall or in a folder.
+- Where the photos and videos live now, who took them, and whether the practitioners are happy for the salon to use the ones they took. Ask who is allowed to move things into `Approved`.
 
 ## 6. Rules for the day
 - Don't quote a price or a fee change. Don't raise practitioner fees or memberships. Wait for the results.

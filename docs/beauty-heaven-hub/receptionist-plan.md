@@ -342,3 +342,22 @@ cost could be split per person.
   add-ons (recommended); (2) each practitioner buys directly from Good Work; (3) the salon buys and recharges (the salon-control
   and status question applies).
 - **Opt-in only**, in writing, and the owners' decision.
+
+## Content inbox in Google Drive (user, 2026-10-01)
+Aim: the team drop photos and clips into Google Drive, and each week the content agents turn approved ones into posts, carousels and reels.
+- **Account:** a Google Workspace account owned by Beauty Heaven, not personal Gmail (video fills the free 15GB quickly; check the plan's storage).
+- **Folders:** `Inbox` (anyone on the team uploads from the Drive phone app) and `Approved` (only Jess or Hollie move things here), with
+  sub-folders such as treatments, rooms, team, video clips. **The agents read only `Approved`.**
+- **Consent sheet:** a Google Sheet beside the folders: file, who is in it, consent given (yes or no, and how), approved for social,
+  for the website, both. No consent entry means the agent skips the file. Before-and-after images of injectables carry advertising
+  rules, so they need a compliance check before approval.
+- **Consultation photos never go in this Drive.** It is for marketing material only.
+- **How Claude reaches it:** the Claude app's Drive connector is for interactive use. For the automated weekly job our server calls
+  Google's Drive API with a service account that has been shared one folder only, so it cannot see anything else in their Drive.
+- **Weekly loop:** the agent scans `Approved` for new items, drafts posts and reels, sends the plan to the owners for approval in the
+  chat, and posts through the scheduler at the agreed times.
+- **Privacy:** images are sent to model providers to be described and edited, so say so in the privacy notice, and only approved
+  files are ever sent.
+- **Rights:** a photo belongs to whoever took it. Self-employed practitioners who take photos on their own phones should agree, in
+  writing, that the salon may use them, and anyone shown in a photo needs to be happy to be used.
+- **Moving files:** copy the best 100 to 200 into `Approved` rather than moving everything, and leave the originals where they are.
