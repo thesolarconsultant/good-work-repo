@@ -185,3 +185,14 @@ or app. Two stages, and only the first is in scope now.
    records, consent forms, reminders, staff commission and reporting, plus migration, training and support, and the
    diary must never double-book. That is a product in its own right, not part of the £2,800 build or the £398 platform.
    Only worth deciding once stage 1 has run and shown what practitioners actually pay for.
+
+### How this sits against the strategy deck (checked 2026-10-01)
+The deck (`strategy/index.html`) already frames the direction: keep and connect Phorest first, replace or own only where the
+case is proven; an owned Academy platform; Path A (make Beauty Heaven stronger) versus Path B (a technology business for
+the industry); and a marketplace and CRM for professionals. It also commits us to restraint: "we won't build something
+because we can", "harder to prove, not harder to design", "start embarrassingly small", and several open questions "could
+stop the project". So stage 1 above is Path A, and the per-practitioner pages with source tags are the first honest step
+towards the professionals' tools in Path B: they produce the evidence the deck says we need. Two gaps between the deck and
+what we have found: the Academy "own platform" case is unproven (no certificates in L3 Matrix, accreditation unknown, the
+deck itself says we need access to the current system first), and the licensed AI skin-analysis consultation tool the deck
+lists needs its cost and role confirmed (interview B13).
