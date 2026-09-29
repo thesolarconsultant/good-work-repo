@@ -162,6 +162,14 @@ and the old website's empty "online courses" store.
   body, or what the certificates say. **Decision: do not replace or copy L3 Matrix.** If the qualification depends on the
   platform's exams, records or certificates, rebuilding it could put the accreditation at risk. Build around it instead.
   Website wording ("accredited", "regulated") must be checked per course against the actual certificate before it goes live.
+- **Pop-up on the account (seen 2026-10-01):** "It looks like you haven't yet received our Ofqual-regulated upgrade."
+  It is a Learn Group upsell. It strongly suggests **the Beauty Heaven account does not have the Ofqual-regulated option
+  switched on**, so the courses delivered through this platform are probably not Ofqual-regulated. It does not rule out
+  another kind of accreditation (for example CPD), or a separate awarding body for a course such as the "IQ Level 3 ATA"
+  course in Phorest. The "Regulated Course" dashboard button is likely the same upsell, not proof: our earlier reading of it
+  was too generous. "L3" in course names may just be the platform brand, not a Level 3 qualification.
+  **Until a certificate shows a named body, the site should say "certificate of completion", not "accredited" or
+  "regulated".**
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
