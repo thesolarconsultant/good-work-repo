@@ -76,7 +76,7 @@ agreed or priced:
 5. **Retail or Academy income** (courses, models) shared by agreement.
 Two cautions. First, a fee tied to bookings, or the salon steering who gets which client, can change how a practitioner's
 self-employed status looks to HMRC, so the salon should ask its accountant before it starts. Second, it must be opt-in,
-in writing, and it is the salon's decision, not ours. Interview B15.
+in writing, and it is the salon's decision, not ours. **Not asked in the interview**: raise it only after the results are back.
 
 ## What "a couple of API keys" leaves out (2026-10-01)
 Keys are the easy part. The WhatsApp operator agent also needs:
@@ -151,7 +151,7 @@ an adviser:
   see it ("the practitioner who will do your consultation"), not just "the salon".
 - The salon may need a short agreement with its practitioners about client data, and the membership idea would sit
   alongside that. Keep this separate from any fee tied to bookings, which raises the HMRC status point above.
-Interview B15 now asks whose clients they are and who keeps the records.
+Interview Part C now asks whose clients they are and who keeps the records.
 
 ## The control-versus-charge tension (2026-10-01)
 The owners want control over what practitioners do, and a charge because clients arrive through Beauty Heaven. These pull
@@ -232,7 +232,7 @@ Decided: **the website links to Phorest booking. No own diary or marketplace for
 - **Running it on the user's own Claude account:** production automation for a client should use the API under a business
   account, on a server, not a personal subscription login. Check Anthropic's current terms. It is also cleaner for cost,
   audit and data handling.
-- **Are the practitioners' jobs Beauty Heaven's jobs?** Unknown. Interview B15. Insurance does not move data-protection
+- **Are the practitioners' jobs Beauty Heaven's jobs?** Unknown. Interview Part C (C1 to C10). Insurance does not move data-protection
   duties: what the salon's assistant collects and passes on is the salon's responsibility, whoever is insured for treatments.
   Practitioners keep what they are sent as part of their own records if they proceed. Design is unchanged: forward-only.
 

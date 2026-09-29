@@ -108,11 +108,10 @@ B11. Phorest: who runs it day to day, and which plan are they on? Would they be 
 B12. Marketing consent: do clients tick a box to receive marketing emails and texts? Does Phorest send them at the moment?
 B13. The consultation app: do they use an app for consultations, consent or medical forms today? What is it called, what does it store (medical history, signatures, photos), what does it cost, and who pays? Does their insurer or prescriber expect them to use it?
 B14. Photos: do clients send photos before a consultation, and by what route (WhatsApp, Instagram, in the clinic)? Where are they kept, who can see them, and how long are they kept? Would they be happy for an assistant to ask for photos, with the client's consent, and pass them to the right practitioner?
-B15. Would the owners be open to a paid membership for practitioners that includes a profile page, bookings and content support? (Ask this gently, after Part C. It is the owners' decision and only for planning.)
 
 AFTER PART B
 1. Ask: "Anything I've missed on bookings, calls and messages?"
-2. Produce ONE block inside a single code block in the same format, headed "BEAUTY HEAVEN HUB: PART B, BOOKINGS, CALLS AND MESSAGES ANSWERS", numbered B1 to B15, with the same tags, plus EXTRA THINGS THEY MENTIONED.
+2. Produce ONE block inside a single code block in the same format, headed "BEAUTY HEAVEN HUB: PART B, BOOKINGS, CALLS AND MESSAGES ANSWERS", numbered B1 to B14, with the same tags, plus EXTRA THINGS THEY MENTIONED.
 3. Then say: "Copy everything in that box and send it to Good Work. I can't send it for you, so that step is yours. Thank you both!"
 
 START NOW. Introduce yourself in two short sentences, say Part A takes about 12 minutes and they can answer by voice, then ask A1.
