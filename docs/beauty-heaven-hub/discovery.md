@@ -146,6 +146,11 @@ and the old website's empty "online courses" store.
 - **Match against Phorest:** Foundation Anti-Wrinkle (£1,500) and Foundation Dermal Filler (£1,750) exist in the Phorest
   export. We found **no** Phorest service named "Pathway to Aesthetics" or "L3 Conversion", so those two are either sold
   another way or not sold through Phorest.
+- **Menu of the admin account (seen 2026-10-01):** Dashboard, Courses, Inbox, Notifications, Categories, Video Call, Quiz,
+  Quiz Categories, Calendar, Announcement, Payments, Video, Edit Profile. Footer: "Powered By L3-Matrix.com". There is
+  **no visible Integrations, API, Webhooks, Reports, Email or Users item**, so any student list is probably reached
+  through each course's people button. The **Payments** item (£ icon) suggests the platform can take payments itself;
+  whether Beauty Heaven uses it, or takes all payments through Phorest, is unknown.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
