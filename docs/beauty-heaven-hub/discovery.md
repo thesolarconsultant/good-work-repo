@@ -108,9 +108,14 @@ an **IQ Level 3 ATA course (£995)** and an **Ultimate Glow Up Course (£2,000)*
 **Pre-course study runs on L3 Matrix** (told to us on 2026-10-01; not yet verified). L3 Matrix is an aesthetic-education
 platform run by Learn Group. This fits what the T&Cs and the Botox course page already say: pre-study must be finished
 before the classroom day, and a cancellation right ends once "login details for the online study platform" are issued.
-**Their L3 Matrix page has not been found.** It is a per-academy address and the platform only says to use the link
-from the academy's email. So the Academy is spread across **three systems that we cannot see joined up**: Phorest
-(booking and deposit), L3 Matrix (study and login), and the old website's empty "online courses" store.
+**Their L3 Matrix login is `bh.13matrix.com`** (given to us 2026-10-01). Note the domain is `13matrix.com` with the digit
+"1", not `l3matrix.com` (that is the marketing site). Checked from outside only: it is a login-only front page with the
+academy's logo, an email/password form and a "Forgot your password?" link, so **no public course catalogue**. It also shows
+a **"Mobile access restricted" notice: the platform needs a tablet or computer** because of new AI features. That matters
+for students studying on a phone, and for what the WhatsApp assistant tells them about getting to their pre-study. We did
+not log in and did not use password reset (it emails the account owner). What is inside is still unseen. So the Academy is
+spread across **three systems that we cannot see joined up**: Phorest (booking and deposit), L3 Matrix (study and login),
+and the old website's empty "online courses" store.
 
 **Student models.** Twenty services such as *Botox Model 1 Area (£60)*, *Lip Filler Model (£50)* and *Lash Model (£20)* are
 **paid bookings for a member of the public to be the practice model** on a course day. That is a real booking channel,
