@@ -137,6 +137,15 @@ and the old website's empty "online courses" store.
   numbered points and 19 free-text answer boxes, worth 9 points. Answers are typed, not picked from a list, so marking is
   probably by a tutor or by exact-text matching. This is assessment content: keep it, and any answers, out of the repo
   and off the website.
+- **Only four live courses (Categories page, same account, seen 2026-10-01):** *foundation anti-wrinkle 2026*,
+  *Foundation Filler 2026*, *L3 CONVERSION COURSE* and *Pathway to Aesthetics Course v2* (4 of 4 entries). This changes the
+  reading above: the 101 items are the **unit library** (videos, pre-study, exams), and the courses students actually
+  take are these four. Most of the 101 are probably older or unused building blocks. Each course row has four buttons
+  (a stacked-list icon, a people icon, a cog and a pencil); we have not yet opened them, so we do not know what each does.
+  The people icon likely lists that course's students.
+- **Match against Phorest:** Foundation Anti-Wrinkle (£1,500) and Foundation Dermal Filler (£1,750) exist in the Phorest
+  export. We found **no** Phorest service named "Pathway to Aesthetics" or "L3 Conversion", so those two are either sold
+  another way or not sold through Phorest.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
