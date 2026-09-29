@@ -77,3 +77,25 @@ agreed or priced:
 Two cautions. First, a fee tied to bookings, or the salon steering who gets which client, can change how a practitioner's
 self-employed status looks to HMRC, so the salon should ask its accountant before it starts. Second, it must be opt-in,
 in writing, and it is the salon's decision, not ours. Interview B15.
+
+## What "a couple of API keys" leaves out (2026-10-01)
+Keys are the easy part. The WhatsApp operator agent also needs:
+- **A WhatsApp Business number on Meta's Cloud API** (or a provider such as Twilio), with business verification, a
+  registered number, approved message templates, and the 24-hour reply-window rules for anything we start.
+- **A server that receives the messages** (a webhook) and runs the agent. The user plans to set up a server.
+- **A small database** for the staff allowlist, conversation state, approvals, and an audit log.
+- **Safety controls:** allowlisted senders only, staff approval before anything is posted, a switch to turn each agent
+  off, and a log of what it did.
+- **Running costs:** WhatsApp conversation fees and model usage, on top of the platform fee.
+
+## Where client photos would live
+Flow: the assistant asks for consent and logs it, the client sends photos, our server downloads them straight away
+(WhatsApp media links expire), stores them privately against that client, and tells the routed practitioner with a link.
+Photos are never forwarded into staff WhatsApp chats or groups.
+- **Google Drive:** fine only as a short pilot, on a business Google Workspace account (not personal Gmail) with 2-step
+  sign-in, a shared drive, a folder per practitioner and link-sharing switched off. Weak on audit, easy to overshare,
+  and deletion is manual.
+- **Private storage plus a small staff page (recommended):** files in a private bucket, opened through short-lived
+  links, per-practitioner access, an access log, and automatic deletion after a set time unless a consultation goes ahead.
+- **Their consultation app or Phorest:** if the existing app or Phorest can hold photos on the client record, that may be
+  the right home. Unknown; asked in interview B13 and B14.
