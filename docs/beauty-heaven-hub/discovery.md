@@ -119,7 +119,7 @@ and the old website's empty "online courses" store.
 
 **Inside L3 Matrix: the course library** (pasted by the user from Jessica's account on 2026-10-01; full list in
 `l3-matrix-course-list.txt`). Course names only; nothing else seen, and no student data.
-- **About 100 items, not 30 courses.** Each Phorest course is built from several separate items: a *welcome video*, a
+- **101 items in total (confirmed: the list has no further pages), not 30 courses.** Each Phorest course is built from several separate items: a *welcome video*, a
   *pre-study*, a *timed exam*, sometimes a *Part 2*, a *certificate* item and a *please read* notice. Roughly 9 welcome
   videos, 19 pre-study items and 33 exam or quiz items.
 - **It is a working library, not a tidy catalogue.** Names like "Copy of…", "…new", "…f1", "…-PP", "…SP" and trailing
@@ -133,7 +133,7 @@ and the old website's empty "online courses" store.
   PRP, PDO, phlebotomy, Kenalog, polynucleotides, tear trough, fat dissolve, mesotherapy or IV (that search only looked at
   course-like items, so treat it as "ask", not "missing"). Either they are taught but sold another way, or they are
   old. The site must not list a course until we know it is running.
-- **Not yet known:** whether the list has more pages (the screen shows 100 per page), what "Action" allows, how a student
+- **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
 **Student models.** Twenty services such as *Botox Model 1 Area (£60)*, *Lip Filler Model (£50)* and *Lash Model (£20)* are
