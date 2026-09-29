@@ -152,3 +152,22 @@ an adviser:
 - The salon may need a short agreement with its practitioners about client data, and the membership idea would sit
   alongside that. Keep this separate from any fee tied to bookings, which raises the HMRC status point above.
 Interview B15 now asks whose clients they are and who keeps the records.
+
+## The control-versus-charge tension (2026-10-01)
+The owners want control over what practitioners do, and a charge because clients arrive through Beauty Heaven. These pull
+against each other: the more the salon directs how practitioners work, the more they look like staff, not independents.
+HMRC and employment tribunals decide from the facts (control, whether they must do the work personally, whether they can
+send a substitute, whether either side must offer or accept work), not from the label in a contract. Get the salon's
+accountant or an employment adviser to look at this **before the assistant starts steering clients**.
+- **Control that is safe to keep:** brand, safety and quality standards, insurance and qualification checks, the
+  consultation process, the client experience and the house rules.
+- **Control that looks like employment:** setting their hours and diary, setting their prices, forcing them to take
+  a client, deciding who they may work with.
+- **Charging routes, from most independent to least:** a flat monthly rent or membership; a fee per booking that
+  practitioners may decline; a commission where the salon takes payment and pays them out (raises VAT and status questions).
+- **Design consequences:** the assistant offers a client to a practitioner and the practitioner can accept or decline;
+  a client can ask for a named practitioner; practitioners set their own prices in Phorest; fee rates are settings, not
+  code; a per-practitioner report shows bookings that came through the site, phone and WhatsApp, as evidence for whichever
+  fee is chosen.
+- Whether the client is contracting with the salon or the practitioner matters too. Deposits are paid to the salon through
+  Phorest and the T&Cs are the salon's, which points towards the salon.
