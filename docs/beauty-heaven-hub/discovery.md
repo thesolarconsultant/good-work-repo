@@ -157,6 +157,11 @@ and the old website's empty "online courses" store.
   a live student activity list with In Progress and Completed statuses. The screenshot showed student names and home
   addresses. **We have not recorded any of it**, and we should not copy or sync L3 Matrix student data into our own
   systems without a proper data agreement with the Academy.
+- **Accreditation (user's belief, 2026-10-01, unverified):** the user thinks the courses are accredited. The dashboard's
+  "Regulated Course" and "Certification" buttons point the same way, but we have not seen which courses, which awarding
+  body, or what the certificates say. **Decision: do not replace or copy L3 Matrix.** If the qualification depends on the
+  platform's exams, records or certificates, rebuilding it could put the accreditation at risk. Build around it instead.
+  Website wording ("accredited", "regulated") must be checked per course against the actual certificate before it goes live.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
