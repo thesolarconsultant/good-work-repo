@@ -88,14 +88,24 @@ Keys are the easy part. The WhatsApp operator agent also needs:
   off, and a log of what it did.
 - **Running costs:** WhatsApp conversation fees and model usage, on top of the platform fee.
 
-## Where client photos would live
-Flow: the assistant asks for consent and logs it, the client sends photos, our server downloads them straight away
-(WhatsApp media links expire), stores them privately against that client, and tells the routed practitioner with a link.
-Photos are never forwarded into staff WhatsApp chats or groups.
-- **Google Drive:** fine only as a short pilot, on a business Google Workspace account (not personal Gmail) with 2-step
-  sign-in, a shared drive, a folder per practitioner and link-sharing switched off. Weak on audit, easy to overshare,
-  and deletion is manual.
-- **Private storage plus a small staff page (recommended):** files in a private bucket, opened through short-lived
-  links, per-practitioner access, an access log, and automatic deletion after a set time unless a consultation goes ahead.
-- **Their consultation app or Phorest:** if the existing app or Phorest can hold photos on the client record, that may be
-  the right home. Unknown; asked in interview B13 and B14.
+## Where client photos would live: forward only, keep nothing (revised 2026-10-01)
+The user's preference, and the better privacy design: we do not keep client photos. Flow: the assistant asks for consent
+and logs it; the client sends photos; our server fetches each one (WhatsApp media links expire within minutes, so it must)
+and passes it straight to the routed practitioner, holding it in memory only long enough to deliver; nothing is written
+to storage. We keep a **text-only log**: consent given and when, who it was routed to, when it was delivered, and that a
+photo was included. No image is ever used for content or marketing.
+Limits to be honest about, and to reflect in the consent message (never promise "deleted in 24 hours" unless it is true):
+- **We cannot delete from other people's phones.** A photo forwarded into a practitioner's WhatsApp sits on their
+  phone, and possibly in their camera roll and cloud backup. Practitioners should turn off media auto-save, and we
+  can suggest disappearing messages for that thread, but we cannot enforce it. Meta also processes the messages.
+- **The reply window.** A business number can message a person freely only within 24 hours of their last message to it,
+  so practitioners need to have messaged the number recently, or the alert goes out as an approved template.
+- **A photo that informs a treatment becomes part of the clinical record.** Insurers may expect records to be kept, so
+  the practitioner should save it to the client record by hand if the client goes ahead (in the consultation app or
+  Phorest, if either holds photos). Otherwise it is triage only, and the client resends at the consultation.
+- **The agent must not decide where a photo goes.** Routing, consent logging and the no-storage rule live in plain code.
+  The model only reads the conversation and proposes a practitioner from a fixed list.
+- **Still needs a small database, for text only:** the staff allowlist, conversation memory (so the agent does not forget
+  between messages), consent records and the routing log.
+- **If a stored copy is ever wanted,** use a private bucket with short-lived links and auto-delete. Google Drive only as
+  a pilot, on a business Workspace account with link sharing off.
