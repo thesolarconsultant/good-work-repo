@@ -196,3 +196,42 @@ towards the professionals' tools in Path B: they produce the evidence the deck s
 what we have found: the Academy "own platform" case is unproven (no certificates in L3 Matrix, accreditation unknown, the
 deck itself says we need access to the current system first), and the licensed AI skin-analysis consultation tool the deck
 lists needs its cost and role confirmed (interview B13).
+
+## Scope as stated by the user, 2026-10-01 (v2)
+Decided: **the website links to Phorest booking. No own diary or marketplace for now** (later idea, see above).
+1. **WhatsApp receptionist:** answers, books services into Phorest, sends a consultation straight to the right practitioner,
+   and forwards photos to that practitioner (forward-only, nothing stored by us).
+2. **WhatsApp with Jess and Hollie, weekly on a day they confirm:** what content to work on, from templates and styles we
+   agree in advance. Approved content is posted on a set schedule through an external scheduler (the user named Upload-Post).
+   Blog ideas go to Jess and Hollie, and possibly to practitioners, for approval; the user wants 4 to 6 blogs a week.
+3. **Content Console** holds every template (SMS, email, WhatsApp; email HTML on brand), suggests reels, and creates
+   carousels, single images and video on the five-pillar process. Target: 5 reels a week, from clips sent into the chat, and
+   pre-cut videos that practitioners voice over; AI-generated video only if that is not possible.
+4. **One coordinating "big brain"** controls the agents. We agree a strict plan before anything goes live.
+
+### Flags raised against that scope
+- **Proposal scope.** "Running the socials" (posting, reels, blogs at volume) sits under GOOD GROWTH in the signed proposal,
+  priced per client. The console as a tool is in the £398. Agree which parts are which before promising.
+- **Blogs at 4 to 6 a week** is 200 to 300 a year. Risks: thin, repetitive content can hurt search ranking; each needs
+  a human approval from busy people; approvals become rubber-stamping. Suggest starting at 1 to 2 strong posts a week and
+  scaling on results.
+- **Prescription-only treatments** (anti-wrinkle, fillers): social and blog content is advertising. Approval must include a
+  fixed compliance checklist (no brand names for prescription-only products, no unsupported claims or results), to be
+  confirmed with an adviser.
+- **AI video.** Fine for rooms, product, text animation and backgrounds. Not for faces performing treatments or showing
+  results (the proposal already says generated imagery is never presented as a real client or result). Real clips from
+  practitioners, captioned and edited by us, are safer and perform better. A cloned voice needs the person's written consent.
+- **Practitioners' involvement** should be opt-in. Making self-employed practitioners do unpaid tasks looks like control.
+- **Scheduler limits:** check what Upload-Post (or any scheduler) supports for Instagram Reels and TikTok, and that each
+  account is a business account owned by Beauty Heaven, before we promise it.
+- **WhatsApp groups:** the business API has had limits on group chats. Verify before promising a group thread; fall back
+  to one thread per owner or a private approvals page.
+- **Architecture:** not one agent with every permission. One coordinator (schedule, approvals, kill switch, audit log) over
+  separate agents with separate permissions: receptionist, content planner, publisher. A client message must never be able
+  to reach the publisher.
+- **Running it on the user's own Claude account:** production automation for a client should use the API under a business
+  account, on a server, not a personal subscription login. Check Anthropic's current terms. It is also cleaner for cost,
+  audit and data handling.
+- **Are the practitioners' jobs Beauty Heaven's jobs?** Unknown. Interview B15. Insurance does not move data-protection
+  duties: what the salon's assistant collects and passes on is the salon's responsibility, whoever is insured for treatments.
+  Practitioners keep what they are sent as part of their own records if they proceed. Design is unchanged: forward-only.
