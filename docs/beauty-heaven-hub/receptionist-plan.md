@@ -171,3 +171,17 @@ accountant or an employment adviser to look at this **before the assistant start
   fee is chosen.
 - Whether the client is contracting with the salon or the practitioner matters too. Deposits are paid to the salon through
   Phorest and the T&Cs are the salon's, which points towards the salon.
+
+## Practitioners' own clients, and owning the platform (idea, 2026-10-01)
+Idea: a platform Beauty Heaven owns outright, where each practitioner also brings their own clients through their own page
+or app. Two stages, and only the first is in scope now.
+1. **On top of Phorest (now).** Phorest supports direct booking links to a single practitioner. Each practitioner gets a
+   profile page and their own link for their socials and word of mouth. Those bookings land in the same diary. Every booking
+   carries a source tag: **own client** (their own link) or **salon client** (site, phone, WhatsApp assistant). A fee, if
+   the owners choose one, applies only to salon-sourced clients. That answers most of the control-versus-charge problem.
+   To check with Phorest: whether the API can record a source on a booking or client (otherwise the tag goes in the note),
+   and whether its own commission and rent settings already cover a fee.
+2. **Our own diary and client app (later, separate product).** This means replacing Phorest: diary, payments, client
+   records, consent forms, reminders, staff commission and reporting, plus migration, training and support, and the
+   diary must never double-book. That is a product in its own right, not part of the £2,800 build or the £398 platform.
+   Only worth deciding once stage 1 has run and shown what practitioners actually pay for.
