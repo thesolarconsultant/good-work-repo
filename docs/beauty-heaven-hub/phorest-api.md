@@ -191,3 +191,30 @@ details were entered.**
 4. **Category IDs can be listed through the API** once we have access. Until then they have to be read from
    Manager. Service links can only be copied one at a time, so start with the 33 categories and around ten
    headline services.
+
+### Booking from their own site: three options
+
+Checked 2026-10-01. **The response headers on `phorest.com/salon/beautyheaven1` carry no `X-Frame-Options` and
+no `frame-ancestors` rule, so the server allows framing.** Not yet tested in a real browser.
+
+1. **Direct links to Phorest's hosted page.** Free, safe, and the launch default.
+2. **Phorest's page inside a frame on our page.** The customer stays on the site with our header and footer
+   around it. Phorest documents it but recommends against it. The design is still Phorest's. **Risk:** on iPhone
+   Safari, logins and payment steps inside a frame can misbehave because of cookie rules. **Test on a real iPhone
+   before relying on it.**
+3. **Our own booking flow on the API.** Everything needed exists: services, staff, availability, client lookup and
+   create, create booking (`RESERVED` then `ACTIVE`), cancel, reschedule, and a deposit payment link. Phorest's
+   docs call a bespoke flow "often very expensive and time-consuming". What we would take on:
+   - **Every rule the hosted page applies today:** which services are bookable online, who can do what,
+     deposits, the T&C tick, consultation-first rules, multi-service bookings. Gift cards, series and Klarna are
+     not covered.
+   - **Confirmation emails.** Unknown whether an API-created booking triggers Phorest's. **Test.**
+   - **Spam protection.** Fake bookings would clog the real diary.
+   - **Personal data** (GDPR), and **maintenance** whenever Phorest changes its API.
+   - **A server.** The credentials cannot sit in the browser.
+   - **A fallback.** If our flow breaks, bookings stop, so it must always offer "book on Phorest".
+
+**Recommendation:** launch on option 1 (add option 2 only if the iPhone test passes), then **pilot option 3 on free
+consultations only** (no payment, one service, two practitioners). The voice agent and chatbot need the same
+availability and booking core, so a web flow is a third front end on it. **Decide the scope before promising
+it:** the pilot fits the build, but a full flow is a separate quote.
