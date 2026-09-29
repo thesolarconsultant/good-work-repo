@@ -122,3 +122,17 @@ The user suggested putting the salon on a Claude membership at about £150 a mon
 - The API line in the estimate above (receptionist about £15 to £80, content about £10 to £40) is likely cheaper than £150 anyway.
 - The user's total of about £220 (servers £70 plus £150 for Claude) and the estimate of about £215 agree on the total but not on what
   is in it: the £150 line becomes API usage, and the rest goes on voice, WhatsApp messages, the scheduler and email.
+
+### Checked against Anthropic's own pages (a research check run in this session; re-read the pages before relying on the exact wording)
+- **Consumer Terms** (anthropic.com/legal/consumer-terms) prohibit accessing the service "through automated or non-human means,
+  whether through a bot, script, or otherwise", except via an Anthropic API key or where Anthropic explicitly permits it.
+- **Claude Code legal and compliance page** (code.claude.com/docs/en/legal-and-compliance): subscription sign-in is for ordinary use of
+  Claude Code and Anthropic's own apps. Developers building products or services should use API key authentication, and third
+  parties may not route requests through Free, Pro or Max credentials on behalf of their users.
+- **Limits:** paid plans have a rolling five-hour session limit plus a weekly limit. The published Max tiers were $100 and $200 a month,
+  so the user's "£150" plan should be checked. No exact token budgets are published.
+- **Agent SDK credit on a plan** is per user and cannot be shared or pooled.
+- **Sharing a login** is reported as against the terms (third-party sources only; not confirmed on an official page).
+- **Not verified:** clause numbers, and the exact token limits.
+- **Decision:** the receptionist, content agents and coordinator run on the Anthropic API under a business account. The user's own
+  subscription stays a personal build tool and is not shared with the salon or used as the bot's engine.
