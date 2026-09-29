@@ -50,3 +50,15 @@ agreement checked by a solicitor.
 - **Claims must be accurate:** no "accredited", "regulated" or Ofqual wording unless a certificate proves it. Say who can enrol. Courses
   on prescription-only treatments should be advertised to qualified professionals with the entry requirements stated up front, and
   advertising rules checked with an adviser before any ad runs.
+
+## VAT (user, 2026-10-01; not tax advice, confirm with an accountant)
+- Good Work is not VAT-registered. Beauty Heaven is, or will be. The invoice template says "Not VAT registered".
+- **The signed proposal does not say whether £2,800 and £398 include or exclude VAT.** If Good Work registers later and adds 20%, the
+  client could reasonably say the price was agreed as final. Fix now: a one-line notice in the follow-up that also covers the data
+  agreement, for example "Our prices exclude VAT. We are not VAT-registered, so none is charged today. If that changes we will add
+  VAT, which as a VAT-registered business you can normally reclaim." Keep a copy of the reply.
+- **Cash flow:** once registered, VAT collected is not Good Work's money. Hold it aside and pay it over on the quarterly return.
+- **Voluntary registration** is possible before the compulsory threshold (check the current threshold). It would let Good Work reclaim
+  VAT on its own costs, and the client is unaffected if they can reclaim. Ask the accountant if it pays.
+- **Check that Beauty Heaven can reclaim it all.** If part of its income is VAT-exempt (for example some healthcare or training
+  supplies), it may only be able to reclaim part, and VAT on our fee would then be a real cost to them.
