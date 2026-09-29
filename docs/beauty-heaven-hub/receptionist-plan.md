@@ -235,3 +235,17 @@ Decided: **the website links to Phorest booking. No own diary or marketplace for
 - **Are the practitioners' jobs Beauty Heaven's jobs?** Unknown. Interview B15. Insurance does not move data-protection
   duties: what the salon's assistant collects and passes on is the salon's responsibility, whoever is insured for treatments.
   Practitioners keep what they are sent as part of their own records if they proceed. Design is unchanged: forward-only.
+
+## Website structure (user, 2026-10-01)
+One site, two sides, chosen on the homepage ("I want a treatment" / "I want to learn"; the private mock-up already has this fork):
+- **Treatments:** see the services and book. Links to Phorest booking, by category, service or practitioner. Anything not bookable
+  online (for example the anti-wrinkle and semi-permanent consultations) goes to WhatsApp.
+- **Academy:** what courses they run, and how to ask about them. "Ask for pricing" opens WhatsApp with a message already
+  written for that course, and the assistant answers, collects details and books the deposit in Phorest.
+Notes:
+- **Prices already public.** Phorest lists some course prices online (for example Foundation Anti-Wrinkle £1,500 and
+  Foundation Dermal Filler £1,750), so "price on request" on the site would not hide them. Decide with the owners: show them,
+  or show a deposit and "from" price.
+- **Only list courses confirmed as running.** Certificate and accreditation wording per the rule above.
+- **Give people without WhatsApp another way:** phone number and a short enquiry form, which the assistant also picks up.
+- **Students on L3 Matrix need a computer or tablet**, so the Academy page and the post-deposit email say so.
