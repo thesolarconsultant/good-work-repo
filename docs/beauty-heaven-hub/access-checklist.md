@@ -53,3 +53,16 @@ Tick each item off the table above as it is done and note the date.
   clean (no other platform's watermark). Google Business gets a short post with a photo and a booking link.
 - **The advertising rules for prescription-only treatments apply on every platform.**
 - **Two owners on every account**, and 2-step sign-in on each.
+
+## What public DNS records show (looked up in this session; no logins used)
+- **beautyheavenhub.co:** name servers ns53 and ns54.domaincontrol.com (GoDaddy's DNS), website address pointing at 185.230.63.107 (a Wix
+  address range), and **email routed to Microsoft 365** (MX to beautyheavenhub-co.mail.protection.outlook.com).
+- **beautyheavenhub.co.uk:** name servers ns09 and ns10.domaincontrol.com (GoDaddy DNS), pointing at 3.33.130.190 and 15.197.148.33 (looks like a
+  parked or forwarding page), and **no email records**.
+- **Reading it:** the domain is probably registered at GoDaddy, the site is on Wix, and staff email is on Microsoft 365. The registrar and the
+  registrant could not be confirmed (registration records were not available).
+- **Care needed:** when we add records for our own sending (SPF, DKIM), we must not remove or overwrite the Microsoft 365 email records, or
+  the salon's email stops working. Change nothing in DNS without a copy of the current records first.
+- **Questions for Jess:** who set the domain up, and whose name is it registered in? Which of the two domains is the main one (the site says .co)?
+- **Getting in:** only the account holder can act at the registrar. Ask them for delegate access, or to add the records we give them. If the
+  domain is in someone else's name, get that person's written OK. Ask the registrant to move it into the salon's name if it isn't.
