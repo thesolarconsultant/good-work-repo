@@ -303,3 +303,15 @@ environment variables. Prefer it unless a need below forces AWS.
 - **Voice:** if a hosted voice platform makes the call and calls our webhooks, no always-on server is needed.
 - **AWS only if:** we need a long-lived process (for example a streaming voice server), tighter audit and access controls, or
   Bedrock inside the account.
+
+### Decision: Vercel plus Supabase (2026-10-01)
+- **Vercel** runs the site, the webhooks and the scheduled jobs. **Supabase** holds the data: a Postgres database in the London
+  region (choose it when creating the project; it is hard to change later).
+- **Why Supabase:** Postgres, staff logins (Jess and Hollie sign in to approve content), row-level security, private file storage
+  with short-lived links if the controlled-store photo option is ever needed, and scheduled jobs (pg_cron) to delete old
+  messages on the retention schedule.
+- **Rules:** a paid plan (the free plan pauses inactive projects and does not back up); row-level security on every table; the
+  service key only on the server, never in the browser; backups on; text only unless the controlled-store photo option is chosen.
+- **Ownership:** create the Supabase organisation in the name agreed in the data agreement, with the other side as a member.
+  Both vendors go on the privacy notice as sub-processors.
+- **First tables:** staff allowlist; contacts; messages; consent records; routing log; content calendar and approvals; audit log.
