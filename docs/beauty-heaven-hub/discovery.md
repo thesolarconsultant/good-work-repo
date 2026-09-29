@@ -133,6 +133,10 @@ and the old website's empty "online courses" store.
   PRP, PDO, phlebotomy, Kenalog, polynucleotides, tear trough, fat dissolve, mesotherapy or IV (that search only looked at
   course-like items, so treat it as "ask", not "missing"). Either they are taught but sold another way, or they are
   old. The site must not list a course until we know it is running.
+- **Sample assessment screen seen (description only).** A "Unit - task-1" page: an anatomy diagram of the face with 19
+  numbered points and 19 free-text answer boxes, worth 9 points. Answers are typed, not picked from a list, so marking is
+  probably by a tutor or by exact-text matching. This is assessment content: keep it, and any answers, out of the repo
+  and off the website.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
