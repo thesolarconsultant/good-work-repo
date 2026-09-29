@@ -275,3 +275,18 @@ Not the same for this job. The agent core is built channel-agnostic, with one ad
   route client photos over Telegram without checking that with a data-protection adviser.
 - **Use Telegram for us:** build and test the whole flow on Telegram first while the WhatsApp number is being verified, then
   launch clients on WhatsApp. Owners may choose Telegram for approvals if they prefer.
+
+## Clients without WhatsApp, and hosting (user, 2026-10-01)
+- **No SMS bot** (cost). Clients without WhatsApp can phone (the voice agent answers) or use the website form and the
+  Phorest booking page. Telegram can be added for clients as a text-only channel at little build cost, but it adds a channel
+  to support, disclose in the privacy notice and test, and photos should not go over it. Decision for the owners and the user.
+- **Hosting: AWS, Lambda over EC2, London region (eu-west-2).** The workload is webhook-driven (messages in, agent runs, reply
+  out) with scheduled jobs (EventBridge Scheduler), so Lambda scales to zero and there is no server to patch. WhatsApp expects a
+  quick 200 response, so acknowledge fast and hand the agent work to a queue (SQS). Use EC2 only for a long-lived process.
+  Secrets in Secrets Manager or Parameter Store. Keep personal data out of application logs. A small database (DynamoDB or
+  Postgres) for text only. Define everything as code (CDK, SAM or Terraform) so it can be rebuilt and handed over.
+- **Whose AWS account:** decide with the data agreement. An account in Beauty Heaven's name means they own the data and the bill,
+  with Good Work given a limited role. Either way: MFA on the root user, no shared logins, least-privilege roles, billing alarms.
+- **Model access:** direct Anthropic API under a business account, or Amazon Bedrock inside AWS (check that the chosen models are
+  available in the London region and what that does to cost).
+- Already on Vercel: the website and current functions. Agents could run there too, so AWS is a choice, not a need.
