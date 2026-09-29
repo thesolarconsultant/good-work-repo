@@ -31,10 +31,18 @@ Everything for the day in one place. Print it. Nothing here is for Jess and Holl
 |---|---|---|
 | 1 | The website part (script Part A), time-boxed. Leave what's left for them to finish at home with the prompt. | 20 to 25 min |
 | 2 | How you work (Part C). Ask neutrally. Note disagreements by name. | 15 min |
-| | **Lunch.** Before you break, have them copy the blocks and send them to you. Write down what stood out while it is fresh. | |
+| | **Break (about 30 minutes, if they have the time).** Before you break, have them copy the blocks and send them to you. Write down what stood out while it is fresh. | |
 | 3 | Access setup (section 4). Meta and WhatsApp first. | 30 min |
 | 4 | The bookings part (Part B), starting with the phone provider, forwarding, consultation rules, recording, the consultation app, photos. | 25 to 30 min |
 | 5 | Closing question (section 3). | 2 min |
+
+### If time gets short, in this order
+1. **Access setup, Meta and WhatsApp first.** Verification starts the clock, and it cannot be done without them.
+2. **Send the Phorest request.** Five minutes, and the wait for Phorest is the longest.
+3. **How you work (Part C).** The answers everything else depends on.
+4. **The core of the bookings part:** the phone provider, call forwarding, the consultation rules, call recording.
+5. **Leave the rest** (the website part, the rest of the bookings part, the Drive setup, TikTok and YouTube) for a second short call or for them to finish at home.
+Ask at the start how long they really have, and plan to that.
 
 ## 3. Talking about the Academy, honestly
 You don't need to seem naive. You are genuinely new to how the Academy works, so ask like it:
