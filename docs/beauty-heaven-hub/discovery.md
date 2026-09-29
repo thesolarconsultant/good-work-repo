@@ -137,12 +137,12 @@ and the old website's empty "online courses" store.
   numbered points and 19 free-text answer boxes, worth 9 points. Answers are typed, not picked from a list, so marking is
   probably by a tutor or by exact-text matching. This is assessment content: keep it, and any answers, out of the repo
   and off the website.
-- **Only four live courses (Categories page, same account, seen 2026-10-01):** *foundation anti-wrinkle 2026*,
-  *Foundation Filler 2026*, *L3 CONVERSION COURSE* and *Pathway to Aesthetics Course v2* (4 of 4 entries). This changes the
-  reading above: the 101 items are the **unit library** (videos, pre-study, exams), and the courses students actually
-  take are these four. Most of the 101 are probably older or unused building blocks. Each course row has four buttons
-  (a stacked-list icon, a people icon, a cog and a pencil); we have not yet opened them, so we do not know what each does.
-  The people icon likely lists that course's students.
+- **Categories are the courses, and there are more than four.** The Categories page opened on a "Basic" tab showing four:
+  *foundation anti-wrinkle 2026*, *Foundation Filler 2026*, *L3 CONVERSION COURSE* and *Pathway to Aesthetics Course v2*.
+  It also has "Advanced" and "Other" tabs we have not opened, and the dashboard says **39 categories**, with a scrolling
+  strip that includes *Polynucleotides* and *Lumi Eyes*. **An earlier version of these notes said only four courses were
+  live. That was wrong**; we have seen four of 39. The 101 items are the unit library (videos, pre-study, exams) that the
+  categories are built from. Each category row has four buttons (stacked-list, people, cog, pencil), not yet opened.
 - **Match against Phorest:** Foundation Anti-Wrinkle (£1,500) and Foundation Dermal Filler (£1,750) exist in the Phorest
   export. We found **no** Phorest service named "Pathway to Aesthetics" or "L3 Conversion", so those two are either sold
   another way or not sold through Phorest.
@@ -151,6 +151,12 @@ and the old website's empty "online courses" store.
   **no visible Integrations, API, Webhooks, Reports, Email or Users item**, so any student list is probably reached
   through each course's people button. The **Payments** item (£ icon) suggests the platform can take payments itself;
   whether Beauty Heaven uses it, or takes all payments through Phorest, is unknown.
+- **Dashboard (seen 2026-10-01):** shows **Credits 73.00**, so the Academy probably buys credits and spends them per
+  student or course (unconfirmed). Buttons: **Add Student, View Students, All Students**, Certification, "Regulated
+  Course", Contact Support. So students are added by hand in the admin (whether CSV import exists is unknown), and there is
+  a live student activity list with In Progress and Completed statuses. The screenshot showed student names and home
+  addresses. **We have not recorded any of it**, and we should not copy or sync L3 Matrix student data into our own
+  systems without a proper data agreement with the Academy.
 - **Not yet known:** what "Action" allows, how a student
   is enrolled, and what the platform costs.
 
