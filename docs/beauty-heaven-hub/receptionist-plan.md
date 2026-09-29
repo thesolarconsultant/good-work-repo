@@ -263,3 +263,15 @@ we do not raise it with practitioners.
 - If in practice they work for the salon: the salon is responsible for those records and must control where images sit.
   Forwarding into personal WhatsApp is then too loose. Use a controlled store (private storage with short-lived links, or
   the record in Phorest or the consultation app) with a set retention period.
+
+## WhatsApp or Telegram (user, 2026-10-01)
+Not the same for this job. The agent core is built channel-agnostic, with one adapter per channel, so adding Telegram is small.
+- **Clients: WhatsApp.** It is where UK salon clients already are. Telegram adoption is low, and asking clients to install an app
+  is a lost booking.
+- **Owners and staff (operator side):** Telegram is easier to build on (free bots, no business verification, no 24-hour reply
+  window or approved templates, real group chats with bots, buttons, file handling). But the signed proposal says the team feeds
+  the console "in the place you already are", on WhatsApp, so moving them to Telegram needs their agreement.
+- **Health photos:** as far as we know, Telegram bot chats are not end-to-end encrypted and sit on Telegram's servers. Do not
+  route client photos over Telegram without checking that with a data-protection adviser.
+- **Use Telegram for us:** build and test the whole flow on Telegram first while the WhatsApp number is being verified, then
+  launch clients on WhatsApp. Owners may choose Telegram for approvals if they prefer.
