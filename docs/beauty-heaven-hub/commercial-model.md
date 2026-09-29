@@ -62,3 +62,15 @@ agreement checked by a solicitor.
   VAT on its own costs, and the client is unaffected if they can reclaim. Ask the accountant if it pays.
 - **Check that Beauty Heaven can reclaim it all.** If part of its income is VAT-exempt (for example some healthcare or training
   supplies), it may only be able to reclaim part, and VAT on our fee would then be a real cost to them.
+
+## Academy pilot conversation: asked live, not in the script (user, 2026-10-01)
+The interview script now ends Part A with one yes, not now or no question about a direct chat on an Academy marketing pilot.
+Nothing about costs is discussed in the script. If they say yes, the user has a separate, fully open conversation covering:
+- **What the pilot includes and what it costs**, with every number on the table.
+- **The Academy numbers (removed from the script):** courses running and dates, places per date, who the students are and
+  entry requirements, how students find them now, how many enquiries become a deposit, and what a student costs the Academy.
+- **Accreditation, asked as fact-finding:** are the courses sold online accredited or regulated, by whom, and what does the certificate
+  say? This protects their advertising and ours. It is not a lever for a pitch.
+- **Recreating the courses (user's idea):** a separate question, later. The content in L3 Matrix (videos, exams, certificates) may
+  belong to Learn Group or to individual trainers, so it must not be copied without permission. A rebuilt course does not carry
+  any accreditation with it. Do not raise it as a criticism of what they sell today.
