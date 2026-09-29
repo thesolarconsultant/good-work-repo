@@ -377,3 +377,7 @@ location answer, the phone provider, the practitioner facts (Part C), the rules 
 go live in stages, each after its outside dependency clears and after a dry-run period. Tell the owners this before it becomes a surprise.
 **Can start before any of that:** the website build, the email templates, replacing the console placeholder facts once the location is
 confirmed, the Supabase schema, and a dry-run receptionist prototype on Telegram.
+
+### Email templates: on hold (user, 2026-10-01)
+The salon's emails already live in Phorest, so we do not build new templates yet. Once we can see them, we copy their wording and look
+into our own HTML. Phorest's email editor takes no HTML import, so this is a recreation, not a file copy.

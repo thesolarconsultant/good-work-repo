@@ -50,7 +50,7 @@ Jess or Hollie do every click on their own phone or laptop. You watch. Never log
 - [ ] WhatsApp Business account created on the new number
 - [ ] Good Work added as a partner in the portfolio
 - [ ] Facebook page and Instagram (beautyheavenuk, beautyheavenacademy): partner or task access
-- [ ] Phorest: Jess sends the API access request from the address on the account, with the account number
+- [ ] Phorest: Jess submits the API access request (text in `email-to-phorest.md`) through Phorest's support form, from the address on the account, with the account number
 - [ ] Phorest: a separate limited user for Good Work (not Jess's own login)
 - [ ] L3 Matrix: a separate view-only user, or a learner account
 - [ ] Google Business Profile, Analytics, Search Console: invite Good Work
