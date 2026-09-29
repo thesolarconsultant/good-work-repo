@@ -361,3 +361,19 @@ Aim: the team drop photos and clips into Google Drive, and each week the content
 - **Rights:** a photo belongs to whoever took it. Self-employed practitioners who take photos on their own phones should agree, in
   writing, that the salon may use them, and anyone shown in a photo needs to be happy to be used.
 - **Moving files:** copy the best 100 to 200 into `Approved` rather than moving everything, and leave the originals where they are.
+
+## Build readiness (2026-10-01): what the visit unblocks, and what it does not
+**The visit unblocks:** access to their accounts, the Meta and WhatsApp verification starting, the Phorest API request going out, the
+location answer, the phone provider, the practitioner facts (Part C), the rules for consultations, and the content sources.
+**Still outside our control after the visit:**
+- Phorest's decision on API access and its cost. Until it arrives, booking through the assistant and the voice agent cannot go live. Fallback: link to
+  the Phorest page and take messages.
+- Meta business verification and approval of WhatsApp message templates (days).
+- The phone provider's ability to forward unanswered and out-of-hours calls.
+- Owners' approval of the website copy, prices, treatment write-ups and the content plan.
+- Advice on advertising rules for prescription-only treatments, the data agreement, the privacy notice and call-recording wording.
+- Setting up delivery: Vercel and Supabase accounts, email sending, DNS.
+**The proposal says about ten working days.** That is realistic for the website, the email templates and the console. The assistants
+go live in stages, each after its outside dependency clears and after a dry-run period. Tell the owners this before it becomes a surprise.
+**Can start before any of that:** the website build, the email templates, replacing the console placeholder facts once the location is
+confirmed, the Supabase schema, and a dry-run receptionist prototype on Telegram.
