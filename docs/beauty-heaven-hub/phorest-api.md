@@ -122,3 +122,40 @@ stops duplicates.
 Our welcome email is table-based with inline styles and Outlook conditionals, so it survives real email
 clients. Its merge tags are **GoHighLevel syntax**, but Beauty Heaven uses Phorest, so they need remapping to
 whichever sender we choose. It has no dark-mode support yet.
+
+---
+
+## Keeping everything matched to Phorest
+
+**Principle: Phorest is the single source of truth.** Our systems never own diary or client data. They read it
+from Phorest and write changes back into it.
+
+1. **Read live, don't copy.** Availability and client details are fetched at the moment they are needed (the call,
+   the chat, the send). Menu, prices and staff on the website are pulled from Phorest and cached only briefly.
+   If Phorest is unreachable, the site shows the last known version and the booking link, and the agent takes a
+   message. It never guesses.
+2. **Write through, then verify.** Bookings the voice agent or chatbot makes go into Phorest through the Booking
+   API. We re-read the appointment before telling anyone "you're booked". A held slot is `RESERVED` until
+   confirmed. The booking note is tagged with its source. If a write fails, the agent says so and hands over.
+3. **Store almost nothing, and key it by Phorest IDs.** We keep a "last checked" marker, a log of what was sent
+   (client ID, appointment ID, which email), and nothing else. Names and emails are read fresh at send time, so a
+   change made at the front desk is picked up automatically.
+4. **Re-check at send time.** Polling only says "this might need an email". Immediately before sending we
+   re-fetch the appointment and the client, and skip if the state has moved (cancelled, deleted, no longer
+   `PAID`), or the client is archived, deleted, `banned` or no longer consenting. If the client has been merged,
+   follow `mergedToClientId`. These fields all exist on the records.
+5. **One owner for consent.** Phorest owns it. We read it at send time and write unsubscribes straight back. If
+   a write-back fails, we suppress locally and retry, and lean towards not sending.
+6. **Nightly reconciliation.** Compare our send log and agent-made bookings against Phorest, and email us a short
+   drift report. Also run a small test against the read endpoints, and watch Phorest's changelog (the API is at
+   version 1.35.0), so a breaking change is spotted early.
+7. **UK time.** Store UTC, show Europe/London, and test across a clock change.
+8. **Records carry a version number**, which we use so we never overwrite a change made at the desk.
+   **Confirm how the update endpoints use it.**
+
+### Going live safely (the API is live and has no sandbox)
+
+- **Dry-run first.** For a week the job reads real data and logs what it *would* send. Nothing is sent.
+- **A switch per automation**, so any one can be paused instantly.
+- **A dedicated test client** for anything that writes to the diary.
+- **The agent only books what Phorest marks bookable online** (`internetEnabled`) and follows the consultation rules.
