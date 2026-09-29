@@ -1,6 +1,6 @@
 # Beauty Heaven Hub — what they actually offer
 
-**Status: discovery, read-only.** Compiled 2026-09-29 from two public sources. Nothing here was
+**Status: discovery, read-only.** Compiled 2026-09-29 from two public sources, and **corrected on 2026-10-01 against Phorest's own service export** (see `services-master.xlsx`). The public page hides anything not bookable online, and the first version of this file drew wrong conclusions from that. Nothing here was
 confirmed with Jess or Hollie yet. Every fact is tagged with where it came from, and the questions
 only they can answer are at the end.
 
@@ -15,10 +15,10 @@ Not used: anything from our own mock-up, brand guidelines or console seed. Where
 
 ## The headlines
 
-1. **This is a much bigger business than our story says.** Phorest lists **384 bookable services in 33 categories**, not a salon-plus-academy with a handful of treatments. Hair alone is 74 services and laser hair removal is 56.
+1. **This is a much bigger business than our story says.** Phorest holds **473 services in 42 categories** (only **381** of them are shown to customers online), not a salon-plus-academy with a handful of treatments. Hair alone is 74 services and laser hair removal is 59.
 2. **The existing website barely mentions most of it.** It presents Beauty Heaven as *permanent make-up specialists* ("world standard specialists… methods developed by and exclusive to ourselves"), with fillers and a dermal roller page. It says nothing on hair, laser, HIFU, nails, massage or body sculpting, which are most of the menu.
-3. **Phorest is already the system of record for almost everything**, including the **Academy**: eight courses are listed and priced there as bookable services.
-4. **Consultations are booked in Phorest as £0 services**, but only in some categories (see below).
+3. **Phorest is already the system of record for almost everything**, including the **Academy**: **30 courses and 20 student "model" bookings** are held there as services. Only eight courses show online.
+4. **Consultations are booked in Phorest as services in most of the medical and aesthetic categories** (see below). Two are **paid, at £50**: semi-permanent make-up and the Slim Jab. Several are **not bookable online**.
 5. **Most practitioners are self-employed**, and several run their own sub-brands (*By Gracie*, *BY EMH*, *with Rosie*). Bookings have to route to a person, not just a service.
 6. **Location conflict:** Phorest and the site's phone number say **Hoddesdon, Hertfordshire**. Our console and film copy say **Wombwell, Barnsley**. See *Conflicts*.
 
@@ -58,28 +58,37 @@ Not used: anything from our own mock-up, brand guidelines or console seed. Where
 
 ## Consultation: what we can and cannot see
 
-Consultations exist as **£0 services in Phorest** in these categories only:
+*Corrected 2026-10-01. The public page shows only what is bookable online, so the first version of this section
+wrongly said anti-wrinkle and semi-permanent make-up had no consultation. They do. Phorest's own export shows it.*
 
-| Category | Consultation service |
-|---|---|
-| Hair | Consultation with Louise · Balayage Consultation with Anastasia · Colour Correction Consultation · Consultation — Hair Extensions |
-| HIFU | Free HIFU Consultation (plus a free **6-week review**) |
-| Dermal Fillers | Consultation |
-| Skin Boosters | Skin Consultation |
-| Laser Tattoo Removal | Consultation / Patch Test |
-| Eyelashes | Individual Lashes Patch Test |
+Consultations, checks and patch tests held in Phorest:
 
-**Categories with no consultation service listed:** **Anti-Wrinkle (21 services)**, **Semi-Permanent Make-up (24)**, Profhilo, Weight Loss, Fat Dissolving, Laser Hair Removal (56), Body Sculpting, PRP, Hair Growth, Dermaplaning and Microneedling.
+| Category | Service | Price | Bookable online? |
+|---|---|---|---|
+| Anti-wrinkle | **Botox Consultation** (15 min) · 2 Week Review | free | **No** |
+| Dermal fillers | Consultation (15 min) · Lip Check · Nose Review | free | Consultation yes, the rest **no** |
+| Semi-permanent make-up | **Consultation (30 min)** · Brow Check · SPMU Patch Test | **£50** · free · free | **No** |
+| Slim Jab | **Slim Jab Consultation (30 min)** | **£50** | **No** |
+| HIFU | Free HIFU Consultation · 6 Week Review | free | Yes |
+| Skin boosters | Skin Consultation | free | Yes |
+| Hair | Consultation with Louise · Balayage Consultation (Anastasia) · Colour Correction · Hair Extensions | free | Yes |
+| Laser tattoo removal | Consultation / Patch Test | free | Yes |
+| Laser hair removal | Laser Patch Test · Laser Hair Removal Patch Test | free | **No** |
+| Lashes | Individual Lashes Patch Test | free | Yes |
 
-That does not mean they skip consultations. It may happen by phone, on the day, or through paperwork we cannot see. But for the injectable categories it is the first thing to ask about, because the voice agent can only book correctly if it knows the rule.
+**What this tells us**
 
-**Unknown, and only Jess and Hollie can say:** who does consultations, whether they are in person, where consent and medical forms are captured, and whether a consultation must precede booking each treatment.
+- **The consultation step exists for the injectables and semi-permanent make-up, but customers cannot book it
+  online.** So those go through the phone or the front desk. That is exactly what the voice agent would take over.
+- **Two consultations are paid at £50** (semi-permanent make-up, Slim Jab). Is that fee taken off the treatment?
+- **No category above says a consultation is required before booking.** Phorest holds the services, not the rule.
 
----
+**Still unknown, and only Jess and Hollie can say:** who does consultations, whether each one must precede a booking,
+and where consent and medical forms are captured.
 
 ## The Academy
 
-**Eight courses, all listed in Phorest:**
+**Phorest holds 30 courses and 20 student "model" bookings. Only eight courses show online:**
 
 | Course | Price |
 |---|---|
@@ -91,6 +100,14 @@ That does not mean they skip consultations. It may happen by phone, on the day, 
 | Microblading | £1,250 |
 | Bespoke Ombre | £1,000 |
 | Non Surgical Rhinoplasty | £1,000 |
+
+**Beyond the eight above, held in Phorest but not shown online** (prices £150 to £2,000): brow, lash, facial, skin and
+peel courses, Profhilo, Hyaluronidase, Microneedling, Multi Vitamin Injectable, Vitamin B12, First Aid & Anaphylaxis,
+an **IQ Level 3 ATA course (£995)** and an **Ultimate Glow Up Course (£2,000)**.
+
+**Student models.** Twenty services such as *Botox Model 1 Area (£60)*, *Lip Filler Model (£50)* and *Lash Model (£20)* are
+**paid bookings for a member of the public to be the practice model** on a course day. That is a real booking channel,
+and the T&Cs already mention students needing models. How it is advertised and who books it is unknown.
 
 **From the T&Cs and the Botox course page:**
 
@@ -131,7 +148,7 @@ Most are marked **self-employed**. Sub-brands seen in the menu: *By Gracie* (Pho
 
 ## What this changes for the build
 
-- **The Phorest menu is the data source.** 384 services, kept current by them, is far better than us re-typing a menu. Whether we can read it programmatically is the biggest open question.
+- **The Phorest menu is the data source.** 473 services with durations, kept current by them, is far better than us re-typing a menu. Whether we can read it programmatically is the biggest open question.
 - **The voice agent** needs practitioner routing and per-category consultation rules before it can book anything correctly.
 - **The console seed must be replaced** with confirmed facts: location, positioning, team. Its "Hollie: consultations Tuesdays and Thursdays" and "accredited training" lines are unsourced.
 - **The website** should be built around the whole menu, not only permanent make-up. It also needs an honest position on sub-brands.
@@ -156,9 +173,9 @@ Most are marked **self-employed**. Sub-brands seen in the menu: *By Gracie* (Pho
 
 ---
 
-## Full Phorest menu (384 services)
+## Public online menu (384 entries, as customers see it)
 
-Prices are as shown on the public Phorest page on 2026-09-29. "from" means Phorest shows a starting price. **Durations were not visible on the public page**, so none are recorded here. "£0 listed (no price set)" is a service Phorest lists at £0 that is not a consultation, so most likely priced on the day.
+Prices are as shown on the public Phorest page on 2026-09-29. "from" means Phorest shows a starting price. **Durations are not on the public page, and 92 services are not shown there at all.** The complete list, with durations, service IDs, practitioner-level prices and flags, is in **`services-master.xlsx`** (473 services). Use that, not this list. "£0 listed (no price set)" is a service Phorest lists at £0 that is not a consultation, so most likely priced on the day.
 
 ### Hair Services (74)
 
