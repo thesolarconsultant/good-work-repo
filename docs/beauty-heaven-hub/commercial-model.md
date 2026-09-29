@@ -37,3 +37,16 @@ the definition of "a tagged booking" and how disputes are settled written down f
 ## To do before any of this is offered
 Real usage and costs for three months; source tags running; Phorest revenue by service; the Part C answers; a written
 agreement checked by a solicitor.
+
+## Academy pilot: what it would look like (user agreed it could work, 2026-10-01)
+- **Before offering:** which courses really run and on what dates; places per date; past intake numbers and revenue per course;
+  cost per student (L3 Matrix credit, materials, models, trainer time); the enquiry-to-deposit rate; entry requirements. Interview A17.
+- **Pilot:** 8 to 12 weeks, aimed at the next one or two intake dates. The Academy pays the ad spend from its own card, at a budget the
+  owners set.
+- **Tracking:** a course-specific WhatsApp message on every ad and page, a source tag on the Phorest deposit booking, and one "how did
+  you hear about us" question the assistant asks. A booking counts if the source is on record.
+- **Deal shape:** base fee that covers our costs, plus a capped share of net revenue from tagged enrolments above an agreed baseline
+  (what the intake would probably have brought without us).
+- **Claims must be accurate:** no "accredited", "regulated" or Ofqual wording unless a certificate proves it. Say who can enrol. Courses
+  on prescription-only treatments should be advertised to qualified professionals with the entry requirements stated up front, and
+  advertising rules checked with an adviser before any ad runs.
