@@ -38,3 +38,21 @@ rely on it. The point is to see which lines can grow and to put a cap on each.
 ## Not in the proposal wording yet
 WhatsApp message fees, the posting scheduler, blogs and reels at the volumes discussed, and photo-intake. Decide whether each
 is covered by the £398 or sits under GOOD GROWTH.
+
+## Voice: pay per minute versus a flat fee (user's figures, 2026-10-01; verify on the supplier's pricing page)
+- Friend's company: about $200 a month, terms to confirm.
+- Bland.ai: shown to the user at about $0.14 a minute on a plan labelled "100 calls a day". The daily figure is most likely a plan
+  limit, not the salon's volume. Cost depends on **minutes**, not calls.
+| Minutes a month | Cost at $0.14 a minute |
+|---|---|
+| 500 | $70 |
+| 1,000 (the included allowance) | $140 |
+| 1,500 | $210 |
+| 2,000 | $280 |
+- Break-even against $200 is about 1,430 minutes a month. One thousand minutes is about 33 minutes a day, roughly 11 to 16 calls
+  a day at two to three minutes each. At 100 calls a day of two minutes each, cost would be about $840 a month.
+- **To confirm before comparing:** what $0.14 includes (model, voice and phone, or only some), phone number rental, whether calls are
+  rounded up per call, charges for transfers, failed or unanswered calls, monthly plan fees, UK number availability and call quality,
+  data location and a data agreement.
+- **Protect against spikes:** maximum call length, silence timeout, spam-call filtering, and a monthly spend cap with an alert.
+- **Real volume:** the salon's calls per week and length are asked in interview B2. Use that, not a guess.
