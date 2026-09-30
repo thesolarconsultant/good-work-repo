@@ -200,8 +200,9 @@ a.card h3::after{content:" →";color:var(--accent-ink)}
 .film{position:relative;height:100vh;height:100svh;min-height:520px;background:#24211E;overflow:hidden}
 .film__v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .film__shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,33,30,.45) 0%,rgba(36,33,30,0) 30%,rgba(36,33,30,0) 55%,rgba(36,33,30,.75) 100%)}
-.film__mark{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);width:min(420px,70vw);height:auto;filter:drop-shadow(0 1px 8px rgba(0,0,0,.25))}
+.film__mark{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);width:min(680px,84vw);height:auto;filter:drop-shadow(0 1px 8px rgba(0,0,0,.25))}
 .film__down{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);color:#E3CD94;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;padding:.6rem 1rem}
 .film__down::after{content:"";display:block;width:1px;height:28px;margin:.5rem auto 0;background:#C9A65C;animation:filmdown 1.8s ease-in-out infinite}
 @keyframes filmdown{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
 @media (prefers-reduced-motion: reduce){.film__down::after{animation:none}}
+.film__pause{position:absolute;right:1.25rem;bottom:1.25rem;background:rgba(36,33,30,.45);color:#E3CD94;border:1px solid rgba(201,166,92,.6);border-radius:999px;padding:.4rem .9rem;font:inherit;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}

@@ -742,7 +742,7 @@ async function renderLibrary() {
       return;
     }
   }
-  $("#libRoom").innerHTML = libraryItems.filter((it) => it.made !== "ai").map(libCard).join("");
+  $("#libRoom").innerHTML = libraryItems.filter((it) => it.made === "room").map(libCard).join("");
   $("#libAi").innerHTML = libraryItems.filter((it) => it.made === "ai").map(libCard).join("");
   $("#libNote").textContent = "Films play when you point at them. Download keeps the full-size original.";
 }
@@ -757,6 +757,29 @@ async function renderLibrary() {
     e.target.paused ? e.target.play().catch(() => {}) : e.target.pause();
   });
 });
+
+/* =================================================================== STYLES == */
+/* The content styles: each one a fixed template the week is made in, shown
+   as rendered samples. They come from the same build-time library as the
+   films, marked made: "style". */
+function styleCard(it) {
+  const local = !/^https?:/.test(it.src);
+  return `<figure><img class="lib__media" data-r="${esc(it.ratio)}" src="${esc(it.preview)}" alt="${esc(it.title)}" loading="lazy">
+    <figcaption><b>${esc(it.title)}</b><span>${esc(it.use)}</span>
+    <a class="btn btn--quiet" href="${esc(it.src)}" ${local ? `download="${esc(it.download)}"` : 'target="_blank" rel="noopener"'}>${local ? "Download" : "Open"}</a></figcaption></figure>`;
+}
+
+async function renderStyles() {
+  if (!libraryItems) await renderLibrary();
+  if (!libraryItems) { $("#styleNote").textContent = "The styles live on the salon site's console."; return; }
+  const groups = new Map();
+  libraryItems.filter((it) => it.made === "style").forEach((it) => {
+    if (!groups.has(it.style)) groups.set(it.style, []);
+    groups.get(it.style).push(it);
+  });
+  $("#styleList").innerHTML = [...groups].map(([name, items]) =>
+    `<h2 class="h3 lib__h">${esc(name)}</h2><div class="lib lib--styles">${items.map(styleCard).join("")}</div>`).join("");
+}
 
 /* ==================================================================== BRAND == */
 const LISTS = ["treatments", "team", "never"];
@@ -950,6 +973,7 @@ const VIEWS = {
   calendar: renderCalendar,
   email: renderEmailView,
   library: renderLibrary,
+  styles: renderStyles,
   brand: renderBrand,
   about: renderAbout,
 };

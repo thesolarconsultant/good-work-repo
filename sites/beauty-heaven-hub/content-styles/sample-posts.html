@@ -12,7 +12,8 @@ body { background: #555; font-family: Jost, 'Century Gothic', sans-serif; displa
 .post.tall { height: 1920px; }
 .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(36,33,30,.55) 0%, rgba(36,33,30,0) 22%, rgba(36,33,30,0) 45%, rgba(36,33,30,.88) 78%, rgba(36,33,30,.96) 100%); }
-.mark { position: absolute; height: 34px; }
+.mark { position: absolute; height: 84px; }
+.mark.top { left: 50%; transform: translateX(-50%); top: 96px; }
 .micro { font-size: 22px; letter-spacing: .32em; text-transform: uppercase; font-weight: 500; color: var(--goldlt); }
 .micro.ink { color: var(--goldink); }
 h1, h2 { font-weight: 300; line-height: 1.02; letter-spacing: -.01em; }
@@ -46,7 +47,7 @@ h1 b, h2 b { font-weight: 700; }
 <section class="post tall" id="p1">
   <img class="bg" src="img/chair.jpg" alt="">
   <div class="shade"></div>
-  <img class="mark" style="left:80px;top:90px" src="img/mark-gold.svg" alt="">
+  <img class="mark top" src="img/mark-gold.svg" alt="">
   <div class="foot" style="bottom:170px">
     <p class="micro">The treatment room</p>
     <span class="rule"></span>
@@ -59,8 +60,9 @@ h1 b, h2 b { font-weight: 700; }
 <section class="post" id="p2">
   <img class="bg" src="img/fanbrush.png" alt="">
   <div class="shade"></div>
-  <p class="micro" style="position:absolute;left:80px;top:90px">Explained · Chemical peels</p>
+  <img class="mark top" style="height:74px;top:84px" src="img/mark-gold.svg" alt="">
   <div class="foot" style="bottom:150px">
+    <p class="micro" style="margin-bottom:34px">Explained · Chemical peels</p>
     <h1 class="h1">what a peel<br><b>actually</b> feels like.</h1>
   </div>
   <span class="swipe">Swipe →</span>
@@ -81,7 +83,7 @@ h1 b, h2 b { font-weight: 700; }
     <h2 class="h2" style="margin-top:26px">everything is <b>ready.</b></h2>
     <p class="lede" style="color:var(--taupe);margin-top:30px;font-size:30px;max-width:900px">Gloves on, the tray laid out, the room warm. Nothing is rushed and you can stop and ask at any point.</p>
   </div>
-  <img class="mark" style="left:80px;bottom:70px;height:26px" src="img/mark-espresso.svg" alt="">
+  <img class="mark" style="left:80px;bottom:60px;height:62px" src="img/mark-espresso.svg" alt="">
 </section></div>
 
 <!-- 4. CLOSE-UP EXPLAINER: aftercare -->
@@ -97,7 +99,7 @@ h1 b, h2 b { font-weight: 700; }
       <li><span>04</span>Anything you're unsure of, message us.</li>
     </ul>
   </div>
-  <img class="mark" style="left:80px;bottom:80px;height:30px" src="img/mark-gold.svg" alt="">
+  <img class="mark" style="left:80px;bottom:62px;height:64px" src="img/mark-gold.svg" alt="">
   <p class="note" style="left:auto;right:80px;bottom:84px;color:var(--stone)">Book · link in bio</p>
 </section></div>
 
@@ -111,7 +113,7 @@ h1 b, h2 b { font-weight: 700; }
   <div class="grid4">
     <img src="img/treatment.jpg" alt=""><img src="img/mirrors.png" alt=""><img src="img/reception.png" alt=""><img src="img/lounge.png" alt="">
   </div>
-  <img class="mark" style="left:80px;bottom:70px;height:26px" src="img/mark-espresso.svg" alt="">
+  <img class="mark" style="left:80px;bottom:60px;height:62px" src="img/mark-espresso.svg" alt="">
 </section></div>
 
 <!-- 6. FIRST TIME? -->
@@ -124,6 +126,7 @@ h1 b, h2 b { font-weight: 700; }
     <h2 class="h2" style="margin-top:28px">that's <b>most people,</b><br>once.</h2>
     <p class="lede" style="margin:30px auto 0;font-size:30px;max-width:780px">We'll talk you through what happens before it happens.</p>
   </div>
+  <img class="mark" style="left:50%;transform:translateX(-50%);bottom:60px;height:66px" src="img/mark-gold.svg" alt="">
 </section></div>
 
 <!-- 7. ACADEMY -->
@@ -131,7 +134,7 @@ h1 b, h2 b { font-weight: 700; }
 <section class="post" id="p7" style="background:var(--taupe)">
   <img class="bg" src="img/hands.png" alt="" style="left:auto;width:58%;right:0">
   <div style="position:absolute;inset:0;background:linear-gradient(90deg,var(--taupe) 42%,rgba(116,107,96,0) 70%)"></div>
-  <img class="mark" style="left:80px;top:90px;height:64px" src="img/academy-gold.svg" alt="">
+  <img class="mark" style="left:80px;top:80px;height:156px" src="img/academy-gold.svg" alt="">
   <div style="position:absolute;left:80px;bottom:120px;width:560px">
     <p class="micro">Foundation aesthetics</p>
     <span class="rule" style="margin:30px 0"></span>
@@ -150,7 +153,7 @@ h1 b, h2 b { font-weight: 700; }
     <h1 class="h1" style="margin-top:30px">start with a<br><b>conversation.</b></h1>
     <span class="pill">Book · link in bio</span>
   </div>
-  <img class="mark" style="left:50%;transform:translateX(-50%);top:110px" src="img/mark-gold.svg" alt="">
+  <img class="mark top" src="img/mark-gold.svg" alt="">
 </section></div>
 
 </body></html>

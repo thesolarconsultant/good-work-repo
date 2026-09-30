@@ -358,12 +358,13 @@ function home() {
   // phone gets the portrait cut; a reduced-motion setting gets it paused.
   if (heroFilm.desktop) h = swap(h, '<main id="top">\n', `<main id="top">
 <section class="film" aria-label="Inside Beauty Heaven Hub">
-  <video class="film__v" muted loop playsinline preload="metadata" data-desktop="${esc(heroFilm.desktop)}" data-phone="${esc(heroFilm.phone || heroFilm.desktop)}"></video>
+  <video class="film__v" muted loop autoplay playsinline preload="auto" data-desktop="${esc(heroFilm.desktop)}" data-phone="${esc(heroFilm.phone || heroFilm.desktop)}"></video>
   <div class="film__shade" aria-hidden="true"></div>
   <img class="film__mark" src="/logo/beauty-heaven-hub-wordmark-gold.svg" alt="Beauty Heaven Hub" width="420" height="60">
   <a class="film__down" href="#story">Scroll</a>
+  <button class="film__pause" type="button" aria-pressed="false">Pause</button>
 </section>
-<script>(function(){var v=document.querySelector('.film__v');if(!v)return;var f=v.parentNode;function fit(){f.style.height=Math.max(480,innerHeight-f.getBoundingClientRect().top-scrollY)+'px';}fit();addEventListener('resize',fit);var p=matchMedia('(max-aspect-ratio: 4/5)').matches;v.src=p?v.dataset.phone:v.dataset.desktop;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){v.autoplay=true;v.play().catch(function(){});}})();</script>
+<script>(function(){var v=document.querySelector('.film__v');if(!v)return;var f=v.parentNode,b=f.querySelector('.film__pause');function fit(){f.style.height=Math.max(480,innerHeight-f.getBoundingClientRect().top-scrollY)+'px';}fit();addEventListener('resize',fit);v.src=matchMedia('(max-aspect-ratio: 4/5)').matches?v.dataset.phone:v.dataset.desktop;var stopped=false;function go(){if(!stopped)v.play().catch(function(){});}v.addEventListener('ended',function(){v.currentTime=0;go();});v.addEventListener('pause',function(){if(!stopped&&!document.hidden)setTimeout(go,300);});document.addEventListener('visibilitychange',function(){if(!document.hidden)go();});b.addEventListener('click',function(){stopped=!stopped;if(stopped)v.pause();else go();b.textContent=stopped?'Play':'Pause';b.setAttribute('aria-pressed',stopped);});go();})();</script>
 `, "film");
 
   // Treatments journey: the five discipline cards open the real menus.
@@ -739,7 +740,7 @@ const sharp = await import("sharp").then((m) => m.default).catch(() => null);
 const shelf = await Promise.all(library.map(async (it) => {
   const ext = it.url.split(".").pop().toLowerCase();
   const file = `${it.id}.${ext}`;
-  const out = { id: it.id, kind: it.kind, made: it.made, ratio: it.ratio, title: it.title, use: it.use, src: it.url, preview: it.url, download: `${it.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase()}.${ext}` };
+  const out = { id: it.id, kind: it.kind, made: it.made, style: it.style, ratio: it.ratio, title: it.title, use: it.use, src: it.url, preview: it.url, download: `${it.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase()}.${ext}` };
   try {
     const res = await fetch(it.url, { signal: AbortSignal.timeout(90000) });
     if (!res.ok) throw new Error(`${res.status}`);

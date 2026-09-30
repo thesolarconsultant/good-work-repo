@@ -402,3 +402,4 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .lib .tag { justify-self: start; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted-ink); }
 .lib .tag--ai { border-color: var(--bh-gold); color: var(--bh-gold-ink); }
 .lib .btn { justify-self: start; margin-top: .3rem; padding: .35rem .8rem; font-size: .76rem; text-decoration: none; }
+.lib--styles { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
