@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="1024" height="1024">
+  <title>Halo, the Beauty Heaven Hub assistant</title>
+  <!-- The brand arch mark with a halo ring above it. Full-bleed square, so
+       Telegram's and WhatsApp's circle crop never clips the mark. -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="45%">
+      <stop offset="0" stop-color="#E3CD94" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#E3CD94" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" fill="#746B60"/>
+  <circle cx="32" cy="29" r="26" fill="url(#glow)"/>
+  <ellipse cx="32" cy="17.2" rx="8.2" ry="2.2" fill="none" stroke="#E3CD94" stroke-width="1.5"/>
+  <path d="M21.5 48 V33.5 A10.5 10.5 0 0 1 42.5 33.5 V48" fill="none" stroke="#C9A65C" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="18.5" y1="48" x2="45.5" y2="48" stroke="#C9A65C" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
+  <line x1="32" y1="28.5" x2="32" y2="34" stroke="#C9A65C" stroke-width="1" stroke-linecap="round"/>
+  <circle cx="32" cy="37.8" r="3.8" fill="#C9A65C"/>
+</svg>
