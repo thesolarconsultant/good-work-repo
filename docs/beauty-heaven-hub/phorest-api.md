@@ -280,3 +280,11 @@ Every "Book" button on the site now opens `/book/`, not Phorest's page. Details 
   2. `POST .../booking` as `RESERVED`, then create a deposit payment link where a deposit applies. Otherwise activate.
   3. Re-read the appointment before showing "booked".
   4. Test on a dummy client first, and check whether Phorest sends its own confirmation.
+
+## First live booking through the assistant (2026-09-30, evening)
+- The Telegram receptionist (@beautyheavenbot, locked to JB's chat) booked a Brazilian for Thursday 09:30 into the real
+  Phorest diary. JB confirmed it appears in Phorest. No errors in the server logs.
+- So the full chain works end to end: live menu, live free times, client lookup or creation (the UK mobile format was
+  accepted), hold, clash check, activate.
+- Still to note: whether Phorest sent its own confirmation text or email for an API booking.
+- The test booking and test client are to be cancelled or deleted in Phorest.
