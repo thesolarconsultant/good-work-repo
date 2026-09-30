@@ -20,7 +20,7 @@ Not used: anything from our own mock-up, brand guidelines or console seed. Where
 3. **Phorest is already the system of record for almost everything**, including the **Academy**: **30 courses and 20 student "model" bookings** are held there as services. Only eight courses show online.
 4. **Consultations are booked in Phorest as services in most of the medical and aesthetic categories** (see below). Two are **paid, at £50**: semi-permanent make-up and the Slim Jab. Several are **not bookable online**.
 5. **Most practitioners are self-employed**, and several run their own sub-brands (*By Gracie*, *BY EMH*, *with Rosie*). Bookings have to route to a person, not just a service.
-6. **Location conflict:** Phorest and the site's phone number say **Hoddesdon, Hertfordshire**. Our console and film copy say **Wombwell, Barnsley**. See *Conflicts*.
+6. **Location (update 2026-09-30):** Phorest's API shows two branches: the Hub at EN11 8FN and a separate "Beauty Heaven Academy" branch at SG13 8QL. Confirm the Academy address. **Earlier note:** Phorest and the site's phone number say **Hoddesdon, Hertfordshire**. Our console and film copy say **Wombwell, Barnsley**. See *Conflicts*.
 
 ---
 

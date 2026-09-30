@@ -234,3 +234,15 @@ no `frame-ancestors` rule, so the server allows framing.** Not yet tested in a r
 consultations only** (no payment, one service, two practitioners). The voice agent and chatbot need the same
 availability and booking core, so a web flow is a third front end on it. **Decide the scope before promising
 it:** the pilot fits the build, but a full flow is a separate quote.
+
+### First live check (2026-09-30, read-only, via /api/phorest-check on the Vercel project)
+- Credentials work. No charge.
+- **Two branches in the account:**
+  - **Beauty Heaven Hub**, branch ID `suUr_lpz1HaDatyreg_t4w`, postcode EN11 8FN (Hoddesdon). This is the salon and the public
+    booking page `beautyheaven1`.
+  - **Beauty Heaven Academy**, branch ID `0hOSDtWI5P68ZhhBZU_TWA`, postcode SG13 8QL (a Hertford postcode). 124 services in
+    48 categories. Not the public booking page we have been reading.
+- So the Academy has its own Phorest branch at a different address. Our services export covered the Hub only (it also carried an
+  "Academy Courses" category). Which branch students book through, and whether the Academy is taught at SG13 8QL, is to be
+  confirmed on Thursday (interview A5 and A11).
+- The earlier "Wombwell, Barnsley" still has no source.

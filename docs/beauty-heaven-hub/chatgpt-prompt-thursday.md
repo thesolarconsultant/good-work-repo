@@ -30,7 +30,7 @@ PART 1: THE WEBSITE (9 questions, about 15 minutes)
 A1. Who is answering (Jess, Hollie or both)?
 A2. What should the new website do first: get more treatment bookings, fill Academy courses, or both? What isn't working on the current site?
 A3. You've seen a mock-up of the new site. What did you like, what didn't you like, and what was missing?
-A5. Location. Phorest says Hoddesdon. Is that the salon? Is the Academy in the same place? Is there a second site anywhere, for example in Wombwell, Barnsley?
+A5. Location. Phorest has two branches: Beauty Heaven Hub at EN11 8FN (Hoddesdon) and Beauty Heaven Academy at SG13 8QL. Is the Academy taught at SG13 8QL, or at the Hub? What is the full Academy address? Is there any site in Wombwell, Barnsley?
 A7. Prices on the site: show them, show "from" prices, or leave them off (for example for injectables)? Some prices depend on who does the treatment (for example Ombre Lip Colour £350, £200 or £250). Which price should the site show?
 A9. Proof: do you have Google reviews, before-and-after photos with client consent, and certificates you can show? The old site mentions a "97% pass rate" and "award-winning". Would you like those on the new site, and what could you show to back them up?
 A11. Academy: how does someone go from asking about a course to a confirmed date, and who arranges it? Which courses are running now? How does a student get their L3 Matrix login after booking or paying a deposit? When a student finishes, who issues their certificate, what does it say, and does it name an awarding body? The "model" bookings: how do they work, who books them, and should the site promote them?

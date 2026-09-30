@@ -45,7 +45,7 @@ A1. Who is answering (Jess, Hollie or both)?
 A2. What should the new website do first: get more treatment bookings, fill Academy courses, or both? What isn't working on the current site?
 A3. They have seen a mock-up of the new site. What did they like, what did they dislike, and what was missing?
 A4. What do they want people to think of first: permanent make-up, or the whole hub?
-A5. Location. Phorest says Hoddesdon. Is that the salon? Is the Academy in the same place? Is there a second site anywhere, for example in Wombwell, Barnsley?
+A5. Location. Phorest has two branches: Beauty Heaven Hub at EN11 8FN (Hoddesdon) and Beauty Heaven Academy at SG13 8QL. Is the Academy taught at SG13 8QL, or at the Hub? What is the full Academy address? Is there any site in Wombwell, Barnsley?
 A6. Which 6 to 10 treatments should the site lead with? Is there anything they want to play down or leave off? Phorest also holds sunbeds, readings, teeth whitening, pamper days and body polish: should those be on the site? Is anything being added or dropped soon?
 A7. Prices on the site: show them, show "from" prices, or leave them off (for example for injectables)? Some prices depend on who does the treatment (for example Ombre Lip Colour £350, £200 or £250). Which price should the site show?
 A8. Treatment write-ups: can they supply durations, what to expect and aftercare, or should Good Work draft them for approval? Who signs off the wording for injectables?
