@@ -650,6 +650,8 @@ function bookingData() {
   };
 }
 
+todo.add("patch tests: Tinting is marked as needing one. Which others need one before the first treatment (lash lifts and extensions, brow lamination, hair colour, waxing, others?) and how long before? Question B6");
+
 function book() {
   return layout({
     path: "/book/", title: "Book online",

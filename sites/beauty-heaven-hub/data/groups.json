@@ -130,7 +130,8 @@
       {
         "csv": "Tinting",
         "title": "Tinting",
-        "phorest": "p2QTpY7Hx5IIybkljdhRGg"
+        "phorest": "p2QTpY7Hx5IIybkljdhRGg",
+        "patch": true
       },
       {
         "csv": "BY EMH",
