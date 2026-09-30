@@ -246,3 +246,12 @@ it:** the pilot fits the build, but a full flow is a separate quote.
   "Academy Courses" category). Which branch students book through, and whether the Academy is taught at SG13 8QL, is to be
   confirmed on Thursday (interview A5 and A11).
 - The earlier "Wombwell, Barnsley" still has no source.
+
+### Website now reads Phorest live (2026-09-30)
+- The Vercel build reads the menu straight from Phorest on every deploy. First live build: 368 treatments on the menu pages and the
+  8 courses. The old export had drifted already: Lip Blush Course is £1,250 in Phorest, £1,500 in the export.
+- **The Academy branch also sells treatments online** (anti-wrinkle, fillers, semi-permanent make-up, B12, Slim Jab, waxing, lashes
+  and more, 70 online services in 13 categories). Only its "Academy Courses" category is shown on the Academy page. Question for
+  Thursday: is SG13 8QL a second treatment location, or are these model or training bookings?
+- Model bookings, the held-back items (weight-loss injections, "B-TOX FACIAL") and prices for prescription-only categories stay
+  off the public menu, exactly as with the export.
