@@ -49,7 +49,11 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 - [ ] Phorest: a limited Good Work user (Jess, when in the salon)
 - [ ] L3 Matrix: a **student** account for Good Work
 - [ ] Google Business Profile: Good Work invited as Manager
-- [ ] Phone provider: who it is, and who can ask them to forward unanswered and out-of-hours calls
+- [ ] **Phone provider, for the voice agent** (01992 511383). Get: the provider's name (BT, Sky, Virgin, or an internet phone system
+  such as RingCentral or 8x8); whose name the account is in and the account number (not the password); whether it's a normal landline
+  or an app or web system (web systems let us set forwarding ourselves); what happens to a missed call now (voicemail? after how many
+  rings?); how many rings before an unanswered call should go to the assistant; the out-of-hours times; and whether any mobiles ring
+  alongside the landline. If Jess can log in to the provider's website or app, have a look together.
 - [ ] Consultation app: its name and what they pay
 - [ ] **Test booking through the website** (only once B16 is answered, and with Jess's OK and the data agreement signed): Good Work switches
   booking on, you book a dummy client ("Good Work Test") into a quiet slot on your phone, Jess checks it appears in Phorest, you note what
