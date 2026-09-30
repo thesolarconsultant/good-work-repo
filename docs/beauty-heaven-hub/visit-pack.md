@@ -6,7 +6,7 @@ Print this. It is for you only.
 - Meta Business portfolio: **already verified**.
 - Phorest API request: **sent**. Chase the reply if nothing has come back.
 - Jobs message sent. Replies so far: Jess keeps the one L3 Matrix admin login (we get a **student** account); Jess adds a Phorest user
-  when she is in the salon; **Jess has full access to the domain** (GoDaddy); Jess is setting up Google Drive; Hollie is doing YouTube and TikTok.
+  when she is in the salon; **Jess has full access to the domain** (GoDaddy); Jess was setting up Google Drive (now switching to Dropbox, so check she hasn't spent time on Drive); Hollie is doing YouTube and TikTok.
 - **Wix is not being used.** No access needed.
 
 ## Bring
@@ -42,7 +42,7 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 - [ ] Good Work added as a **partner**: content and WhatsApp only, no ads, no payments
 - [ ] YouTube Brand Account channel, Good Work added as Manager (Hollie)
 - [ ] TikTok business account, and how we get access (Hollie)
-- [ ] Google Drive folder shared with Good Work (Jess). We add `Inbox`, `Approved` and the consent sheet
+- [ ] Dropbox: a business Dropbox account in the salon's name (Jess). We add `Inbox` and `Approved`, and a File request link for the team
 - [ ] GoDaddy **delegate access** for Good Work (Jess). **Change nothing in DNS** until the current records are saved (their email runs on Microsoft 365)
 - [ ] Phorest: a limited Good Work user (Jess, when in the salon). Chase the API reply
 - [ ] L3 Matrix: a **student** account for Good Work

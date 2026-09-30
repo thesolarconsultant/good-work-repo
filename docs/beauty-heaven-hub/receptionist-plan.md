@@ -381,3 +381,18 @@ confirmed, the Supabase schema, and a dry-run receptionist prototype on Telegram
 ### Email templates: on hold (user, 2026-10-01)
 The salon's emails already live in Phorest, so we do not build new templates yet. Once we can see them, we copy their wording and look
 into our own HTML. Phorest's email editor takes no HTML import, so this is a recreation, not a file copy.
+
+## Content inbox: Dropbox instead of Google Drive (user, 2026-09-30)
+Same design as the Drive inbox above (`Inbox`, `Approved`, agents read only `Approved`, consultation photos never go in), on Dropbox:
+- **Account:** Dropbox in the salon's name, not personal. A paid plan (the free 2GB fills with a week of video). Check current plans;
+  Dropbox Business adds admin control and removing a person's access when they leave.
+- **The team upload without an account:** a Dropbox **File request** link on the `Inbox` folder. Anyone with the link can upload from
+  their phone but cannot see or change anything else. Practitioners don't need Dropbox. This is the main advantage over Drive.
+- **How our server reads it:** a Dropbox app registered by Good Work, authorised once by the salon, with the narrowest scopes (read files,
+  read metadata). Prefer "App folder" access, so the app can see only its own folder and nothing else in their Dropbox. Tokens are
+  short-lived with a refresh token, kept in Vercel's environment settings.
+- **New uploads arrive by webhook:** Dropbox can notify our server when files change, so no polling.
+- **Consent record:** no Google Sheet. Keep consent per file in our database and the Content Console approval step.
+- **Rights and privacy:** unchanged from the Drive notes above. Dropbox goes on the privacy notice as a sub-processor.
+- **The Claude app:** there is no Dropbox connector listed in this session, which does not matter for the automation (it uses the API),
+  but means looking at the folder from a chat would mean a connector added later.
