@@ -68,7 +68,7 @@ Tick each item off the table above as it is done and note the date.
   domain is in someone else's name, get that person's written OK. Ask the registrant to move it into the salon's name if it isn't.
 
 ## Replies from Jess (2026-09-30)
-- **Meta Business:** already verified. Still to do: WhatsApp Business account in the portfolio (new number, display name approval), and
+- **Meta Business:** already verified. Still to do: connect 07424 219417 (already on the WhatsApp Business app) to the portfolio with coexistence, or a new SIM if Meta refuses; display name approval, and
   partner access for Good Work.
 - **L3 Matrix:** only one admin login exists; everything else is student access. Decision: Jess keeps admin. Ask for a **student account**
   for Good Work to see the learner journey; anything admin-side, Jess shows us on screen.

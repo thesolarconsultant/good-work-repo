@@ -4,7 +4,8 @@ Print this. It is for you only.
 
 ## Already done before the visit
 - Meta Business portfolio: **already verified**.
-- Phorest API request: **sent**. Chase the reply if nothing has come back.
+- Phorest API: **access granted, no charge.** The draft site reads the menu and live free times from it. Jess should **reset the Phorest API password** (it was pasted in a chat); tell Good Work when done.
+- **New booking page** on the preview (beauty-heaven-hub.vercel.app/book/): pick a treatment, who, and a live time. Show it to them on their phones (A3).
 - Jobs message sent. Replies so far: Jess keeps the one L3 Matrix admin login (we get a **student** account); Jess adds a Phorest user
   when she is in the salon; **Jess has full access to the domain** (GoDaddy); Jess was setting up Google Drive (now switching to Dropbox, so check she hasn't spent time on Drive); Hollie is doing YouTube and TikTok.
 - **Wix is not being used.** No access needed.
@@ -21,7 +22,7 @@ Ask how long they really have, and plan to that.
 
 | Order | What | Time |
 |---|---|---|
-| 1 | **Website part, short list:** A1 who is answering, A2 the goal, A3 the mock-up, A5 location (Hoddesdon or Wombwell), A7 prices, A9 proof, A11 how the Academy works, A13 contact and rules, A16 approvals and launch date | 15 min |
+| 1 | **Website part, short list:** A1 who is answering, A2 the goal, A3 the mock-up, A5 location (the Hub, and the Academy at SG13 8QL), A7 prices, A9 proof, A11 how the Academy works, A13 contact, parking, payments and rules, A16 approvals and launch date, A18 treatments nobody takes online | 20 min |
 | 2 | **How the practitioners work:** C1 to C10, all of them. Ask neutrally, note disagreements by name. | 15 min |
 | | **Break, 30 minutes.** Before it, have them copy the ChatGPT blocks and send them to you. Write down what stood out. | |
 | 3 | **Access setup** (list below). WhatsApp first. | 25 min |
@@ -38,13 +39,13 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 - [x] Meta Business portfolio verified
 - [ ] Confirm who is admin on the portfolio, and that the Facebook Page and both Instagram accounts (beautyheavenuk, beautyheavenacademy) are in it
 - [ ] Instagram accounts are Professional accounts linked to the Facebook Page
-- [ ] **WhatsApp Business account** added in the portfolio on the **new number** (never used on WhatsApp); display name submitted
+- [ ] **WhatsApp:** connect **07424 219417** (already on the WhatsApp Business app) to the portfolio, keeping the app working alongside (Meta calls it "coexistence"). If Meta won't allow that for their account, stop and use a new SIM for the assistant instead. Whose phone is it on? Display name submitted
 - [ ] Good Work added as a **partner**: content and WhatsApp only, no ads, no payments
 - [ ] YouTube Brand Account channel, Good Work added as Manager (Hollie)
 - [ ] TikTok business account, and how we get access (Hollie)
 - [ ] Dropbox: a business Dropbox account in the salon's name (Jess). We add `Inbox` and `Approved`, and a File request link for the team
 - [ ] GoDaddy **delegate access** for Good Work (Jess). **Change nothing in DNS** until the current records are saved (their email runs on Microsoft 365)
-- [ ] Phorest: a limited Good Work user (Jess, when in the salon). Chase the API reply
+- [ ] Phorest: a limited Good Work user (Jess, when in the salon)
 - [ ] L3 Matrix: a **student** account for Good Work
 - [ ] Google Business Profile: Good Work invited as Manager
 - [ ] Phone provider: who it is, and who can ask them to forward unanswered and out-of-hours calls
@@ -52,7 +53,7 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 
 ## Ask to see
 - The ten questions clients ask most (both of them).
-- The new SIM for WhatsApp, and which email is the main business one.
+- The phone that has WhatsApp Business on 07424 219417 (needed for the connection), and which email is the main business one.
 - Rough calls a day, and how many are missed.
 - How a phone booking is taken and entered in Phorest.
 - A Phorest client card: does it hold photos or forms? The Phorest reports if they have them (sales by staff, booking source, no-shows, lapsed clients).

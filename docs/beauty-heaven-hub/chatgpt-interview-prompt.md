@@ -57,6 +57,7 @@ A13. Contact and rules: who answers the phone, and what are the opening hours? W
 A14. Accounts and access: who holds the login for the beautyheavenhub.co domain (Wix?), and for Google Business Profile, Google Analytics and Search Console? Who is the admin on the Facebook page and Instagram (beautyheavenuk and beautyheavenacademy), and are they happy to add Good Work as a partner? (Good Work will send the steps. Do NOT explain them.) Which of the three email addresses is the real one?
 A15. Do they have their own photos and video Good Work can use, and where do they live?
 A16. Who approves the website content, how quickly can they do it, and is there any date driving the launch (an Academy intake, an event)?
+A18. Their online menu. Phorest shows about 57 treatments as bookable online, but nobody who takes online bookings is set up to do them: HIFU, massage, some nails and hair, lymphatic drainage, some lashes and two filler treatments. Is someone missing in Phorest, or should those come off the website? Should the sunbeds be on the website? What is the "B-TOX FACIAL"?
 
 AFTER PART A
 1. Ask: "Is there anything I've missed for the website?"
