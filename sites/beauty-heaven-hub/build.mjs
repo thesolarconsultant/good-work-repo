@@ -705,6 +705,17 @@ if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "
 // in the brand kit, plus the room photographs its picture tool sends to
 // Higgsfield as references, at the path that tool expects.
 cpSync(join(BRAND, "console"), join(OUT, "console"), { recursive: true, filter: (p) => !p.endsWith("README.md") });
+// The brand guidelines, inside the console (so behind its password), with the
+// assets the page uses. The console's menu link points here on this site.
+const GUIDE = join(OUT, "console/brand");
+mkdirSync(join(GUIDE, "logo"), { recursive: true });
+mkdirSync(join(GUIDE, "photos/derived"), { recursive: true });
+writeFileSync(join(GUIDE, "index.html"), readFileSync(join(BRAND, "guidelines.html"), "utf8").replace('href="index.html"', 'href="../"'));
+for (const f of ["brand.css", "BRAND.md"]) cpSync(join(BRAND, f), join(GUIDE, f));
+cpSync(join(BRAND, "fonts"), join(GUIDE, "fonts"), { recursive: true, filter: (p) => !p.endsWith(".ttf") });
+cpSync(join(BRAND, "logo"), join(GUIDE, "logo"), { recursive: true, filter: (p) => !/\.png$/.test(p) || p.endsWith("wordmark-mask.png") });
+cpSync(join(BRAND, "photos/derived"), join(GUIDE, "photos/derived"), { recursive: true, filter: (p) => !p.endsWith(".json") });
+writeFileSync(join(OUT, "console/index.html"), readFileSync(join(OUT, "console/index.html"), "utf8").replace('href="../guidelines.html"', 'href="brand/"'));
 mkdirSync(join(OUT, "goodwork/brands/beauty-heaven-hub/photos"), { recursive: true });
 for (const f of ["treatment-room.jpg", "reception-wide.png", "salon-mirrors.png", "lounge-wings.png"]) {
   cpSync(join(BRAND, "photos", f), join(OUT, "goodwork/brands/beauty-heaven-hub/photos", f));

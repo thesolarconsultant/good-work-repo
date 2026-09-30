@@ -468,18 +468,30 @@ $("#week").addEventListener("click", (e) => {
 });
 
 /* ==================================================================== EMAIL == */
-const EMAIL_SHELL = (subject, pre, body) => `<!doctype html><html><head><meta charset="utf-8">
+/* Colour styles for the email. Same layout, four ways of wearing the brand:
+   the everyday one, a light one, an evening one, and gold for occasions. */
+const EMAIL_THEMES = {
+  signature: { label: "Signature taupe", wall: "#ECE6DD", body: "#F4F0E9", head: "#746B60", logo: "#C9A65C", rule: "#746B60", ink: "#24211E", btn: "#C9A65C", btnInk: "#24211E", foot: "#24211E", footInk: "#B9AFA2" },
+  ivory: { label: "Light ivory", wall: "#F4F0E9", body: "#FFFFFF", head: "#FFFFFF", logo: "#24211E", rule: "#E3CD94", ink: "#24211E", btn: "#24211E", btnInk: "#F4F0E9", foot: "#ECE6DD", footInk: "#6B6257" },
+  evening: { label: "Evening espresso", wall: "#161412", body: "#24211E", head: "#24211E", logo: "#C9A65C", rule: "#3D3731", ink: "#F4F0E9", btn: "#C9A65C", btnInk: "#24211E", foot: "#161412", footInk: "#8F8579" },
+  gold: { label: "Gold occasion", wall: "#ECE6DD", body: "#FBF6EA", head: "#C9A65C", logo: "#24211E", rule: "#C9A65C", ink: "#24211E", btn: "#24211E", btnInk: "#F4F0E9", foot: "#24211E", footInk: "#E3CD94" },
+};
+let emailTheme = "signature";
+
+const EMAIL_SHELL = (subject, pre, body, key = emailTheme) => {
+  const t = EMAIL_THEMES[key] || EMAIL_THEMES.signature;
+  return `<!doctype html><html><head><meta charset="utf-8">
 <style>
-  body{margin:0;background:#ECE6DD;font-family:'Century Gothic',Futura,Helvetica,Arial,sans-serif;}
-  .w{max-width:600px;margin:0 auto;background:#F4F0E9;}
-  .hd{background:#746B60;padding:26px 30px;text-align:center;}
-  .hd b{color:#C9A65C;font-size:19px;font-weight:400;letter-spacing:.02em;}
-  .bd{padding:30px;color:#24211E;font-size:15px;line-height:1.65;}
+  body{margin:0;background:${t.wall};font-family:'Century Gothic',Futura,Helvetica,Arial,sans-serif;}
+  .w{max-width:600px;margin:0 auto;background:${t.body};}
+  .hd{background:${t.head};padding:26px 30px;text-align:center;border-bottom:1px solid ${t.rule};}
+  .hd b{color:${t.logo};font-size:19px;font-weight:400;letter-spacing:.02em;}
+  .bd{padding:30px;color:${t.ink};font-size:15px;line-height:1.65;}
   .bd p{margin:0 0 14px;}
-  .cta{display:inline-block;background:#C9A65C;color:#24211E;text-decoration:none;
+  .cta{display:inline-block;background:${t.btn};color:${t.btnInk};text-decoration:none;
        padding:13px 28px;border-radius:999px;font-size:14px;margin-top:6px;}
-  .ft{background:#24211E;color:#B9AFA2;padding:22px 30px;font-size:11px;line-height:1.7;}
-  .pre{display:none;font-size:1px;color:#F4F0E9;}
+  .ft{background:${t.foot};color:${t.footInk};padding:22px 30px;font-size:11px;line-height:1.7;}
+  .pre{display:none;font-size:1px;color:${t.body};}
 </style></head><body>
 <div class="pre">${pre}</div>
 <div class="w">
@@ -490,9 +502,20 @@ const EMAIL_SHELL = (subject, pre, body) => `<!doctype html><html><head><meta ch
   </div>
   <div class="ft">Beauty Heaven Hub<br>{{location.full_address}}<br>
     {{location.phone}} · {{location.email}}<br><br>
-    <a href="{{unsubscribe_link}}" style="color:#B9AFA2;">Unsubscribe</a>
+    <a href="{{unsubscribe_link}}" style="color:${t.footInk};">Unsubscribe</a>
   </div>
 </div></body></html>`;
+};
+
+// The colour style picker.
+$("#emThemes").innerHTML += Object.entries(EMAIL_THEMES)
+  .map(([k, t]) => `<label><input type="radio" name="emTheme" value="${k}"${k === emailTheme ? " checked" : ""}><span class="swatch" style="background:${t.head};border-color:${t.btn}"></span>${t.label}</label>`)
+  .join("");
+$("#emThemes").addEventListener("change", (e) => {
+  if (e.target.name !== "emTheme") return;
+  emailTheme = e.target.value;
+  renderEmail();
+});
 
 function renderEmail() {
   const html = EMAIL_SHELL(

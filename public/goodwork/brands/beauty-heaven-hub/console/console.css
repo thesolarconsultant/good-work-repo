@@ -57,13 +57,13 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .rail__brand .bh-mark { width: 100%; max-width: 160px; color: var(--bh-gold); }
 
 .rail__nav { display: grid; gap: 2px; align-content: start; padding: 0 .6rem; }
-.rail__nav button {
-  display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left;
+.rail__nav button, .rail__nav a {
+  text-decoration: none; display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left;
   background: none; border: 0; cursor: pointer; padding: .62rem .7rem; border-radius: 8px;
   font-size: .92rem; color: var(--bh-stone); transition: background 200ms, color 200ms;
 }
-.rail__nav button i { width: 5px; height: 5px; border-radius: 50%; background: rgba(185,175,162,.45); flex: none; transition: background 200ms; }
-.rail__nav button:hover { background: rgba(244,240,233,.06); color: var(--bh-ivory); }
+.rail__nav button i, .rail__nav a i { width: 5px; height: 5px; border-radius: 50%; background: rgba(185,175,162,.45); flex: none; transition: background 200ms; }
+.rail__nav button:hover, .rail__nav a:hover { background: rgba(244,240,233,.06); color: var(--bh-ivory); }
 .rail__nav button.on { background: rgba(244,240,233,.10); color: var(--bh-ivory); }
 .rail__nav button.on i { background: var(--bh-gold); }
 .pill {
@@ -250,7 +250,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
   .rail__brand .bh-mark { max-width: 130px; }
   .rail__nav { display: flex; gap: .3rem; overflow-x: auto; padding: 0 var(--pad) .2rem; scrollbar-width: none; }
   .rail__nav::-webkit-scrollbar { width: 0; height: 0; }
-  .rail__nav button { width: auto; white-space: nowrap; padding: .45rem .8rem; border-radius: 999px; font-size: .84rem; }
+  .rail__nav button, .rail__nav a { width: auto; white-space: nowrap; padding: .45rem .8rem; border-radius: 999px; font-size: .84rem; }
   .rail__foot { display: none; }
   .cols, .cols--email, .pieces, .brandform { grid-template-columns: minmax(0, 1fr); }
   .preview iframe { height: 52vh; }
@@ -378,3 +378,6 @@ button, input, textarea, select { font: inherit; color: inherit; }
   box-shadow: 0 16px 34px -14px rgba(36, 33, 30, .5);
 }
 @media (prefers-reduced-motion: reduce) { .slide { transition: none } .slide:hover { transform: none } }
+
+/* Email colour styles: a small swatch beside each name */
+.picks .swatch { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; display: inline-block; flex: none; }
