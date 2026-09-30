@@ -70,8 +70,25 @@ export async function storeStatus() {
   try {
     const res = await db("bot_messages?select=id&limit=1");
     if (res.ok) return "ok";
-    return `HTTP ${res.status}: ${(await res.text()).slice(0, 120)}`;
+    return `HTTP ${res.status}: ${(await res.text()).slice(0, 120)} | ${describeKey()}`;
   } catch (e) {
     return `unreachable: ${e.message}`;
   }
+}
+
+// What kind of key is set, without revealing it: type, length, and for the
+// older JWT keys the role and project it belongs to.
+function describeKey() {
+  const key = (process.env.SUPABASE_SERVICE_KEY || "").trim();
+  const project = (baseUrl().match(/^https:\/\/([a-z0-9]+)\.supabase\.co/) || [])[1] || "unrecognised URL";
+  let kind = key.startsWith("sb_secret_") ? "sb_secret key" : key.startsWith("sb_publishable_") ? "sb_publishable key (wrong one: that's the public key)" : key.startsWith("eyJ") ? "JWT key" : "unrecognised key";
+  if (key.startsWith("eyJ")) {
+    try {
+      const claims = JSON.parse(Buffer.from(key.split(".")[1], "base64url").toString());
+      kind += `, role ${claims.role}, project ${claims.ref}`;
+    } catch {
+      kind += ", unreadable";
+    }
+  }
+  return `key: ${kind}, ${key.length} characters; URL project: ${project}`;
 }
