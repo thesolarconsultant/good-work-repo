@@ -12,6 +12,9 @@ node sites/beauty-heaven-hub/build.mjs     # writes public/ and CONTENT-TODO.md
 - `src/site.css`: layout. Colours, type and the logo come from the brand kit (`public/goodwork/brands/beauty-heaven-hub/brand.css`), copied in at build.
 - `CONTENT-TODO.md`: everything still to confirm. Each shows as a yellow note on the draft pages. With `launched: true` the build refuses to run while any remain.
 
+**Preview:** https://beauty-heaven-hub.vercel.app (Vercel project `beauty-heaven-hub`, noindex, public so the owners can view it on their phones). It
+was deployed by hand from this branch; pushes to other branches make separate preview URLs, and merging to `main` updates it.
+
 **Deploy:** its own Vercel project, root directory `sites/beauty-heaven-hub`, no build command, output `public`. `vercel.json` sends
 `noindex` on every page; remove that header, and set `launched: true`, on launch day. Point the domain from GoDaddy only after saving the
 current DNS records (the salon's email runs on Microsoft 365). Redirect the old Wix page addresses.
