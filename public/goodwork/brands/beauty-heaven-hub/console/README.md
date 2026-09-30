@@ -20,7 +20,17 @@ for one person trying it and not fine for a salon. It needs a database and
 logins before a second person can use it, and that is a decision with a cost
 rather than something to assume.
 
-## Before it can write anything
+## On the salon's own site
+
+The console also runs on the Beauty Heaven site (`sites/beauty-heaven-hub`, at
+`/console/`), behind a password (`CONSOLE_PASSWORD`), saving to the salon's
+Supabase so the whole team shares it. There the writing goes to **Claude**
+(Claude Opus 5.5, the salon's `ANTHROPIC_API_KEY`) through
+`sites/beauty-heaven-hub/api/console.js`, using the same channels, styles and
+brand rules exported from `api/console.js` below. The Good Work demo keeps
+DeepSeek.
+
+## Before it can write anything (Good Work demo)
 
 Set `DEEPSEEK_API_KEY` on the Vercel project — Settings → Environment
 Variables, all environments, then redeploy so the functions pick it up.

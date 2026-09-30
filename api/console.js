@@ -499,6 +499,10 @@ export default async function handler(request) {
   });
 }
 
+// The writing rules, shared with the Beauty Heaven site's console, which
+// sends the same prompt to Claude instead (sites/beauty-heaven-hub/api/console.js).
+export { CHANNELS, STYLES, DEFAULT_STYLE, systemPrompt, MAX_BODY, MAX_BRIEF };
+
 // Same runtime as the other two functions in this folder. These handlers are
 // web-standard (Request -> Response); Vercel's Node runtime would hand them
 // (req, res) instead and they would throw on the first call.
