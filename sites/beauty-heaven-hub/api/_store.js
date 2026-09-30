@@ -41,7 +41,8 @@ export async function loadConversation(channel, chat) {
   const last = await (await db(q)).json();
   if (!Array.isArray(last) || !last.length || Date.now() - Date.parse(last[0].created_at) > CONVO_HOURS * 3600e3) return fresh();
   const rows = await (await db(`bot_messages?convo=eq.${encodeURIComponent(last[0].convo)}&order=id.asc&select=role,content`)).json();
-  return { convo: last[0].convo, messages: rows.map((r) => ({ role: r.role, content: r.content })) };
+  // "meta" rows (e.g. a fresh-start marker) are for us, not the model.
+  return { convo: last[0].convo, messages: rows.filter((r) => r.role !== "meta").map((r) => ({ role: r.role, content: r.content })) };
 }
 
 export async function appendMessages(channel, chat, convo, added) {
@@ -91,4 +92,19 @@ function describeKey() {
     }
   }
   return `key: ${kind}, ${key.length} characters; URL project: ${project}`;
+}
+
+// Start a fresh conversation for this chat (e.g. the /new command while testing).
+export async function startFresh(channel, chat) {
+  const convo = `${channel}:${chat}:${Date.now()}`;
+  const db = supa();
+  if (!db) {
+    mem.set(`${channel}:${chat}`, { convo, messages: [], at: Date.now() });
+    return;
+  }
+  await db("bot_messages", {
+    method: "POST",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify([{ channel, chat: String(chat), convo, role: "meta", content: { event: "fresh start" } }]),
+  });
 }

@@ -606,7 +606,9 @@ function bookingData() {
         items: c.items.filter((s) => s.serviceId).map((s) => {
           const staff = staffPrices(s);
           staff.forEach((x) => used.add(x.id));
-          return { id: s.serviceId, name: tidy(s.Service), mins: Number(s["Duration (min)"]) || null, price: showPrice ? Number(s["Price £"]) : null, confirm: !team && !isPom(s) && staff.length > 0, staff: staff.map((x) => [x.id, showPrice ? x.price : null]) };
+          // Patch tests only where the salon has said so (data/groups.json "patch").
+          const patch = !!c.patch;
+          return { id: s.serviceId, name: tidy(s.Service), mins: Number(s["Duration (min)"]) || null, price: showPrice ? Number(s["Price £"]) : null, confirm: !team && !isPom(s) && staff.length > 0, patch, staff: staff.map((x) => [x.id, showPrice ? x.price : null]) };
         }),
       };
     }),
@@ -650,7 +652,7 @@ function bookingData() {
   };
 }
 
-todo.add("patch tests: Tinting is marked as needing one. Which others need one before the first treatment (lash lifts and extensions, brow lamination, hair colour, waxing, others?) and how long before? Question B6");
+todo.add("patch tests: which treatments need one before the first appointment (tints, lash lifts and extensions, brow lamination, hair colour, others?), how long before, and should the assistant book the patch test first? Only laser is marked so far. Question B6");
 
 function book() {
   return layout({

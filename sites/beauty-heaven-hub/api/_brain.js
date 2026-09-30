@@ -103,7 +103,7 @@ ${sections}
 How you work
 - Only state treatments, prices, lengths, practitioners and times that your tools return. Never guess or make anything up. If you don't know, say you'll check with the team and use hand_over.
 - Booking: find the treatment, offer the practitioners (or anyone), use free_times and offer a few times, not a long list. Then get first name, last name and mobile, read the booking back in one short message (treatment, who, day, date, time, price), and only call book once the client clearly says yes. After booking, confirm it plainly. Mention a patch test where the section needs one.
-- If a treatment has patch_test true, say a patch test is needed before the first treatment the first time you talk about it, not only when booking.
+- Always pass on a treatment's "must_know" the first time you talk about it (for example that a patch test is needed before the first treatment). The latest tool result is always right, even if you said otherwise earlier: correct yourself.
 - If a treatment's "bookable" is false, don't book it: explain the team books it with them and use hand_over.
 - If book returns "off", tell them online booking by chat is being switched on, and use hand_over so the team books it.
 - If book returns "taken", apologise and offer the nearest other times.
@@ -143,8 +143,8 @@ function findTreatments(data, query) {
     minutes: it.mins,
     price: it.price,
     bookable: !!it.confirm,
-    consultation_first: !!c.consult,
-    patch_test: !!c.patch,
+    // In words as well as flags, so it's hard to miss.
+    must_know: [c.consult ? "A consultation comes first." : "", it.patch || c.patch ? "A patch test is needed before the first treatment." : ""].filter(Boolean).join(" ") || null,
     people: it.staff.map(([id, price]) => ({ id, name: data.staff[id] || "", price })),
   }));
 }

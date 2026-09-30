@@ -8,6 +8,7 @@
 // is real. TELEGRAM_HANDOVER_CHAT, if set, receives hand-over notes.
 
 import { reply } from "./_brain.js";
+import { startFresh } from "./_store.js";
 import { webhookSecret } from "./_telegram.js";
 
 export const config = { maxDuration: 60 };
@@ -45,6 +46,11 @@ export async function POST(request) {
   }
   if (!msg.text) {
     await send(chatId, "I can only read text messages for now.");
+    return new Response("ok");
+  }
+  if (msg.text === "/new") {
+    await startFresh("Telegram", chatId);
+    await send(chatId, "Fresh start: I've forgotten this chat. How can I help?");
     return new Response("ok");
   }
   if (msg.text === "/start") {
