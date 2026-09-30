@@ -13,7 +13,6 @@
 
 import * as store from "./store.js";
 import { makeSet, toBlob } from "./cards.js";
-import * as EMAILS from "./emails.js";
 
 const API = "/api/console";
 const $ = (s, r = document) => r.querySelector(s);
@@ -469,83 +468,212 @@ $("#week").addEventListener("click", (e) => {
 });
 
 /* ==================================================================== EMAIL == */
-/* The email tab: pick a template and a colour style, fill the fields, see it
-   as a client would, copy the HTML with the merge tags intact. What you type
-   is kept per template (and shared with the team), so a half-written email is
-   still there tomorrow. */
-const em = { tpl: "welcome", theme: "signature" };
+/* The email tab renders the brand's real templates, the same four files that
+   go to the CRM, rather than a lookalike built in here. Each template marks
+   its editable regions with `<!-- bh:slot name -->` and this fills them, so the
+   template stays the single source of truth for the design and the console is
+   only the thing that types into it. Change a colour in ../email/welcome.html
+   and this screen changes with it. */
 
-function emValues() {
-  const saved = (store.load().emailDrafts || {})[em.tpl] || {};
-  return { ...EMAILS.TEMPLATES[em.tpl].defaults, ...saved };
+const TEMPLATES = {
+  signature: {
+    name: "Signature",
+    file: "email/welcome.html",
+    note: "The all-rounder. Taupe masthead, arch hero, both worlds as picture cards, a review on the taupe wall.",
+  },
+  ivory: {
+    name: "Ivory",
+    file: "email/welcome-maison.html",
+    note: "Centred and printed, on the paper rather than in a band. The button is outlined, so it asks rather than shouts.",
+  },
+  evening: {
+    name: "Evening",
+    file: "email/welcome-noir.html",
+    note: "Espresso throughout: evenings, launches, an Academy intake. The only one that needs no defending against a client's dark mode.",
+  },
+  letter: {
+    name: "Letter",
+    file: "email/welcome-lettre.html",
+    note: "A signed letter, no photography, and the only one that invites a reply. Sign it before it sends: it ships with [Name] and [Role] as gaps.",
+  },
+};
+
+/* The templates point their images and fonts at the brand folder on the agency
+   site. The salon site carries its own copy of that folder, so from here the
+   preview and the copied HTML both use this site's copy: the artwork an email
+   points at is then the artwork sitting next to this console. */
+const LIVE_BRAND = "https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/";
+const BRAND_HERE = location.pathname.startsWith("/goodwork/")
+  ? new URL("../", location.href).href
+  : `${location.origin}/goodwork/brands/beauty-heaven-hub/`;
+const SITE_HERE = location.pathname.startsWith("/goodwork/") ? LIVE_BRAND : `${location.origin}/`;
+const fromHere = (html) =>
+  BRAND_HERE === LIVE_BRAND
+    ? html
+    : html.split(`href="${LIVE_BRAND}"`).join(`href="${SITE_HERE}"`).split(LIVE_BRAND).join(BRAND_HERE);
+
+/* What the CRM merges in at send time. It fills the preview so the wording can
+   be read the way a client reads it, and never touches the copied HTML. The
+   real address, phone and email come from the CRM's location record. */
+const SAMPLE = {
+  "{{contact.first_name}}": "Sophie",
+  "{{custom_values.booking_url}}": "#",
+  "{{location.full_address}}": "23-24 Conduit Lane, Hoddesdon, Hertfordshire EN11 8FN",
+  "{{location.phone}}": "01992 511383",
+  "{{location.email}}": "hello@beautyheavenhub.co",
+  "{{unsubscribe_link}}": "#",
+  "[Name]": "Jess",
+  "[Role]": "Owner",
+};
+
+const SLOT = /<!-- bh:slot (\w+) -->([\s\S]*?)<!-- bh:endslot -->/g;
+const templates = new Map();
+
+async function templateHtml(id) {
+  if (!templates.has(id)) {
+    const res = await fetch(BRAND_HERE + TEMPLATES[id].file, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`${res.status} on ${TEMPLATES[id].file}`);
+    templates.set(id, await res.text());
+  }
+  return templates.get(id);
 }
 
-function renderEmailList() {
-  $("#emTemplates").innerHTML = Object.entries(EMAILS.TEMPLATES)
-    .map(([k, t]) => `<button type="button" data-tpl="${k}" class="${k === em.tpl ? "on" : ""}"><b>${t.label}</b><span>${t.use}</span></button>`)
-    .join("");
-  $("#emThemes").innerHTML = `<legend>Colour style</legend>` + Object.entries(EMAILS.THEMES)
-    .map(([k, t]) => `<label><input type="radio" name="emTheme" value="${k}"${k === em.theme ? " checked" : ""}><span class="swatch" style="background:${t.swatch};border-color:${t.ring}"></span>${t.label}</label>`)
-    .join("");
+/* One paragraph per blank line, wearing the opening tag the template already
+   uses, so the copy arrives in the template's own type, and the last
+   paragraph keeps the wider gap above the button. */
+function paragraphs(slot, text) {
+  const opens = slot.match(/<p\b[^>]*>/g) || [];
+  const parts = text.split(/\n{2,}/).map((t) => t.trim()).filter(Boolean);
+  if (!parts.length || !opens.length) return slot;
+  const first = opens[0];
+  const last = opens[opens.length - 1];
+  return parts
+    .map((t, i) => `${i === parts.length - 1 ? last : first}${esc(t).replace(/\n/g, "<br>")}</p>`)
+    .join("\n\n        ");
 }
 
-function renderEmailForm() {
-  const t = EMAILS.TEMPLATES[em.tpl];
-  const v = emValues();
-  $("#emName").textContent = t.label;
-  $("#emUse").textContent = t.use;
-  $("#emForm").innerHTML = t.fields.map((k) => {
-    const f = EMAILS.FIELDS[k];
-    const label = `<span>${f.label}${f.hint ? ` <em>${f.hint}</em>` : ""}</span>`;
-    const val = esc(v[k] ?? "");
-    if (f.type === "textarea") return `<label class="field">${label}<textarea name="${k}" rows="${f.rows || 4}">${val}</textarea></label>`;
-    if (f.type === "photo") return `<label class="field">${label}<select name="${k}">${Object.entries(EMAILS.PHOTOS).map(([pk, pl]) => `<option value="${pk}"${pk === v[k] ? " selected" : ""}>${pl}</option>`).join("")}<option value=""${!v[k] ? " selected" : ""}>No photo</option></select></label>`;
-    return `<label class="field">${label}<input type="text" name="${k}" value="${val}"></label>`;
-  }).join("");
+/* Every headline in the brand is light with one word bold. *asterisks* mark
+   that word, set in whatever bold the template itself uses. */
+function headline(slot, text) {
+  const bold = (slot.match(/<b\b[^>]*>/) || ['<b style="font-weight:700;">'])[0];
+  return esc(text)
+    .replace(/\*([^*]+)\*/g, (m, word) => `${bold}${word}</b>`)
+    .replace(/\n/g, "<br>");
 }
 
-function renderEmail() {
-  if (!$("#emForm").elements.length) { renderEmailList(); renderEmailForm(); }
-  const html = EMAILS.render(em.tpl, em.theme, emValues());
-  $("#emFrame").srcdoc = $("#emSample").checked ? EMAILS.sample(html) : html;
+function fill(html, f) {
+  return html.replace(SLOT, (whole, name, inner) => {
+    let out = inner;
+    if (name === "preheader" && f.pre) out = esc(f.pre);
+    if (name === "headline" && f.head) out = headline(inner, f.head);
+    if (name === "body" && f.body) out = paragraphs(inner, f.body);
+    return `<!-- bh:slot ${name} -->${out}<!-- bh:endslot -->`;
+  });
+}
+
+const withSample = (html) => Object.keys(SAMPLE).reduce((out, tag) => out.split(tag).join(SAMPLE[tag]), html);
+
+/* If a template can't be fetched the tab still works, on a plain shell that
+   says so rather than a blank screen. */
+const FALLBACK_SHELL = (pre, body) => `<!doctype html><html><head><meta charset="utf-8">
+<style>
+  body{margin:0;background:#ECE6DD;font-family:'Century Gothic',Futura,Helvetica,Arial,sans-serif;}
+  .w{max-width:600px;margin:0 auto;background:#F4F0E9;}
+  .hd{background:#746B60;padding:26px 30px;text-align:center;}
+  .hd b{color:#C9A65C;font-size:19px;font-weight:400;letter-spacing:.02em;}
+  .bd{padding:30px;color:#24211E;font-size:15px;line-height:1.65;}
+  .bd p{margin:0 0 14px;}
+  .cta{display:inline-block;background:#C9A65C;color:#24211E;text-decoration:none;padding:13px 28px;border-radius:999px;font-size:14px;margin-top:6px;}
+  .ft{background:#24211E;color:#B9AFA2;padding:22px 30px;font-size:11px;line-height:1.7;}
+  .pre{display:none;font-size:1px;color:#F4F0E9;}
+</style></head><body>
+<div class="pre">${esc(pre)}</div>
+<div class="w">
+  <div class="hd"><b>beauty <strong>heaven</strong> hub</b></div>
+  <div class="bd">
+    ${body.split(/\n{2,}/).filter(Boolean).map((t) => `<p>${esc(t).replace(/\n/g, "<br>")}</p>`).join("\n    ")}
+    <a class="cta" href="{{custom_values.booking_url}}">Book a treatment</a>
+  </div>
+  <div class="ft">Beauty Heaven Hub<br>{{location.full_address}}<br>{{location.phone}} · {{location.email}}<br><br>
+    <a href="{{unsubscribe_link}}" style="color:#B9AFA2;">Unsubscribe</a></div>
+</div></body></html>`;
+
+const FIELDS = { subject: "#emSubject", pre: "#emPre", head: "#emHead", body: "#emBody" };
+const emailState = () => ({ template: "signature", ...(store.load().email || {}) });
+const emailId = () => (TEMPLATES[emailState().template] ? emailState().template : "signature");
+
+/* What's typed is kept per template, and shared with the team, so a
+   half-written email is still there tomorrow. */
+function typed() {
+  return Object.fromEntries(Object.entries(FIELDS).map(([k, sel]) => [k, $(sel).value.trim()]));
+}
+function showTyped() {
+  const saved = (emailState().drafts || {})[emailId()] || {};
+  Object.entries(FIELDS).forEach(([k, sel]) => ($(sel).value = saved[k] || ""));
+}
+
+let emailSample = true;
+
+async function renderEmail() {
+  const id = emailId();
+  const f = typed();
+  let html;
+  try {
+    html = fromHere(fill(await templateHtml(id), f));
+    $("#emNote").textContent = "The merge tags stay intact, so it can go straight into the CRM. Anything in [brackets] needs filling before it sends.";
+  } catch (err) {
+    html = FALLBACK_SHELL(f.pre, f.body || "The body of the email goes here.");
+    $("#emNote").textContent = `Couldn't load ${TEMPLATES[id].file} (${err.message}), so this is a plain shell instead.`;
+  }
+  $("#emTplNote").textContent = TEMPLATES[id].note;
+  $("#emFrame").srcdoc = emailSample ? withSample(html) : html;
   return html;
 }
 
-$("#emTemplates").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-tpl]");
-  if (!b) return;
-  em.tpl = b.dataset.tpl;
-  renderEmailList(); renderEmailForm(); renderEmail();
-});
-$("#emThemes").addEventListener("change", (e) => {
-  if (e.target.name !== "emTheme") return;
-  em.theme = e.target.value;
-  renderEmail();
-});
-let emTimer = null;
-$("#emForm").addEventListener("input", () => {
-  const draft = Object.fromEntries(new FormData($("#emForm")).entries());
-  const drafts = { ...(store.load().emailDrafts || {}), [em.tpl]: draft };
-  store.load().emailDrafts = drafts; // show it straight away
-  renderEmail();
-  clearTimeout(emTimer);
-  emTimer = setTimeout(() => store.setEmailDrafts(drafts), 600); // save (and share) once typing pauses
-});
-$("#emSample").addEventListener("change", renderEmail);
-$("#emReset").addEventListener("click", () => {
-  const drafts = { ...(store.load().emailDrafts || {}) };
-  delete drafts[em.tpl];
-  store.setEmailDrafts(drafts);
-  renderEmailForm(); renderEmail();
-  toast("Back to the template.");
-});
-
-$$(".seg button").forEach((b) =>
-  b.addEventListener("click", () => {
-    $$(".seg button").forEach((x) => x.classList.toggle("on", x === b));
-    $("#emPreview").dataset.w = b.dataset.w;
+/* A keystroke shouldn't reload the iframe, or save on every letter. */
+let emailTimer, saveTimer;
+Object.values(FIELDS).forEach((sel) =>
+  $(sel).addEventListener("input", () => {
+    clearTimeout(emailTimer);
+    emailTimer = setTimeout(renderEmail, 180);
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => store.setEmailDraft(emailId(), typed()), 600);
   }),
 );
+
+/* One picker, scoped to its own group: there are three on this screen. */
+function seg(id, pick) {
+  const group = $(id);
+  $$("button", group).forEach((b) =>
+    b.addEventListener("click", () => {
+      $$("button", group).forEach((x) => x.classList.toggle("on", x === b));
+      pick(b);
+    }),
+  );
+}
+
+seg("#emTemplate", (b) => {
+  store.setEmailDraft(emailId(), typed());
+  store.setEmailTemplate(b.dataset.t);
+  showTyped();
+  renderEmail();
+});
+seg("#emData", (b) => {
+  emailSample = b.dataset.d === "sample";
+  renderEmail();
+});
+seg("#emWidth", (b) => {
+  $("#emPreview").dataset.w = b.dataset.w;
+});
+
+/* Opening the tab: the picker catches up with whichever template was last
+   chosen (by anyone on the team), then the preview draws. */
+function renderEmailView() {
+  const id = emailId();
+  $$("button", $("#emTemplate")).forEach((b) => b.classList.toggle("on", b.dataset.t === id));
+  if (!Object.values(FIELDS).some((sel) => document.activeElement === $(sel))) showTyped();
+  renderEmail();
+}
 
 $("#emFromPiece").addEventListener("click", () => {
   const found = store
@@ -557,16 +685,31 @@ $("#emFromPiece").addEventListener("click", () => {
   const lines = found.p.text.split("\n").filter((l) => l.trim());
   const sub = lines.find((l) => /^subject/i.test(l)) || lines[0] || "";
   const pre = lines.find((l) => /^preheader/i.test(l)) || "";
-  const body = lines.filter((l) => l !== sub && l !== pre && !/^(subject|preheader)/i.test(l)).join("\n\n").trim();
-  const drafts = { ...(store.load().emailDrafts || {}) };
-  drafts[em.tpl] = { ...emValues(), subject: sub.replace(/^subject( line)?:?\s*/i, "").trim(), pre: pre.replace(/^preheader:?\s*/i, "").trim(), body };
-  store.setEmailDrafts(drafts);
-  renderEmailForm(); renderEmail();
+  $("#emSubject").value = sub.replace(/^subject( line)?:?\s*/i, "").trim();
+  $("#emPre").value = pre.replace(/^preheader:?\s*/i, "").trim();
+  $("#emBody").value = lines
+    .filter((l) => l !== sub && l !== pre && !/^(subject|preheader)/i.test(l))
+    .join("\n\n")
+    .trim();
+  store.setEmailDraft(emailId(), typed());
+  renderEmail();
   toast("Pulled in.");
 });
 
+$("#emReset").addEventListener("click", () => {
+  Object.values(FIELDS).forEach((sel) => ($(sel).value = ""));
+  store.setEmailDraft(emailId(), {});
+  renderEmail();
+  toast("Back to the template's own words.");
+});
+
 $("#emCopy").addEventListener("click", () => {
-  navigator.clipboard.writeText(renderEmail()).then(() => toast("HTML copied, merge tags intact."));
+  renderEmail().then((html) =>
+    navigator.clipboard
+      .writeText(html)
+      .then(() => toast(`${TEMPLATES[emailId()].name} copied, merge tags intact.`))
+      .catch(() => toast("Couldn't reach the clipboard.")),
+  );
 });
 
 /* ==================================================================== BRAND == */
@@ -759,7 +902,7 @@ const VIEWS = {
   campaign: renderPieces,
   approvals: renderApprovals,
   calendar: renderCalendar,
-  email: renderEmail,
+  email: renderEmailView,
   brand: renderBrand,
   about: renderAbout,
 };
