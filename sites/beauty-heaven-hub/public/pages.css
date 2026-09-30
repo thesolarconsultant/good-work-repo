@@ -128,3 +128,59 @@ a.card h3::after{content:" →";color:var(--accent-ink)}
 .chips a { min-height: 44px; display: inline-flex; align-items: center; }
 .page-head .eyebrow a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; }
 .facts dd a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* booking page (book.js): four steps, in the menus' list style */
+.booker{display:grid;gap:clamp(2.2rem,5vw,3.2rem);max-width:860px}
+.bstep{display:grid;gap:1.1rem;scroll-margin-top:110px}
+.bstep__head{display:flex;align-items:center;gap:.9rem}
+.bstep__head h2{font-family:var(--font-head);font-weight:var(--weight-display);letter-spacing:var(--track-display);font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.1;color:var(--ink)}
+.bstep__n{flex:none;display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:1px solid var(--accent);color:var(--accent-ink);font-size:.85rem}
+.bstep--done .bstep__n{background:var(--accent);color:#fff;border-color:var(--accent)}
+.booker button{font:inherit;color:inherit;cursor:pointer}
+.blink{background:none;border:0;padding:.5rem 0;min-height:44px;font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
+.blink[disabled]{opacity:.35;cursor:default}
+.bpick{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid var(--line);border-radius:var(--round);background:var(--card)}
+.bpick strong{display:block;color:var(--ink);font-weight:var(--weight-body);font-size:1.1rem}
+.bsearch{display:grid;gap:.4rem;max-width:420px}
+.bsearch input{font:inherit;padding:.8rem 1rem;border:1px solid var(--line-strong);border-radius:var(--pill);background:var(--card);color:var(--ink);min-height:48px}
+.bsearch input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.bchips button{flex:none;background:none;border:0;font-weight:var(--weight-micro);font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase;padding:.6rem 1rem;border-radius:var(--pill);white-space:nowrap}
+.bchips button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.bcat{display:grid;gap:.6rem;margin-top:.8rem}
+.bcat h3{font-family:var(--font-head);font-weight:var(--weight-display);font-size:1.35rem;color:var(--ink)}
+.bitems li{padding:0}
+.bitems button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem 1.5rem;width:100%;text-align:left;background:none;border:0;padding:1rem .2rem;transition:background var(--dur) var(--ease)}
+.bitems button:hover{background:rgba(201,166,92,.08)}
+.bwho{display:flex;flex-wrap:wrap;gap:.6rem}
+.bwho button{display:inline-flex;align-items:center;gap:.8rem;min-height:48px;padding:.6rem 1.1rem;border:1px solid var(--line-strong);border-radius:var(--pill);background:var(--card)}
+.bwho .p{color:var(--muted);font-size:.9rem}
+.bwho button[aria-pressed="true"],.btimes button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.bwho button[aria-pressed="true"] .p{color:var(--cream)}
+.bweek{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.bdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.4rem}
+.bdays button{display:grid;justify-items:center;gap:.15rem;padding:.7rem .2rem;border:1px solid var(--line);border-radius:var(--round);background:var(--card)}
+.bdays strong{font-weight:var(--weight-body);font-size:1.25rem;color:var(--ink)}
+.bdays__n{font-size:.68rem;color:var(--accent-ink)}
+.bdays .is-empty{opacity:.45}
+.bdays button[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.btimes{display:grid;gap:.5rem;margin-top:.6rem}
+.btimes > div{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:.5rem}
+.btimes button{min-height:46px;border:1px solid var(--line-strong);border-radius:var(--pill);background:var(--card);font-size:1rem}
+.btimes button:hover{border-color:var(--ink)}
+.bloading{animation:bpulse 1.2s ease-in-out infinite alternate}
+@keyframes bpulse{from{opacity:.4}to{opacity:1}}
+.bsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem 2rem;margin:0;padding:1.2rem;border:1px solid var(--line);border-radius:var(--round);background:var(--card)}
+.bsum div{display:grid;gap:.3rem}
+.bsum dd{margin:0;color:var(--ink);font-size:1.05rem}
+.booker__alt{margin-top:2.5rem}
+.booker__alt a,.booker .note a,.bstep .small a{border-bottom:1px solid var(--accent)}
+.items .n a{color:inherit;border-bottom:1px solid transparent;transition:border-color var(--dur) var(--ease)}
+.items .n a:hover{border-color:var(--accent)}
+@media (max-width: 640px){
+  .bdays{grid-template-columns:repeat(7,minmax(44px,1fr));overflow-x:auto;scrollbar-width:none}
+  .bdays button{padding:.55rem .1rem}
+  .bdays strong{font-size:1.05rem}
+  .bdays__n{font-size:.6rem}
+  .bwho button{flex:1 1 calc(50% - .6rem);justify-content:space-between}
+  .bpick{padding:.9rem 1rem}
+}

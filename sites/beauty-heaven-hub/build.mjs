@@ -116,10 +116,21 @@ async function fromPhorest() {
     "Online?": s.internetEnabled && !s.archived ? "Y" : "N",
     Flags: [MODEL.test(s.name || "") ? "student practical" : "", POM_CATEGORIES.test(s.categoryName || "") || POM_NAMES.test(s.name || "") ? "Prescription-only" : ""].filter(Boolean).join("; "),
     Type: /consult/i.test(s.name || "") ? "Consultation" : "",
+    // for the booking page: who can do it, and at what price
+    serviceId: s.serviceId,
+    userPrices: s.userPrices || [],
+    categoryPrices: s.staffCategories?.prices || [],
+    disqualifiedStaff: s.disqualifiedStaff || [],
   });
   const hubServices = (await all(`/branch/${hub.branchId}/service`, "services")).map(shape);
   const academyServices = academy ? (await all(`/branch/${academy.branchId}/service`, "services")).map(shape) : [];
-  return { source: "phorest", hubServices, academyServices };
+  // Staff: only what the public booking page already shows (first name) plus
+  // the ids needed to match prices. Birth dates, contact details, tax and
+  // payroll numbers are never kept.
+  const hubStaff = (await all(`/branch/${hub.branchId}/staff`, "staffs"))
+    .filter((p) => !p.archived && !p.hideFromOnlineBookings)
+    .map((p) => ({ staffId: p.staffId, userId: p.userId, categoryId: p.staffCategoryId, name: (p.firstName || "").trim(), initial: (p.lastName || "").trim().charAt(0), disqualifiedServices: p.disqualifiedServices || [] }));
+  return { source: "phorest", hubBranchId: hub.branchId, hubServices, academyServices, hubStaff };
 }
 
 const live = await fromPhorest().catch((e) => {
@@ -157,6 +168,18 @@ const courseSource = academyCourses.length ? academyCourses : services.filter((s
 if (live && live.academyServices.some((s) => !isCourseCategory(s) && s["Online?"] === "Y")) {
   todo.add("/academy/: the Academy branch in Phorest also sells treatments online (anti-wrinkle, fillers, Slim Jab, waxing and more). Is it a second treatment location, and should those appear on the site?");
 }
+// Who can do a service, and what they charge. Phorest's order of precedence:
+// a price set for that person, then for their staff category, then the list
+// price. Only people shown on online booking count.
+function staffPrices(s) {
+  if (!live) return [];
+  return live.hubStaff
+    .filter((p) => !p.disqualifiedServices.includes(s.serviceId) && !s.disqualifiedStaff.includes(p.staffId) && !s.disqualifiedStaff.includes(p.userId))
+    .map((p) => ({
+      id: p.staffId,
+      price: s.userPrices.find((u) => u.userRef === p.userId)?.price ?? s.categoryPrices.find((c) => c.id === p.categoryId)?.price ?? Number(s["Price £"]),
+    }));
+}
 const courses = courseSource.filter((s) => s["Online?"] === "Y" && !/student practical/.test(s.Flags) && Number(s["Price £"]) > 0 && !/consult/i.test(s.Service));
 
 // ------------------------------------------------------------ the mock-up --
@@ -175,7 +198,8 @@ function swap(html, from, to, label) {
   return typeof from === "string" ? html.split(from).join(to) : html.replace(from, to);
 }
 
-const BOOK = site.booking.home;
+// Every "Book" button opens our own booking page; Phorest's page stays as the fallback.
+const BOOK = "/book/";
 
 function headTags({ path, title, description }) {
   const full = path === "/" ? `${site.name} | welcome to heaven.` : `${title} | ${site.name}`;
@@ -368,20 +392,24 @@ function home() {
 }
 
 // ---------------------------------------------------------------- menus --
-function itemRow(s, showPrice) {
+function itemRow(s, showPrice, bookable = false) {
   const d = duration(s["Duration (min)"]);
-  const price = showPrice ? `${s["From?"] ? "from " : ""}${money(s["Price £"])}` : "";
-  return `<li><span class="n">${esc(tidy(s.Service))}</span>${d ? `<span class="d">${d}</span>` : ""}<span class="p">${price}</span></li>`;
+  // Where the price depends on who does it, show the lowest as "from".
+  const each = bookable ? staffPrices(s).map((x) => x.price) : [];
+  const varies = each.length > 1 && each.some((x) => x !== each[0]);
+  const price = showPrice ? `${s["From?"] || varies ? "from " : ""}${money(varies ? Math.min(...each) : each[0] ?? s["Price £"])}` : "";
+  const name = bookable && s.serviceId ? `<a href="/book/?s=${esc(s.serviceId)}">${esc(tidy(s.Service))}</a>` : esc(tidy(s.Service));
+  return `<li><span class="n">${name}</span>${d ? `<span class="d">${d}</span>` : ""}<span class="p">${price}</span></li>`;
 }
 
 function categoryBlock(c, page) {
   const showPrice = !c.pom || site.showPrescriptionOnlyPrices;
-  const book = `${site.booking.category}${c.phorest}`;
+  const book = `/book/?c=${c.phorest}`;
   const notes = [];
   if (c.consult) notes.push(`<p class="note">A consultation comes first, so we can make sure this is right for you.${c.pom && !showPrice ? " Prices are given at your consultation." : ""}</p>`);
   if (c.patch) notes.push(`<p class="note">A patch test is needed before your first treatment.</p>`);
   if (c.decide) notes.push(`<p>${tbc("keep this on the website?", page)}</p>`);
-  const rows = c.items.map((s) => itemRow(s, showPrice));
+  const rows = c.items.map((s) => itemRow(s, showPrice, true));
   // Long sections show six, the rest behind "Show all", so a phone isn't a
   // wall of prices.
   const list = rows.length > 8
@@ -556,6 +584,60 @@ function notFound() {
   });
 }
 
+// ---------------------------------------------------------------- booking --
+// Our own booking page. The build writes what it needs (treatments, who does
+// them and their prices) to /book/services.json; free times are read live from
+// Phorest by /api/availability. Confirming on the site stays off until the
+// data agreement is signed and it has been tested on a dummy client, so for
+// now the last step hands over to Phorest and no personal details leave the
+// visitor's browser.
+function bookingData() {
+  if (!live) return { live: false, phorest: site.booking };
+  const used = new Set();
+  const out = groups.map((g) => ({
+    name: g.name, slug: g.slug,
+    cats: g.categories.filter((c) => c.items.some((s) => s.serviceId)).map((c) => {
+      const showPrice = !c.pom || site.showPrescriptionOnlyPrices;
+      return {
+        id: c.phorest, title: c.title, consult: !!c.consult, patch: !!c.patch,
+        items: c.items.filter((s) => s.serviceId).map((s) => {
+          const staff = staffPrices(s);
+          staff.forEach((x) => used.add(x.id));
+          return { id: s.serviceId, name: tidy(s.Service), mins: Number(s["Duration (min)"]) || null, price: showPrice ? Number(s["Price £"]) : null, staff: staff.map((x) => [x.id, showPrice ? x.price : null]) };
+        }),
+      };
+    }),
+  }));
+  const people = live.hubStaff.filter((p) => used.has(p.staffId));
+  const label = (p) => (people.filter((q) => q.name === p.name).length > 1 && p.initial ? `${p.name} ${p.initial}.` : p.name);
+  return {
+    live: true,
+    branchId: live.hubBranchId,
+    updated: new Date().toISOString(),
+    confirmOnSite: false,
+    phorest: site.booking,
+    whatsapp: (site.whatsapp || "").replace(/\D/g, ""),
+    staff: Object.fromEntries(people.map((p) => [p.staffId, label(p)])),
+    groups: out,
+  };
+}
+
+function book() {
+  todo.add("/book/: confirming a booking on the site is switched off (the last step offers WhatsApp or Phorest). Switch on after the data agreement is signed and a dummy-client test passes; also check whether Phorest sends its own confirmation for API bookings, and set the deposit rules");
+  return layout({
+    path: "/book/", title: "Book online",
+    description: "Book a treatment at Beauty Heaven Hub, Hoddesdon. Choose a treatment, who you'd like, and a time that suits you.",
+    close: false,
+    body: `${pageHead("Book online", "your <b>time.</b>", "Pick a treatment, who you'd like, and a time. The times are live from our diary.")}
+<section class="section" style="padding-top:0"><div class="wrap">
+  <div id="booker" class="booker" aria-live="polite"><p class="small">Loading treatments…</p></div>
+  <noscript><p class="note">Booking needs JavaScript. You can <a href="${site.booking.home}">book on our booking partner's page</a> or call <a href="tel:${site.phoneHref}">${esc(site.phone)}</a>.</p></noscript>
+  <p class="small booker__alt">Prefer to talk? Call <a href="tel:${site.phoneHref}">${esc(site.phone)}</a>${site.whatsapp ? ` or <a href="${waLink("Hi Beauty Heaven, I'd like to book")}">message us on WhatsApp</a>` : ""}.</p>
+</div></section>
+<script src="/book.js" defer></script>`,
+  });
+}
+
 // ----------------------------------------------------------------- build --
 function write(path, html) {
   const dir = join(OUT, path);
@@ -591,6 +673,9 @@ if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "
 writeFileSync(join(OUT, "index.html"), home());
 write("/treatments/", treatmentsIndex());
 for (const g of groups) write(`/treatments/${g.slug}/`, groupPage(g));
+write("/book/", book());
+writeFileSync(join(OUT, "book/services.json"), JSON.stringify(bookingData()));
+cpSync(join(HERE, "src/book.js"), join(OUT, "book.js"));
 write("/academy/", academy());
 write("/consultations/", consultations());
 write("/visit/", visit());
@@ -598,7 +683,7 @@ write("/policies/", policies());
 write("/privacy/", privacy());
 writeFileSync(join(OUT, "404.html"), notFound());
 
-const pages = ["/", "/treatments/", ...groups.map((g) => `/treatments/${g.slug}/`), "/academy/", "/consultations/", "/visit/", "/policies/", "/privacy/"];
+const pages = ["/", "/book/", "/treatments/", ...groups.map((g) => `/treatments/${g.slug}/`), "/academy/", "/consultations/", "/visit/", "/policies/", "/privacy/"];
 writeFileSync(join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${site.url}${p}</loc></url>`).join("\n")}\n</urlset>\n`);
 writeFileSync(join(OUT, "robots.txt"), site.launched ? `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n` : "User-agent: *\nDisallow: /\n");
 
