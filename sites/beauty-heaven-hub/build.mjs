@@ -636,6 +636,12 @@ function bookingData() {
     confirmOnSite: !!rules.confirmOnSite,
     rules: { minNoticeHours: rules.minNoticeHours, maxDaysAhead: rules.maxDaysAhead, everyone: rules.everyone || {}, people: peopleRules, deposits },
     phorest: site.booking,
+    // For the assistants: the salon's own facts, and what isn't confirmed yet.
+    site: {
+      name: site.name, address: site.address, addressConfirmed: !!site.addressConfirmed, phone: site.phone,
+      whatsapp: site.whatsappDisplay || "", email: /tbc/i.test(site.email || "") ? "" : site.email, hours: site.hours || [],
+      instagram: site.instagram, website: site.url,
+    },
     whatsapp: (site.whatsapp || "").replace(/\D/g, ""),
     phone: site.phone,
     phoneHref: site.phoneHref,

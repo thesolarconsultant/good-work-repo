@@ -31,5 +31,10 @@
       ]
     }
   ],
-  "installCommand": ""
+  "installCommand": "npm install --no-audit --no-fund",
+  "functions": {
+    "api/telegram.js": {
+      "maxDuration": 60
+    }
+  }
 }
