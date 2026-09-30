@@ -272,6 +272,7 @@ function home() {
     h = swap(h, new RegExp(`<article class="card" data-gw-reveal><span class="rule"></span><h3>${name}</h3>([\\s\\S]*?)</article>`), `<a class="card" href="${href}" data-gw-reveal><span class="rule"></span><h3>${name}</h3>$1</a>`, `${name} card`);
   }
   h = swap(h, '<a class="btn btn--fill" href="#book" data-gw-reveal data-gw-magnetic="0.25"><span>Book a treatment</span>', '<a class="btn btn--fill" href="/treatments/" data-gw-reveal data-gw-magnetic="0.25"><span>See every treatment</span>', "treatments button");
+  h = swap(h, /(<div class="journey__head">[\s\S]*?<\/div>\n    )(<div class="cards" data-gw-stagger>)/g, '$1<p class="swipe-hint phone-only">Swipe to see more</p>\n    $2', "swipe hints");
   // Unverified card lines: hair consultations and skin analysis are not confirmed.
   h = swap(h, '<span class="micro">Consultation included</span>', '<span class="micro">Cut, colour, treatments</span>', "hair micro");
   h = swap(h, '<span class="micro">Skin analysis first</span>', '<span class="micro">Facials, HIFU, peels</span>', "skin micro");
@@ -318,8 +319,10 @@ function categoryBlock(c, page) {
   if (c.patch) notes.push(`<p class="note">A patch test is needed before your first treatment.</p>`);
   if (c.decide) notes.push(`<p>${tbc("keep this on the website?", page)}</p>`);
   const rows = c.items.map((s) => itemRow(s, showPrice));
-  const list = rows.length > 12
-    ? `<ul class="items">${rows.slice(0, 10).join("")}</ul><details class="more"><summary>Show all ${rows.length}</summary><ul class="items">${rows.slice(10).join("")}</ul></details>`
+  // Long sections show six, the rest behind "Show all", so a phone isn't a
+  // wall of prices.
+  const list = rows.length > 8
+    ? `<ul class="items">${rows.slice(0, 6).join("")}</ul><details class="more"><summary>Show all ${rows.length}</summary><ul class="items">${rows.slice(6).join("")}</ul></details>`
     : `<ul class="items">${rows.join("")}</ul>`;
   return `<section class="menu" id="${c.phorest}" data-gw-reveal>
     <div class="menu__head"><span class="rule"></span><h2>${esc(c.title)}</h2></div>
@@ -339,6 +342,7 @@ function treatmentsIndex() {
     description: "The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body, with prices and online booking.",
     body: `${pageHead("Treatments", "beauty, <b>your</b> way.", "Choose a section to see every treatment, with times and prices straight from our booking system. Each one opens directly into the diary.")}
 <section class="section" style="padding-top:0"><div class="wrap">
+  <p class="swipe-hint phone-only">Swipe to see more</p>
   <div class="cards" data-gw-stagger>${cards}</div>
   <aside class="reassure" data-gw-reveal><div class="halo-dot" aria-hidden="true"></div><p><strong>First time?</strong> That's most people, once. We'll talk you through what happens before it happens, and you can stop and ask anything at any point.</p></aside>
 </div></section>`,
@@ -369,6 +373,7 @@ function academy() {
     body: `${pageHead("Academy", "something for <b>your future.</b>", "Professional beauty and aesthetics education, taught in a working salon by people who do this every day. Hands-on practice on real models, with online study before you arrive.", `<div class="actions" data-gw-reveal>${ask("Hi Beauty Heaven Academy, I'd like to know more about your courses", "Ask about courses", true)}</div>`)}
 <section class="section" style="padding-top:0"><div class="wrap">
   <p>${tbc("which courses are running now, and their dates", "/academy/")}</p>
+  <p class="swipe-hint phone-only">Swipe to see more</p>
   <div class="cards" data-gw-stagger>${cards}</div>
   <p>${tbc("entry requirements for each course, and who can enrol", "/academy/")}</p>
 </div></section>

@@ -58,3 +58,73 @@ a.card h3::after{content:" →";color:var(--accent-ink)}
 .prose{max-width:760px}
 .prose p{margin-bottom:1rem}
 .plain{margin:0;padding-left:1.1rem;display:grid;gap:.6rem}
+
+/* ==========================================================================
+   Phone layout. The mock-up is designed desktop-first; on a phone its cards,
+   portraits, fixtures and footer stack into one very long column. These rules
+   keep the design and shorten the scroll. Nothing here applies above 860px.
+   ========================================================================== */
+@media (max-width: 860px) {
+  /* journey cards (treatments, academy, and the menu index): a swipeable row
+     that peeks the next card, not five cards stacked */
+  .journey .cards, .page .cards:not(.steps) {
+    display: flex; gap: .8rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * clamp(1.25rem, 3.5vw, 3rem)); padding: .2rem clamp(1.25rem, 3.5vw, 3rem) 1rem;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .journey .cards::-webkit-scrollbar, .page .cards:not(.steps)::-webkit-scrollbar { display: none; }
+  .journey .cards > .card, .page .cards:not(.steps) > .card {
+    flex: 0 0 min(78vw, 300px); scroll-snap-align: start; opacity: 1; transform: none;
+  }
+  .journey .cards > .card:hover, .page .cards:not(.steps) > .card:hover { transform: none; }
+  .swipe-hint { display: flex; align-items: center; gap: .6rem; margin: -.2rem 0 0; font-weight: var(--weight-micro); font-size: .68rem; letter-spacing: var(--track-micro); text-transform: uppercase; color: var(--muted); }
+  .swipe-hint::after { content: ""; width: 34px; border-top: var(--bh-gold-line); }
+
+  /* the six fixtures: two columns, not six rows */
+  .hub__fixtures { grid-template-columns: 1fr 1fr; gap: 1.2rem 1.4rem; }
+
+  /* Jessica and Hollie: a small arch beside the words */
+  .people__grid { gap: 1.6rem; }
+  .person { grid-template-columns: 112px minmax(0, 1fr); gap: 1.1rem; align-items: start; }
+  .person .frame { max-width: none; }
+  .person .halo { inset: -12%; }
+  .person h3 { font-size: 1.25rem; }
+  .person p { font-size: .92rem; margin-top: .4rem; }
+
+  /* footer: two columns, the brand block across the top */
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 1.6rem 1.2rem; }
+  .footer__grid > div:first-child { grid-column: 1 / -1; }
+  .footer .world { display: none; }
+  .footer__grid > div:nth-child(2) { grid-column: 1 / -1; }
+  .footer__grid > div:nth-child(2) ul { grid-template-columns: 1fr 1fr; column-gap: 1.2rem; }
+  .footer ul a { min-height: 40px; font-size: .92rem; }
+  .footer__base { flex-direction: column; gap: .4rem; margin-top: 2rem; }
+  .footer__base a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: .2rem; }
+
+  /* treatment menus on a phone */
+  .items li { padding: .85rem 0; }
+  .menu .actions .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  /* the fork: labels large enough to read, and the pill on one line */
+  .arch-btn .t { font-size: .64rem; letter-spacing: .16em; }
+  .arch-btn .go { font-size: .6rem; letter-spacing: .1em; padding: .7em .85em; white-space: nowrap; }
+  .arch-btn .l { font-size: 1.1rem; }
+}
+@media (max-width: 380px) {
+  /* iPhone SE and smaller: shorten the pill so it never wraps */
+  .arch-btn .go { font-size: .56rem; letter-spacing: .06em; padding: .65em .7em; gap: .3em; }
+  .arch-btn .go .arr { display: none; }
+}
+.phone-only { display: none; }
+@media (max-width: 860px) { .phone-only { display: flex; } }
+
+/* keep page heads inside the screen: the chips row must not widen the column */
+.page-head .stack { grid-template-columns: minmax(0, 1fr); }
+.chips { width: auto; justify-self: start; }
+.tbc { max-width: 100%; white-space: normal; }
+/* comfortable tap sizes on phones */
+.chips a { min-height: 44px; display: inline-flex; align-items: center; }
+.page-head .eyebrow a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -14px; }
+.facts dd a { display: inline-flex; align-items: center; min-height: 44px; }
