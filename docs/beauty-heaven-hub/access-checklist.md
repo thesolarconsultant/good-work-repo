@@ -76,3 +76,7 @@ Tick each item off the table above as it is done and note the date.
 - **Website and domain:** Jess holds full access herself (no separate web person). Likely GoDaddy for the domain and Wix for the site.
   Ask her to invite Good Work: GoDaddy "Delegate access" and a Wix site collaborator. Don't touch the Microsoft 365 email records.
 - **Google Drive:** Jess setting it up today.
+- **Wix: not used going forward (user, 2026-09-30).** The new site runs on Vercel. No Wix collaborator access needed; content is copied
+  from the public site. At launch: point the domain at Vercel from GoDaddy, redirect old Wix page addresses to the new pages, and keep the
+  Wix plan until the new site is live and checked. Before cancelling, check nothing else runs on Wix (forms, the online-courses store,
+  any bookings or email) and that the domain itself is not registered through Wix.
