@@ -75,7 +75,7 @@ Tick each item off the table above as it is done and note the date.
 - **Phorest:** Jess will add a Good Work user when she is in the salon.
 - **Website and domain:** Jess holds full access herself (no separate web person). Likely GoDaddy for the domain and Wix for the site.
   Ask her to invite Good Work: GoDaddy "Delegate access" and a Wix site collaborator. Don't touch the Microsoft 365 email records.
-- **Google Drive:** Jess was setting it up. **Replaced by Dropbox (2026-09-30).**
+- **Google Drive:** Jess is setting it up. Briefly swapped for Dropbox, **back to Google Drive (2026-09-30)**: one Google account for Drive, YouTube and Google Business.
 - **Wix: not used going forward (user, 2026-09-30).** The new site runs on Vercel. No Wix collaborator access needed; content is copied
   from the public site. At launch: point the domain at Vercel from GoDaddy, redirect old Wix page addresses to the new pages, and keep the
   Wix plan until the new site is live and checked. Before cancelling, check nothing else runs on Wix (forms, the online-courses store,

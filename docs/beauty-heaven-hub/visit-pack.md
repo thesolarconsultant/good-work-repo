@@ -7,7 +7,7 @@ Print this. It is for you only.
 - Phorest API: **access granted, no charge.** The draft site reads the menu and live free times from it. Jess should **reset the Phorest API password** (it was pasted in a chat); tell Good Work when done.
 - **New booking page** on the preview (beauty-heaven-hub.vercel.app/book/): pick a treatment, who, and a live time. Show it to them on their phones (A3).
 - Jobs message sent. Replies so far: Jess keeps the one L3 Matrix admin login (we get a **student** account); Jess adds a Phorest user
-  when she is in the salon; **Jess has full access to the domain** (GoDaddy); Jess was setting up Google Drive (now switching to Dropbox, so check she hasn't spent time on Drive); Hollie is doing YouTube and TikTok.
+  when she is in the salon; **Jess has full access to the domain** (GoDaddy); Jess is setting up Google Drive (we're staying with Drive); Hollie is doing YouTube and TikTok.
 - **Wix is not being used.** No access needed.
 
 ## Bring
@@ -44,7 +44,7 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 - [ ] Good Work added as a **partner**: content and WhatsApp only, no ads, no payments
 - [ ] YouTube Brand Account channel, Good Work added as Manager (Hollie)
 - [ ] TikTok business account, and how we get access (Hollie)
-- [ ] Dropbox: a business Dropbox account in the salon's name (Jess). We add `Inbox` and `Approved`, and a File request link for the team
+- [ ] Google Drive, on the salon's Google account (the same one as YouTube and Google Business, not a personal one) (Jess). Folders `Inbox` and `Approved`. Share **only** `Inbox` with the team; `Approved` stays with Jess and Hollie. Good Work invited to both
 - [ ] GoDaddy **delegate access** for Good Work (Jess). **Change nothing in DNS** until the current records are saved (their email runs on Microsoft 365)
 - [ ] Phorest: a limited Good Work user (Jess, when in the salon)
 - [ ] L3 Matrix: a **student** account for Good Work

@@ -382,7 +382,14 @@ confirmed, the Supabase schema, and a dry-run receptionist prototype on Telegram
 The salon's emails already live in Phorest, so we do not build new templates yet. Once we can see them, we copy their wording and look
 into our own HTML. Phorest's email editor takes no HTML import, so this is a recreation, not a file copy.
 
-## Content inbox: Dropbox instead of Google Drive (user, 2026-09-30)
+## Back to Google Drive (user, 2026-09-30)
+Decision: **Google Drive**, as in the section above. One Google account in the salon's name covers Drive, YouTube and Google
+Business; Jess had already started; free 15GB, then a Google One plan if needed. Dropbox's one advantage was uploads without an
+account. On Drive, anyone who can add to a folder can also see and delete in it, so: the team send clips to the WhatsApp content
+assistant, which files them in `Inbox`, and only `Inbox` is shared with the team's Google accounts. `Approved` stays with the owners,
+and agents read only `Approved`. The Dropbox notes below are kept for reference only.
+
+### (Superseded) Content inbox: Dropbox instead of Google Drive
 Same design as the Drive inbox above (`Inbox`, `Approved`, agents read only `Approved`, consultation photos never go in), on Dropbox:
 - **Account:** Dropbox in the salon's name, not personal. A paid plan (the free 2GB fills with a week of video). Check current plans;
   Dropbox Business adds admin control and removing a person's access when they leave.

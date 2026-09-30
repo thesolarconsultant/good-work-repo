@@ -11,7 +11,7 @@ One page that pulls together everything decided in this session. The detail sits
 - **Voice agent, fallback only:** answers out of hours and calls nobody picks up. Needs call forwarding from their phone provider.
 - **Operator chat with Jess and Hollie:** weekly content check-in, approvals, the surprise-pillar questions. Walled off from clients.
 - **Content Console:** templates, ideas, carousels, images, reels; one coordinator over separate agents; nothing posts without approval.
-- **Content from Dropbox (was Google Drive):** team drops photos and clips in `Inbox`, owners move the good ones to `Approved`, agents read only
+- **Content from Google Drive** (briefly Dropbox, back to Drive): team drops photos and clips in `Inbox` (or sends them to the content assistant, which files them), owners move the good ones to `Approved`, agents read only
   `Approved`, with a consent sheet. Consultation photos never go there.
 - **Held back:** email templates (copy theirs from Phorest later), photo intake (waits for Part C), certificate template (only if they ask),
   own diary or marketplace or Academy platform (future, separate product).
@@ -61,7 +61,7 @@ File: `discovery.md`.
 
 ## 7. Next steps
 **Tomorrow (them):** Phorest API request first; limited logins for you on Phorest and L3 Matrix; YouTube Brand Account; TikTok business
-account; Dropbox; introduce you to whoever holds the domain. Always "Manager", never "Owner". No passwords.
+account; Google Drive; introduce you to whoever holds the domain. Always "Manager", never "Owner". No passwords.
 **Tomorrow (you):** send the pre-visit message; create Good Work's Meta Business portfolio and note the Business ID; print the visit pack.
 **Thursday 11:00 (visit):** website questions (short list), Part C in full, the bookings part, 30-minute break, Meta and WhatsApp setup,
 then the closing Academy question. About 80 to 90 minutes plus the break. Hand over the idea sheet at the end.
