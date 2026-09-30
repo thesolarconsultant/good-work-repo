@@ -64,7 +64,7 @@ Don't discuss accreditation as a problem, don't mention rebuilding the courses, 
 
 ## 4. Access setup (tick and date each)
 Jess or Hollie do every click on their own phone or laptop. You watch. Never log in as them, never take a password.
-- [ ] Meta Business portfolio created, business verification started (papers ready)
+- [x] Meta Business portfolio: **already verified** (told to us 2026-09-30). Confirm who is admin, and that the Pages and Instagram accounts are in it
 - [ ] WhatsApp Business account created on the new number
 - [ ] **Before the visit, Good Work needs its own Meta Business portfolio and its Business ID** (Business Settings > Business info). Jess needs the ID to add us as a partner.
 - [ ] Good Work added as a partner in the portfolio
