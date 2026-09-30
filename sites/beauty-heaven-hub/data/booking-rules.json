@@ -9,7 +9,7 @@
     "deposits": "treatment sections (titles as on the website) that need a deposit, e.g. {\"Semi-permanent make-up\": true}. Phorest's deposit settings set the amount.",
     "teamOnly": "treatment sections the website never confirms itself (it offers WhatsApp or a call instead). Consultation-first and prescription-only sections are always team-only."
   },
-  "confirmOnSite": false,
+  "confirmOnSite": true,
   "minNoticeHours": 2,
   "maxDaysAhead": 90,
   "everyone": {},
