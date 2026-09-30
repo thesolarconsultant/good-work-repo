@@ -1,0 +1,232 @@
+[
+  {
+    "slug": "aesthetics",
+    "name": "Aesthetics",
+    "line": "Anti-wrinkle, fillers, skin boosters and more. Every aesthetic treatment starts with a consultation.",
+    "photo": "treatment-room",
+    "categories": [
+      {
+        "csv": "Anti Wrinkle Treatment",
+        "title": "Anti-wrinkle treatment",
+        "phorest": "CdrU7-3Im8HzeZouOcbNjg",
+        "consult": true
+      },
+      {
+        "csv": "Dermal Fillers",
+        "title": "Dermal fillers",
+        "phorest": "ATSugCAeEeTW2B9ss-KYig",
+        "consult": true
+      },
+      {
+        "csv": "Profhilo",
+        "title": "Profhilo",
+        "phorest": "ieO1GpqBoYy6kduak07s5A",
+        "consult": true
+      },
+      {
+        "csv": "Skin Boosters",
+        "title": "Skin boosters",
+        "phorest": "FPEEn7v3vpzyr_52beUkhg",
+        "consult": true
+      },
+      {
+        "csv": "Fat Dissolving",
+        "title": "Fat dissolving",
+        "phorest": "WUj0EuxHPJUaxrTn62VjCQ",
+        "consult": true
+      },
+      {
+        "csv": "B12 Vitamin Shot",
+        "title": "Vitamin B12",
+        "phorest": "t2URUm4BMIia-jgJImIveQ",
+        "consult": true
+      },
+      {
+        "csv": "Wight Loss Managment",
+        "title": "Weight management",
+        "phorest": "rrTukZ59PyaT2Ryisj3bCg",
+        "consult": true,
+        "hide": "weight-loss injections are prescription-only and closely watched by the advertising regulator; decide with an adviser whether and how to list them"
+      },
+      {
+        "csv": "Hair Growth Therapy",
+        "title": "Hair growth therapy",
+        "phorest": "nFGP-SCqbTHahgC8AJkQhw",
+        "consult": true
+      }
+    ]
+  },
+  {
+    "slug": "skin",
+    "name": "Skin and facials",
+    "line": "Facials, HIFU, dermaplaning and skin treatments, from a quick glow to a full course.",
+    "photo": "treatment-room",
+    "categories": [
+      {
+        "csv": "HIFU",
+        "title": "HIFU",
+        "phorest": "ZkIVo3THXlf2ejBVKvmTpw"
+      },
+      {
+        "csv": "Million Dollar Facial",
+        "title": "Million Dollar Facial",
+        "phorest": "HtcxPUjjBluMG4drc5Jbog"
+      },
+      {
+        "csv": "Specialist Facials",
+        "title": "Specialist facials",
+        "phorest": "LYvgo4xz5ksK3HvvHmRHIw"
+      },
+      {
+        "csv": "Dermalogica",
+        "title": "Dermalogica facials",
+        "phorest": "JVEG02RsCjeLsT4_zfobSA"
+      },
+      {
+        "csv": "Dermaplaning",
+        "title": "Dermaplaning",
+        "phorest": "S-Gus3prz7kpQ6WxRoKzqw"
+      },
+      {
+        "csv": "PRP Facial",
+        "title": "PRP facial",
+        "phorest": "PszNUCCE2BnWznBl1DcVMw",
+        "consult": true
+      },
+      {
+        "csv": "Flawless Skin",
+        "title": "Flawless skin",
+        "phorest": "lqYmUrV8Zp0TaVC68uQfIQ"
+      },
+      {
+        "csv": "Derma Rollers",
+        "title": "Derma rollers",
+        "phorest": "Jsq_BMDRe7pEcowhHyStCA"
+      }
+    ]
+  },
+  {
+    "slug": "brows-lashes-pmu",
+    "name": "Brows, lashes and permanent make-up",
+    "line": "Semi-permanent make-up, lash extensions, lifts, brows and tinting.",
+    "photo": "salon-mirrors",
+    "categories": [
+      {
+        "csv": "Semi Permanent Make up",
+        "title": "Semi-permanent make-up",
+        "phorest": "coSh2jvIzyB15_TcfINw1Q",
+        "consult": true
+      },
+      {
+        "csv": "Eyelashes",
+        "title": "Lashes",
+        "phorest": "tz0MjqUDFhgaLoQaCY2lIg"
+      },
+      {
+        "csv": "Eyebrows",
+        "title": "Brows",
+        "phorest": "HQ-rpomuPCkgWRVSX8oK4A"
+      },
+      {
+        "csv": "Tinting",
+        "title": "Tinting",
+        "phorest": "p2QTpY7Hx5IIybkljdhRGg"
+      },
+      {
+        "csv": "BY EMH",
+        "title": "BY EMH",
+        "phorest": "YQJPO3QlbILNfUt-Bz7vuw"
+      }
+    ]
+  },
+  {
+    "slug": "laser",
+    "name": "Laser",
+    "line": "Laser hair removal and tattoo removal. A patch test comes first.",
+    "photo": "treatment-room",
+    "categories": [
+      {
+        "csv": "Laser Hair Removal",
+        "title": "Laser hair removal",
+        "phorest": "bFMKBd4ykFeXxUksCY7xkQ",
+        "patch": true
+      },
+      {
+        "csv": "Laser Tattoo Removal",
+        "title": "Laser tattoo removal",
+        "phorest": "T6OEzcA0x-fDIdKDRx-yGQ",
+        "patch": true
+      }
+    ]
+  },
+  {
+    "slug": "hair",
+    "name": "Hair",
+    "line": "Cuts, colour, blow-dries and treatments.",
+    "photo": "salon-mirrors",
+    "categories": [
+      {
+        "csv": "Hair Services",
+        "title": "Hair",
+        "phorest": "RONylOnP6VTZTEJr7yVwew"
+      }
+    ]
+  },
+  {
+    "slug": "nails",
+    "name": "Nails",
+    "line": "Manicures, pedicures, gels and extensions.",
+    "photo": "lounge-wings",
+    "categories": [
+      {
+        "csv": "Nails",
+        "title": "Nails",
+        "phorest": "XZMqSWy3vRyraGUUhBSHuw"
+      }
+    ]
+  },
+  {
+    "slug": "body",
+    "name": "Body and wellness",
+    "line": "Massage, lymphatic drainage, body sculpting, waxing and tanning.",
+    "photo": "lounge-wings",
+    "categories": [
+      {
+        "csv": "Massages",
+        "title": "Massage",
+        "phorest": "CueZgABne1_6_sg2IKL2dg"
+      },
+      {
+        "csv": "Brazilian Lymphatic Drainage & Wood Therapy",
+        "title": "Lymphatic drainage and wood therapy",
+        "phorest": "n-qllLKd16KTl9-2teFeaw"
+      },
+      {
+        "csv": "Brazilian Lymphatic Drainage and Wood Therapy With Rosie",
+        "title": "Lymphatic drainage and wood therapy with Rosie",
+        "phorest": "oEi5FAm4bF_t31pmeJDL0g"
+      },
+      {
+        "csv": "Body Sculpting",
+        "title": "Body sculpting",
+        "phorest": "O44tyU0eFezRp6VBP_WfxA"
+      },
+      {
+        "csv": "Waxing",
+        "title": "Waxing",
+        "phorest": "1imWFxQBmTTQh8i3wsZODw"
+      },
+      {
+        "csv": "Spray Tanning",
+        "title": "Spray tanning",
+        "phorest": "rYcUOHub6o_JXL1GyTzAVQ"
+      },
+      {
+        "csv": "Sunbed",
+        "title": "Sunbeds",
+        "phorest": "1rJcoKyxj7LGOWQ2F3833g",
+        "decide": true
+      }
+    ]
+  }
+]

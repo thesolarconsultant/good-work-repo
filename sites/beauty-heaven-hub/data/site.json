@@ -1,0 +1,32 @@
+{
+  "_note": "Every value marked TBC is waiting on Jess and Hollie. Change it here, run `node sites/beauty-heaven-hub/build.mjs`, and every page updates.",
+  "name": "Beauty Heaven Hub",
+  "url": "https://www.beautyheavenhub.co",
+  "launched": false,
+  "phone": "01992 511383",
+  "phoneHref": "+441992511383",
+  "whatsapp": "",
+  "email": "TBC",
+  "address": [
+    "23-24 Conduit Lane",
+    "Hoddesdon",
+    "Hertfordshire",
+    "EN11 8FN"
+  ],
+  "addressConfirmed": false,
+  "hours": [],
+  "instagram": {
+    "treatments": "https://www.instagram.com/beautyheavenuk/",
+    "academy": "https://www.instagram.com/beautyheavenacademy/"
+  },
+  "facebook": "https://www.facebook.com/beautyheavenuk",
+  "company": "Beauty Heaven Hub LTD, registered in England and Wales, company number 15072077",
+  "booking": {
+    "home": "https://www.phorest.com/salon/beautyheaven1/book",
+    "category": "https://www.phorest.com/salon/beautyheaven1/book/categories/"
+  },
+  "showPrescriptionOnlyPrices": false,
+  "hideServices": {
+    "B-TOX FACIAL": "name suggests a prescription-only brand; check the advertising rules before showing it"
+  }
+}
