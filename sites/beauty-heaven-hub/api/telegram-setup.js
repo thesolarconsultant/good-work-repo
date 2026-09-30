@@ -6,6 +6,7 @@
 // the bot token, and reports the bot's username. 404 without the key.
 
 import { webhookSecret } from "./_telegram.js";
+import { storeStatus } from "./_store.js";
 
 function sameKey(a, b) {
   if (typeof a !== "string" || typeof b !== "string" || !b) return false;
@@ -18,7 +19,7 @@ export async function GET(request) {
   const url = new URL(request.url);
   if (!sameKey(url.searchParams.get("key") || "", process.env.PHOREST_CHECK_KEY || "")) return new Response("Not found", { status: 404 });
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const out = { anthropicKey: !!process.env.ANTHROPIC_API_KEY, supabase: !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY), allowed: (process.env.TELEGRAM_ALLOWED || "").split(",").filter(Boolean).length };
+  const out = { anthropicKey: !!process.env.ANTHROPIC_API_KEY, supabase: await storeStatus(), allowed: (process.env.TELEGRAM_ALLOWED || "").split(",").filter(Boolean).length };
   if (!token) return Response.json({ ...out, telegram: "TELEGRAM_BOT_TOKEN is not set" });
   const call = async (m, body) => (await fetch(`https://api.telegram.org/bot${token}/${m}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })).json();
   const me = await call("getMe");

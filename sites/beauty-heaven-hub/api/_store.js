@@ -13,8 +13,11 @@
 const CONVO_HOURS = 12;
 const mem = new Map();
 
+// Tolerates a pasted URL with a trailing slash or /rest/v1 on the end.
+const baseUrl = () => (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
+
 function supa() {
-  const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_SERVICE_KEY;
+  const url = baseUrl(), key = (process.env.SUPABASE_SERVICE_KEY || "").trim();
   if (!url || !key) return null;
   return (path, init = {}) =>
     fetch(`${url}/rest/v1/${path}`, {
@@ -56,4 +59,17 @@ export async function appendMessages(channel, chat, convo, added) {
     body: JSON.stringify(added.map((m) => ({ channel, chat: String(chat), convo, role: m.role, content: m.content }))),
   });
   if (!res.ok) console.error("store: HTTP", res.status, (await res.text()).slice(0, 200));
+}
+
+// For the setup check: can we reach the table? -> "ok" or the problem.
+export async function storeStatus() {
+  const db = supa();
+  if (!db) return "not set up (memory only)";
+  try {
+    const res = await db("bot_messages?select=id&limit=1");
+    if (res.ok) return "ok";
+    return `HTTP ${res.status}: ${(await res.text()).slice(0, 120)}`;
+  } catch (e) {
+    return `unreachable: ${e.message}`;
+  }
 }
