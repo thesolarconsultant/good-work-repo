@@ -255,3 +255,20 @@ it:** the pilot fits the build, but a full flow is a separate quote.
   Thursday: is SG13 8QL a second treatment location, or are these model or training bookings?
 - Model bookings, the held-back items (weight-loss injections, "B-TOX FACIAL") and prices for prescription-only categories stay
   off the public menu, exactly as with the export.
+
+## Our own booking page (built 2026-09-30)
+Every "Book" button on the site now opens `/book/`, not Phorest's page. Details in `sites/beauty-heaven-hub/`.
+- **Treatment, who, when:** treatments, who can do each one and their prices come from Phorest at build time
+  (`/book/services.json`). Free times come live from `POST .../appointments/availability` with `isOnlineAvailability: true`,
+  through `api/availability.js`. It is public but only answers for treatments and people the site lists, and it's cached for 60 seconds.
+- **Tested live:** Brow Lamination returned real free times (UTC timestamps, 10-minute steps). 11 people show on online
+  booking, including two sunbeds that Phorest models as staff.
+- **Staff data kept:** first name, last initial when two share a name, and ids. Nothing else.
+- **57 online treatments have nobody set up for online booking** (HIFU 19, massage 13, nails 9, hair 6, lymphatic 5,
+  lashes 3, fillers 2). The page offers WhatsApp or a call for those. Ask Jess and Hollie whether someone is missing in Phorest.
+- **Confirming on the site is off** (`confirmOnSite: false`). The last step offers a pre-filled WhatsApp request or Phorest.
+  No personal details leave the browser. To switch on, once the data agreement is signed:
+  1. Find the client by phone, or create them.
+  2. `POST .../booking` as `RESERVED`, then create a deposit payment link where a deposit applies. Otherwise activate.
+  3. Re-read the appointment before showing "booked".
+  4. Test on a dummy client first, and check whether Phorest sends its own confirmation.

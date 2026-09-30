@@ -231,7 +231,13 @@
   function render() {
     var parts = [stepTreatment()];
     var found = state.service && findService(state.service);
-    if (found) {
+    if (found && !found.item.staff.length) {
+      // Nobody is set up to take this one online in Phorest, so there are no
+      // times to show. Say so and offer a person instead.
+      parts.push(step(2, "Book with us directly", '<p class="note">This one is booked with a member of the team, so we can find the right person and time for you.</p><div class="actions">' +
+        (data.whatsapp ? '<a class="btn btn--fill" href="https://wa.me/' + data.whatsapp + "?text=" + encodeURIComponent("Hi Beauty Heaven, I'd like to book " + found.item.name) + '"><span>Message us on WhatsApp</span> <span class="arr">→</span></a>' : "") +
+        '<a class="btn" href="tel:' + esc(data.phoneHref || "") + '"><span>Call ' + esc(data.phone || "us") + "</span></a></div>", false));
+    } else if (found) {
       parts.push(stepWho(found.item));
       parts.push(stepWhen());
       if (state.slot) parts.push(stepConfirm(found));
@@ -299,7 +305,8 @@
       state.staff = f.item.staff.length === 1 ? f.item.staff[0][0] : "";
       state.week = 0; state.day = ""; state.slot = null;
       syncUrl();
-      loadSlots(true);
+      if (f.item.staff.length) loadSlots(true);
+      else render();
       scrollTo(2);
     } else if (act === "change-service") {
       var g = findService(state.service);
@@ -351,7 +358,7 @@
         var c = findCat(state.cat);
         if (c) state.group = c.group.slug;
       }
-      if (f) loadSlots(true);
+      if (f && f.item.staff.length) loadSlots(true);
       else render();
     })
     .catch(function () {

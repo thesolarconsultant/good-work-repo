@@ -608,6 +608,8 @@ function bookingData() {
       };
     }),
   }));
+  const nobody = out.flatMap((g) => g.cats.filter((c) => c.items.some((s) => !s.staff.length)).map((c) => `${c.title} (${c.items.filter((s) => !s.staff.length).length})`));
+  if (nobody.length) todo.add(`/book/: these treatments are online in Phorest but nobody who shows on online booking is set up to do them, so the booking page offers WhatsApp or a call instead of times: ${nobody.join(", ")}. Right person missing in Phorest, or should they come off the website?`);
   const people = live.hubStaff.filter((p) => used.has(p.staffId));
   const label = (p) => (people.filter((q) => q.name === p.name).length > 1 && p.initial ? `${p.name} ${p.initial}.` : p.name);
   return {
@@ -617,6 +619,8 @@ function bookingData() {
     confirmOnSite: false,
     phorest: site.booking,
     whatsapp: (site.whatsapp || "").replace(/\D/g, ""),
+    phone: site.phone,
+    phoneHref: site.phoneHref,
     staff: Object.fromEntries(people.map((p) => [p.staffId, label(p)])),
     groups: out,
   };
