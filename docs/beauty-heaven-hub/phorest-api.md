@@ -289,3 +289,5 @@ Every "Book" button on the site now opens `/book/`, not Phorest's page. Details 
 - The website booking page (/book/) was also tested live by JB the same evening: the booking went through into Phorest.
 - Still to note: whether Phorest sent its own confirmation text or email for an API booking.
 - The test booking and test client are to be cancelled or deleted in Phorest.
+- Conversation records: Supabase (London, project cmbpiknyzhtnmkzpnqbp), table bot_messages, confirmed saving rows the same
+  evening. The setup check (/api/telegram-setup/, guarded) reports Anthropic key, Supabase and the Telegram webhook.
