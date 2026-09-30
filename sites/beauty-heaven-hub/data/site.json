@@ -5,7 +5,7 @@
   "launched": false,
   "phone": "01992 511383",
   "phoneHref": "+441992511383",
-  "whatsapp": "",
+  "whatsapp": "447424219417",
   "email": "TBC",
   "address": [
     "23-24 Conduit Lane",
@@ -28,5 +28,7 @@
   "showPrescriptionOnlyPrices": false,
   "hideServices": {
     "B-TOX FACIAL": "name suggests a prescription-only brand; check the advertising rules before showing it"
-  }
+  },
+  "whatsappDisplay": "07424 219417",
+  "domain": "beautyheavenhub.co"
 }

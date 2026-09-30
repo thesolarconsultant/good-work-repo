@@ -235,7 +235,7 @@ function footer() {
       </div>
       <div><h4>Treatments</h4><ul>${tlinks}</ul></div>
       <div><h4>Academy</h4><ul><li><a href="/academy/">Courses</a></li><li><a href="/academy/#how">How it works</a></li><li><a href="/policies/#academy">Booking terms</a></li><li><a href="${site.instagram.academy}">Instagram</a></li></ul></div>
-      <div><h4>Visit</h4><ul><li><a href="/visit/">Find us</a></li><li><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="${BOOK}">Book online</a></li></ul></div>
+      <div><h4>Visit</h4><ul><li><a href="/visit/">Find us</a></li><li><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></li>${site.whatsapp ? `<li><a href="${waLink("Hi Beauty Heaven")}">WhatsApp ${esc(site.whatsappDisplay || "")}</a></li>` : ""}<li><a href="/consultations/">Consultations</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="${BOOK}">Book online</a></li></ul></div>
     </div>
     <div class="footer__base">
       <span>© <span id="year"></span> ${esc(site.company)}</span>
@@ -498,7 +498,7 @@ function visit() {
     <dl class="facts">
       <div><dt class="micro">Address</dt><dd>${site.address.map(esc).join("<br>")}${site.addressConfirmed ? "" : "<br>" + tbc("address", "/visit/")}</dd></div>
       <div><dt class="micro">Phone</dt><dd><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></dd></div>
-      <div><dt class="micro">WhatsApp</dt><dd>${site.whatsapp ? `<a href="${waLink("Hi Beauty Heaven")}">Message us</a>` : tbc("WhatsApp number (new number for the assistant)", "/visit/")}</dd></div>
+      <div><dt class="micro">WhatsApp</dt><dd>${site.whatsapp ? `<a href="${waLink("Hi Beauty Heaven")}">${esc(site.whatsappDisplay || "Message us")}</a>` : tbc("WhatsApp number (new number for the assistant)", "/visit/")}</dd></div>
       <div><dt class="micro">Email</dt><dd>${site.email && site.email !== "TBC" ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : tbc("main business email", "/visit/")}</dd></div>
     </dl>
     <div class="actions"><a class="btn btn--fill" href="${maps}"><span>Open in Google Maps</span> <span class="arr">→</span></a></div>
