@@ -13,6 +13,7 @@
 
 import * as store from "./store.js";
 import { makeSet, toBlob } from "./cards.js";
+import * as EMAILS from "./emails.js";
 
 const API = "/api/console";
 const $ = (s, r = document) => r.querySelector(s);
@@ -468,65 +469,76 @@ $("#week").addEventListener("click", (e) => {
 });
 
 /* ==================================================================== EMAIL == */
-/* Colour styles for the email. Same layout, four ways of wearing the brand:
-   the everyday one, a light one, an evening one, and gold for occasions. */
-const EMAIL_THEMES = {
-  signature: { label: "Signature taupe", wall: "#ECE6DD", body: "#F4F0E9", head: "#746B60", logo: "#C9A65C", rule: "#746B60", ink: "#24211E", btn: "#C9A65C", btnInk: "#24211E", foot: "#24211E", footInk: "#B9AFA2" },
-  ivory: { label: "Light ivory", wall: "#F4F0E9", body: "#FFFFFF", head: "#FFFFFF", logo: "#24211E", rule: "#E3CD94", ink: "#24211E", btn: "#24211E", btnInk: "#F4F0E9", foot: "#ECE6DD", footInk: "#6B6257" },
-  evening: { label: "Evening espresso", wall: "#161412", body: "#24211E", head: "#24211E", logo: "#C9A65C", rule: "#3D3731", ink: "#F4F0E9", btn: "#C9A65C", btnInk: "#24211E", foot: "#161412", footInk: "#8F8579" },
-  gold: { label: "Gold occasion", wall: "#ECE6DD", body: "#FBF6EA", head: "#C9A65C", logo: "#24211E", rule: "#C9A65C", ink: "#24211E", btn: "#24211E", btnInk: "#F4F0E9", foot: "#24211E", footInk: "#E3CD94" },
-};
-let emailTheme = "signature";
+/* The email tab: pick a template and a colour style, fill the fields, see it
+   as a client would, copy the HTML with the merge tags intact. What you type
+   is kept per template (and shared with the team), so a half-written email is
+   still there tomorrow. */
+const em = { tpl: "welcome", theme: "signature" };
 
-const EMAIL_SHELL = (subject, pre, body, key = emailTheme) => {
-  const t = EMAIL_THEMES[key] || EMAIL_THEMES.signature;
-  return `<!doctype html><html><head><meta charset="utf-8">
-<style>
-  body{margin:0;background:${t.wall};font-family:'Century Gothic',Futura,Helvetica,Arial,sans-serif;}
-  .w{max-width:600px;margin:0 auto;background:${t.body};}
-  .hd{background:${t.head};padding:26px 30px;text-align:center;border-bottom:1px solid ${t.rule};}
-  .hd b{color:${t.logo};font-size:19px;font-weight:400;letter-spacing:.02em;}
-  .bd{padding:30px;color:${t.ink};font-size:15px;line-height:1.65;}
-  .bd p{margin:0 0 14px;}
-  .cta{display:inline-block;background:${t.btn};color:${t.btnInk};text-decoration:none;
-       padding:13px 28px;border-radius:999px;font-size:14px;margin-top:6px;}
-  .ft{background:${t.foot};color:${t.footInk};padding:22px 30px;font-size:11px;line-height:1.7;}
-  .pre{display:none;font-size:1px;color:${t.body};}
-</style></head><body>
-<div class="pre">${pre}</div>
-<div class="w">
-  <div class="hd"><b>beauty <strong>heaven</strong> hub</b></div>
-  <div class="bd">
-    ${body.split(/\n{2,}/).filter(Boolean).map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("\n    ")}
-    <a class="cta" href="{{custom_values.booking_url}}">Book a treatment</a>
-  </div>
-  <div class="ft">Beauty Heaven Hub<br>{{location.full_address}}<br>
-    {{location.phone}} · {{location.email}}<br><br>
-    <a href="{{unsubscribe_link}}" style="color:${t.footInk};">Unsubscribe</a>
-  </div>
-</div></body></html>`;
-};
+function emValues() {
+  const saved = (store.load().emailDrafts || {})[em.tpl] || {};
+  return { ...EMAILS.TEMPLATES[em.tpl].defaults, ...saved };
+}
 
-// The colour style picker.
-$("#emThemes").innerHTML += Object.entries(EMAIL_THEMES)
-  .map(([k, t]) => `<label><input type="radio" name="emTheme" value="${k}"${k === emailTheme ? " checked" : ""}><span class="swatch" style="background:${t.head};border-color:${t.btn}"></span>${t.label}</label>`)
-  .join("");
-$("#emThemes").addEventListener("change", (e) => {
-  if (e.target.name !== "emTheme") return;
-  emailTheme = e.target.value;
-  renderEmail();
-});
+function renderEmailList() {
+  $("#emTemplates").innerHTML = Object.entries(EMAILS.TEMPLATES)
+    .map(([k, t]) => `<button type="button" data-tpl="${k}" class="${k === em.tpl ? "on" : ""}"><b>${t.label}</b><span>${t.use}</span></button>`)
+    .join("");
+  $("#emThemes").innerHTML = `<legend>Colour style</legend>` + Object.entries(EMAILS.THEMES)
+    .map(([k, t]) => `<label><input type="radio" name="emTheme" value="${k}"${k === em.theme ? " checked" : ""}><span class="swatch" style="background:${t.swatch};border-color:${t.ring}"></span>${t.label}</label>`)
+    .join("");
+}
+
+function renderEmailForm() {
+  const t = EMAILS.TEMPLATES[em.tpl];
+  const v = emValues();
+  $("#emName").textContent = t.label;
+  $("#emUse").textContent = t.use;
+  $("#emForm").innerHTML = t.fields.map((k) => {
+    const f = EMAILS.FIELDS[k];
+    const label = `<span>${f.label}${f.hint ? ` <em>${f.hint}</em>` : ""}</span>`;
+    const val = esc(v[k] ?? "");
+    if (f.type === "textarea") return `<label class="field">${label}<textarea name="${k}" rows="${f.rows || 4}">${val}</textarea></label>`;
+    if (f.type === "photo") return `<label class="field">${label}<select name="${k}">${Object.entries(EMAILS.PHOTOS).map(([pk, pl]) => `<option value="${pk}"${pk === v[k] ? " selected" : ""}>${pl}</option>`).join("")}<option value=""${!v[k] ? " selected" : ""}>No photo</option></select></label>`;
+    return `<label class="field">${label}<input type="text" name="${k}" value="${val}"></label>`;
+  }).join("");
+}
 
 function renderEmail() {
-  const html = EMAIL_SHELL(
-    $("#emSubject").value || "Subject line",
-    $("#emPre").value || "",
-    $("#emBody").value || "The body of the email goes here.",
-  );
-  $("#emFrame").srcdoc = html;
+  if (!$("#emForm").elements.length) { renderEmailList(); renderEmailForm(); }
+  const html = EMAILS.render(em.tpl, em.theme, emValues());
+  $("#emFrame").srcdoc = $("#emSample").checked ? EMAILS.sample(html) : html;
   return html;
 }
-["#emSubject", "#emPre", "#emBody"].forEach((sel) => $(sel).addEventListener("input", renderEmail));
+
+$("#emTemplates").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-tpl]");
+  if (!b) return;
+  em.tpl = b.dataset.tpl;
+  renderEmailList(); renderEmailForm(); renderEmail();
+});
+$("#emThemes").addEventListener("change", (e) => {
+  if (e.target.name !== "emTheme") return;
+  em.theme = e.target.value;
+  renderEmail();
+});
+let emTimer = null;
+$("#emForm").addEventListener("input", () => {
+  const draft = Object.fromEntries(new FormData($("#emForm")).entries());
+  const drafts = { ...(store.load().emailDrafts || {}), [em.tpl]: draft };
+  store.load().emailDrafts = drafts; // show it straight away
+  renderEmail();
+  clearTimeout(emTimer);
+  emTimer = setTimeout(() => store.setEmailDrafts(drafts), 600); // save (and share) once typing pauses
+});
+$("#emSample").addEventListener("change", renderEmail);
+$("#emReset").addEventListener("click", () => {
+  const drafts = { ...(store.load().emailDrafts || {}) };
+  delete drafts[em.tpl];
+  store.setEmailDrafts(drafts);
+  renderEmailForm(); renderEmail();
+  toast("Back to the template.");
+});
 
 $$(".seg button").forEach((b) =>
   b.addEventListener("click", () => {
@@ -545,18 +557,16 @@ $("#emFromPiece").addEventListener("click", () => {
   const lines = found.p.text.split("\n").filter((l) => l.trim());
   const sub = lines.find((l) => /^subject/i.test(l)) || lines[0] || "";
   const pre = lines.find((l) => /^preheader/i.test(l)) || "";
-  $("#emSubject").value = sub.replace(/^subject( line)?:?\s*/i, "").trim();
-  $("#emPre").value = pre.replace(/^preheader:?\s*/i, "").trim();
-  $("#emBody").value = lines
-    .filter((l) => l !== sub && l !== pre && !/^(subject|preheader)/i.test(l))
-    .join("\n\n")
-    .trim();
-  renderEmail();
+  const body = lines.filter((l) => l !== sub && l !== pre && !/^(subject|preheader)/i.test(l)).join("\n\n").trim();
+  const drafts = { ...(store.load().emailDrafts || {}) };
+  drafts[em.tpl] = { ...emValues(), subject: sub.replace(/^subject( line)?:?\s*/i, "").trim(), pre: pre.replace(/^preheader:?\s*/i, "").trim(), body };
+  store.setEmailDrafts(drafts);
+  renderEmailForm(); renderEmail();
   toast("Pulled in.");
 });
 
 $("#emCopy").addEventListener("click", () => {
-  navigator.clipboard.writeText(renderEmail()).then(() => toast("HTML copied — merge tags intact."));
+  navigator.clipboard.writeText(renderEmail()).then(() => toast("HTML copied, merge tags intact."));
 });
 
 /* ==================================================================== BRAND == */

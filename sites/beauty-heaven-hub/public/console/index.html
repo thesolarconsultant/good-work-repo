@@ -170,33 +170,38 @@
       <header class="head">
         <div>
           <p class="eyebrow">Email</p>
-          <h1 class="h1">Built into the template, not into a box.</h1>
+          <h1 class="h1">Designed emails, ready for the CRM.</h1>
         </div>
       </header>
 
-      <div class="cols cols--email">
+      <div class="emgrid">
+        <aside class="panel emlist">
+          <h2 class="h3">Templates</h2>
+          <div id="emTemplates" class="emtpl"></div>
+          <fieldset class="picks" id="emThemes" style="margin-top:1.2rem"><legend>Colour style</legend></fieldset>
+        </aside>
+
         <section class="panel">
-          <h2 class="h3">The message</h2>
-          <fieldset class="picks" id="emThemes"><legend>Colour style</legend></fieldset>
-          <label class="field"><span>Subject</span><input type="text" id="emSubject" placeholder="Your first treatment — what actually happens"></label>
-          <label class="field"><span>Preheader</span><input type="text" id="emPre" placeholder="Nervous is normal. Here is exactly how it goes."></label>
-          <label class="field"><span>Body</span><textarea id="emBody" rows="10" placeholder="Paste from a piece the console wrote, or write it here."></textarea></label>
+          <h2 class="h3" id="emName">The email</h2>
+          <p class="note" id="emUse"></p>
+          <form id="emForm" autocomplete="off"></form>
           <div class="row">
-            <button class="btn btn--quiet" id="emFromPiece">Pull in the last email written</button>
-            <button class="btn" id="emCopy">Copy the HTML</button>
+            <button class="btn btn--quiet" id="emFromPiece" type="button">Pull in the last email written</button>
+            <button class="btn btn--quiet" id="emReset" type="button">Start again from the template</button>
           </div>
-          <p class="note" id="emNote">The merge tags stay intact, so it can go straight into the CRM.</p>
         </section>
 
         <section class="panel panel--preview">
           <div class="preview__bar">
-            <h2 class="h3">Preview</h2>
+            <label class="emsample"><input type="checkbox" id="emSample" checked> Sample data</label>
             <div class="seg" role="group" aria-label="Preview width">
               <button class="on" data-w="desktop">Desktop</button>
               <button data-w="phone">Phone</button>
             </div>
+            <button class="btn btn--gold" id="emCopy" type="button">Copy the HTML</button>
           </div>
           <div class="preview" id="emPreview" data-w="desktop"><iframe title="Email preview" id="emFrame"></iframe></div>
+          <p class="note" style="padding:.8rem 1rem">Merge tags like {{contact.first_name}} stay intact in the copied HTML; Sample data only fills them in this preview. Anything in [brackets] needs filling before it sends.</p>
         </section>
       </div>
     </section>

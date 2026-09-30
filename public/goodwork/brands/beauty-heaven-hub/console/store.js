@@ -77,6 +77,7 @@ export const SEED = {
   ],
 
   campaigns: [],
+  emailDrafts: {},
   calendar: [
     { id: "c1", day: "Mon", what: "Autumn skin reset — carousel", state: "scheduled" },
     { id: "c2", day: "Wed", what: "Academy: September intake open", state: "draft" },
@@ -195,6 +196,11 @@ export function onChange(fn) {
 }
 
 /* ------------------------------------------------------------------ writes -- */
+export function setEmailDrafts(drafts) {
+  load().emailDrafts = drafts;
+  save();
+}
+
 export function setBrand(patch) {
   Object.assign(load().brand, patch);
   save();

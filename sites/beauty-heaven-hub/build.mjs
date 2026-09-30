@@ -705,6 +705,10 @@ if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "
 // in the brand kit, plus the room photographs its picture tool sends to
 // Higgsfield as references, at the path that tool expects.
 cpSync(join(BRAND, "console"), join(OUT, "console"), { recursive: true, filter: (p) => !p.endsWith("README.md") });
+// The email templates' images (arched photos in every colour style, the
+// transparent logos). Public, because inboxes fetch them when an email opens.
+cpSync(join(BRAND, "email"), join(OUT, "email"), { recursive: true, filter: (p) => !/\.(html|txt|md)$/.test(p) });
+
 // The brand guidelines, inside the console (so behind its password), with the
 // assets the page uses. The console's menu link points here on this site.
 const GUIDE = join(OUT, "console/brand");
