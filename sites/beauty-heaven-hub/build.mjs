@@ -149,7 +149,14 @@ for (const g of groups) {
 const lowerFirst = (t) => (/^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
 // Courses: the Academy branch's own online menu when live, otherwise the
 // Hub export's "Academy Courses" category.
-const courseSource = live && live.academyServices.length ? live.academyServices : services.filter((s) => s.Category === "Academy Courses");
+// The Academy branch also holds treatments (its own anti-wrinkle, fillers,
+// waxing and so on), so only its course categories count as courses.
+const isCourseCategory = (s) => /course|academy/i.test(s.Category || "");
+const academyCourses = live ? live.academyServices.filter(isCourseCategory) : [];
+const courseSource = academyCourses.length ? academyCourses : services.filter((s) => s.Category === "Academy Courses");
+if (live && live.academyServices.some((s) => !isCourseCategory(s) && s["Online?"] === "Y")) {
+  todo.add("/academy/: the Academy branch in Phorest also sells treatments online (anti-wrinkle, fillers, Slim Jab, waxing and more). Is it a second treatment location, and should those appear on the site?");
+}
 const courses = courseSource.filter((s) => s["Online?"] === "Y" && !/student practical/.test(s.Flags) && Number(s["Price £"]) > 0 && !/consult/i.test(s.Service));
 
 // ------------------------------------------------------------ the mock-up --
