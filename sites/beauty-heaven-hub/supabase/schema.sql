@@ -18,3 +18,12 @@ alter table bot_messages enable row level security;
 
 -- Retention: delete conversations older than the agreed period (set with the salon), e.g. 12 months:
 -- delete from bot_messages where created_at < now() - interval '12 months';
+
+-- The Content Console's shared copy (brand, ideas, drafts, approvals, calendar).
+create table if not exists console_state (
+  id          text primary key,
+  version     integer not null default 1,
+  data        jsonb not null,
+  updated_at  timestamptz not null default now()
+);
+alter table console_state enable row level security;

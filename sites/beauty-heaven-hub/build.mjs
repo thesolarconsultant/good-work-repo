@@ -692,7 +692,7 @@ for (const f of ["Jost-Light", "Jost-Regular", "Jost-Medium", "Jost-Bold"]) {
   cpSync(join(BRAND, `fonts/${f}.ttf`), join(OUT, `fonts/${f}.ttf`));
 }
 mkdirSync(join(OUT, "logo"), { recursive: true });
-for (const f of ["favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-192.png", "favicon-512.png", "wordmark-mask.png"]) {
+for (const f of ["favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-192.png", "favicon-512.png", "wordmark-mask.png", "beauty-heaven-hub-wordmark-espresso.svg", "beauty-heaven-hub-wordmark-gold.svg"]) {
   cpSync(join(BRAND, `logo/${f}`), join(OUT, `logo/${f}`));
 }
 cpSync(join(BRAND, "photos/derived"), join(OUT, "photos"), { recursive: true, filter: (p) => !p.endsWith(".json") });
@@ -700,6 +700,15 @@ for (const f of ["academy-floor.jpg", "jessica.jpg", "hollie.jpg"]) {
   if (existsSync(join(BRAND, "photos", f))) cpSync(join(BRAND, "photos", f), join(OUT, "photos", f));
 }
 if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "og.jpg"));
+
+// The Content Console (password-protected by middleware.js), from its master
+// in the brand kit, plus the room photographs its picture tool sends to
+// Higgsfield as references, at the path that tool expects.
+cpSync(join(BRAND, "console"), join(OUT, "console"), { recursive: true, filter: (p) => !p.endsWith("README.md") });
+mkdirSync(join(OUT, "goodwork/brands/beauty-heaven-hub/photos"), { recursive: true });
+for (const f of ["treatment-room.jpg", "reception-wide.png", "salon-mirrors.png", "lounge-wings.png"]) {
+  cpSync(join(BRAND, "photos", f), join(OUT, "goodwork/brands/beauty-heaven-hub/photos", f));
+}
 
 writeFileSync(join(OUT, "index.html"), home());
 write("/treatments/", treatmentsIndex());

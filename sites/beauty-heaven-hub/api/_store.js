@@ -16,7 +16,7 @@ const mem = new Map();
 // Tolerates a pasted URL with a trailing slash or /rest/v1 on the end.
 const baseUrl = () => (process.env.SUPABASE_URL || "").trim().replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
 
-function supa() {
+export function supa() {
   const url = baseUrl(), key = (process.env.SUPABASE_SERVICE_KEY || "").trim();
   if (!url || !key) return null;
   return (path, init = {}) =>
