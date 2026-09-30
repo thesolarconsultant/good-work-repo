@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><defs>
+  <linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="300" y1="340" x2="740" y2="800">
+    <stop offset="0" stop-color="#F7E7B4"/>
+    <stop offset=".22" stop-color="#E3C27A"/>
+    <stop offset=".45" stop-color="#B98D3E"/>
+    <stop offset=".62" stop-color="#F3DB9A"/>
+    <stop offset=".8" stop-color="#C79B4B"/>
+    <stop offset="1" stop-color="#8C6528"/>
+  </linearGradient>
+  <linearGradient id="goldV" gradientUnits="userSpaceOnUse" x1="0" y1="230" x2="0" y2="560">
+    <stop offset="0" stop-color="#FFF3CC"/>
+    <stop offset=".35" stop-color="#E7C680"/>
+    <stop offset=".7" stop-color="#B8893A"/>
+    <stop offset="1" stop-color="#E9CD8A"/>
+  </linearGradient>
+  <radialGradient id="pendant" cx="38%" cy="32%" r="70%">
+    <stop offset="0" stop-color="#FFF6D6"/>
+    <stop offset=".35" stop-color="#EBCB85"/>
+    <stop offset=".75" stop-color="#B08234"/>
+    <stop offset="1" stop-color="#7C5A22"/>
+  </radialGradient>
+  <filter id="bloom" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+    <feGaussianBlur stdDeviation="14" result="b1"/>
+    <feGaussianBlur in="SourceGraphic" stdDeviation="34" result="b2"/>
+    <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <radialGradient id="lampglow"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".45"/><stop offset=".45" stop-color="#FFE7A8" stop-opacity=".14"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".45"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .06 0"/>
+  </filter>
+
+  <radialGradient id="bg" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#6E6254"/><stop offset=".55" stop-color="#3A332C"/><stop offset="1" stop-color="#1B1916"/></radialGradient>
+  <radialGradient id="aura" cx="50%" cy="45%" r="42%"><stop offset="0" stop-color="#E9CD8A" stop-opacity=".32"/><stop offset="1" stop-color="#E9CD8A" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1024" height="1024" fill="url(#bg)"/>
+<circle cx="512" cy="470" r="430" fill="url(#aura)"/>
+
+  <!-- halo -->
+  <g filter="url(#bloom)" opacity=".95">
+    <ellipse cx="512" cy="286" rx="150" ry="40" fill="none" stroke="#FFE7A8" stroke-width="10" opacity=".55"/>
+  </g>
+  <ellipse cx="512" cy="286" rx="150" ry="40" fill="none" stroke="url(#goldV)" stroke-width="16"/>
+  <ellipse cx="512" cy="280" rx="146" ry="36" fill="none" stroke="#FFF8E0" stroke-width="2.5" opacity=".7"/>
+  <!-- arch -->
+  <g filter="url(#soft)">
+    <path d="M338 780 V528 A174 174 0 0 1 686 528 V780" fill="none" stroke="url(#gold)" stroke-width="34" stroke-linecap="round"/>
+    <path d="M345 772 V530 A167 167 0 0 1 553 368" fill="none" stroke="#FFF4D2" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+    <line x1="292" y1="782" x2="732" y2="782" stroke="url(#gold)" stroke-width="16" stroke-linecap="round"/>
+    <line x1="512" y1="440" x2="512" y2="540" stroke="url(#goldV)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <!-- pendant light, glowing -->
+  <circle cx="512" cy="600" r="170" fill="url(#lampglow)"/>
+  <circle cx="512" cy="600" r="62" fill="url(#pendant)"/>
+  <ellipse cx="492" cy="578" rx="20" ry="12" fill="#FFFBEB" opacity=".75"/>
+<path d="M300 228.0 L304.5 245.5 L322.0 250 L304.5 254.5 L300 272.0 L295.5 254.5 L278.0 250 L295.5 245.5Z" fill="#FFF1C4" opacity=".85" filter="url(#bloom)"/><path d="M730 314.6 L733.15 326.85 L745.4 330 L733.15 333.15 L730 345.4 L726.85 333.15 L714.6 330 L726.85 326.85Z" fill="#FFF1C4" opacity=".85" filter="url(#bloom)"/><path d="M690 199.0 L692.25 207.75 L701.0 210 L692.25 212.25 L690 221.0 L687.75 212.25 L679.0 210 L687.75 207.75Z" fill="#FFF1C4" opacity=".85" filter="url(#bloom)"/><path d="M250 456.8 L252.7 467.3 L263.2 470 L252.7 472.7 L250 483.2 L247.3 472.7 L236.8 470 L247.3 467.3Z" fill="#FFF1C4" opacity=".85" filter="url(#bloom)"/><path d="M770 542.4 L773.6 556.4 L787.6 560 L773.6 563.6 L770 577.6 L766.4 563.6 L752.4 560 L766.4 556.4Z" fill="#FFF1C4" opacity=".85" filter="url(#bloom)"/>
+<rect width="1024" height="1024" filter="url(#grain)"/>
+</svg>
