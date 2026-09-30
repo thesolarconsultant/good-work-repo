@@ -847,11 +847,12 @@ async function openShot(text) {
   wrap.innerHTML = `
     <div class="sheet__box" role="dialog" aria-modal="true" aria-label="Make a picture">
       <header class="sheet__top">
-        <div><p class="eyebrow">Shot on your own rooms</p><h2 class="h3">Make a picture</h2></div>
+        <div><p class="eyebrow">AI close-ups</p><h2 class="h3">Make a close-up</h2></div>
         <button class="btn btn--quiet" id="shotClose">Close</button>
       </header>
-      <p class="note">Every look is conditioned on a real photograph of the salon, so the walls,
-        fittings and light are yours rather than invented. Nothing here writes its own prompt.</p>
+      <p class="note">Your own photos and clips come first: the people, the rooms and the real work.
+        AI is only for the close-ups a phone can't get (texture, detail, light) to cut into reels
+        and explainers. Each is lit and coloured from a real photograph of the salon.</p>
       <fieldset class="picks" id="shotLooks" style="margin-top:1rem"><legend>The look</legend></fieldset>
       <div class="row">
         <button class="btn btn--gold" id="shotGo">Make it</button>

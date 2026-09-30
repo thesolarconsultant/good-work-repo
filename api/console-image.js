@@ -89,67 +89,74 @@ const PHOTO_BASE = "/goodwork/brands/beauty-heaven-hub/";
    only part the brief gets to colour, and it arrives as a short phrase rather
    than as a prompt. */
 const LOOKS = {
-  treatment: {
-    label: "Treatment in progress",
+  // AI is for the close-ups a phone can't get: texture, detail, light. The
+  // salon's own photos and clips carry everything else — the people, the
+  // rooms, the real work — so no look here puts a person or a room in frame.
+  texture: {
+    label: "Texture, macro",
     room: "treatmentRoom",
-    aspect: "4:3",
+    aspect: "9:16",
     scene:
-      "A treatment in progress in the room shown in the reference, photographed from close by. " +
-      "A practitioner's gloved hands working carefully; the client reclined with her eyes closed, " +
-      "face bare, a towel at her hairline. Only hands, forearms and the client's face in frame. " +
-      "Absorbed and unhurried.",
+      "An extreme macro of a product's texture, filling the frame: a slow swirl of cream, a single " +
+      "drop of serum hanging from a glass dropper, the sheen of a gel polish. Nothing else in frame. " +
+      "Lit from one side so every ripple catches the light. Unbranded, no packaging.",
   },
-  room: {
-    label: "The room, empty",
+  lashbrow: {
+    label: "Lashes and brows, close",
     room: "treatmentRoom",
-    aspect: "4:3",
+    aspect: "9:16",
     scene:
-      "The room in the reference, empty and waiting. Nobody in frame. The couch made up, the " +
-      "trolley set, a lamp lit warm. Late afternoon light, long soft shadows. Calm and expensive, " +
-      "the kind of quiet a room has before the first appointment.",
+      "An extreme close-up of one closed eye: the lash line, the brow above it, real skin texture " +
+      "with fine lines and pores, unretouched. Calm, as if mid-treatment. No make-up drama, nothing " +
+      "implying a before or after.",
   },
-  product: {
-    label: "Product, on marble",
+  hands: {
+    label: "Hands at work",
+    room: "treatmentRoom",
+    aspect: "9:16",
+    scene:
+      "A close-up of a practitioner's gloved hands doing careful, precise work, and nothing else: a " +
+      "brush laying down colour, tweezers lifting a single lash, a cloth pressed warm. Hands and tools " +
+      "only, no face in frame. Absorbed and unhurried.",
+  },
+  tools: {
+    label: "Tools, laid out",
     room: "treatmentRoom",
     aspect: "1:1",
     scene:
-      "A close still life on a warm marble counter: two or three unbranded skincare bottles, a " +
-      "small amber dropper, a folded cloth, a clean tray. Every label blank. Warm lamp light from " +
-      "one side, one soft highlight along the glass, deep shadow behind.",
+      "A close, overhead still life of a treatment set out ready: brushes, tweezers, small glass " +
+      "dishes, folded towels, on a warm marble or linen surface. Clean, ordered, nothing branded. " +
+      "One soft light from the side, deep shadow at the edge of frame.",
   },
-  detail: {
-    label: "Close detail",
+  nails: {
+    label: "Nails, macro",
     room: "treatmentRoom",
     aspect: "1:1",
     scene:
-      "A macro close-up: skin texture, a gloved hand, a brush, a cloth — one thing, filling the " +
-      "frame, lit so the texture reads. Real skin with real pores and fine down, unretouched. " +
-      "No product visible, nothing branded.",
+      "A macro of freshly finished nails resting on soft fabric: the shine of the top coat, the " +
+      "clean cuticle line, one hand only, nothing else in frame. Warm, soft light.",
   },
-  portrait: {
-    label: "A client, waiting",
+  light: {
+    label: "Light and atmosphere",
     room: "lounge",
-    aspect: "3:4",
+    aspect: "9:16",
     scene:
-      "A woman seated in the room shown in the reference, coat still on, looking away from camera. " +
-      "Not being treated and not selling anything — waiting, and a little unsure. Caught rather " +
-      "than arranged.",
+      "An abstract, out-of-focus close-up of warm light: a lamp's glow, soft bokeh, a gold edge " +
+      "catching it, the texture of linen or marble in the foreground. No people, nothing legible. " +
+      "Made to sit behind words in a reel or explainer.",
   },
 };
 
-/* Which look a piece gets when nobody picks one. A myth correction wants a
-   detail shot, aftercare wants the product, an announcement wants the room —
-   and getting that right by default is most of the value, because the default
-   is what almost everyone uses. */
+/* Which close-up a piece gets when nobody picks one. */
 const STYLE_LOOK = {
-  answer: "treatment",
-  myth: "detail",
-  happens: "treatment",
-  question: "portrait",
-  behind: "room",
-  aftercare: "product",
-  news: "room",
-  academy: "room",
+  answer: "hands",
+  myth: "texture",
+  happens: "hands",
+  question: "light",
+  behind: "tools",
+  aftercare: "texture",
+  news: "light",
+  academy: "tools",
 };
 
 const MAX_SUBJECT = 240;
