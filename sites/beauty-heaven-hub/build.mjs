@@ -5,6 +5,9 @@
 // The treatment menu comes from Phorest's own service export
 // (docs/beauty-heaven-hub/services-master.csv), so prices and durations are
 // theirs, not retyped. Contact details and switches live in data/site.json.
+// The look is the approved mock-up (public/goodwork/brands/beauty-heaven-hub/
+// preview-8f3ac21d.html): the home page is that file, rewired, and every other
+// page reuses its header, footer, type and components.
 // Anything not yet confirmed is written with tbc(): while the site is
 // unlaunched it shows as a yellow "to confirm" marker and is listed in
 // CONTENT-TODO.md; once `launched` is true, any tbc() left fails the build.
@@ -73,13 +76,6 @@ const tidy = (s) =>
 
 const waLink = (text) => (site.whatsapp ? `https://wa.me/${site.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(text)}` : "");
 
-// Ask-us button: WhatsApp once the number exists, the phone until then.
-function askButton(text, label = "Ask us on WhatsApp", cls = "btn--line") {
-  const wa = waLink(text);
-  if (wa) return `<a class="btn ${cls}" href="${wa}">${esc(label)}</a>`;
-  return `<a class="btn ${cls}" href="tel:${site.phoneHref}">Call ${esc(site.phone)}</a>`;
-}
-
 // ------------------------------------------------------------------ data --
 const services = parseCsv(readFileSync(CSV, "utf8"));
 const hidden = site.hideServices || {};
@@ -100,388 +96,409 @@ for (const g of groups) {
 const lowerFirst = (t) => (/^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
 const courses = services.filter((s) => s.Category === "Academy Courses" && s["Online?"] === "Y");
 
-// ---------------------------------------------------------------- layout --
-const NAV = [
-  ["/treatments/", "Treatments"],
-  ["/academy/", "Academy"],
-  ["/consultations/", "Consultations"],
-  ["/visit/", "Visit us"],
-];
+// ------------------------------------------------------------ the mock-up --
+// The home page IS the approved mock-up. It is read from the brand kit on
+// every build and only rewired: asset paths, real links, and the handful of
+// lines we cannot stand behind. Every swap must match exactly, so if the
+// mock-up changes underneath, the build stops rather than silently drifting.
+const MOCKUP = join(BRAND, "preview-8f3ac21d.html");
+const mock = readFileSync(MOCKUP, "utf8");
+const mockCss = mock.match(/<style>\n([\s\S]*?)<\/style>/)[1];
+const mockJs = mock.match(/<script>\n(\(function \(\) \{[\s\S]*?\}\)\(\);)\n<\/script>\s*<\/body>/)[1];
 
-const mark = (cls = "") => `<span class="bh-mark ${cls}" role="img" aria-label="beauty heaven hub"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span>`;
+function swap(html, from, to, label) {
+  const hit = typeof from === "string" ? html.includes(from) : from.test(html);
+  if (!hit) throw new Error(`Mock-up changed: could not find "${label}"`);
+  return typeof from === "string" ? html.split(from).join(to) : html.replace(from, to);
+}
 
-function layout({ path, title, description, body, bookbar = true }) {
-  const full = path === "/" ? `${site.name} | Treatments and Academy, Hoddesdon` : `${title} | ${site.name}`;
-  const nav = NAV.map(([href, label]) => `<a href="${href}"${path.startsWith(href) ? ' aria-current="page"' : ""}>${label}</a>`).join("");
-  const bar = bookbar
-    ? `<div class="bookbar"><a class="btn btn--gold" href="${site.booking.home}">Book online</a>${askButton("Hi Beauty Heaven, I have a question", "Message us", "btn--line\" style=\"color:var(--bh-ivory);border-color:var(--bh-stone)")}</div>`
-    : "";
+const BOOK = site.booking.home;
+
+function headTags({ path, title, description }) {
+  const full = path === "/" ? `${site.name} | welcome to heaven.` : `${title} | ${site.name}`;
+  return `<title>${esc(full)}</title>
+<meta name="description" content="${esc(description)}">
+<meta name="theme-color" content="#746B60">
+${site.launched ? `<link rel="canonical" href="${site.url}${path}">` : '<meta name="robots" content="noindex, nofollow">'}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${esc(site.name)}">
+<meta property="og:title" content="${esc(full)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:image" content="${site.url}/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/logo/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/logo/favicon-180.png">`;
+}
+
+const draftBar = () => (site.launched ? "" : '<div class="draftbar">Draft website, not live yet. Yellow notes mark details we still need to confirm.</div>');
+
+const mark = (cls) => `<span class="bh-mark ${cls}" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span>`;
+
+// The mock-up's header and footer, pointed at real pages.
+function header(onHome) {
+  const t = onHome ? '#treatments" data-journey-link="treatments' : "/treatments/";
+  const a = onHome ? '#academy" data-journey-link="academy' : "/academy/";
+  const h = onHome ? "#" : "/#";
+  const links = `<a href="${t}">Treatments</a>
+      <a href="${a}">Academy</a>
+      <a href="${h}hub">The Hub</a>
+      <a href="${h}people">Jessica &amp; Hollie</a>
+      <a href="${h}reviews">Reviews</a>`;
+  return `<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a href="${onHome ? "#top" : "/"}" aria-label="Beauty Heaven Hub, home">${mark("bh-mark--hover nav__mark")}</a>
+    <nav class="nav__pill" aria-label="Primary">
+      ${links}
+    </nav>
+    <a class="btn btn--fill" href="${BOOK}" data-gw-magnetic="0.25"><span>Book</span></a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+  <div class="wrap"><div class="nav__panel" id="menu" hidden>
+    ${links}
+    <a href="/visit/">Find us</a>
+  </div></div>
+</header>`;
+}
+
+function footer() {
+  const tlinks = groups.map((g) => `<li><a href="/treatments/${g.slug}/">${esc(g.name)}</a></li>`).join("");
+  return `<footer class="footer" data-surface="espresso">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a href="/" aria-label="Beauty Heaven Hub, home">${mark("bh-mark--gold bh-mark--glint footer__mark")}</a>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Treatments</span></div>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Academy</span></div>
+      </div>
+      <div><h4>Treatments</h4><ul>${tlinks}</ul></div>
+      <div><h4>Academy</h4><ul><li><a href="/academy/">Courses</a></li><li><a href="/academy/#how">How it works</a></li><li><a href="/policies/#academy">Booking terms</a></li><li><a href="${site.instagram.academy}">Instagram</a></li></ul></div>
+      <div><h4>Visit</h4><ul><li><a href="/visit/">Find us</a></li><li><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="${BOOK}">Book online</a></li></ul></div>
+    </div>
+    <div class="footer__base">
+      <span>© <span id="year"></span> ${esc(site.company)}</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="${site.instagram.treatments}">Instagram</a> · <a href="${site.facebook}">Facebook</a></span>
+    </div>
+  </div>
+</footer>`;
+}
+
+// The mock-up's closing band, reused at the foot of every page.
+function closeBand(heading = "beauty, <b>your</b> way.") {
+  return `<section class="close" data-surface="taupe" aria-labelledby="close-h">
+  <div class="close__halo" aria-hidden="true"></div>
+  <div class="wrap close__in">
+    <p class="micro eyebrow" data-gw-reveal><span class="t">Ready when you are</span></p>
+    <span class="bh-mark bh-mark--gold bh-mark--glint close__mark" role="img" aria-label="Beauty Heaven Hub" data-gw-reveal><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span>
+    <h2 id="close-h" class="display d1" data-gw-reveal="mask"><span class="mask">${heading}</span></h2>
+    <div class="actions" data-gw-reveal>
+      <a class="btn btn--fill gw-shimmer" href="${BOOK}" data-gw-magnetic="0.25"><span>Book a treatment</span> <span class="arr">→</span></a>
+      <a class="btn" href="/academy/" data-gw-magnetic="0.25"><span>Enquire about a course</span></a>
+    </div>
+  </div>
+</section>`;
+}
+
+function layout({ path, title, description, body, close = true }) {
   return `<!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(full)}</title>
-<meta name="description" content="${esc(description)}">
-${site.launched ? `<link rel="canonical" href="${site.url}${path}">` : '<meta name="robots" content="noindex,nofollow">'}
-<meta property="og:title" content="${esc(full)}">
-<meta property="og:description" content="${esc(description)}">
-<meta property="og:type" content="website">
-<meta property="og:image" content="${site.url}/og.jpg">
-<link rel="icon" href="/logo/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/logo/favicon-180.png">
-<link rel="preload" href="/fonts/Jost-Light.woff2" as="font" type="font/woff2" crossorigin>
+${headTags({ path, title, description })}
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Light.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Bold.woff2" crossorigin>
 <link rel="stylesheet" href="/brand.css">
-<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/motion/goodwork-motion.css">
+<script src="/motion/goodwork-motion.js" defer></script>
+<link rel="stylesheet" href="/mockup.css">
+<link rel="stylesheet" href="/pages.css">
 </head>
-<body${bookbar ? ' class="has-bookbar"' : ""}>
-<a class="skip" href="#main">Skip to content</a>
-${site.launched ? "" : '<div class="draftbar">Draft website. Not live yet. Yellow notes mark details we still need to confirm.</div>'}
-<header class="top">
-  <div class="wrap top__in">
-    <a class="top__logo" href="/">${mark("bh-mark--hover")}</a>
-    <nav class="top__nav" aria-label="Main">${nav}<a class="btn btn--dark" style="min-height:40px;padding:8px 18px" href="${site.booking.home}">Book</a></nav>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
-  </div>
-  <nav class="wrap drawer" id="drawer" aria-label="Main">${nav}<a href="${site.booking.home}">Book online</a></nav>
-</header>
-<main id="main">
+<body class="page">
+${draftBar()}
+<div class="cursor" aria-hidden="true"></div>
+${header(false)}
+<main id="top">
 ${body}
+${close ? closeBand() : ""}
 </main>
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot__mark">${mark()}</div>
-    <div class="foot__cols">
-      <div>
-        <h3>Visit</h3>
-        <p>${site.address.map(esc).join("<br>")}${site.addressConfirmed ? "" : "<br>" + tbc("address", "footer")}</p>
-        <p><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></p>
-      </div>
-      <div>
-        <h3>Explore</h3>
-        <ul>${NAV.map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join("")}<li><a href="/policies/">Booking policies</a></li><li><a href="/privacy/">Privacy</a></li></ul>
-      </div>
-      <div>
-        <h3>Follow</h3>
-        <ul>
-          <li><a href="${site.instagram.treatments}">Instagram: Treatments</a></li>
-          <li><a href="${site.instagram.academy}">Instagram: Academy</a></li>
-          <li><a href="${site.facebook}">Facebook</a></li>
-        </ul>
-      </div>
-    </div>
-    <p class="foot__small">${esc(site.company)}.</p>
-  </div>
-</footer>
-${bar}
-<script>
-(function(){var b=document.querySelector('.menu-btn'),d=document.getElementById('drawer');if(!b||!d)return;
-b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'Close':'Menu';});})();
-</script>
+${footer()}
+<script src="/mockup.js"></script>
 </body>
 </html>
 `;
 }
 
-function write(path, html) {
-  const dir = join(OUT, path);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, "index.html"), html);
+// Mock-up style page head: eyebrow, display heading, lede.
+function pageHead(eyebrow, heading, lede, extra = "") {
+  return `<section class="section page-head">
+  <div class="wrap">
+    <div class="stack">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">${eyebrow}</span></p>
+      <h1 class="display d2" data-gw-reveal="mask"><span class="mask">${heading}</span></h1>
+      ${lede ? `<p class="lede" data-gw-reveal>${lede}</p>` : ""}
+      ${extra}
+    </div>
+  </div>
+</section>`;
 }
 
-const photo = (name, alt) => {
-  const map = {
-    "treatment-room": ["treatment-room-800.webp", 800, 640],
-    "salon-mirrors": ["salon-mirrors-376.webp", 376, 461],
-    "lounge-wings": ["lounge-wings-506.webp", 506, 458],
-    "reception-portrait": ["reception-portrait-373.webp", 373, 452],
-    "reception-wide": ["reception-wide-627.webp", 627, 376],
-  };
-  const [file, pw, ph] = map[name];
-  return `<img src="/photos/${file}" width="${pw}" height="${ph}" alt="${esc(alt)}" loading="lazy">`;
-};
+// Ask-us button: WhatsApp once the number exists, the phone until then.
+function ask(text, label, fill = false) {
+  const wa = waLink(text);
+  const cls = fill ? "btn btn--fill" : "btn";
+  if (wa) return `<a class="${cls}" href="${wa}" data-gw-magnetic="0.25"><span>${esc(label)}</span></a>`;
+  return `<a class="${cls}" href="tel:${site.phoneHref}" data-gw-magnetic="0.25"><span>Call ${esc(site.phone)}</span></a>`;
+}
 
-// ------------------------------------------------------------------ pages --
+// ------------------------------------------------------------------ home --
 function home() {
-  const cards = groups
-    .map((g) => `<a class="card" href="/treatments/${g.slug}/"><h3>${esc(g.name)}</h3><p>${esc(g.line)}</p></a>`)
-    .join("");
-  return layout({
-    path: "/",
-    title: "Home",
-    description: "Beauty, aesthetics, hair, nails and professional training under one roof in Hoddesdon, Hertfordshire. Book online.",
-    body: `
-<section class="hero">
-  <div class="wrap hero__grid">
-    <div>
-      <div class="hero__mark">${mark("bh-mark--glint")}</div>
-      <h1>Treatments and training, under one roof.</h1>
-      <p>Beauty, aesthetics, hair, nails and skin, and an Academy for people learning the craft. What are you here for?</p>
-      <div class="fork">
-        <a href="/treatments/"><b>I want a treatment</b><span>See the menu and book online.</span></a>
-        <a href="/academy/"><b>I want to learn</b><span>Courses at the Beauty Heaven Academy.</span></a>
-      </div>
+  let h = mock;
+  const P = "/";
+  h = swap(h, /<title>[\s\S]*?<link rel="apple-touch-icon" href="logo\/favicon-180\.png">/, headTags({ path: "/", title: "Home", description: "Beauty, hair, skin, aesthetics and wellness, and professional beauty education, under one roof in Hoddesdon. What are you here for?" }), "head");
+  h = swap(h, "<html lang=\"en\"", "<html lang=\"en-GB\"", "html lang");
+  h = swap(h, "photos/derived/", "/photos/", "photo paths");
+  h = swap(h, 'src="photos/', 'src="/photos/', "other photo paths");
+  h = swap(h, 'href="fonts/', 'href="/fonts/', "font paths");
+  h = swap(h, 'href="brand.css"', 'href="/brand.css"', "brand.css");
+  h = swap(h, "../../motion/", "/motion/", "motion paths");
+  h = swap(h, /<style>\n[\s\S]*?<\/style>/, '<link rel="stylesheet" href="/mockup.css">\n<link rel="stylesheet" href="/pages.css">', "style block");
+  h = swap(h, /<script>\n\(function \(\) \{[\s\S]*?\}\)\(\);\n<\/script>/, '<script src="/mockup.js"></script>', "script block");
+  h = swap(h, "<body>\n", `<body>\n${draftBar()}\n`, "body");
+  h = swap(h, /<header class="nav" id="nav">[\s\S]*?<\/header>/, header(true), "nav");
+
+  // Treatments journey: the five discipline cards open the real menus.
+  const cardLinks = { Beauty: "/treatments/brows-lashes-pmu/", Hair: "/treatments/hair/", Skin: "/treatments/skin/", Aesthetics: "/treatments/aesthetics/", Wellness: "/treatments/body/" };
+  for (const [name, href] of Object.entries(cardLinks)) {
+    h = swap(h, new RegExp(`<article class="card" data-gw-reveal><span class="rule"></span><h3>${name}</h3>([\\s\\S]*?)</article>`), `<a class="card" href="${href}" data-gw-reveal><span class="rule"></span><h3>${name}</h3>$1</a>`, `${name} card`);
+  }
+  h = swap(h, '<a class="btn btn--fill" href="#book" data-gw-reveal data-gw-magnetic="0.25"><span>Book a treatment</span>', '<a class="btn btn--fill" href="/treatments/" data-gw-reveal data-gw-magnetic="0.25"><span>See every treatment</span>', "treatments button");
+  // Unverified card lines: hair consultations and skin analysis are not confirmed.
+  h = swap(h, '<span class="micro">Consultation included</span>', '<span class="micro">Cut, colour, treatments</span>', "hair micro");
+  h = swap(h, '<span class="micro">Skin analysis first</span>', '<span class="micro">Facials, HIFU, peels</span>', "skin micro");
+
+  // Academy journey: the real courses, not the prototype's placeholders.
+  h = swap(h, '<a class="btn btn--fill" href="#book" data-gw-reveal data-gw-magnetic="0.25"><span>Find my training</span>', '<a class="btn btn--fill" href="/academy/" data-gw-reveal data-gw-magnetic="0.25"><span>Find my training</span>', "academy button");
+  h = swap(h, "Small groups, real models, and Jessica and Hollie in the room.", "Hands-on practice on real models, with online study before you arrive.", "academy lede");
+  h = swap(h, /(<section class="journey journey--academy[\s\S]*?)<div class="cards" data-gw-stagger>[\s\S]*?<\/div>\n    <aside class="reassure"/, `$1<div class="cards" data-gw-stagger>
+      <a class="card" href="/academy/" data-gw-reveal><span class="rule"></span><h3>Foundation aesthetics</h3><p>Foundation anti-wrinkle and foundation dermal filler courses, with online pre-study before your classroom day.</p><span class="micro">Where aesthetics starts</span></a>
+      <a class="card" href="/academy/" data-gw-reveal><span class="rule"></span><h3>Advanced aesthetics</h3><p>Advanced anti-wrinkle, advanced dermal filler and non-surgical rhinoplasty, building on a foundation course.</p><span class="micro">The next step</span></a>
+      <a class="card" href="/academy/" data-gw-reveal><span class="rule"></span><h3>Semi-permanent make-up</h3><p>Lip blush, microblading and bespoke ombre brows, taught hands-on in a working salon.</p><span class="micro">Brows and lips</span></a>
     </div>
-    <div class="hero__photo">${photo("reception-portrait", "The reception at Beauty Heaven Hub")}</div>
-  </div>
-</section>
+    <aside class="reassure"`, "academy cards");
+  h = swap(h, "and we'll map the route. Payment plans are available, and every course includes support after you've finished.", "and we'll map the route.", "academy reassure");
 
-<section class="sec">
-  <div class="wrap">
-    <p class="micro">Treatments</p>
-    <h2>Find your <b>treatment</b></h2>
-    <p class="lead">Every price and time on this site comes straight from our booking system, so what you see is what you book.</p>
-    <div class="grid grid--3" style="margin-top:24px">${cards}</div>
-  </div>
-</section>
+  // People and reviews: keep the design, flag what must be approved.
+  h = swap(h, '<div class="people__grid" data-gw-stagger>', `<p>${tbc("Jessica and Hollie's photos, titles and bios", P)}</p>\n    <div class="people__grid" data-gw-stagger>`, "people");
+  h = swap(h, '<h2 id="rev-h" class="loved" data-loved>Loved by <b>hundreds</b> of clients.</h2>', `<h2 id="rev-h" class="loved" data-loved>Loved by <b>hundreds</b> of clients.</h2>\n    <p>${tbc("swap these paraphrased reviews for real ones, word for word, with permission, and check \"hundreds\"", P)}</p>`, "reviews");
 
-<section class="sec sec--alt">
-  <div class="wrap">
-    <p class="micro">Booking</p>
-    <h2>How booking <b>works</b></h2>
-    <ol class="steps">
-      <li><h3>Choose</h3><p>Pick a treatment from the menu. Each section opens straight into its booking page.</p></li>
-      <li><h3>Book</h3><p>Choose a time online. Some treatments need a deposit to secure your place.</p></li>
-      <li><h3>Or ask first</h3><p>Not sure, or need a consultation first? Message or call us and we'll help.</p></li>
-    </ol>
-    <div class="btns"><a class="btn btn--gold" href="${site.booking.home}">Book online</a>${askButton("Hi Beauty Heaven, I'd like some advice before booking")}</div>
-  </div>
-</section>
+  // Before your first visit: two answers corrected against Phorest.
+  h = swap(h, "For skin and aesthetics, yes, always, and it's part of the appointment rather than an extra. For most beauty and hair treatments the conversation happens in the chair.", "For aesthetics, semi-permanent make-up and some skin treatments, yes. Some consultations are free and some have a small fee, and we'll tell you which when you book. For most beauty and hair treatments the conversation happens in the chair.", "consultation answer");
+  h = swap(h, "With a foundation course, and a conversation with Jessica or Hollie about where you'd like to end up. Every route through the Academy starts from nothing, and every course comes with support after you've qualified.", "With a conversation about where you are now and where you'd like to end up. We'll tell you which course fits, and anything you need before you start.", "academy answer");
 
-<section class="sec sec--dark">
-  <div class="wrap grid grid--2" style="align-items:center">
-    <div>
-      <p class="micro" style="color:var(--bh-stone)">Beauty Heaven Academy</p>
-      <h2>Learn with <b>us</b></h2>
-      <p>Courses in aesthetics and beauty, taught in the same building where our team works every day. Study starts online before your classroom day.</p>
-      <div class="btns"><a class="btn btn--gold" href="/academy/">See the courses</a></div>
-    </div>
-    <div class="bh-arch" style="max-width:420px">${photo("lounge-wings", "Inside Beauty Heaven Hub")}</div>
-  </div>
-</section>
+  // The closing band's two buttons go somewhere real.
+  h = swap(h, '<a class="btn btn--fill gw-shimmer" href="#" data-gw-magnetic="0.25"><span>Book a treatment</span>', `<a class="btn btn--fill gw-shimmer" href="${BOOK}" data-gw-magnetic="0.25"><span>Book a treatment</span>`, "close book");
+  h = swap(h, '<a class="btn" href="#" data-gw-magnetic="0.25"><span>Enquire about a course</span>', '<a class="btn" href="/academy/" data-gw-magnetic="0.25"><span>Enquire about a course</span>', "close enquire");
 
-<section class="sec">
-  <div class="wrap grid grid--2" style="align-items:center">
-    <div class="bh-arch" style="max-width:520px">${photo("reception-wide", "The reception and lounge")}</div>
-    <div>
-      <p class="micro">Visit</p>
-      <h2>Find <b>us</b></h2>
-      <p>${site.address.map(esc).join(", ")}${site.addressConfirmed ? "" : " " + tbc("address and whether the Academy is at the same place", "home")}</p>
-      <div class="btns"><a class="btn btn--line" href="/visit/">Directions and contact</a></div>
-    </div>
-  </div>
-</section>`,
-  });
+  h = swap(h, /<footer class="footer" data-surface="espresso">[\s\S]*?<\/footer>/, footer(), "footer");
+  return h;
 }
 
+// ---------------------------------------------------------------- menus --
 function itemRow(s, showPrice) {
-  const name = tidy(s.Service);
   const d = duration(s["Duration (min)"]);
   const price = showPrice ? `${s["From?"] ? "from " : ""}${money(s["Price £"])}` : "";
-  return `<li><span class="n">${esc(name)}</span>${d ? `<span class="d">${d}</span>` : ""}<span class="p">${price}</span></li>`;
+  return `<li><span class="n">${esc(tidy(s.Service))}</span>${d ? `<span class="d">${d}</span>` : ""}<span class="p">${price}</span></li>`;
 }
 
 function categoryBlock(c, page) {
   const showPrice = !c.pom || site.showPrescriptionOnlyPrices;
   const book = `${site.booking.category}${c.phorest}`;
   const notes = [];
-  if (c.consult) notes.push(`<div class="note">A consultation comes first, so we can make sure this is right for you. ${c.pom && !showPrice ? "Prices are given at your consultation." : ""}</div>`);
-  if (c.patch) notes.push(`<div class="note">A patch test is needed before your first treatment.</div>`);
-  if (c.decide) notes.push(`<div class="note">${tbc("keep this on the website?", page)}</div>`);
-  const list = c.items.length > 12
-    ? `<ul class="items">${c.items.slice(0, 10).map((s) => itemRow(s, showPrice)).join("")}</ul>
-       <details class="more"><summary>Show all ${c.items.length}</summary><ul class="items">${c.items.slice(10).map((s) => itemRow(s, showPrice)).join("")}</ul></details>`
-    : `<ul class="items">${c.items.map((s) => itemRow(s, showPrice)).join("")}</ul>`;
-  const cta = c.consult
-    ? `<div class="btns"><a class="btn btn--dark" href="${book}">Book ${esc(lowerFirst(c.title))}</a>${askButton(`Hi Beauty Heaven, I'd like to book a consultation for ${lowerFirst(c.title)}`, "Ask about a consultation")}</div>`
-    : `<div class="btns"><a class="btn btn--dark" href="${book}">Book ${esc(lowerFirst(c.title))}</a></div>`;
-  return `<section class="menu" id="${c.phorest}">
-    <div class="menu__head"><h2>${esc(c.title)}</h2></div>
+  if (c.consult) notes.push(`<p class="note">A consultation comes first, so we can make sure this is right for you.${c.pom && !showPrice ? " Prices are given at your consultation." : ""}</p>`);
+  if (c.patch) notes.push(`<p class="note">A patch test is needed before your first treatment.</p>`);
+  if (c.decide) notes.push(`<p>${tbc("keep this on the website?", page)}</p>`);
+  const rows = c.items.map((s) => itemRow(s, showPrice));
+  const list = rows.length > 12
+    ? `<ul class="items">${rows.slice(0, 10).join("")}</ul><details class="more"><summary>Show all ${rows.length}</summary><ul class="items">${rows.slice(10).join("")}</ul></details>`
+    : `<ul class="items">${rows.join("")}</ul>`;
+  return `<section class="menu" id="${c.phorest}" data-gw-reveal>
+    <div class="menu__head"><span class="rule"></span><h2>${esc(c.title)}</h2></div>
     ${notes.join("")}
-    ${c.items.length ? list : `<p>Ask us for times and prices.</p>`}
-    ${cta}
+    ${rows.length ? list : "<p>Ask us for times and prices.</p>"}
+    <div class="actions">
+      <a class="btn btn--fill" href="${book}" data-gw-magnetic="0.25"><span>Book ${esc(lowerFirst(c.title))}</span> <span class="arr">→</span></a>
+      ${c.consult ? ask(`Hi Beauty Heaven, I'd like to book a consultation for ${lowerFirst(c.title)}`, "Ask about a consultation") : ""}
+    </div>
   </section>`;
 }
 
 function treatmentsIndex() {
-  const body = groups
-    .map((g) => `<a class="card" href="/treatments/${g.slug}/"><h3>${esc(g.name)}</h3><p>${esc(g.line)}</p><p class="card__meta">${g.categories.map((c) => esc(c.title)).join(" · ")}</p></a>`)
-    .join("");
+  const cards = groups.map((g) => `<a class="card" href="/treatments/${g.slug}/" data-gw-reveal><span class="rule"></span><h3>${esc(g.name)}</h3><p>${esc(g.line)}</p><span class="micro">${g.count} treatments</span></a>`).join("");
   return layout({
-    path: "/treatments/",
-    title: "Treatments",
-    description: "The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body treatments, with prices and online booking.",
-    body: `<section class="sec"><div class="wrap">
-      <p class="micro">Treatments</p><h1>The <b>menu</b></h1>
-      <p class="lead">Choose a section to see treatments, times and prices, then book straight into our diary.</p>
-      <div class="grid grid--2" style="margin-top:24px">${body}</div>
-      <div class="btns"><a class="btn btn--gold" href="${site.booking.home}">Browse everything in the booking system</a></div>
-    </div></section>`,
+    path: "/treatments/", title: "Treatments",
+    description: "The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body, with prices and online booking.",
+    body: `${pageHead("Treatments", "beauty, <b>your</b> way.", "Choose a section to see every treatment, with times and prices straight from our booking system. Each one opens directly into the diary.")}
+<section class="section" style="padding-top:0"><div class="wrap">
+  <div class="cards" data-gw-stagger>${cards}</div>
+  <aside class="reassure" data-gw-reveal><div class="halo-dot" aria-hidden="true"></div><p><strong>First time?</strong> That's most people, once. We'll talk you through what happens before it happens, and you can stop and ask anything at any point.</p></aside>
+</div></section>`,
   });
 }
 
 function groupPage(g) {
   const page = `/treatments/${g.slug}/`;
-  const jump = g.categories.length > 1 ? `<nav class="jump" aria-label="Sections">${g.categories.map((c) => `<a href="#${c.phorest}">${esc(c.title)}</a>`).join("")}</nav>` : "";
+  const chips = g.categories.length > 1 ? `<nav class="chips" aria-label="Sections">${g.categories.map((c) => `<a href="#${c.phorest}">${esc(c.title)}</a>`).join("")}</nav>` : "";
+  const pomNote = g.categories.some((c) => c.pom) ? `<p>${tbc("prescription-only treatments are listed by name, without prices; check the wording against the advertising rules before launch", page)}</p>` : "";
   return layout({
-    path: page,
-    title: g.name,
+    path: page, title: g.name,
     description: `${g.name} at Beauty Heaven Hub, Hoddesdon. ${g.line}`,
-    body: `<section class="sec"><div class="wrap">
-      <p class="micro"><a href="/treatments/">Treatments</a></p>
-      <h1>${esc(g.name)}</h1>
-      <p class="lead">${esc(g.line)}</p>
-      ${g.categories.some((c) => c.pom) ? `<p>${tbc("prescription-only treatments are listed by name, without prices; check the wording against the advertising rules before launch", page)}</p>` : ""}
-      ${jump}
-      ${g.categories.map((c) => categoryBlock(c, page)).join("")}
-      <p class="card__meta">Prices and times come from our booking system and can change. The booking page always shows the current price.</p>
-    </div></section>`,
+    body: `${pageHead(`<a href="/treatments/">Treatments</a>`, esc(g.name), esc(g.line), pomNote + chips)}
+<section class="section" style="padding-top:0"><div class="wrap menus">
+  ${g.categories.map((c) => categoryBlock(c, page)).join("")}
+  <p class="small">Prices and times come from our booking system and can change. The booking page always shows the current price.</p>
+</div></section>`,
   });
 }
 
+// --------------------------------------------------------------- academy --
 function academy() {
-  const list = courses
-    .map((s) => `<div class="card"><h3>${esc(tidy(s.Service))}</h3><p>${duration(s["Duration (min)"]) ? `Course length: ${duration(s["Duration (min)"])}` : ""}</p><p><b>${money(s["Price £"])}</b></p><div class="btns">${askButton(`Hi Beauty Heaven Academy, I'd like to know more about the ${tidy(s.Service)}`, "Ask about this course")}</div></div>`)
-    .join("");
+  const cards = courses.map((s) => `<article class="card" data-gw-reveal><span class="rule"></span><h3>${esc(tidy(s.Service))}</h3>${duration(s["Duration (min)"]) ? `<p>Course length: ${duration(s["Duration (min)"])}</p>` : ""}<p class="price">${money(s["Price £"])}</p><div class="actions">${ask(`Hi Beauty Heaven Academy, I'd like to know more about the ${tidy(s.Service)}`, "Ask about this course")}</div></article>`).join("");
   return layout({
-    path: "/academy/",
-    title: "Academy",
-    description: "Beauty and aesthetics courses at the Beauty Heaven Academy in Hoddesdon, Hertfordshire. Online pre-study, then hands-on training.",
-    body: `<section class="hero" style="padding-bottom:40px"><div class="wrap">
-      <p class="micro" style="color:var(--bh-ivory)">Beauty Heaven Academy</p>
-      <h1>Learn the craft, <b>properly</b>.</h1>
-      <p>Hands-on training in beauty and aesthetics, in a working salon. Ask us about dates, and we'll help you choose the right course.</p>
-      <div class="btns">${askButton("Hi Beauty Heaven Academy, I'd like to know more about your courses", "Ask about courses", "btn--gold")}</div>
-    </div></section>
-
-    <section class="sec"><div class="wrap">
-      <h2>Courses</h2>
-      <p class="lead">${tbc("which courses are running now, and their dates", "/academy/")}</p>
-      <div class="grid grid--3" style="margin-top:20px">${list}</div>
-      <p class="card__meta">${tbc("entry requirements for each course, and who can enrol", "/academy/")}</p>
-    </div></section>
-
-    <section class="sec sec--alt"><div class="wrap">
-      <h2>How it <b>works</b></h2>
-      <ol class="steps">
-        <li><h3>Ask</h3><p>Tell us which course you're interested in. We'll talk you through dates and anything you need before you start.</p></li>
-        <li><h3>Secure your place</h3><p>A 50% deposit holds your place, and we'll confirm by email.</p></li>
-        <li><h3>Study, then train</h3><p>You'll get a login for the online pre-study, which needs to be finished before your classroom day. It works on a computer or tablet, not a phone.</p></li>
-      </ol>
-      <p class="card__meta">What you receive when you finish: ${tbc("what the certificate says and who issues it", "/academy/")}</p>
-      <div class="btns"><a class="btn btn--line" href="/policies/#academy">Academy booking terms</a></div>
-    </div></section>`,
+    path: "/academy/", title: "Academy",
+    description: "Beauty and aesthetics courses at the Beauty Heaven Academy in Hoddesdon. Online pre-study, then hands-on training in a working salon.",
+    body: `${pageHead("Academy", "something for <b>your future.</b>", "Professional beauty and aesthetics education, taught in a working salon by people who do this every day. Hands-on practice on real models, with online study before you arrive.", `<div class="actions" data-gw-reveal>${ask("Hi Beauty Heaven Academy, I'd like to know more about your courses", "Ask about courses", true)}</div>`)}
+<section class="section" style="padding-top:0"><div class="wrap">
+  <p>${tbc("which courses are running now, and their dates", "/academy/")}</p>
+  <div class="cards" data-gw-stagger>${cards}</div>
+  <p>${tbc("entry requirements for each course, and who can enrol", "/academy/")}</p>
+</div></section>
+<section class="section alt" id="how"><div class="wrap">
+  <div class="stack"><p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">How it works</span></p><h2 class="display d2" data-gw-reveal="mask"><span class="mask">three <b>steps.</b></span></h2></div>
+  <div class="cards steps" data-gw-stagger>
+    <article class="card" data-gw-reveal><span class="rule"></span><h3>Ask</h3><p>Tell us which course you're interested in. We'll talk you through dates and anything you need before you start.</p></article>
+    <article class="card" data-gw-reveal><span class="rule"></span><h3>Secure your place</h3><p>A 50% deposit holds your place, and we'll confirm by email.</p></article>
+    <article class="card" data-gw-reveal><span class="rule"></span><h3>Study, then train</h3><p>You'll get a login for the online pre-study, to finish before your classroom day. It works on a computer or tablet, not a phone.</p></article>
+  </div>
+  <p>When you finish: ${tbc("what the certificate says and who issues it", "/academy/")}</p>
+  <div class="actions"><a class="btn" href="/policies/#academy"><span>Academy booking terms</span></a></div>
+</div></section>`,
   });
 }
 
+// ---------------------------------------------------------- consultations --
 function consultations() {
-  const consultRows = services
-    .filter((s) => s.Type === "Consultation" || /consult/i.test(s.Service))
-    .filter((s) => !/student practical/.test(s.Flags))
+  const rows = services
+    .filter((s) => (s.Type === "Consultation" || /consult/i.test(s.Service)) && !/student practical/.test(s.Flags))
     .map((s) => `<li><span class="n">${esc(tidy(s.Service))}</span><span class="d">${esc(s.Category)}${s["Online?"] === "Y" ? " · book online" : " · by phone or message"}</span><span class="p">${Number(s["Price £"]) > 0 ? money(s["Price £"]) : "Free"}</span></li>`)
     .join("");
   return layout({
-    path: "/consultations/",
-    title: "Consultations",
+    path: "/consultations/", title: "Consultations",
     description: "Which treatments at Beauty Heaven Hub start with a consultation, what they cost and how to book one.",
-    body: `<section class="sec"><div class="narrow">
-      <p class="micro">Before your treatment</p>
-      <h1>Consultations</h1>
-      <p class="lead">For aesthetic treatments, semi-permanent make-up and some skin treatments, we start with a consultation. It's a chance to talk through what you'd like, check the treatment is right for you, and answer your questions, with no pressure to go ahead.</p>
-      <ul class="items" style="margin-top:20px">${consultRows}</ul>
-      <p class="card__meta">${tbc("whether consultation fees come off the treatment price", "/consultations/")}</p>
-      <div class="btns">${askButton("Hi Beauty Heaven, I'd like to book a consultation", "Book a consultation", "btn--gold")}<a class="btn btn--line" href="${site.booking.home}">Book online</a></div>
-      <h2 style="margin-top:40px">Patch tests</h2>
-      <p>Lashes, laser and semi-permanent make-up need a patch test before your first treatment. We'll arrange it when you book.</p>
-    </div></section>`,
+    body: `${pageHead("Before your treatment", "we start with <b>a chat.</b>", "For aesthetic treatments, semi-permanent make-up and some skin treatments, we start with a consultation: what you'd like, whether it's right for you, and every question answered, with no pressure to go ahead.")}
+<section class="section" style="padding-top:0"><div class="wrap menus">
+  <section class="menu" data-gw-reveal>
+    <div class="menu__head"><span class="rule"></span><h2>Consultations</h2></div>
+    <ul class="items">${rows}</ul>
+    <p>${tbc("whether consultation fees come off the treatment price", "/consultations/")}</p>
+    <div class="actions">${ask("Hi Beauty Heaven, I'd like to book a consultation", "Book a consultation", true)}<a class="btn" href="${BOOK}"><span>Book online</span></a></div>
+  </section>
+  <section class="menu" data-gw-reveal>
+    <div class="menu__head"><span class="rule"></span><h2>Patch tests</h2></div>
+    <p>Lashes, laser and semi-permanent make-up need a patch test before your first treatment. We'll arrange it when you book.</p>
+  </section>
+</div></section>`,
   });
 }
 
+// ------------------------------------------------------------------ visit --
 function visit() {
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Beauty Heaven Hub, " + site.address.join(", "))}`;
-  const hours = site.hours.length
-    ? `<dl class="facts">${site.hours.map(([d, h]) => `<div><dt>${esc(d)}</dt><dd>${esc(h)}</dd></div>`).join("")}</dl>`
-    : `<p>${tbc("opening hours", "/visit/")}</p>`;
+  const hours = site.hours.length ? `<dl class="facts">${site.hours.map(([d, t]) => `<div><dt class="micro">${esc(d)}</dt><dd>${esc(t)}</dd></div>`).join("")}</dl>` : `<p>${tbc("opening hours", "/visit/")}</p>`;
   return layout({
-    path: "/visit/",
-    title: "Visit us",
+    path: "/visit/", title: "Find us",
     description: `Find Beauty Heaven Hub at ${site.address.join(", ")}. Opening hours, phone and directions.`,
-    body: `<section class="sec"><div class="wrap grid grid--2">
-      <div>
-        <p class="micro">Visit us</p>
-        <h1>Find <b>us</b></h1>
-        <dl class="facts">
-          <div><dt>Address</dt><dd>${site.address.map(esc).join("<br>")}${site.addressConfirmed ? "" : "<br>" + tbc("address", "/visit/")}</dd></div>
-          <div><dt>Phone</dt><dd><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></dd></div>
-          <div><dt>WhatsApp</dt><dd>${site.whatsapp ? `<a href="${waLink("Hi Beauty Heaven")}">Message us</a>` : tbc("WhatsApp number (new number for the assistant)", "/visit/")}</dd></div>
-          <div><dt>Email</dt><dd>${site.email && site.email !== "TBC" ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : tbc("main business email", "/visit/")}</dd></div>
-        </dl>
-        <div class="btns"><a class="btn btn--dark" href="${maps}">Open in Google Maps</a></div>
-        <h2 style="margin-top:36px;font-size:1.5rem">Opening hours</h2>
-        ${hours}
-        <p class="card__meta">${tbc("parking and getting here", "/visit/")}</p>
-      </div>
-      <div class="bh-arch" style="max-width:460px;justify-self:center">${photo("salon-mirrors", "The salon at Beauty Heaven Hub")}</div>
-    </div></section>`,
+    body: `<section class="section page-head"><div class="wrap visit">
+  <div class="stack">
+    <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Visit</span></p>
+    <h1 class="display d2" data-gw-reveal="mask"><span class="mask">find <b>us.</b></span></h1>
+    <dl class="facts">
+      <div><dt class="micro">Address</dt><dd>${site.address.map(esc).join("<br>")}${site.addressConfirmed ? "" : "<br>" + tbc("address", "/visit/")}</dd></div>
+      <div><dt class="micro">Phone</dt><dd><a href="tel:${site.phoneHref}">${esc(site.phone)}</a></dd></div>
+      <div><dt class="micro">WhatsApp</dt><dd>${site.whatsapp ? `<a href="${waLink("Hi Beauty Heaven")}">Message us</a>` : tbc("WhatsApp number (new number for the assistant)", "/visit/")}</dd></div>
+      <div><dt class="micro">Email</dt><dd>${site.email && site.email !== "TBC" ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : tbc("main business email", "/visit/")}</dd></div>
+    </dl>
+    <div class="actions"><a class="btn btn--fill" href="${maps}"><span>Open in Google Maps</span> <span class="arr">→</span></a></div>
+    <h2 class="sub">Opening hours</h2>
+    ${hours}
+    <p>${tbc("parking and getting here", "/visit/")}</p>
+  </div>
+  <div class="frame bh-cast visit__photo"><div class="halo" aria-hidden="true"></div><div class="photo photo--arch"><img src="/photos/salon-mirrors-376.webp" width="376" height="461" alt="The salon floor and its arched mirrors" loading="lazy"></div></div>
+</div></section>`,
   });
 }
 
+// ---------------------------------------------------------------- policies --
 function policies() {
   return layout({
-    path: "/policies/",
-    title: "Booking policies",
+    path: "/policies/", title: "Booking policies",
     description: "Deposits, cancellations and booking terms for treatments and Academy courses at Beauty Heaven Hub.",
-    body: `<section class="sec"><div class="narrow">
-      <p class="micro">The small print</p>
-      <h1>Booking <b>policies</b></h1>
-      <h2 style="font-size:1.5rem">Treatments</h2>
-      <p>${tbc("deposit, cancellation, late arrival and no-show rules for treatments", "/policies/")}</p>
-      <p>Some treatments have age limits and need a consultation or patch test first. We'll tell you when you book.</p>
-      <h2 style="font-size:1.5rem" id="academy">Academy courses</h2>
-      <ul>
-        <li>A 50% deposit secures your place. We confirm by email.</li>
-        <li>Classroom courses can be rescheduled up to 48 hours before the course date.</li>
-        <li>To cancel a classroom course, tell us at least 15 working days before. A 30% admin fee applies. Cancellations made later than that are not refunded.</li>
-        <li>Online distance courses have a 14-day cancellation right, refunded less a 25% admin fee, and no refund once your login details have been issued.</li>
-      </ul>
-      <p class="card__meta">${tbc("these Academy terms are taken from the current website; check they are still current", "/policies/")}</p>
-      <h2 style="font-size:1.5rem">Paying</h2>
-      <p>${tbc("payment options to show (card, Klarna, finance, gift vouchers)", "/policies/")}</p>
-    </div></section>`,
+    body: `${pageHead("The small print", "booking <b>policies.</b>", "")}
+<section class="section" style="padding-top:0"><div class="wrap menus prose">
+  <section class="menu"><div class="menu__head"><span class="rule"></span><h2>Treatments</h2></div>
+    <p>${tbc("deposit, cancellation, late arrival and no-show rules for treatments", "/policies/")}</p>
+    <p>Some treatments have age limits and need a consultation or patch test first. We'll tell you when you book.</p></section>
+  <section class="menu" id="academy"><div class="menu__head"><span class="rule"></span><h2>Academy courses</h2></div>
+    <ul class="plain">
+      <li>A 50% deposit secures your place. We confirm by email.</li>
+      <li>Classroom courses can be rescheduled up to 48 hours before the course date.</li>
+      <li>To cancel a classroom course, tell us at least 15 working days before. A 30% admin fee applies. Cancellations made later than that are not refunded.</li>
+      <li>Online distance courses have a 14-day cancellation right, refunded less a 25% admin fee, and no refund once your login details have been issued.</li>
+    </ul>
+    <p>${tbc("these Academy terms are taken from the current website; check they are still current", "/policies/")}</p></section>
+  <section class="menu"><div class="menu__head"><span class="rule"></span><h2>Paying</h2></div>
+    <p>${tbc("payment options to show (card, Klarna, finance, gift vouchers)", "/policies/")}</p></section>
+</div></section>`,
   });
 }
 
 function privacy() {
   return layout({
-    path: "/privacy/",
-    title: "Privacy",
+    path: "/privacy/", title: "Privacy", close: false,
     description: "How Beauty Heaven Hub uses your personal information.",
-    body: `<section class="sec"><div class="narrow">
-      <h1>Privacy</h1>
-      <p>${tbc("full privacy notice, to be written with the data agreement and checked before launch", "/privacy/")}</p>
-      <p>${esc(site.company)} is responsible for the personal information you give us when you book, message or call.</p>
-      <p>This website does not use advertising cookies. Bookings are handled by our booking system, Phorest, under its own privacy policy.</p>
-    </div></section>`,
-    bookbar: false,
+    body: `${pageHead("Privacy", "your <b>information.</b>", "")}
+<section class="section" style="padding-top:0"><div class="wrap prose">
+  <p>${tbc("full privacy notice, to be written with the data agreement and checked before launch", "/privacy/")}</p>
+  <p>${esc(site.company)} is responsible for the personal information you give us when you book, message or call.</p>
+  <p>This website does not use advertising cookies. Bookings are handled by our booking system, Phorest, under its own privacy policy.</p>
+</div></section>`,
   });
 }
 
 function notFound() {
   return layout({
-    path: "/404",
-    title: "Page not found",
+    path: "/404", title: "Page not found", close: false,
     description: "That page isn't here.",
-    body: `<section class="sec"><div class="narrow"><h1>That page isn't <b>here</b></h1><p>It may have moved when we rebuilt the website.</p><div class="btns"><a class="btn btn--dark" href="/treatments/">See treatments</a><a class="btn btn--line" href="/">Home</a></div></div></section>`,
+    body: pageHead("Not found", "that page isn't <b>here.</b>", "It may have moved when we rebuilt the website.", `<div class="actions"><a class="btn btn--fill" href="/treatments/"><span>See treatments</span></a><a class="btn" href="/"><span>Home</span></a></div>`),
   });
 }
 
 // ----------------------------------------------------------------- build --
+function write(path, html) {
+  const dir = join(OUT, path);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, "index.html"), html);
+}
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
-// Brand assets, copied from the brand kit so there is one master copy.
+// Brand assets and the mock-up's own CSS and script, from their masters.
 cpSync(join(BRAND, "brand.css"), join(OUT, "brand.css"));
-cpSync(join(HERE, "src/site.css"), join(OUT, "site.css"));
+writeFileSync(join(OUT, "mockup.css"), "/* Extracted from the approved mock-up (preview-8f3ac21d.html) by build.mjs. Edit the mock-up, not this file. */\n" + mockCss);
+writeFileSync(join(OUT, "mockup.js"), "/* Extracted from the approved mock-up (preview-8f3ac21d.html) by build.mjs. Edit the mock-up, not this file. */\n" + mockJs + "\n");
+cpSync(join(HERE, "src/pages.css"), join(OUT, "pages.css"));
+mkdirSync(join(OUT, "motion"), { recursive: true });
+for (const f of ["goodwork-motion.css", "goodwork-motion.js"]) cpSync(join(ROOT, "public/goodwork/motion", f), join(OUT, "motion", f));
 mkdirSync(join(OUT, "fonts"), { recursive: true });
 for (const f of ["Jost-Light", "Jost-Regular", "Jost-Medium", "Jost-Bold"]) {
   cpSync(join(BRAND, `fonts/${f}.woff2`), join(OUT, `fonts/${f}.woff2`));
@@ -492,9 +509,12 @@ for (const f of ["favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-19
   cpSync(join(BRAND, `logo/${f}`), join(OUT, `logo/${f}`));
 }
 cpSync(join(BRAND, "photos/derived"), join(OUT, "photos"), { recursive: true, filter: (p) => !p.endsWith(".json") });
+for (const f of ["academy-floor.jpg", "jessica.jpg", "hollie.jpg"]) {
+  if (existsSync(join(BRAND, "photos", f))) cpSync(join(BRAND, "photos", f), join(OUT, "photos", f));
+}
 if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "og.jpg"));
 
-write("/", home());
+writeFileSync(join(OUT, "index.html"), home());
 write("/treatments/", treatmentsIndex());
 for (const g of groups) write(`/treatments/${g.slug}/`, groupPage(g));
 write("/academy/", academy());
@@ -508,7 +528,6 @@ const pages = ["/", "/treatments/", ...groups.map((g) => `/treatments/${g.slug}/
 writeFileSync(join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${site.url}${p}</loc></url>`).join("\n")}\n</urlset>\n`);
 writeFileSync(join(OUT, "robots.txt"), site.launched ? `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n` : "User-agent: *\nDisallow: /\n");
 
-// The list of everything still to confirm, regenerated on every build.
 const lines = [...todo].sort();
 writeFileSync(join(HERE, "CONTENT-TODO.md"), `# Beauty Heaven Hub website: still to confirm\n\nGenerated by build.mjs. Each line shows as a yellow note on the draft site. Fix it in data/site.json, data/groups.json or build.mjs, then rebuild.\n\n${lines.map((l) => `- ${l}`).join("\n")}\n`);
 

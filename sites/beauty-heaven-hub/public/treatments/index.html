@@ -1,69 +1,99 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Treatments | Beauty Heaven Hub</title>
-<meta name="description" content="The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body treatments, with prices and online booking.">
-<meta name="robots" content="noindex,nofollow">
-<meta property="og:title" content="Treatments | Beauty Heaven Hub">
-<meta property="og:description" content="The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body treatments, with prices and online booking.">
+<meta name="description" content="The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body, with prices and online booking.">
+<meta name="theme-color" content="#746B60">
+<meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Beauty Heaven Hub">
+<meta property="og:title" content="Treatments | Beauty Heaven Hub">
+<meta property="og:description" content="The full Beauty Heaven Hub treatment menu: aesthetics, skin, brows and lashes, laser, hair, nails and body, with prices and online booking.">
 <meta property="og:image" content="https://www.beautyheavenhub.co/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/logo/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/logo/favicon-180.png">
-<link rel="preload" href="/fonts/Jost-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Light.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Bold.woff2" crossorigin>
 <link rel="stylesheet" href="/brand.css">
-<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/motion/goodwork-motion.css">
+<script src="/motion/goodwork-motion.js" defer></script>
+<link rel="stylesheet" href="/mockup.css">
+<link rel="stylesheet" href="/pages.css">
 </head>
-<body class="has-bookbar">
-<a class="skip" href="#main">Skip to content</a>
-<div class="draftbar">Draft website. Not live yet. Yellow notes mark details we still need to confirm.</div>
-<header class="top">
-  <div class="wrap top__in">
-    <a class="top__logo" href="/"><span class="bh-mark bh-mark--hover" role="img" aria-label="beauty heaven hub"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
-    <nav class="top__nav" aria-label="Main"><a href="/treatments/" aria-current="page">Treatments</a><a href="/academy/">Academy</a><a href="/consultations/">Consultations</a><a href="/visit/">Visit us</a><a class="btn btn--dark" style="min-height:40px;padding:8px 18px" href="https://www.phorest.com/salon/beautyheaven1/book">Book</a></nav>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
+<body class="page">
+<div class="draftbar">Draft website, not live yet. Yellow notes mark details we still need to confirm.</div>
+<div class="cursor" aria-hidden="true"></div>
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a href="/" aria-label="Beauty Heaven Hub, home"><span class="bh-mark bh-mark--hover nav__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
+    <nav class="nav__pill" aria-label="Primary">
+      <a href="/treatments/">Treatments</a>
+      <a href="/academy/">Academy</a>
+      <a href="/#hub">The Hub</a>
+      <a href="/#people">Jessica &amp; Hollie</a>
+      <a href="/#reviews">Reviews</a>
+    </nav>
+    <a class="btn btn--fill" href="https://www.phorest.com/salon/beautyheaven1/book" data-gw-magnetic="0.25"><span>Book</span></a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
-  <nav class="wrap drawer" id="drawer" aria-label="Main"><a href="/treatments/" aria-current="page">Treatments</a><a href="/academy/">Academy</a><a href="/consultations/">Consultations</a><a href="/visit/">Visit us</a><a href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a></nav>
+  <div class="wrap"><div class="nav__panel" id="menu" hidden>
+    <a href="/treatments/">Treatments</a>
+      <a href="/academy/">Academy</a>
+      <a href="/#hub">The Hub</a>
+      <a href="/#people">Jessica &amp; Hollie</a>
+      <a href="/#reviews">Reviews</a>
+    <a href="/visit/">Find us</a>
+  </div></div>
 </header>
-<main id="main">
-<section class="sec"><div class="wrap">
-      <p class="micro">Treatments</p><h1>The <b>menu</b></h1>
-      <p class="lead">Choose a section to see treatments, times and prices, then book straight into our diary.</p>
-      <div class="grid grid--2" style="margin-top:24px"><a class="card" href="/treatments/aesthetics/"><h3>Aesthetics</h3><p>Anti-wrinkle, fillers, skin boosters and more. Every aesthetic treatment starts with a consultation.</p><p class="card__meta">Anti-wrinkle treatment · Dermal fillers · Profhilo · Skin boosters · Fat dissolving · Vitamin B12 · Hair growth therapy</p></a><a class="card" href="/treatments/skin/"><h3>Skin and facials</h3><p>Facials, HIFU, dermaplaning and skin treatments, from a quick glow to a full course.</p><p class="card__meta">HIFU · Million Dollar Facial · Specialist facials · Dermalogica facials · Dermaplaning · PRP facial · Flawless skin · Derma rollers</p></a><a class="card" href="/treatments/brows-lashes-pmu/"><h3>Brows, lashes and permanent make-up</h3><p>Semi-permanent make-up, lash extensions, lifts, brows and tinting.</p><p class="card__meta">Semi-permanent make-up · Lashes · Brows · Tinting · BY EMH</p></a><a class="card" href="/treatments/laser/"><h3>Laser</h3><p>Laser hair removal and tattoo removal. A patch test comes first.</p><p class="card__meta">Laser hair removal · Laser tattoo removal</p></a><a class="card" href="/treatments/hair/"><h3>Hair</h3><p>Cuts, colour, blow-dries and treatments.</p><p class="card__meta">Hair</p></a><a class="card" href="/treatments/nails/"><h3>Nails</h3><p>Manicures, pedicures, gels and extensions.</p><p class="card__meta">Nails</p></a><a class="card" href="/treatments/body/"><h3>Body and wellness</h3><p>Massage, lymphatic drainage, body sculpting, waxing and tanning.</p><p class="card__meta">Massage · Lymphatic drainage and wood therapy · Lymphatic drainage and wood therapy with Rosie · Body sculpting · Waxing · Spray tanning · Sunbeds</p></a></div>
-      <div class="btns"><a class="btn btn--gold" href="https://www.phorest.com/salon/beautyheaven1/book">Browse everything in the booking system</a></div>
-    </div></section>
-</main>
-<footer class="foot">
+<main id="top">
+<section class="section page-head">
   <div class="wrap">
-    <div class="foot__mark"><span class="bh-mark " role="img" aria-label="beauty heaven hub"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></div>
-    <div class="foot__cols">
-      <div>
-        <h3>Visit</h3>
-        <p>23-24 Conduit Lane<br>Hoddesdon<br>Hertfordshire<br>EN11 8FN<br><span class="tbc">To confirm: address</span></p>
-        <p><a href="tel:+441992511383">01992 511383</a></p>
-      </div>
-      <div>
-        <h3>Explore</h3>
-        <ul><li><a href="/treatments/">Treatments</a></li><li><a href="/academy/">Academy</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/visit/">Visit us</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="/privacy/">Privacy</a></li></ul>
-      </div>
-      <div>
-        <h3>Follow</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/beautyheavenuk/">Instagram: Treatments</a></li>
-          <li><a href="https://www.instagram.com/beautyheavenacademy/">Instagram: Academy</a></li>
-          <li><a href="https://www.facebook.com/beautyheavenuk">Facebook</a></li>
-        </ul>
-      </div>
+    <div class="stack">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Treatments</span></p>
+      <h1 class="display d2" data-gw-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h1>
+      <p class="lede" data-gw-reveal>Choose a section to see every treatment, with times and prices straight from our booking system. Each one opens directly into the diary.</p>
+      
     </div>
-    <p class="foot__small">Beauty Heaven Hub LTD, registered in England and Wales, company number 15072077.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:0"><div class="wrap">
+  <div class="cards" data-gw-stagger><a class="card" href="/treatments/aesthetics/" data-gw-reveal><span class="rule"></span><h3>Aesthetics</h3><p>Anti-wrinkle, fillers, skin boosters and more. Every aesthetic treatment starts with a consultation.</p><span class="micro">53 treatments</span></a><a class="card" href="/treatments/skin/" data-gw-reveal><span class="rule"></span><h3>Skin and facials</h3><p>Facials, HIFU, dermaplaning and skin treatments, from a quick glow to a full course.</p><span class="micro">43 treatments</span></a><a class="card" href="/treatments/brows-lashes-pmu/" data-gw-reveal><span class="rule"></span><h3>Brows, lashes and permanent make-up</h3><p>Semi-permanent make-up, lash extensions, lifts, brows and tinting.</p><span class="micro">62 treatments</span></a><a class="card" href="/treatments/laser/" data-gw-reveal><span class="rule"></span><h3>Laser</h3><p>Laser hair removal and tattoo removal. A patch test comes first.</p><span class="micro">62 treatments</span></a><a class="card" href="/treatments/hair/" data-gw-reveal><span class="rule"></span><h3>Hair</h3><p>Cuts, colour, blow-dries and treatments.</p><span class="micro">59 treatments</span></a><a class="card" href="/treatments/nails/" data-gw-reveal><span class="rule"></span><h3>Nails</h3><p>Manicures, pedicures, gels and extensions.</p><span class="micro">15 treatments</span></a><a class="card" href="/treatments/body/" data-gw-reveal><span class="rule"></span><h3>Body and wellness</h3><p>Massage, lymphatic drainage, body sculpting, waxing and tanning.</p><span class="micro">56 treatments</span></a></div>
+  <aside class="reassure" data-gw-reveal><div class="halo-dot" aria-hidden="true"></div><p><strong>First time?</strong> That's most people, once. We'll talk you through what happens before it happens, and you can stop and ask anything at any point.</p></aside>
+</div></section>
+<section class="close" data-surface="taupe" aria-labelledby="close-h">
+  <div class="close__halo" aria-hidden="true"></div>
+  <div class="wrap close__in">
+    <p class="micro eyebrow" data-gw-reveal><span class="t">Ready when you are</span></p>
+    <span class="bh-mark bh-mark--gold bh-mark--glint close__mark" role="img" aria-label="Beauty Heaven Hub" data-gw-reveal><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span>
+    <h2 id="close-h" class="display d1" data-gw-reveal="mask"><span class="mask">beauty, <b>your</b> way.</span></h2>
+    <div class="actions" data-gw-reveal>
+      <a class="btn btn--fill gw-shimmer" href="https://www.phorest.com/salon/beautyheaven1/book" data-gw-magnetic="0.25"><span>Book a treatment</span> <span class="arr">→</span></a>
+      <a class="btn" href="/academy/" data-gw-magnetic="0.25"><span>Enquire about a course</span></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer" data-surface="espresso">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a href="/" aria-label="Beauty Heaven Hub, home"><span class="bh-mark bh-mark--gold bh-mark--glint footer__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Treatments</span></div>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Academy</span></div>
+      </div>
+      <div><h4>Treatments</h4><ul><li><a href="/treatments/aesthetics/">Aesthetics</a></li><li><a href="/treatments/skin/">Skin and facials</a></li><li><a href="/treatments/brows-lashes-pmu/">Brows, lashes and permanent make-up</a></li><li><a href="/treatments/laser/">Laser</a></li><li><a href="/treatments/hair/">Hair</a></li><li><a href="/treatments/nails/">Nails</a></li><li><a href="/treatments/body/">Body and wellness</a></li></ul></div>
+      <div><h4>Academy</h4><ul><li><a href="/academy/">Courses</a></li><li><a href="/academy/#how">How it works</a></li><li><a href="/policies/#academy">Booking terms</a></li><li><a href="https://www.instagram.com/beautyheavenacademy/">Instagram</a></li></ul></div>
+      <div><h4>Visit</h4><ul><li><a href="/visit/">Find us</a></li><li><a href="tel:+441992511383">01992 511383</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a></li></ul></div>
+    </div>
+    <div class="footer__base">
+      <span>© <span id="year"></span> Beauty Heaven Hub LTD, registered in England and Wales, company number 15072077</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="https://www.instagram.com/beautyheavenuk/">Instagram</a> · <a href="https://www.facebook.com/beautyheavenuk">Facebook</a></span>
+    </div>
   </div>
 </footer>
-<div class="bookbar"><a class="btn btn--gold" href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a><a class="btn btn--line" style="color:var(--bh-ivory);border-color:var(--bh-stone)" href="tel:+441992511383">Call 01992 511383</a></div>
-<script>
-(function(){var b=document.querySelector('.menu-btn'),d=document.getElementById('drawer');if(!b||!d)return;
-b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'Close':'Menu';});})();
-</script>
+<script src="/mockup.js"></script>
 </body>
 </html>

@@ -9,7 +9,11 @@ node sites/beauty-heaven-hub/build.mjs     # writes public/ and CONTENT-TODO.md
 
 - `data/site.json`: phone, email, WhatsApp, address, hours, links, and switches (`launched`, `showPrescriptionOnlyPrices`, `hideServices`).
 - `data/groups.json`: how Phorest's 42 categories become the seven menu pages, with each category's Phorest booking link id.
-- `src/site.css`: layout. Colours, type and the logo come from the brand kit (`public/goodwork/brands/beauty-heaven-hub/brand.css`), copied in at build.
+- **The look is the approved mock-up** (`public/goodwork/brands/beauty-heaven-hub/preview-8f3ac21d.html`). The home page is that file,
+  rewired by `home()` in build.mjs (asset paths, real links, and the few claims we can't stand behind). Its styles and script are
+  extracted to `mockup.css` and `mockup.js` and shared by every page. Edit the mock-up, then rebuild; if an edit breaks one of the
+  rewiring steps, the build stops and names it.
+- `src/pages.css`: the inner pages (menus, chips, visit, notes), written in the mock-up's own vocabulary.
 - `CONTENT-TODO.md`: everything still to confirm. Each shows as a yellow note on the draft pages. With `launched: true` the build refuses to run while any remain.
 
 **Preview:** https://beauty-heaven-hub.vercel.app (Vercel project `beauty-heaven-hub`, noindex, public so the owners can view it on their phones). It

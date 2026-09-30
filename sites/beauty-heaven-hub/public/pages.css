@@ -1,0 +1,60 @@
+/* Beauty Heaven Hub: the inner pages. Everything here is written in the
+   mock-up's own vocabulary (mockup.css): its type scale, lines, pills and
+   gold rule. This file only adds what the home page never needed. */
+
+/* draft markers, only rendered while the site is unlaunched */
+.draftbar{position:relative;z-index:41;background:#fff3cd;color:#5c4400;text-align:center;font-size:.8rem;padding:.45rem 1rem}
+.tbc{display:inline-block;background:#fff3cd;color:#5c4400;border:1px dashed #b38f00;border-radius:6px;padding:.1em .5em;font-size:.82rem;line-height:1.4;letter-spacing:0;text-transform:none;font-weight:400}
+
+/* the home page's journey cards became links */
+a.card{color:var(--body)}
+a.card h3::after{content:" →";color:var(--accent-ink)}
+
+/* page heads */
+.page-head{padding-bottom:clamp(2rem,4vw,3rem)}
+.page-head .eyebrow a{color:inherit}
+.page .section.alt{background:var(--cream-2);border-block:1px solid var(--line)}
+
+/* section chips, like the nav pill */
+.chips{display:flex;gap:.4rem;overflow-x:auto;padding:.35rem;border-radius:var(--pill);background:var(--card);border:1px solid var(--line);width:max-content;max-width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chips a{flex:none;font-weight:var(--weight-micro);font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--body);padding:.6rem 1rem;border-radius:var(--pill);white-space:nowrap;transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
+.chips a:hover{background:rgba(201,166,92,.14);color:var(--ink)}
+
+/* treatment menus */
+.menus{display:grid;gap:clamp(3rem,6vw,4.5rem)}
+.menu{scroll-margin-top:110px;display:grid;gap:1.1rem}
+.menu__head{display:grid;gap:.9rem}
+.menu__head h2{font-family:var(--font-head);font-weight:var(--weight-display);letter-spacing:var(--track-display);font-size:clamp(1.7rem,3.4vw,2.6rem);line-height:1.05;color:var(--ink)}
+.note{padding:1rem 1.2rem;border:1px solid var(--line);border-left:1px solid var(--accent);background:var(--cream-2);border-radius:0 var(--round) var(--round) 0;font-size:.95rem;max-width:62ch}
+.items{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.items li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem 1.5rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.items .n{color:var(--ink);font-size:1.05rem}
+.items .d{grid-column:1;font-weight:var(--weight-micro);font-size:.68rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
+.items .p{grid-row:1/span 2;grid-column:2;align-self:center;color:var(--ink);font-size:1.05rem;white-space:nowrap}
+.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:.6em;padding:1rem 0;font-weight:var(--weight-micro);font-size:.72rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--accent-ink)}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{content:"+";font-size:1rem;line-height:1}
+.more[open] summary::before{content:"–"}
+.small{font-size:.85rem;color:var(--muted)}
+
+/* academy */
+.card .price{font-family:var(--font-head);font-size:1.5rem;color:var(--ink)}
+.card .actions{margin-top:.4rem}
+.steps{margin-top:clamp(2rem,4vw,3rem)}
+.page .section > .wrap > p{margin-block:1rem}
+
+/* visit */
+.visit{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,6vw,5rem);align-items:start}
+.visit__photo{max-width:420px;justify-self:end;width:100%}
+.visit__photo .photo{aspect-ratio:4/5}
+@media(max-width:820px){.visit{grid-template-columns:1fr}.visit__photo{justify-self:center;max-width:300px}}
+.facts{display:grid;gap:1.2rem;margin:0}
+.facts div{display:grid;gap:.3rem}
+.facts dd{margin:0;color:var(--ink);font-size:1.05rem}
+.facts a{border-bottom:1px solid var(--accent)}
+.sub{font-family:var(--font-head);font-weight:var(--weight-display);font-size:1.6rem;color:var(--ink);margin-top:1rem}
+
+/* text pages */
+.prose{max-width:760px}
+.prose p{margin-bottom:1rem}
+.plain{margin:0;padding-left:1.1rem;display:grid;gap:.6rem}

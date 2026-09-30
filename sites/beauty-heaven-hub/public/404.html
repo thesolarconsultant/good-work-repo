@@ -1,64 +1,84 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found | Beauty Heaven Hub</title>
 <meta name="description" content="That page isn&#39;t here.">
-<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#746B60">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Beauty Heaven Hub">
 <meta property="og:title" content="Page not found | Beauty Heaven Hub">
 <meta property="og:description" content="That page isn&#39;t here.">
-<meta property="og:type" content="website">
 <meta property="og:image" content="https://www.beautyheavenhub.co/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/logo/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/logo/favicon-180.png">
-<link rel="preload" href="/fonts/Jost-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Light.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/Jost-Bold.woff2" crossorigin>
 <link rel="stylesheet" href="/brand.css">
-<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/motion/goodwork-motion.css">
+<script src="/motion/goodwork-motion.js" defer></script>
+<link rel="stylesheet" href="/mockup.css">
+<link rel="stylesheet" href="/pages.css">
 </head>
-<body class="has-bookbar">
-<a class="skip" href="#main">Skip to content</a>
-<div class="draftbar">Draft website. Not live yet. Yellow notes mark details we still need to confirm.</div>
-<header class="top">
-  <div class="wrap top__in">
-    <a class="top__logo" href="/"><span class="bh-mark bh-mark--hover" role="img" aria-label="beauty heaven hub"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
-    <nav class="top__nav" aria-label="Main"><a href="/treatments/">Treatments</a><a href="/academy/">Academy</a><a href="/consultations/">Consultations</a><a href="/visit/">Visit us</a><a class="btn btn--dark" style="min-height:40px;padding:8px 18px" href="https://www.phorest.com/salon/beautyheaven1/book">Book</a></nav>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
+<body class="page">
+<div class="draftbar">Draft website, not live yet. Yellow notes mark details we still need to confirm.</div>
+<div class="cursor" aria-hidden="true"></div>
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a href="/" aria-label="Beauty Heaven Hub, home"><span class="bh-mark bh-mark--hover nav__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
+    <nav class="nav__pill" aria-label="Primary">
+      <a href="/treatments/">Treatments</a>
+      <a href="/academy/">Academy</a>
+      <a href="/#hub">The Hub</a>
+      <a href="/#people">Jessica &amp; Hollie</a>
+      <a href="/#reviews">Reviews</a>
+    </nav>
+    <a class="btn btn--fill" href="https://www.phorest.com/salon/beautyheaven1/book" data-gw-magnetic="0.25"><span>Book</span></a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
-  <nav class="wrap drawer" id="drawer" aria-label="Main"><a href="/treatments/">Treatments</a><a href="/academy/">Academy</a><a href="/consultations/">Consultations</a><a href="/visit/">Visit us</a><a href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a></nav>
+  <div class="wrap"><div class="nav__panel" id="menu" hidden>
+    <a href="/treatments/">Treatments</a>
+      <a href="/academy/">Academy</a>
+      <a href="/#hub">The Hub</a>
+      <a href="/#people">Jessica &amp; Hollie</a>
+      <a href="/#reviews">Reviews</a>
+    <a href="/visit/">Find us</a>
+  </div></div>
 </header>
-<main id="main">
-<section class="sec"><div class="narrow"><h1>That page isn't <b>here</b></h1><p>It may have moved when we rebuilt the website.</p><div class="btns"><a class="btn btn--dark" href="/treatments/">See treatments</a><a class="btn btn--line" href="/">Home</a></div></div></section>
-</main>
-<footer class="foot">
+<main id="top">
+<section class="section page-head">
   <div class="wrap">
-    <div class="foot__mark"><span class="bh-mark " role="img" aria-label="beauty heaven hub"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></div>
-    <div class="foot__cols">
-      <div>
-        <h3>Visit</h3>
-        <p>23-24 Conduit Lane<br>Hoddesdon<br>Hertfordshire<br>EN11 8FN<br><span class="tbc">To confirm: address</span></p>
-        <p><a href="tel:+441992511383">01992 511383</a></p>
-      </div>
-      <div>
-        <h3>Explore</h3>
-        <ul><li><a href="/treatments/">Treatments</a></li><li><a href="/academy/">Academy</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/visit/">Visit us</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="/privacy/">Privacy</a></li></ul>
-      </div>
-      <div>
-        <h3>Follow</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/beautyheavenuk/">Instagram: Treatments</a></li>
-          <li><a href="https://www.instagram.com/beautyheavenacademy/">Instagram: Academy</a></li>
-          <li><a href="https://www.facebook.com/beautyheavenuk">Facebook</a></li>
-        </ul>
-      </div>
+    <div class="stack">
+      <p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">Not found</span></p>
+      <h1 class="display d2" data-gw-reveal="mask"><span class="mask">that page isn't <b>here.</b></span></h1>
+      <p class="lede" data-gw-reveal>It may have moved when we rebuilt the website.</p>
+      <div class="actions"><a class="btn btn--fill" href="/treatments/"><span>See treatments</span></a><a class="btn" href="/"><span>Home</span></a></div>
     </div>
-    <p class="foot__small">Beauty Heaven Hub LTD, registered in England and Wales, company number 15072077.</p>
+  </div>
+</section>
+
+</main>
+<footer class="footer" data-surface="espresso">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a href="/" aria-label="Beauty Heaven Hub, home"><span class="bh-mark bh-mark--gold bh-mark--glint footer__mark" role="img" aria-hidden="true"><span class="bh-mark__fallback">beauty <b>heaven</b> hub</span></span></a>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Treatments</span></div>
+        <div class="world"><span class="bh-logo">beauty <b>heaven</b></span><span class="micro">Academy</span></div>
+      </div>
+      <div><h4>Treatments</h4><ul><li><a href="/treatments/aesthetics/">Aesthetics</a></li><li><a href="/treatments/skin/">Skin and facials</a></li><li><a href="/treatments/brows-lashes-pmu/">Brows, lashes and permanent make-up</a></li><li><a href="/treatments/laser/">Laser</a></li><li><a href="/treatments/hair/">Hair</a></li><li><a href="/treatments/nails/">Nails</a></li><li><a href="/treatments/body/">Body and wellness</a></li></ul></div>
+      <div><h4>Academy</h4><ul><li><a href="/academy/">Courses</a></li><li><a href="/academy/#how">How it works</a></li><li><a href="/policies/#academy">Booking terms</a></li><li><a href="https://www.instagram.com/beautyheavenacademy/">Instagram</a></li></ul></div>
+      <div><h4>Visit</h4><ul><li><a href="/visit/">Find us</a></li><li><a href="tel:+441992511383">01992 511383</a></li><li><a href="/consultations/">Consultations</a></li><li><a href="/policies/">Booking policies</a></li><li><a href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a></li></ul></div>
+    </div>
+    <div class="footer__base">
+      <span>© <span id="year"></span> Beauty Heaven Hub LTD, registered in England and Wales, company number 15072077</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="https://www.instagram.com/beautyheavenuk/">Instagram</a> · <a href="https://www.facebook.com/beautyheavenuk">Facebook</a></span>
+    </div>
   </div>
 </footer>
-<div class="bookbar"><a class="btn btn--gold" href="https://www.phorest.com/salon/beautyheaven1/book">Book online</a><a class="btn btn--line" style="color:var(--bh-ivory);border-color:var(--bh-stone)" href="tel:+441992511383">Call 01992 511383</a></div>
-<script>
-(function(){var b=document.querySelector('.menu-btn'),d=document.getElementById('drawer');if(!b||!d)return;
-b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'Close':'Menu';});})();
-</script>
+<script src="/mockup.js"></script>
 </body>
 </html>
