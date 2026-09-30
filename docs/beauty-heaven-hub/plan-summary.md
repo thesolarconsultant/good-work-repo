@@ -8,7 +8,9 @@ One page that pulls together everything decided in this session. The detail sits
   people without WhatsApp. Only courses confirmed as running are listed. "Certificate of completion", not "accredited", until proven.
 - **WhatsApp receptionist:** answers from one source of truth, books services into Phorest, sends consultations straight to the right
   practitioner, hands anything clinical to a person. Telegram as an optional extra channel (text only). No SMS bot.
-- **Voice agent, fallback only:** answers out of hours and calls nobody picks up. Needs call forwarding from their phone provider.
+- **Voice agent, fallback only:** answers out of hours and calls nobody picks up, on their existing number (01992 511383) via call
+  forwarding from their phone provider. **Using your mate's voice agent (flat $200), not Bland** (Bland stays the backup option). It must
+  use our booking tools so the same rules apply; to confirm with him: how calls get in, tools, transfer, where recordings are kept, AI notice.
 - **Operator chat with Jess and Hollie:** weekly content check-in, approvals, the surprise-pillar questions. Walled off from clients.
 - **Content Console:** templates, ideas, carousels, images, reels; one coordinator over separate agents; nothing posts without approval.
 - **Content from Google Drive** (briefly Dropbox, back to Drive): team drops photos and clips in `Inbox` (or sends them to the content assistant, which files them), owners move the good ones to `Approved`, agents read only
@@ -45,8 +47,8 @@ Files: `access-checklist.md`, `phorest-api.md`.
 
 ## 5. Money
 - **Running cost:** about £125 lean, £215 expected, excluding the Phorest API (unknown) and your time. Your margin about £195 a month.
-- **Voice:** Bland Start is $0.14 a minute plus telephony; as a fallback it is probably £30 to £80 a month. Your friend's flat $200 is the
-  alternative. Test both with the same calls.
+- **Voice:** decided: your mate's agent at a flat $200 a month. Bland ($0.14 a minute plus telephony, probably £30 to £80 a month as a
+  fallback) stays the backup if his can't use our booking tools.
 - **Don't cut the £398 yet.** Review after three months of real usage and a monthly usage report.
 - **VAT:** add a line now that prices exclude VAT and it will be added if you register.
 - **Later, after the results:** practitioner membership or fee (salon-sourced clients only), and an Academy marketing pilot with a base
