@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Beauty Heaven Hub — brand guidelines</title>
-<meta name="description" content="Working v1 brand guidelines for Beauty Heaven Hub: logo, colour, type, the building as a design language, voice and the signature interaction.">
+<meta name="description" content="Working v2 brand guidelines for Beauty Heaven Hub: logo, colour, type, the building as a design language, voice, the signature interaction and the content system.">
 <meta name="theme-color" content="#746B60">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Beauty Heaven Hub — brand guidelines">
-<meta property="og:description" content="Working v1: logo, colour, type, the building as a design language, voice and the signature interaction.">
+<meta property="og:description" content="Working v2: logo, colour, type, the building as a design language, voice, the signature interaction and the content system.">
 <meta property="og:image" content="https://goodworkagency.uk/goodwork/brands/beauty-heaven-hub/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="logo/favicon.svg" type="image/svg+xml">
@@ -77,7 +77,12 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;bac
 .arch-tree{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.7;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.2rem 1.4rem;overflow-x:auto;color:var(--ink);white-space:pre;margin-top:1.6rem}
 .anatomy{margin-top:1.6rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
 .anatomy .card{text-align:center}
-.anatomy .bh-logo{font-size:2.1rem;justify-self:center}
+.anatomy .bh-logo{font-size:clamp(1.05rem,1.75vw,1.9rem);justify-self:center;max-width:100%;white-space:nowrap}
+/* Nothing in a grid may be wider than its box: grid items default to their
+   content's width, and a wordmark or a long word would push the page sideways. */
+.card,.spec,.spec__tile,.logos>*,.cols>*,.anatomy>*{min-width:0}
+.spec__tile .bh-mark{min-width:0;overflow:hidden}
+.card p,.card li,.card h3{overflow-wrap:anywhere}
 .anatomy .bh-logo span{display:inline-block}
 .anatomy .w{display:flex;justify-content:center;gap:1.6rem;font-size:.7rem;letter-spacing:var(--track-micro);text-transform:uppercase;color:var(--muted)}
 
@@ -182,7 +187,7 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
 <header class="cover" data-surface="taupe">
   <div class="cover__halo" aria-hidden="true"></div>
   <div class="wrap cover__in">
-    <p class="micro">Brand guidelines · working v1</p>
+    <p class="micro">Brand guidelines · working v2</p>
     <span class="bh-mark bh-mark--gold bh-mark--glint cover__mark" role="img" aria-label="Beauty Heaven Hub"></span>
     <h1>The new premises, translated into a digital brand.</h1>
     <p>Beauty Heaven Hub is a destination, not just a salon. This is the brand the building has already started, codified: the logo, the colour, the type, and the rule that everything on screen is taken from something on site.</p>
@@ -194,7 +199,7 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
   <div class="wrap"><ul>
     <li><a href="#idea">01 Idea</a></li><li><a href="#logo">02 Logo</a></li><li><a href="#colour">03 Colour</a></li><li><a href="#type">04 Type</a></li>
     <li><a href="#building">05 The building</a></li><li><a href="#heaven">06 Heaven</a></li><li><a href="#photo">07 Photography</a></li><li><a href="#motion">08 Motion</a></li>
-    <li><a href="#voice">09 Voice</a></li><li><a href="#architecture">10 Architecture</a></li><li><a href="#fork">11 The fork</a></li><li><a href="#proof">12 Social proof</a></li><li><a href="#files">Files</a></li>
+    <li><a href="#voice">09 Voice</a></li><li><a href="#architecture">10 Architecture</a></li><li><a href="#fork">11 The fork</a></li><li><a href="#proof">12 Social proof</a></li><li><a href="#content">13 Content</a></li><li><a href="#files">Files</a></li>
   </ul></div>
 </nav>
 
@@ -462,6 +467,50 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
 </section>
 
 <!-- files -->
+<!-- 13 -->
+<section class="sec" id="content">
+  <div class="sec__head"><span class="sec__num">13</span><h2 class="display">the content <b>system.</b></h2></div>
+  <div class="prose">
+    <p class="lede">Content is made in fixed shapes, every week. The photos change; the look doesn't. Added as the brand is built, and amended as we go.</p>
+  </div>
+
+  <h3 class="micro" style="margin-top:2rem">Content styles</h3>
+  <div class="logos">
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/89482f59-8442-417a-a755-57495100aa2c.jpg" alt="Sample post: The room" loading="lazy"><figcaption><span>The room</span><small>Reel cover. A room film, one line.</small></figcaption></figure>
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/edf4a9c5-3d0b-4850-ab97-d6878cf15878.jpg" alt="Sample post: Close-up explainer" loading="lazy"><figcaption><span>Close-up explainer</span><small>Carousel. AI close-up cover, then the steps, then aftercare.</small></figcaption></figure>
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/8e412337-13e6-470b-9376-1cfdd872b995.jpg" alt="Sample post: This week at the Hub" loading="lazy"><figcaption><span>This week at the Hub</span><small>The week's own photos, four to a frame.</small></figcaption></figure>
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/3ec80ee4-286c-4c0a-80a6-543d58e835ce.jpg" alt="Sample post: First time?" loading="lazy"><figcaption><span>First time?</span><small>Reassurance, in the salon's own words.</small></figcaption></figure>
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/cb9db25d-9d47-4d4a-a6d4-6718461a427d.jpg" alt="Sample post: Academy" loading="lazy"><figcaption><span>Academy</span><small>Taupe, the Academy mark, the next intake.</small></figcaption></figure>
+    <figure class="spec"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/e23aaf85-4b0d-43e4-a4b4-aca82d3c8cad.jpg" alt="Sample post: Story" loading="lazy"><figcaption><span>Story</span><small>One ask. Link in bio.</small></figcaption></figure>
+  </div>
+
+  <div class="cols">
+    <div class="card"><h3>Real first</h3><p>The salon's own photos lead: the rooms, the team working, real results with permission. They go into the shared Drive; the week is made from what's there.</p></div>
+    <div class="card"><h3>AI for close-ups only</h3><p>Generated images fill gaps: skin and texture close-ups, hands and tools, for reels and explainers. Never presented as a real client, a real result or a real team member. Labelled AI in the console library.</p></div>
+    <div class="card"><h3>The logo on posts</h3><p>Big enough to read on a phone. On a full-image post the gold wordmark sits centred at the top, about half the post's width. On text posts, bottom left, never smaller than a fifth of the width. The Academy mark leads Academy posts.</p></div>
+  </div>
+
+  <h3 class="micro" style="margin-top:2.4rem">Film</h3>
+  <div class="cols">
+    <div class="card"><h3>The rooms, slowly</h3><p>Films are made from real footage of the rooms, graded warm: slow push-ins and pull-backs, nobody walking in, dissolves between rooms. Nothing fast, nothing flashy.</p></div>
+    <div class="card"><h3>The website hero</h3><p>Full width at the top of the homepage, silent and looping, the gold wordmark over the lower third. Portrait cut on a phone, landscape on a desktop. A pause button, always.</p></div>
+    <div class="card"><h3>Music</h3><p>One house sound across every reel: a small set of the salon's own tracks, owned outright, not platform library music. To be chosen.</p></div>
+  </div>
+
+  <h3 class="micro" style="margin-top:2.4rem">Email</h3>
+  <div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))">
+    <div class="card"><h3>Signature</h3><p>The all-rounder. Taupe masthead, arch hero, both worlds as picture cards, a review on the taupe wall.</p></div>
+    <div class="card"><h3>Ivory</h3><p>Centred and printed on the paper, an outlined button. When it should read expensive rather than busy.</p></div>
+    <div class="card"><h3>Evening</h3><p>Espresso throughout. Launches, evenings, an Academy intake: an invitation rather than a welcome pack.</p></div>
+    <div class="card"><h3>Letter</h3><p>No photography, a signed letter that invites a reply. Only when a real person will read the replies.</p></div>
+  </div>
+  <div class="prose" style="margin-top:1.2rem"><p>Every email carries the footer address and the unsubscribe link, a plain-text partner, and the merge tags untouched. Headlines are light with one bold word, as everywhere else.</p></div>
+
+  <div class="card" style="margin-top:2rem"><h3>Amendments</h3><ul>
+    <li>30 Sep 2026: content styles, the real-first photography rule, AI close-up rule, logo size on posts, film and hero, music, the four emails (renamed Signature, Ivory, Evening, Letter).</li>
+  </ul></div>
+</section>
+
 <section class="sec" id="files">
   <div class="sec__head"><span class="sec__num">—</span><h2 class="display">the <b>files.</b></h2></div>
   <ul class="files">
@@ -479,7 +528,7 @@ footer{padding-block:1.6rem;font-size:.8rem;color:var(--muted);display:flex;flex
   <p>Not clinical aesthetics. Not girly beauty salon. Not sterile luxury. Not Instagram-template beige. We're not rebranding them. We're codifying the brand they've already built.</p>
 </section>
 
-<footer><span>Beauty Heaven Hub · brand guidelines · working v1</span><span>Prepared by GOOD WORK.</span></footer>
+<footer><span>Beauty Heaven Hub · brand guidelines · working v2</span><span>Prepared by GOOD WORK.</span></footer>
 
 </main>
 </body>

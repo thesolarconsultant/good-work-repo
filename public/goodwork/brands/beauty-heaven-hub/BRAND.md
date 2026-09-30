@@ -327,6 +327,52 @@ We're not rebranding them. We're codifying the brand they've already built.
 
 ---
 
+## 13 · The content system
+
+Content is made in fixed shapes, every week. The photos change; the look
+doesn't. This section is amended as the brand is built.
+
+**Content styles** (samples in the console's Content styles tab; templates in
+`sites/beauty-heaven-hub/content-styles/sample-posts.html`):
+
+- **The room**: reel cover, 9:16. A room film with one line over it.
+- **Close-up explainer**: carousel, 4:5. AI close-up cover with the question
+  people ask, then what happens step by step, then aftercare (signed off by
+  Hollie before posting).
+- **This week at the Hub**: four of the week's own photos in the brand frame.
+- **First time?**: reassurance for nervous first-timers, in the salon's words.
+- **Academy**: taupe ground, the Academy mark, the next intake.
+- **Story**: 9:16, one ask, link in bio.
+
+**Real first.** The salon's own photos lead: the rooms, the team working, real
+results with permission. They go into the shared Drive and the week is made
+from what's there.
+
+**AI for close-ups only.** Generated images fill gaps: skin and texture
+close-ups, hands and tools, for reels and explainers. Never presented as a real
+client, a real result or a real team member. Labelled AI in the console.
+
+**The logo on posts.** Big enough to read on a phone. On full-image posts the
+gold wordmark sits centred at the top, about half the post's width. On text
+posts, bottom left, never smaller than a fifth of the width. The Academy mark
+leads Academy posts.
+
+**Film.** Made from real footage of the rooms, graded warm: slow push-ins and
+pull-backs, nobody walking in, dissolves between rooms. The website hero is
+full width at the top of the homepage, silent and looping, the gold wordmark
+over the lower third, portrait on a phone, with a pause button.
+
+**Music.** One house sound across every reel: a small set of the salon's own
+tracks, owned outright, not platform library music. To be chosen.
+
+**Email.** Four templates: **Signature** (the all-rounder), **Ivory** (reads
+expensive rather than busy), **Evening** (espresso; launches and intakes) and
+**Letter** (a signed letter, only when a real person reads the replies). Every
+send keeps the footer address, the unsubscribe link, a plain-text partner and
+the merge tags.
+
+*Amendments: 30 Sep 2026: this section added.*
+
 ## Built for a phone
 
 Most people will meet this brand on a phone, in the salon or in bed, so the
