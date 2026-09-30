@@ -77,24 +77,80 @@ const tidy = (s) =>
 const waLink = (text) => (site.whatsapp ? `https://wa.me/${site.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(text)}` : "");
 
 // ------------------------------------------------------------------ data --
-const services = parseCsv(readFileSync(CSV, "utf8"));
+// Where the menu comes from. With Phorest credentials in the environment (the
+// Vercel build has them), read the live menu straight from Phorest. Without
+// them (a laptop, or this repo's sandbox, which cannot reach Phorest), fall
+// back to the committed services export. Either way each service ends up in
+// the same shape.
+const MODEL = /\bmodel\b/i;
+const POM_CATEGORIES = /anti.?wrinkle|b12|slim jab|weight|wight loss/i;
+const POM_NAMES = /botox|b-?tox|hyaluronidase|filler dissolving|dissolv|hayfever|slim jab|weight loss pen|\bb12\b/i;
+
+async function fromPhorest() {
+  const { PHOREST_USERNAME: user, PHOREST_PASSWORD: pass, PHOREST_BUSINESS_ID: biz } = process.env;
+  if (!user || !pass || !biz) return null;
+  const auth = "Basic " + Buffer.from(`${user}:${pass}`).toString("base64");
+  const base = `https://platform.phorest.com/third-party-api-server/api/business/${biz}`;
+  async function all(path, key) {
+    const out = [];
+    for (let page = 0; page < 30; page++) {
+      const res = await fetch(`${base}${path}${path.includes("?") ? "&" : "?"}size=100&page=${page}`, { headers: { Authorization: auth, Accept: "application/json" } });
+      if (!res.ok) throw new Error(`Phorest ${path}: HTTP ${res.status}`);
+      const body = await res.json();
+      out.push(...(body._embedded?.[key] || []));
+      if (page + 1 >= (body.page?.totalPages ?? 1)) break;
+    }
+    return out;
+  }
+  const branches = await all("/branch", "branches");
+  const byName = (re) => branches.find((x) => re.test(x.name || ""));
+  const hub = byName(/hub/i), academy = byName(/academy/i);
+  if (!hub) throw new Error("Phorest: no branch named Hub");
+  const shape = (s) => ({
+    Category: (s.categoryName || "").trim(),
+    categoryId: s.categoryId,
+    Service: (s.internetName || s.name || "").trim(),
+    "Price £": s.price ?? 0,
+    "From?": "",
+    "Duration (min)": s.duration ?? "",
+    "Online?": s.internetEnabled && !s.archived ? "Y" : "N",
+    Flags: [MODEL.test(s.name || "") ? "student practical" : "", POM_CATEGORIES.test(s.categoryName || "") || POM_NAMES.test(s.name || "") ? "Prescription-only" : ""].filter(Boolean).join("; "),
+    Type: /consult/i.test(s.name || "") ? "Consultation" : "",
+  });
+  const hubServices = (await all(`/branch/${hub.branchId}/service`, "services")).map(shape);
+  const academyServices = academy ? (await all(`/branch/${academy.branchId}/service`, "services")).map(shape) : [];
+  return { source: "phorest", hubServices, academyServices };
+}
+
+const live = await fromPhorest().catch((e) => {
+  // A live-data build must not quietly ship the old export.
+  if (process.env.VERCEL) throw e;
+  console.warn("Phorest unavailable, using the export:", e.message);
+  return null;
+});
+const services = live ? live.hubServices : parseCsv(readFileSync(CSV, "utf8"));
+const menuSource = live ? `Phorest, read live at build time on ${new Date().toISOString().slice(0, 10)}` : "the committed Phorest services export";
 const hidden = site.hideServices || {};
 for (const [name, why] of Object.entries(hidden)) todo.add(`hidden from the menu, "${name}": ${why}`);
 const isPublic = (s) => s["Online?"] === "Y" && !/student practical/.test(s.Flags) && Number(s["Price £"]) > 0 && !hidden[s.Service.trim()];
 const isPom = (s) => /Prescription-only/.test(s.Flags);
+const inCategory = (s, c) => (live ? s.categoryId === c.phorest : s.Category === c.csv);
 
 for (const g of groups) {
   for (const c of g.categories) {
-    c.items = services.filter((s) => s.Category === c.csv && isPublic(s));
+    c.items = services.filter((s) => inCategory(s, c) && isPublic(s));
     c.pom = c.items.some(isPom);
-    if (!services.some((s) => s.Category === c.csv)) throw new Error(`No services found for category "${c.csv}"`);
+    if (!services.some((s) => inCategory(s, c))) throw new Error(`No services found for category "${c.csv}"`);
   }
   for (const c of g.categories.filter((c) => c.hide)) todo.add(`hidden from the menu, ${c.title}: ${c.hide}`);
   g.categories = g.categories.filter((c) => !c.hide);
   g.count = g.categories.reduce((n, c) => n + c.items.length, 0);
 }
 const lowerFirst = (t) => (/^[A-Z][a-z]/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
-const courses = services.filter((s) => s.Category === "Academy Courses" && s["Online?"] === "Y");
+// Courses: the Academy branch's own online menu when live, otherwise the
+// Hub export's "Academy Courses" category.
+const courseSource = live && live.academyServices.length ? live.academyServices : services.filter((s) => s.Category === "Academy Courses");
+const courses = courseSource.filter((s) => s["Online?"] === "Y" && !/student practical/.test(s.Flags) && Number(s["Price £"]) > 0 && !/consult/i.test(s.Service));
 
 // ------------------------------------------------------------ the mock-up --
 // The home page IS the approved mock-up. It is read from the brand kit on
@@ -359,22 +415,28 @@ function groupPage(g) {
     body: `${pageHead(`<a href="/treatments/">Treatments</a>`, esc(g.name), esc(g.line), pomNote + chips)}
 <section class="section" style="padding-top:0"><div class="wrap menus">
   ${g.categories.map((c) => categoryBlock(c, page)).join("")}
-  <p class="small">Prices and times come from our booking system and can change. The booking page always shows the current price.</p>
+  <p class="small">Prices and times come from our booking system and can change. The booking page always shows the current price.</p><!-- menu source: ${esc(menuSource)} -->
 </div></section>`,
   });
 }
 
 // --------------------------------------------------------------- academy --
 function academy() {
-  const cards = courses.map((s) => `<article class="card" data-gw-reveal><span class="rule"></span><h3>${esc(tidy(s.Service))}</h3>${duration(s["Duration (min)"]) ? `<p>Course length: ${duration(s["Duration (min)"])}</p>` : ""}<p class="price">${money(s["Price £"])}</p><div class="actions">${ask(`Hi Beauty Heaven Academy, I'd like to know more about the ${tidy(s.Service)}`, "Ask about this course")}</div></article>`).join("");
+  // Grouped by the Academy's own categories, in the same list style as the
+  // treatment menus, because the Academy branch runs to dozens of courses.
+  const cats = [...new Set(courses.map((s) => s.Category || "Courses"))];
+  const blocks = cats.map((cat) => {
+    const rows = courses.filter((s) => (s.Category || "Courses") === cat).map((s) => itemRow(s, true));
+    const list = rows.length > 8 ? `<ul class="items">${rows.slice(0, 6).join("")}</ul><details class="more"><summary>Show all ${rows.length}</summary><ul class="items">${rows.slice(6).join("")}</ul></details>` : `<ul class="items">${rows.join("")}</ul>`;
+    return `<section class="menu" data-gw-reveal><div class="menu__head"><span class="rule"></span><h2>${esc(tidy(cat))}</h2></div>${list}<div class="actions">${ask(`Hi Beauty Heaven Academy, I'd like to know more about your ${tidy(cat)} courses`, "Ask about these courses")}</div></section>`;
+  }).join("");
   return layout({
     path: "/academy/", title: "Academy",
-    description: "Beauty and aesthetics courses at the Beauty Heaven Academy in Hoddesdon. Online pre-study, then hands-on training in a working salon.",
+    description: "Beauty and aesthetics courses at the Beauty Heaven Academy. Online pre-study, then hands-on training.",
     body: `${pageHead("Academy", "something for <b>your future.</b>", "Professional beauty and aesthetics education, taught in a working salon by people who do this every day. Hands-on practice on real models, with online study before you arrive.", `<div class="actions" data-gw-reveal>${ask("Hi Beauty Heaven Academy, I'd like to know more about your courses", "Ask about courses", true)}</div>`)}
 <section class="section" style="padding-top:0"><div class="wrap">
   <p>${tbc("which courses are running now, and their dates", "/academy/")}</p>
-  <p class="swipe-hint phone-only">Swipe to see more</p>
-  <div class="cards" data-gw-stagger>${cards}</div>
+  <div class="menus">${blocks}</div>
   <p>${tbc("entry requirements for each course, and who can enrol", "/academy/")}</p>
 </div></section>
 <section class="section alt" id="how"><div class="wrap">
@@ -537,4 +599,5 @@ const lines = [...todo].sort();
 writeFileSync(join(HERE, "CONTENT-TODO.md"), `# Beauty Heaven Hub website: still to confirm\n\nGenerated by build.mjs. Each line shows as a yellow note on the draft site. Fix it in data/site.json, data/groups.json or build.mjs, then rebuild.\n\n${lines.map((l) => `- ${l}`).join("\n")}\n`);
 
 const listed = groups.reduce((n, g) => n + g.count, 0);
+console.log(`Menu from ${menuSource}.`);
 console.log(`Built ${pages.length} pages. ${listed} treatments listed, ${courses.length} courses. ${lines.length} items still to confirm.`);

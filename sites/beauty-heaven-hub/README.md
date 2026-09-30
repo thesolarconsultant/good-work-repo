@@ -7,6 +7,11 @@ durations are the salon's, not retyped.
 node sites/beauty-heaven-hub/build.mjs     # writes public/ and CONTENT-TODO.md
 ```
 
+**Menu data.** On Vercel the build reads the live menu from Phorest (credentials are the project's sensitive environment
+variables), so every deploy has current prices, and a failed Phorest read fails the deploy rather than shipping stale data.
+Anywhere without the credentials it falls back to `docs/beauty-heaven-hub/services-master.csv`. The Academy page reads the
+separate "Beauty Heaven Academy" branch when live.
+
 - `data/site.json`: phone, email, WhatsApp, address, hours, links, and switches (`launched`, `showPrescriptionOnlyPrices`, `hideServices`).
 - `data/groups.json`: how Phorest's 42 categories become the seven menu pages, with each category's Phorest booking link id.
 - **The look is the approved mock-up** (`public/goodwork/brands/beauty-heaven-hub/preview-8f3ac21d.html`). The home page is that file,
@@ -19,7 +24,7 @@ node sites/beauty-heaven-hub/build.mjs     # writes public/ and CONTENT-TODO.md
 **Preview:** https://beauty-heaven-hub.vercel.app (Vercel project `beauty-heaven-hub`, noindex, public so the owners can view it on their phones). It
 was deployed by hand from this branch; pushes to other branches make separate preview URLs, and merging to `main` updates it.
 
-**Deploy:** its own Vercel project, root directory `sites/beauty-heaven-hub`, no build command, output `public`. `vercel.json` sends
+**Deploy:** its own Vercel project, root directory `sites/beauty-heaven-hub`, build command `node build.mjs`, output `public`. `vercel.json` sends
 `noindex` on every page; remove that header, and set `launched: true`, on launch day. Point the domain from GoDaddy only after saving the
 current DNS records (the salon's email runs on Microsoft 365). Redirect the old Wix page addresses.
 
