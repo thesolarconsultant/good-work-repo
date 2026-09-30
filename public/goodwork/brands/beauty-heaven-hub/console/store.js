@@ -77,7 +77,7 @@ export const SEED = {
   ],
 
   campaigns: [],
-  emailDrafts: {},
+  email: { template: "signature", drafts: {} },
   calendar: [
     { id: "c1", day: "Mon", what: "Autumn skin reset — carousel", state: "scheduled" },
     { id: "c2", day: "Wed", what: "Academy: September intake open", state: "draft" },
@@ -196,8 +196,21 @@ export function onChange(fn) {
 }
 
 /* ------------------------------------------------------------------ writes -- */
-export function setEmailDrafts(drafts) {
-  load().emailDrafts = drafts;
+/* The email tab remembers which of the brand's four templates was last in use,
+   and what was typed into each, because that's a decision about the send, not
+   a setting to re-make every time the screen opens. */
+function email() {
+  const s = load();
+  s.email = { template: "signature", drafts: {}, ...(s.email || {}) };
+  return s.email;
+}
+export function setEmailTemplate(id) {
+  email().template = id;
+  save();
+}
+export function setEmailDraft(id, fields) {
+  const e = email();
+  e.drafts = { ...(e.drafts || {}), [id]: fields };
   save();
 }
 

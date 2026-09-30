@@ -19,6 +19,7 @@
     "brand:logo": "node scripts/build-brand-logo.mjs",
     "brand:photos": "node scripts/build-brand-photos.mjs",
     "brand:botanicals": "node scripts/build-brand-botanicals.mjs",
+    "bh:email-art": "node scripts/build-bh-email-art.mjs",
     "library": "node scripts/build-library-catalogue.mjs",
     "library:bundle": "node scripts/build-library-bundle.mjs",
     "prices": "node scripts/check-prices.mjs",

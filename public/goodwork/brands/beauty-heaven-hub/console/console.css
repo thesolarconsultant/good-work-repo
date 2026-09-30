@@ -379,18 +379,9 @@ button, input, textarea, select { font: inherit; color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) { .slide { transition: none } .slide:hover { transform: none } }
 
-/* Email colour styles: a small swatch beside each name */
-.picks .swatch { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; display: inline-block; flex: none; }
-
-/* Email: templates | fields | preview */
-.emgrid { display: grid; grid-template-columns: minmax(200px, .7fr) minmax(300px, 1fr) minmax(360px, 1.3fr); gap: 1rem; align-items: start; }
-.emtpl { display: grid; gap: .45rem; margin-top: .8rem; }
-.emtpl button { text-align: left; background: none; border: 1px solid var(--line-2); border-radius: 10px; padding: .7rem .8rem; cursor: pointer; font: inherit; color: var(--bh-espresso); }
-.emtpl button b { display: block; font-weight: 500; font-size: .92rem; }
-.emtpl button span { display: block; font-size: .76rem; color: var(--muted-ink); margin-top: .2rem; line-height: 1.35; }
-.emtpl button.on { border-color: var(--bh-gold); background: rgba(201,166,92,.10); }
-.emsample { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--muted-ink); }
+/* Email: four template names need to wrap on a narrow panel, and a pill that
+   wraps looks broken, so this one squares off. */
+.seg--wrap { flex-wrap: wrap; width: fit-content; border-radius: 8px; }
+.row--tight { gap: .45rem; }
+.note--tpl { margin: -.5rem 0 1.15rem; max-width: 52ch; }
 .preview__bar { gap: .6rem; flex-wrap: wrap; }
-.field select { font: inherit; padding: .6rem .7rem; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; }
-@media (max-width: 1200px) { .emgrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); } .emlist { grid-column: 1 / -1; } .emtpl { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); } }
-@media (max-width: 760px) { .emgrid { grid-template-columns: minmax(0, 1fr); } }

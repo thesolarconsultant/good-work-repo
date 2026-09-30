@@ -12,7 +12,7 @@
 // unlaunched it shows as a yellow "to confirm" marker and is listed in
 // CONTENT-TODO.md; once `launched` is true, any tbc() left fails the build.
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -705,9 +705,15 @@ if (existsSync(join(BRAND, "og.jpg"))) cpSync(join(BRAND, "og.jpg"), join(OUT, "
 // in the brand kit, plus the room photographs its picture tool sends to
 // Higgsfield as references, at the path that tool expects.
 cpSync(join(BRAND, "console"), join(OUT, "console"), { recursive: true, filter: (p) => !p.endsWith("README.md") });
-// The email templates' images (arched photos in every colour style, the
-// transparent logos). Public, because inboxes fetch them when an email opens.
-cpSync(join(BRAND, "email"), join(OUT, "email"), { recursive: true, filter: (p) => !/\.(html|txt|md)$/.test(p) });
+// The four email templates and everything they load, at the same path they
+// have on the agency site, so the console fills them from here and a copied
+// email points at images that exist. Public, because inboxes fetch the images
+// when an email opens.
+const MAIL = join(OUT, "goodwork/brands/beauty-heaven-hub");
+mkdirSync(join(MAIL, "logo"), { recursive: true });
+cpSync(join(BRAND, "email"), join(MAIL, "email"), { recursive: true, filter: (p) => !p.endsWith(".md") });
+cpSync(join(BRAND, "fonts"), join(MAIL, "fonts"), { recursive: true, filter: (p) => p.endsWith(".woff2") || !p.includes(".") });
+for (const f of readdirSync(join(BRAND, "logo")).filter((f) => /-wordmark-.*-1024\.png$/.test(f))) cpSync(join(BRAND, "logo", f), join(MAIL, "logo", f));
 
 // The brand guidelines, inside the console (so behind its password), with the
 // assets the page uses. The console's menu link points here on this site.
