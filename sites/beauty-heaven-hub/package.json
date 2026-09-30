@@ -5,6 +5,7 @@
   "description": "Beauty Heaven Hub website and assistants. Built by build.mjs; functions in api/.",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.129.0",
-    "@vercel/functions": "^3.9.9"
+    "@vercel/functions": "^3.9.9",
+    "sharp": "^0.35.3"
   }
 }

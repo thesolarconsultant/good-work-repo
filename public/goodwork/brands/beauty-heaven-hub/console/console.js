@@ -712,6 +712,52 @@ $("#emCopy").addEventListener("click", () => {
   );
 });
 
+/* ================================================================== LIBRARY == */
+/* The films and pictures chosen from Higgsfield, which the salon site fetches
+   when it builds (library/library.json). Room films and AI close-ups are kept
+   apart on purpose: one can be shown as the salon, the other never as a real
+   client or a result. */
+let libraryItems = null;
+
+function libCard(it) {
+  const media = it.kind === "video"
+    ? `<video class="lib__media" data-r="${esc(it.ratio)}" src="${esc(it.src)}#t=0.1" muted loop playsinline preload="metadata"></video>`
+    : `<img class="lib__media" data-r="${esc(it.ratio)}" src="${esc(it.preview)}" alt="${esc(it.title)}" loading="lazy">`;
+  const local = !/^https?:/.test(it.src);
+  return `<figure>${media}<figcaption>
+    <span class="tag${it.made === "ai" ? " tag--ai" : ""}">${it.made === "ai" ? "AI" : "Filmed here"} · ${it.kind === "video" ? "film" : "picture"}</span>
+    <b>${esc(it.title)}</b><span>${esc(it.use)}</span>
+    <a class="btn btn--quiet" href="${esc(it.src)}" ${local ? `download="${esc(it.download)}"` : 'target="_blank" rel="noopener"'}>${local ? "Download" : "Open"}</a>
+  </figcaption></figure>`;
+}
+
+async function renderLibrary() {
+  if (!libraryItems) {
+    try {
+      const res = await fetch("library/library.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error(res.status);
+      libraryItems = await res.json();
+    } catch {
+      $("#libNote").textContent = "The library lives on the salon site's console.";
+      return;
+    }
+  }
+  $("#libRoom").innerHTML = libraryItems.filter((it) => it.made !== "ai").map(libCard).join("");
+  $("#libAi").innerHTML = libraryItems.filter((it) => it.made === "ai").map(libCard).join("");
+  $("#libNote").textContent = "Films play when you point at them. Download keeps the full-size original.";
+}
+
+/* A film plays while it's pointed at (or tapped), so the page isn't a wall of motion. */
+["#libRoom", "#libAi"].forEach((sel) => {
+  const box = $(sel);
+  box.addEventListener("pointerover", (e) => e.target.matches?.("video") && e.target.play().catch(() => {}));
+  box.addEventListener("pointerout", (e) => e.target.matches?.("video") && e.target.pause());
+  box.addEventListener("click", (e) => {
+    if (!e.target.matches?.("video")) return;
+    e.target.paused ? e.target.play().catch(() => {}) : e.target.pause();
+  });
+});
+
 /* ==================================================================== BRAND == */
 const LISTS = ["treatments", "team", "never"];
 
@@ -903,6 +949,7 @@ const VIEWS = {
   approvals: renderApprovals,
   calendar: renderCalendar,
   email: renderEmailView,
+  library: renderLibrary,
   brand: renderBrand,
   about: renderAbout,
 };

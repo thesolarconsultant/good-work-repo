@@ -31,6 +31,7 @@
       <button data-view="approvals"><i></i>Waiting on you <em class="pill" id="waitingPill" hidden>0</em></button>
       <button data-view="calendar"><i></i>Calendar</button>
       <button data-view="email"><i></i>Email</button>
+      <button data-view="library"><i></i>Library</button>
       <button data-view="brand"><i></i>Brand</button>
       <a href="../guidelines.html" target="_blank" rel="noopener" data-guidelines><i></i>Brand guidelines ↗</a>
     </nav>
@@ -218,6 +219,24 @@
           <div class="preview" id="emPreview" data-w="desktop"><iframe title="Email preview" id="emFrame"></iframe></div>
         </section>
       </div>
+    </section>
+
+    <!-- ═══ LIBRARY ═════════════════════════════════════════════════════ -->
+    <section class="view" data-view="library">
+      <header class="head">
+        <div>
+          <p class="eyebrow">Library</p>
+          <h1 class="h1">Films and pictures, ready to use.</h1>
+        </div>
+      </header>
+      <p class="note lib__intro">Most of what goes out should be your own photos. These fill the gaps: the rooms filmed and graded, and AI close-ups for reels and explainers.</p>
+
+      <h2 class="h3 lib__h">The salon, filmed <em>real rooms, graded. Use them as yours.</em></h2>
+      <div class="lib" id="libRoom"></div>
+
+      <h2 class="h3 lib__h">AI close-ups <em>made in Higgsfield. For reels and explainers only, never shown as a real client or a result.</em></h2>
+      <div class="lib" id="libAi"></div>
+      <p class="note" id="libNote"></p>
     </section>
 
     <!-- ═══ BRAND ═══════════════════════════════════════════════════════ -->

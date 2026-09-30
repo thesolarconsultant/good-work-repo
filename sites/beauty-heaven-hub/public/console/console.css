@@ -385,3 +385,18 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .row--tight { gap: .45rem; }
 .note--tpl { margin: -.5rem 0 1.15rem; max-width: 52ch; }
 .preview__bar { gap: .6rem; flex-wrap: wrap; }
+
+/* Library: films and pictures, a grid of tall cards */
+.lib__intro { max-width: 62ch; margin: -.4rem 0 1.6rem; }
+.lib__h { margin: 1.4rem 0 .8rem; }
+.lib__h em { font-style: normal; font-size: .8rem; color: var(--muted-ink); margin-left: .5rem; font-weight: 300; }
+.lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.lib figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+.lib .lib__media { background: var(--bh-espresso); aspect-ratio: 9 / 16; display: block; width: 100%; object-fit: cover; }
+.lib .lib__media[data-r="3:4"] { aspect-ratio: 3 / 4; }
+.lib figcaption { padding: .75rem .85rem .9rem; display: grid; gap: .35rem; flex: 1; align-content: start; }
+.lib figcaption b { font-weight: 500; font-size: .9rem; color: var(--bh-espresso); }
+.lib figcaption span { font-size: .78rem; color: var(--muted-ink); line-height: 1.45; }
+.lib .tag { justify-self: start; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted-ink); }
+.lib .tag--ai { border-color: var(--bh-gold); color: var(--bh-gold-ink); }
+.lib .btn { justify-self: start; margin-top: .3rem; padding: .35rem .8rem; font-size: .76rem; text-decoration: none; }

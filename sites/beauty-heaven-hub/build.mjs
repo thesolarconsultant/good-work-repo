@@ -715,6 +715,36 @@ cpSync(join(BRAND, "email"), join(MAIL, "email"), { recursive: true, filter: (p)
 cpSync(join(BRAND, "fonts"), join(MAIL, "fonts"), { recursive: true, filter: (p) => p.endsWith(".woff2") || !p.includes(".") });
 for (const f of readdirSync(join(BRAND, "logo")).filter((f) => /-wordmark-.*-1024\.png$/.test(f))) cpSync(join(BRAND, "logo", f), join(MAIL, "logo", f));
 
+// The console's Library: the Higgsfield films and pictures chosen for the
+// salon (data/library.json), fetched at build time and served from
+// /console/library/, so behind the console password. The originals are kept
+// for download; the grid shows a small preview. If a file can't be fetched
+// (no network where the build runs), the tab links to Higgsfield's copy.
+const library = JSON.parse(readFileSync(join(HERE, "data/library.json"), "utf8")).items;
+const LIB = join(OUT, "console/library");
+mkdirSync(LIB, { recursive: true });
+const sharp = await import("sharp").then((m) => m.default).catch(() => null);
+const shelf = await Promise.all(library.map(async (it) => {
+  const ext = it.url.split(".").pop().toLowerCase();
+  const file = `${it.id}.${ext}`;
+  const out = { id: it.id, kind: it.kind, made: it.made, ratio: it.ratio, title: it.title, use: it.use, src: it.url, preview: it.url, download: `${it.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase()}.${ext}` };
+  try {
+    const res = await fetch(it.url, { signal: AbortSignal.timeout(90000) });
+    if (!res.ok) throw new Error(`${res.status}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    writeFileSync(join(LIB, file), buf);
+    out.src = out.preview = `library/${file}`;
+    if (it.kind === "image" && sharp) {
+      await sharp(buf).resize({ width: 720, withoutEnlargement: true }).jpeg({ quality: 78, mozjpeg: true }).toFile(join(LIB, `${it.id}-preview.jpg`));
+      out.preview = `library/${it.id}-preview.jpg`;
+    }
+  } catch (e) {
+    console.warn(`Library: couldn't fetch ${it.id} (${e.message}); the console will use Higgsfield's copy.`);
+  }
+  return out;
+}));
+writeFileSync(join(LIB, "library.json"), JSON.stringify(shelf, null, 1));
+
 // The brand guidelines, inside the console (so behind its password), with the
 // assets the page uses. The console's menu link points here on this site.
 const GUIDE = join(OUT, "console/brand");
