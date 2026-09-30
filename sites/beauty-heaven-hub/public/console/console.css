@@ -394,6 +394,8 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .lib figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
 .lib .lib__media { background: var(--bh-espresso); aspect-ratio: 9 / 16; display: block; width: 100%; object-fit: cover; }
 .lib .lib__media[data-r="3:4"] { aspect-ratio: 3 / 4; }
+.lib .lib__media[data-r="16:9"] { aspect-ratio: 16 / 9; object-fit: contain; }
+.lib figure:has(.lib__media[data-r="16:9"]) { grid-column: span 2; }
 .lib figcaption { padding: .75rem .85rem .9rem; display: grid; gap: .35rem; flex: 1; align-content: start; }
 .lib figcaption b { font-weight: 500; font-size: .9rem; color: var(--bh-espresso); }
 .lib figcaption span { font-size: .78rem; color: var(--muted-ink); line-height: 1.45; }

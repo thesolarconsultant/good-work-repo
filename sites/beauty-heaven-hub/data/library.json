@@ -2,67 +2,118 @@
   "_help": "The console's Library tab. Each item is fetched from Higgsfield when the site builds and served from /console/library/ (behind the console password). kind: video | image. made: room = filmed in the salon and only graded, so it can be used as ours; ai = generated, for close-ups, reels and explainers only, never shown as a real client or a result. To add one: copy its id and the cloudfront url from Higgsfield, give it a title and a use, rebuild.",
   "items": [
     {
-      "id": "f96b3d9b", "kind": "video", "made": "room", "ratio": "9:16",
+      "id": "hero-desktop",
+      "kind": "video",
+      "made": "room",
+      "ratio": "16:9",
+      "title": "Hero film, desktop (first cut)",
+      "use": "16 seconds, loops. Waiting area, the couch and mirror, the SPF trolley, back to the start. Silent, for the top of the website.",
+      "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/7360cfb4-3ce3-434e-a20c-321e4b073863.mp4"
+    },
+    {
+      "id": "hero-phone",
+      "kind": "video",
+      "made": "room",
+      "ratio": "9:16",
+      "title": "Hero film, phone (first cut)",
+      "use": "20 seconds, loops. The treatment chair, then the other rooms. The same idea, cut for a phone screen and for reels.",
+      "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/8bac2921-4a9b-4982-977a-a58064b50245.mp4"
+    },
+    {
+      "id": "f96b3d9b",
+      "kind": "video",
+      "made": "room",
+      "ratio": "9:16",
       "title": "The treatment chair by the frosted window",
       "use": "A slow pull back. Opens a reel about skin or aesthetics, or sits behind a caption.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_211032_f96b3d9b-c192-4246-a1f1-13adec56e31c.mp4"
     },
     {
-      "id": "81c0cf78", "kind": "video", "made": "room", "ratio": "9:16",
+      "id": "81c0cf78",
+      "kind": "video",
+      "made": "room",
+      "ratio": "16:9",
       "title": "The couch and the wavy mirror",
       "use": "A slow push in past the treatment couch. The calm before a facial, or a first-visit explainer.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_211032_81c0cf78-9211-440c-90f4-b9fcfdbfe851.mp4"
     },
     {
-      "id": "6364ca33", "kind": "video", "made": "room", "ratio": "9:16",
+      "id": "6364ca33",
+      "kind": "video",
+      "made": "room",
+      "ratio": "16:9",
       "title": "The waiting area",
       "use": "Down the lounge to the bouclé chairs. For 'what to expect when you arrive'.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_211032_6364ca33-5a3e-4cfc-9665-596f2371f76b.mp4"
     },
     {
-      "id": "218c6f7d", "kind": "video", "made": "room", "ratio": "9:16",
+      "id": "218c6f7d",
+      "kind": "video",
+      "made": "room",
+      "ratio": "16:9",
       "title": "The gold trolley and the SPF shelf",
       "use": "A slow push in on the sunscreen. Aftercare, SPF reminders, anything about looking after skin at home.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_211014_218c6f7d-9fc4-45ad-a9f2-cf804ea46de5.mp4"
     },
     {
-      "id": "ee0bff7d", "kind": "video", "made": "ai", "ratio": "9:16",
+      "id": "ee0bff7d",
+      "kind": "video",
+      "made": "ai",
+      "ratio": "9:16",
       "title": "The consultation desk, brought to life",
       "use": "Made from the AI desk picture below. Behind text about consultations and booking in.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260930_204059_ee0bff7d-3ace-49fb-bcb4-c76f40ba1188.mp4"
     },
     {
-      "id": "0fa6830c", "kind": "image", "made": "ai", "ratio": "9:16",
+      "id": "0fa6830c",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "9:16",
       "title": "The consultation desk",
       "use": "An empty desk, open diary, the treatment pen at rest. Consultations, booking, first visits.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_160056_0fa6830c-ceb3-4ed1-948d-4628d69a228f.png"
     },
     {
-      "id": "45bc0d7c", "kind": "image", "made": "ai", "ratio": "3:4",
+      "id": "45bc0d7c",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "3:4",
       "title": "Fan brush on the cheek",
       "use": "A skin close-up, real texture. Peels and facials explainers.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_220740_45bc0d7c-7af0-4ba5-b8e8-eb2be5f0dccf.png"
     },
     {
-      "id": "1d1f04e4", "kind": "image", "made": "ai", "ratio": "3:4",
+      "id": "1d1f04e4",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "3:4",
       "title": "On the couch, cream along the cheekbone",
       "use": "A client mid-facial, eyes closed. The feeling of a treatment, not a result.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_220740_1d1f04e4-64f8-4563-889e-a8615c181e2c.png"
     },
     {
-      "id": "1a7ffd9e", "kind": "image", "made": "ai", "ratio": "9:16",
+      "id": "1a7ffd9e",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "9:16",
       "title": "Gloved hands at the tray",
       "use": "Clean, prepared, careful. Hygiene, prep, 'what happens first'.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_155122_1a7ffd9e-1cf0-469f-9927-91b340685b01.png"
     },
     {
-      "id": "7ea35d69", "kind": "image", "made": "ai", "ratio": "9:16",
+      "id": "7ea35d69",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "9:16",
       "title": "Gloved hands at the tray, lamp light",
       "use": "A second take on the tray, warmer. Same uses.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_160056_7ea35d69-d762-4706-be7c-5d9f5c01444d.png"
     },
     {
-      "id": "858b9c43", "kind": "image", "made": "ai", "ratio": "9:16",
+      "id": "858b9c43",
+      "kind": "image",
+      "made": "ai",
+      "ratio": "9:16",
       "title": "Gloved hands at the tray, macro",
       "use": "A third take, closer on the glass. Same uses.",
       "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ErnVtuGq0uA5LPn5YWAkd2kRlk/hf_20260911_160056_858b9c43-b1ba-458a-83ea-21df1a8dc7af.png"
