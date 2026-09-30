@@ -74,6 +74,8 @@
 .gw-sheet { animation: gw-fade-in 180ms var(--gw-ease-out) both; }
 .gw-sheet__panel { animation: gw-sheet-in 280ms var(--gw-ease-out) both; }
 @keyframes gw-sheet-in { from { transform: translate3d(0, 24px, 0); } to { transform: none; } }
+.gw-sheet__panel--side { animation-name: gw-sheet-side-in; }
+@keyframes gw-sheet-side-in { from { transform: translate3d(-24px, 0, 0); } to { transform: none; } }
 /* Opacity only, deliberately: an animated transform on this wrapper would make
    it the containing block for every position:fixed descendant (Chromium
    keeps compositing it), which pins sheets and dialogs to the document

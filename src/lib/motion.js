@@ -102,3 +102,25 @@ export function useScrollDirection({ threshold = 240 } = {}) {
 
   return state;
 }
+
+/**
+ * The rendered size of a node, kept current with a ResizeObserver. Pass the
+ * ref from useInView (or any ref) so one element carries both.
+ */
+export function useElementSize(ref) {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const read = () => {
+      const r = node.getBoundingClientRect();
+      setSize((prev) => (Math.abs(prev.width - r.width) < 0.5 && Math.abs(prev.height - r.height) < 0.5 ? prev : { width: r.width, height: r.height }));
+    };
+    read();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(read);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [ref]);
+  return size;
+}

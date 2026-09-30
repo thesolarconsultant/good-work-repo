@@ -90,8 +90,10 @@ export default function Nav({ announce = false }) {
   const toggleRef = useRef(null);
   const drawerRef = useRef(null);
 
-  // Retract only once clear of the top, never while a menu is open.
-  const hidden = !open && openId == null && past && direction === "down";
+  // Retract only once clear of the top, never while a menu is open, and never
+  // on the Library, whose sticky sidebar sits directly under the bar.
+  const pinned = pathname === "/library" || pathname.startsWith("/library/");
+  const hidden = !pinned && !open && openId == null && past && direction === "down";
 
   useEffect(() => {
     setOpen(false);

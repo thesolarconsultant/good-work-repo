@@ -1,26 +1,32 @@
 import { useCallback, useDeferredValue, useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
-import PageHeader from "../components/PageHeader";
-import Reveal from "../components/Reveal";
 import Button from "../components/Button";
 import Price from "../components/Price";
+import BuyButton from "../components/BuyButton";
+import LibraryLayout from "../components/LibraryLayout";
 import LibraryFilters from "../components/LibraryFilters";
 import LibraryGrid, { LibrarySkeleton } from "../components/LibraryGrid";
 import LibraryCard from "../components/LibraryCard";
-import { ITEMS, FEATURED, RECENT, filterItems, countBy, CATEGORY_NAME } from "../data/library";
-import { OFFER, LICENCE_PRINCIPLES } from "../data/offers";
+import { ITEMS, FEATURED, LIBRARY_GROUPS, TEMPLATES, filterItems, countBy, CATEGORY_NAME } from "../data/library";
+import { OFFER, LICENCE_PRINCIPLES, UPDATE_PERIOD_MONTHS } from "../data/offers";
 import { itemList } from "../lib/schema";
 import { track, EVENTS } from "../lib/analytics";
-import BuyButton from "../components/BuyButton";
 import { useSession } from "../lib/auth";
-import { Link } from "react-router-dom";
+import { gbp, longDate } from "../lib/format";
+import { SITE_URL } from "../lib/site";
+import CATALOGUE from "../data/libraryCatalogue.json";
 
 const KEYS = ["q", "category", "tier", "type", "stack"];
+const COMPONENTS = CATALOGUE.length;
+const UPDATED = CATALOGUE.reduce((d, i) => (i.updated > d ? i.updated : d), "");
+const GROUP_LIMIT = 6;
 
 export default function Library() {
   const session = useSession();
-  const owns = session.status === "authenticated" && session.entitlements.some((e) => e.productId === "library");
+  const owns = session.status === "authenticated" && session.entitlements.some((e) => e.productId === "library" || e.productId === "studio");
+  const download = owns ? session.downloads.find((d) => d.product === "library") : null;
+
   const [params, setParams] = useSearchParams();
   const filters = useMemo(
     () => ({ q: params.get("q") || "", category: params.get("category") || "", tier: params.get("tier") || "", kind: params.get("type") || "", stack: params.get("stack") || "" }),
@@ -32,17 +38,15 @@ export default function Library() {
   const anyFilter = KEYS.some((k) => params.get(k));
 
   // Counts reflect the other active filters, so a chip never promises items
-  // that the current search would then hide.
+  // the current search would then hide.
   const counts = useMemo(() => {
-    const base = filterItems(ITEMS, { ...deferred, category: "", tier: "", kind: "" });
+    const base = filterItems(ITEMS, { ...deferred, category: "", kind: "" });
+    const kindPool = filterItems(base, { category: deferred.category });
+    const kinds = countBy(kindPool, "kind");
     return {
-      category: countBy(filterItems(base, { tier: deferred.tier, kind: deferred.kind }), "category"),
-      tier: countBy(filterItems(base, { category: deferred.category, kind: deferred.kind }), "tier"),
-      kind: (() => {
-        const pool = filterItems(base, { category: deferred.category, tier: deferred.tier });
-        const c = countBy(pool, "kind");
-        return { ...c, component: (c.component || 0) + (c.section || 0) };
-      })(),
+      all: kindPool.length,
+      category: countBy(filterItems(base, { kind: deferred.kind }), "category"),
+      kind: { ...kinds, component: (kinds.component || 0) + (kinds.section || 0) },
     };
   }, [deferred]);
 
@@ -66,163 +70,227 @@ export default function Library() {
     }
   }, [filters.q]);
 
-  const title = filters.category ? `${CATEGORY_NAME[filters.category]} — Goodwork Library` : filters.kind === "template" ? "Website templates with source code" : filters.kind === "component" ? "Website component library" : "Goodwork Library";
+  const title = filters.category
+    ? `${CATEGORY_NAME[filters.category]} — Goodwork Library`
+    : filters.kind === "template"
+      ? "Website templates with source code"
+      : filters.kind === "component"
+        ? "Website component library"
+        : "Goodwork Library";
 
   return (
     <>
       <Seo
         title={title}
         description="Browse the Goodwork Library: a website component library and quick-launch templates with responsive source code and live, sandboxed previews. One-time access, commercial use for finished client sites."
-        schema={itemList("Goodwork Library", "/library", items.slice(0, 50).map((i) => ({ name: i.name, url: `https://goodwork.agency/library/${i.slug}` })))}
+        schema={itemList("Goodwork Library", "/library", items.slice(0, 50).map((i) => ({ name: i.name, url: `${SITE_URL}/library/${i.slug}` })))}
       />
 
-      <PageHeader
-        crumbs={[{ label: "Home", to: "/" }, { label: "Library" }]}
-        eyebrow="Goodwork Library"
-        lines={["Production-ready code,", "previewed live."]}
-        lead="Complete websites, individual sections and reusable business tools. Every component here renders in a sandboxed preview from the same code you receive. Filter it, open one, read what's included."
-        aside={
-          <div className="gw-card" style={{ minWidth: 280 }}>
-            <p className="gw-eyebrow">Library access</p>
-            <div className="gw-mt-2">
+      <LibraryLayout>
+        <header className="gw-docs-head">
+          <nav aria-label="Breadcrumb">
+            <ol className="gw-crumbs">
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <span aria-current="page">Library</span>
+              </li>
+            </ol>
+          </nav>
+          <h1 className="gw-docs-title">Goodwork Library</h1>
+          <p className="gw-docs-lead">
+            {COMPONENTS} production-ready components and sections, the paste-and-go starter, and the Studio systems. Every preview here runs the exact code you download: copy it into
+            any page, point it at your brand, ship.
+          </p>
+          <ul className="gw-docs-head__meta">
+            <li>
               <Price amount={OFFER.library.price} billing="one-time" />
-            </div>
-            <p className="gw-small gw-muted gw-mt-2">{ITEMS.filter((i) => i.tier === "library" && i.status === "available").length} live items today, updates for 12 months, commercial use for finished sites.</p>
-            <div className="gw-actions gw-mt-3">
-              <Button href="#access" size="sm" arrow>
-                Get Library Access
-              </Button>
-              <Button to="/studio" variant="ghost" size="sm">
-                Compare Studio
-              </Button>
-            </div>
+            </li>
+            <li>{COMPONENTS} components</li>
+            <li>Updated {longDate(UPDATED)}</li>
+            <li>{UPDATE_PERIOD_MONTHS} months of updates</li>
+          </ul>
+          <div className="gw-actions gw-mt-3">
+            {owns ? (
+              <>
+                {download && (
+                  <Button href={download.href} download={download.filename} onClick={() => track(EVENTS.DOWNLOAD, { product: "library", from: "library" })}>
+                    Download the bundle <span aria-hidden="true">↓</span>
+                  </Button>
+                )}
+                <Button to="/dashboard" variant="secondary">
+                  Your dashboard
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button href="#access" arrow>
+                  Get Library Access
+                </Button>
+                <Button to="/login?next=/library" variant="secondary">
+                  Sign in
+                </Button>
+              </>
+            )}
           </div>
-        }
-      />
+        </header>
 
-      <section className="gw-section--tight">
-        <div className="gw-container">
-          <LibraryFilters filters={filters} setFilter={setFilter} reset={reset} counts={counts} total={ITEMS.length} shown={items.length} />
-        </div>
-      </section>
+        <LibraryFilters filters={filters} setFilter={setFilter} reset={reset} counts={counts} total={ITEMS.length} shown={items.length} />
 
-      {!anyFilter && (
-        <>
-          <section className="gw-section--tight" aria-labelledby="featured">
-            <div className="gw-container">
-              <Reveal variant="rise">
-                <p className="gw-eyebrow gw-eyebrow--accent">Featured</p>
-                <h2 className="gw-h3 gw-mt-1" id="featured">
-                  Where most people start
-                </h2>
-              </Reveal>
-              <div className="gw-lib-grid gw-mt-3">
-                {FEATURED.slice(0, 6).map((it, i) => (
-                  <LibraryCard key={it.id} item={it} eager={i < 3} />
-                ))}
-              </div>
-            </div>
-          </section>
-          <section className="gw-section--tight" aria-labelledby="recent">
-            <div className="gw-container">
-              <Reveal variant="rise">
-                <p className="gw-eyebrow gw-eyebrow--accent">Recently added</p>
-                <h2 className="gw-h3 gw-mt-1" id="recent">
-                  Latest releases
-                </h2>
-              </Reveal>
-              <div className="gw-lib-grid gw-mt-3">
-                {RECENT.slice(0, 3).map((it) => (
-                  <LibraryCard key={it.id} item={it} />
-                ))}
-              </div>
-            </div>
-          </section>
-        </>
-      )}
-
-      <section className="gw-section--tight" aria-labelledby="all-items">
-        <div className="gw-container">
-          <Reveal variant="rise">
-            <p className="gw-eyebrow gw-eyebrow--accent">{anyFilter ? "Results" : "Everything"}</p>
-            <h2 className="gw-h3 gw-mt-1" id="all-items" aria-live="polite">
-              {items.length} {items.length === 1 ? "item" : "items"}
+        {anyFilter ? (
+          <section className="gw-docs-section" aria-labelledby="results">
+            <h2 className="gw-docs-h2" id="results" aria-live="polite">
+              {items.length} {items.length === 1 ? "result" : "results"}
               {filters.category ? ` in ${CATEGORY_NAME[filters.category]}` : ""}
             </h2>
-          </Reveal>
-          <div className="gw-mt-3">{stale ? <LibrarySkeleton /> : <LibraryGrid items={items} onReset={reset} />}</div>
-        </div>
-      </section>
+            {stale ? <LibrarySkeleton /> : <LibraryGrid items={items} onReset={reset} />}
+          </section>
+        ) : (
+          <>
+            <Group id="featured" title="Start here" lead="Pieces most sites begin with." items={FEATURED.slice(0, GROUP_LIMIT)} eager />
+            {LIBRARY_GROUPS.map((g) => (g.id === "templates" ? <TemplatesGroup key={g.id} /> : <Group key={g.id} id={g.id} title={g.title} items={g.items} to={g.to} />))}
+          </>
+        )}
 
-      {/* Access: licence and exclusions are read before any payment starts. */}
-      <section className="gw-section gw-light" id="access" aria-labelledby="access-title">
-        <div className="gw-container">
-          <div className="gw-split">
-            <div>
-              <p className="gw-eyebrow gw-eyebrow--accent">Get access</p>
-              <h2 className="gw-h2 gw-mt-2" id="access-title">
-                One payment. Production-ready code.
-              </h2>
-              <p className="gw-lead gw-max gw-mt-3">{OFFER.library.line}</p>
-              <div className="gw-mt-4" style={{ maxWidth: 420 }}>
-                <Price amount={OFFER.library.price} billing="one-time" size="lg" />
-                <div className="gw-mt-3">
-                  {owns ? (
-                    <Button to="/dashboard" size="lg" arrow>
-                      Open your dashboard
-                    </Button>
-                  ) : (
-                    <BuyButton productId="library" label={OFFER.library.primaryCta.label} />
-                  )}
-                </div>
-                <p className="gw-small gw-muted gw-mt-2">
-                  {owns ? "You already have Library access." : <>Already bought it? <Link className="gw-link" to="/login">Sign in</Link>.</>} Want the systems too?{" "}
-                  <Link className="gw-link" to="/studio">
-                    Goodwork Studio is £888 one-time
-                  </Link>
-                  .
-                </p>
-              </div>
-            </div>
-            <div style={{ display: "grid", gap: "1rem" }}>
-              <div className="gw-card">
-                <h3 className="gw-h4">What you get</h3>
-                <ul className="gw-list gw-list--tight gw-mt-2">
-                  {OFFER.library.includes.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="gw-card gw-card--flat">
-                <h3 className="gw-h4">Not included</h3>
-                <ul className="gw-list gw-list--x gw-list--tight gw-mt-2">
-                  {OFFER.library.excludes.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="gw-card gw-card--flat">
-                <h3 className="gw-h4">The licence in one breath</h3>
-                <ul className="gw-list gw-list--tight gw-mt-2">
-                  {LICENCE_PRINCIPLES.slice(0, 5).map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-                <p className="gw-small gw-mt-2">
-                  <Link className="gw-link" to="/legal/licence">
-                    Read the full commercial licence
-                  </Link>{" "}
-                  and the{" "}
-                  <Link className="gw-link" to="/legal/refunds">
-                    refund policy
-                  </Link>{" "}
-                  before you buy.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <AccessPanel owns={owns} />
+      </LibraryLayout>
     </>
+  );
+}
+
+function Group({ id, title, lead, items, to, eager = false }) {
+  const shown = items.slice(0, GROUP_LIMIT);
+  return (
+    <section className="gw-docs-section" aria-labelledby={`group-${id}`}>
+      <div className="gw-docs-section__head">
+        <h2 className="gw-docs-h2" id={`group-${id}`}>
+          {title}
+          <span className="gw-docs-h2__n">{items.length}</span>
+        </h2>
+        {to && items.length > shown.length && (
+          <Link className="gw-more" to={to}>
+            All {items.length} <span aria-hidden="true">→</span>
+          </Link>
+        )}
+      </div>
+      {lead && <p className="gw-docs-section__lead">{lead}</p>}
+      <div className="gw-lib-grid">
+        {shown.map((it, i) => (
+          <LibraryCard key={it.id} item={it} eager={eager && i < 3} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// The live starter, and the planned templates as a short honest list rather
+// than a row of empty cards.
+function TemplatesGroup() {
+  const live = TEMPLATES.filter((t) => t.status === "available");
+  const planned = TEMPLATES.filter((t) => t.status === "coming-soon");
+  return (
+    <section className="gw-docs-section" aria-labelledby="group-templates">
+      <div className="gw-docs-section__head">
+        <h2 className="gw-docs-h2" id="group-templates">
+          Templates
+          <span className="gw-docs-h2__n">{TEMPLATES.length}</span>
+        </h2>
+      </div>
+      <div className="gw-lib-grid">
+        {live.map((t) => (
+          <LibraryCard key={t.id} item={t} />
+        ))}
+        {planned.length > 0 && (
+          <div className="gw-planned">
+            <p className="gw-eyebrow">On the way</p>
+            <p className="gw-h4 gw-mt-1">Complete templates in progress</p>
+            <p className="gw-small gw-body gw-mt-1">Built from the sections on this page. Not in the bundle yet, and not counted in what you pay for today.</p>
+            <ul className="gw-planned__list">
+              {planned.map((t) => (
+                <li key={t.id}>
+                  <Link to={`/library/${t.slug}`}>{t.name}</Link>
+                  <span className="gw-badge gw-badge--warn">Coming soon</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function AccessPanel({ owns }) {
+  return (
+    <section className="gw-docs-access gw-light" id="access" aria-labelledby="access-title">
+      <div className="gw-docs-access__main">
+        <p className="gw-eyebrow gw-eyebrow--accent">Get access</p>
+        <h2 className="gw-h2 gw-mt-2" id="access-title">
+          One payment. Production-ready code.
+        </h2>
+        <p className="gw-body gw-mt-2">{OFFER.library.line}</p>
+        <div className="gw-mt-3">
+          <Price amount={OFFER.library.price} billing="one-time" size="lg" />
+        </div>
+        <div className="gw-mt-3">
+          {owns ? (
+            <Button to="/dashboard" size="lg" arrow>
+              Open your dashboard
+            </Button>
+          ) : (
+            <BuyButton productId="library" label={OFFER.library.primaryCta.label} />
+          )}
+        </div>
+        <p className="gw-small gw-muted gw-mt-2">
+          {owns ? (
+            "You already have Library access."
+          ) : (
+            <>
+              Already bought it? <Link className="gw-link" to="/login?next=/library">Sign in</Link>.
+            </>
+          )}{" "}
+          Want the systems too?{" "}
+          <Link className="gw-link" to="/studio">
+            Goodwork Studio is {gbp(OFFER.studio.price)} one-time
+          </Link>
+          .
+        </p>
+      </div>
+      <div className="gw-docs-access__lists">
+        <div>
+          <h3 className="gw-h4">What you get</h3>
+          <ul className="gw-list gw-list--tight gw-mt-2">
+            {OFFER.library.includes.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="gw-h4">Not included</h3>
+          <ul className="gw-list gw-list--x gw-list--tight gw-mt-2">
+            {OFFER.library.excludes.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+          <h3 className="gw-h4 gw-mt-3">The licence in one breath</h3>
+          <ul className="gw-list gw-list--tight gw-mt-2">
+            {LICENCE_PRINCIPLES.slice(0, 4).map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+          <p className="gw-small gw-mt-2">
+            <Link className="gw-link" to="/legal/licence">
+              Read the full commercial licence
+            </Link>{" "}
+            and the{" "}
+            <Link className="gw-link" to="/legal/refunds">
+              refund policy
+            </Link>{" "}
+            before you buy.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }

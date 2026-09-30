@@ -1,68 +1,50 @@
 import { Link } from "react-router-dom";
-import LibraryPreview from "./LibraryPreview";
-import { CATEGORY_NAME, STATUS_LABEL } from "../data/library";
+import LibraryPreview, { PagePreview } from "./LibraryPreview";
+import { SystemArt, PlannedArt } from "./LibraryArt";
+import { CATEGORY_NAME, isLive, stackLabel } from "../data/library";
 import { track, EVENTS } from "../lib/analytics";
 
-function TierBadge({ tier }) {
-  return <span className={`gw-badge gw-badge--${tier}`}>Included in {tier === "studio" ? "Studio" : "Library"}</span>;
-}
-
 /**
- * One item in the grid. Live items mount a sandboxed preview as they scroll
- * into view; systems show a real screenshot where one exists; planned items
- * say "Coming soon" and never grow a download button.
+ * One item in a grid: the live preview on top, the name and one line under
+ * it. The preview stays interactive (hover effects work in the grid); the
+ * text area is the link. Only exceptions get a badge: Studio items and
+ * planned ones.
  */
 export default function LibraryCard({ item, eager = false }) {
-  const detailTo = `/library/${item.slug}`;
-  const live = item.status === "available" && (item.kind === "component" || item.kind === "section");
+  const to = `/library/${item.slug}`;
+  const live = isLive(item);
+  const flag = item.status === "coming-soon" ? { label: "Coming soon", tone: "warn" } : item.tier === "studio" ? { label: "Studio", tone: "studio" } : null;
 
   return (
     <article className="gw-lib-card" aria-labelledby={`lib-${item.id}`}>
       <div className="gw-lib-card__preview">
-        <div className="gw-lib-card__badges">
-          <TierBadge tier={item.tier} />
-          <span className={`gw-badge${item.status === "coming-soon" ? " gw-badge--warn" : item.status === "preview" ? " gw-badge--muted" : " gw-badge--ok"}`}>
-            {STATUS_LABEL[item.status]}
-          </span>
-        </div>
         {live ? (
           <LibraryPreview id={item.id} name={item.name} eager={eager} />
+        ) : item.href && item.status === "available" ? (
+          <PagePreview src={item.href} name={item.name} eager={eager} />
         ) : item.image ? (
-          <img src={item.image} alt={`${item.name} screenshot`} loading="lazy" decoding="async" />
+          <img src={item.image} alt="" loading="lazy" decoding="async" />
+        ) : item.kind === "system" ? (
+          <SystemArt item={item} />
         ) : (
-          <div className="gw-lib-card__ph">{item.kind === "template" ? "Template" : "System"}</div>
+          <PlannedArt />
         )}
+        {flag && <span className={`gw-badge gw-badge--${flag.tone} gw-lib-card__flag`}>{flag.label}</span>}
       </div>
       <div className="gw-lib-card__body">
         <h3 className="gw-lib-card__name" id={`lib-${item.id}`}>
-          <Link to={detailTo} onClick={() => track(EVENTS.LIBRARY_DETAIL, { item: item.slug, from: "card" })}>
+          <Link to={to} onClick={() => track(EVENTS.LIBRARY_DETAIL, { item: item.slug, from: "card" })}>
             {item.name}
           </Link>
+          <span className="gw-lib-card__go" aria-hidden="true">
+            →
+          </span>
         </h3>
         <p className="gw-lib-card__desc">{item.description}</p>
-        <div className="gw-lib-card__meta">
+        <p className="gw-lib-card__meta">
           <span>{CATEGORY_NAME[item.category]}</span>
-          <span>{item.stack.slice(0, 3).join(" · ")}</span>
-          <span>v{item.version}</span>
-        </div>
-      </div>
-      <div className="gw-lib-card__actions">
-        {item.status === "available" && item.href ? (
-          <a className="gw-btn gw-btn--secondary gw-btn--sm" href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => track(EVENTS.LIBRARY_PREVIEW, { item: item.slug })}>
-            Live preview
-          </a>
-        ) : live ? (
-          <Link className="gw-btn gw-btn--secondary gw-btn--sm" to={`${detailTo}#preview`} onClick={() => track(EVENTS.LIBRARY_PREVIEW, { item: item.slug })}>
-            Live preview
-          </Link>
-        ) : (
-          <span className="gw-btn gw-btn--secondary gw-btn--sm" aria-disabled="true">
-            {item.status === "coming-soon" ? "Coming soon" : "Preview"}
-          </span>
-        )}
-        <Link className="gw-btn gw-btn--ghost gw-btn--sm" to={detailTo} onClick={() => track(EVENTS.LIBRARY_DETAIL, { item: item.slug, from: "button" })}>
-          View details →
-        </Link>
+          <span>{stackLabel(item)}</span>
+        </p>
       </div>
     </article>
   );

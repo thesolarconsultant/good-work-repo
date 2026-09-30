@@ -49,7 +49,8 @@ src/
   data/showcase.js      Real projects (built on data/caseStudies.js)
   data/learn.js, docs.js, legal.js, founder.js
   lib/                  format (GBP), schema (JSON-LD), analytics (provider-agnostic
-                        intent events), auth (session store), forms (validation)
+                        intent events), auth (session store), forms (validation),
+                        previewDoc (the sandboxed preview document and its fit script)
   components/           Nav, Footer, EnquiryForm, BuyButton, Library*, OfferLadder,
                         ComparisonTable, ManagedPlans, SystemJourney, HeroStack …
   pages/                One file per route
@@ -164,6 +165,16 @@ The Library catalogue is generated. Add a component to
 `library-src/components.txt` and run `npm run library`; map it to a browsing
 category in `scripts/build-library-catalogue.mjs` if the default mapping is
 wrong.
+
+The Library pages are laid out like component-library documentation:
+`LibraryLayout` gives every page a sticky sidebar (every group and item, a
+side sheet on phones) and, on item pages, a right-hand rail with "On this
+page" and the access card. Item pages carry Preview/Code tabs, numbered
+installation steps, a brand-tokens table read from the snippet itself,
+details, licence, related items and a previous/next pager. Previews render
+each snippet at its real size; the fit script in `src/lib/previewDoc.js`
+centres it and scales down anything bigger than its frame, so nothing is
+cut off. The offline gallery in the customer bundle uses the same document.
 
 ## Motion and accessibility
 
