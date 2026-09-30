@@ -27,7 +27,7 @@ function sameKey(a, b) {
 
 // Fields kept from a service. Anything staff-related (who is disqualified,
 // per-staff prices) is left out on purpose.
-const SERVICE_KEYS = ["serviceId", "categoryId", "name", "price", "duration", "gapTime", "internetEnabled", "internetDescription", "description", "archived", "deleted"];
+const SERVICE_KEYS = ["serviceId", "categoryId", "categoryName", "name", "internetName", "price", "duration", "gapTime", "internetEnabled", "internetDescription", "description", "archived", "deleted"];
 const pick = (o, keys) => Object.fromEntries(keys.filter((k) => k in o).map((k) => [k, o[k]]));
 
 async function all(path, key, auth) {
