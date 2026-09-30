@@ -66,3 +66,13 @@ Tick each item off the table above as it is done and note the date.
 - **Questions for Jess:** who set the domain up, and whose name is it registered in? Which of the two domains is the main one (the site says .co)?
 - **Getting in:** only the account holder can act at the registrar. Ask them for delegate access, or to add the records we give them. If the
   domain is in someone else's name, get that person's written OK. Ask the registrant to move it into the salon's name if it isn't.
+
+## Replies from Jess (2026-09-30)
+- **Meta Business:** already verified. Still to do: WhatsApp Business account in the portfolio (new number, display name approval), and
+  partner access for Good Work.
+- **L3 Matrix:** only one admin login exists; everything else is student access. Decision: Jess keeps admin. Ask for a **student account**
+  for Good Work to see the learner journey; anything admin-side, Jess shows us on screen.
+- **Phorest:** Jess will add a Good Work user when she is in the salon.
+- **Website and domain:** Jess holds full access herself (no separate web person). Likely GoDaddy for the domain and Wix for the site.
+  Ask her to invite Good Work: GoDaddy "Delegate access" and a Wix site collaborator. Don't touch the Microsoft 365 email records.
+- **Google Drive:** Jess setting it up today.
