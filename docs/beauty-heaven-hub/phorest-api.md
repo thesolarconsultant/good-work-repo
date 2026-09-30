@@ -56,6 +56,22 @@ Bookings can be `ACTIVE` or `RESERVED`. A reserved booking holds a slot until ac
 - **The voice agent and chatbot are blocked on access.** Ask for it now.
 - **Some questions may answer themselves.** Durations, treatment descriptions and team bios may already be in Phorest. Check before asking again.
 
+
+## Access granted (2026-09-30)
+Phorest support issued Third Party API credentials to Jess. **Recorded here without the password. Never commit it.**
+- **Cost: none.** Phorest: "We don't currently charge anything for API usage."
+- **Base URL:** `https://platform.phorest.com/third-party-api-server/api/business/{businessId}/...` (not the `api-gateway-eu` host
+  in the older docs above). OpenAPI spec for Postman: `https://platform.phorest.com/third-party-api-server/v3/api-docs`.
+- **Business ID:** `UzAc-lFUAXP6Ds5cK_hEmg`. Branch IDs come from `GET .../branch`.
+- **Auth:** HTTP Basic, username in the form `global/<the account email>`. The account email is `jessica@beautyheaven.co` (one of the
+  three addresses in use; confirm it is the one they want kept).
+- **Where the credentials live:** a password manager, and as sensitive environment variables on the Vercel project
+  (`PHOREST_USERNAME`, `PHOREST_PASSWORD`, `PHOREST_BUSINESS_ID`). Not in the repo, not in chat.
+- **Handling:** the password was pasted into a chat on 2026-09-30. Ask Phorest to reset it once it is stored properly.
+- **Still to ask Phorest:** whether access can be limited (staff payroll and personal fields), and whether an event feed exists.
+- **Live data:** there is no sandbox. First calls are read-only (branch, services, staff, categories). No client records are pulled
+  until the data agreement is signed.
+
 ## Email to send (from the address Phorest holds for the business)
 
 > **Subject:** API access request: Beauty Heaven Hub, account [ACCOUNT NUMBER]
