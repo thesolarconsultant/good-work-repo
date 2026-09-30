@@ -11,6 +11,7 @@ Print this. It is for you only.
 - **Wix is not being used.** No access needed.
 
 ## Bring
+- The **booking rules sheet** (`booking-rules-sheet.md`), one per practitioner, or send it on WhatsApp for each of them to fill in.
 - This pack and the interview script, printed.
 - Laptop and charger. A phone charger for them (login codes).
 - **Good Work's Meta Business ID** (Business Settings > Business info), so Jess can add you as a partner.
@@ -26,12 +27,12 @@ Ask how long they really have, and plan to that.
 | 2 | **How the practitioners work:** C1 to C10, all of them. Ask neutrally, note disagreements by name. | 15 min |
 | | **Break, 30 minutes.** Before it, have them copy the ChatGPT blocks and send them to you. Write down what stood out. | |
 | 3 | **Access setup** (list below). WhatsApp first. | 25 min |
-| 4 | **Bookings part:** B1 to B7, B9, B10, B12, B13, B14. (B8 is covered by the ten client questions, B11 by the sent request.) | 20 to 25 min |
+| 4 | **Bookings part:** B1 to B7, **B16 booking rules for every practitioner (must cover, use the booking rules sheet)**, B9, B10, B12, B13, B14. (B8 is covered by the ten client questions, B11 by the sent request.) | 30 min |
 | 5 | **Close:** hand over the idea sheet, agree the pillars call (Friday or Monday, their choice), ask the Academy question. | 5 min |
 
 Leave for them at home, or for us to draft and them to approve: A4, A6, A8, A10, A12.
 
-**If time runs short:** WhatsApp setup, then Part C, then the phone provider, forwarding, consultation rules and call recording.
+**If time runs short:** booking rules (B16), WhatsApp setup, then Part C, then the phone provider, forwarding, consultation rules and call recording.
 Everything else can go to a short call.
 
 ## Access setup (tick and date)
@@ -50,6 +51,9 @@ Jess or Hollie do every click on their own device. You watch. Never take a passw
 - [ ] Google Business Profile: Good Work invited as Manager
 - [ ] Phone provider: who it is, and who can ask them to forward unanswered and out-of-hours calls
 - [ ] Consultation app: its name and what they pay
+- [ ] **Test booking through the website** (only once B16 is answered, and with Jess's OK and the data agreement signed): Good Work switches
+  booking on, you book a dummy client ("Good Work Test") into a quiet slot on your phone, Jess checks it appears in Phorest, you note what
+  confirmation arrives (text, email, none), and try booking the same slot again, which must be refused. Then cancel it.
 
 ## Ask to see
 - The ten questions clients ask most (both of them).

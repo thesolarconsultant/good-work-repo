@@ -1,0 +1,19 @@
+{
+  "_note": "The salon's booking rules. Every time the website offers, and every booking it makes, goes through these (api/_booking.js), and the WhatsApp and phone assistants will use the same file. People are listed by their first name as it appears in Phorest. Times are London time, 24-hour. Leave a rule out to have no limit. Rebuild after changing: node sites/beauty-heaven-hub/build.mjs",
+  "_help": {
+    "confirmOnSite": "true lets clients confirm on the website. Also needs BOOKING_LIVE=on in Vercel. Keep false until the data agreement is signed and a dummy-client test has passed.",
+    "minNoticeHours": "no bookings sooner than this many hours from now",
+    "maxDaysAhead": "no bookings further ahead than this",
+    "everyone": "rules for all practitioners: startFrom (earliest start), finishBy (treatment must end by), days (e.g. [\"Tue\",\"Wed\"])",
+    "people": "the same rules for one person, overriding everyone. byDay sets a different start or finish for one weekday, e.g. {\"Thu\": {\"finishBy\": \"20:00\"}}",
+    "deposits": "treatment sections (titles as on the website) that need a deposit, e.g. {\"Semi-permanent make-up\": true}. Phorest's deposit settings set the amount.",
+    "teamOnly": "treatment sections the website never confirms itself (it offers WhatsApp or a call instead). Consultation-first and prescription-only sections are always team-only."
+  },
+  "confirmOnSite": false,
+  "minNoticeHours": 2,
+  "maxDaysAhead": 90,
+  "everyone": {},
+  "people": {},
+  "deposits": {},
+  "teamOnly": []
+}

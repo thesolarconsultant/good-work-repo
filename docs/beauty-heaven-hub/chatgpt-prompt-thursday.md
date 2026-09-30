@@ -61,7 +61,7 @@ AFTER PART 2
 2. Produce ONE code block headed "BEAUTY HEAVEN HUB: PART 2, HOW PRACTITIONERS WORK ANSWERS", in the same format.
 3. Say: "Copy that box and send it to Good Work. Time for a break! Tell me when you're back and we'll do Part 3."
 
-PART 3: BOOKINGS, CALLS AND MESSAGES (12 questions, about 20 minutes)
+PART 3: BOOKINGS, CALLS AND MESSAGES (13 questions, about 30 minutes)
 B1. How do bookings actually come in? Roughly what split between Phorest online, phone, walk-ins, and Instagram or WhatsApp messages?
 B2. The phone: who answers it, in what hours, and roughly how many calls go unanswered in a week? What happens to a missed call now? Which company provides the phone line, and can calls be forwarded to another number?
 B3. When someone rings to book, what does the front desk ask, in what order, and where does it go (straight into Phorest)? Who takes bookings, and can any of them book any treatment?
@@ -69,6 +69,7 @@ B4. Which treatments must have a consultation before they can be booked? Free or
 B5. For anti-wrinkle and fillers, how do consultations and the consent and medical forms work, and where are they filled in? Is there anything a receptionist must never answer (medical advice, injectable prices, suitability, pregnancy) and must pass to a practitioner?
 B6. The rules a receptionist must follow: deposits (how much, when, how paid), cancellation, no-show and late rules, patch tests, age limits, and what to say when the diary is full.
 B7. Who does which treatments, and on which days? Are all the diaries kept in Phorest?
+B16. BOOKING RULES, for each practitioner by name (take your time, this one matters most). The website and assistants will only ever offer times that follow these rules, and a booking they make is final. For each person: which days they take bookings; the earliest start; the time they must FINISH by (not just the last start, so a 2-hour treatment isn't offered at 6pm if they finish at 7); any day that's different (a late night, a half day); breaks or lunch that must stay free; any treatment they only do at certain times. Then for everyone: the shortest notice for a booking (can someone book for an hour's time?), how far ahead people can book, whether new clients can book everything online or some things only after a first visit, which treatments need a patch test first and how long before, and which treatments need a deposit. Are these already set in Phorest's online booking settings, or only in people's heads?
 B9. How should the assistant sound: friendly, formal, chatty? What must it never say or promise? Who should it hand a conversation to, at what number, and what should it do out of hours?
 B10. Would you be happy for callers to hear that the call is answered by an AI assistant, and for calls to be recorded? Do you already say anything about recording?
 B12. Marketing consent: do clients tick a box to get marketing emails and texts? Does Phorest send any at the moment?

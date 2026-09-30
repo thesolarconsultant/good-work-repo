@@ -1,9 +1,10 @@
 /* Beauty Heaven Hub: the booking page.
    Treatments and prices come from /book/services.json (written by build.mjs
    from Phorest); free times come live from /api/availability/. Four steps:
-   treatment, who, when, confirm. Confirming on the site is switched off
-   (services.json confirmOnSite) until it has been tested, so the last step
-   offers WhatsApp or Phorest, and nothing typed here is sent anywhere. */
+   treatment, who, when, confirm. Confirming on the site only appears when
+   data/booking-rules.json turns it on (services.json confirmOnSite), and only
+   for treatments a client may book alone; otherwise the last step offers
+   WhatsApp or Phorest and nothing typed here is sent anywhere. */
 (function () {
   "use strict";
   var root = document.getElementById("booker");
@@ -189,7 +190,7 @@
         : firstOpen
           ? '<p class="small">No free times on this day. Try another day.</p>'
           : '<p class="small">No free times this week. <button type="button" class="blink" data-act="week" data-id="1">Try next week ›</button></p>';
-      body = tabs + grid;
+      body = (form.error && !state.slot ? '<p class="note berror" role="alert">' + esc(form.error) + "</p>" : "") + tabs + grid;
     }
     return step(3, "Pick a time", nav + body, false);
   }
@@ -216,10 +217,12 @@
     if (found.cat.patch) notes += '<p class="note">A patch test is needed before your first treatment.</p>';
     var msg = "Hi Beauty Heaven, I'd like to book " + it.name + (who ? " with " + who : "") + " on " + when + ". My name is ";
     var body = '<dl class="bsum">' + rows.map(function (r) { return "<div><dt class=\"micro\">" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>" + notes;
-    if (data.confirmOnSite) {
-      body += '<p class="small">Confirming on this page is being switched on.</p>';
-    } else {
+    if (state.done) return step(4, "Booked", doneMessage(found, when, who), true);
+    if (data.confirmOnSite && it.confirm) return step(4, "Check and confirm", body + bookForm(found), false);
+    if (!data.confirmOnSite) {
       body += '<p class="tbc">Draft: confirming right here switches on once it has been tested. Until then, these buttons finish the booking.</p>';
+    } else {
+      body += '<p class="small">We book this one with you directly, so we can make sure it\'s right for you.</p>';
     }
     body += '<div class="actions">' +
       (data.whatsapp ? '<a class="btn btn--fill" href="https://wa.me/' + data.whatsapp + "?text=" + encodeURIComponent(msg) + '"><span>Request this time on WhatsApp</span> <span class="arr">→</span></a>' : "") +
@@ -227,6 +230,79 @@
       '<p class="small">By booking you agree to our <a href="/policies/">booking policies</a>.</p>';
     return step(4, "Check and confirm", body, false);
   }
+
+  // ---------------------------------------------------- confirm on site --
+  var form = { firstName: "", lastName: "", mobile: "", email: "", marketing: false, terms: false, busy: false, error: "", openedAt: 0 };
+  function field(id, label, type, ac, extra) {
+    return '<label class="bfield"><span class="micro">' + label + '</span><input id="bf-' + id + '" name="' + id + '" type="' + type + '" autocomplete="' + ac + '" value="' + esc(form[id]) + '"' + (extra || "") + "></label>";
+  }
+  function bookForm(found) {
+    if (!form.openedAt) form.openedAt = Date.now();
+    return '<form class="bform" id="bform" novalidate>' +
+      '<div class="bform__row">' + field("firstName", "First name", "text", "given-name", " required") + field("lastName", "Last name", "text", "family-name", " required") + "</div>" +
+      '<div class="bform__row">' + field("mobile", "Mobile", "tel", "tel", ' inputmode="tel" required') + field("email", "Email (optional)", "email", "email", "") + "</div>" +
+      '<label class="bhp" aria-hidden="true">Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label>' +
+      '<label class="bcheck"><input type="checkbox" id="bf-terms"' + (form.terms ? " checked" : "") + '> <span>I agree to the <a href="/policies/" target="_blank">booking policies</a>' + (found.cat.deposit ? ", and that a deposit secures this booking" : "") + ".</span></label>" +
+      '<label class="bcheck"><input type="checkbox" id="bf-marketing"' + (form.marketing ? " checked" : "") + '> <span>Send me offers and news now and then (optional).</span></label>' +
+      (form.error ? '<p class="note berror" role="alert">' + esc(form.error) + "</p>" : "") +
+      '<div class="actions"><button class="btn btn--fill" type="submit"' + (form.busy ? " disabled" : "") + "><span>" + (form.busy ? "Booking…" : found.cat.deposit ? "Continue to deposit" : "Confirm booking") + '</span> <span class="arr">→</span></button></div>' +
+      '<p class="small">Your details go straight into our booking system, and are used as our <a href="/privacy/">privacy notice</a> explains.</p></form>';
+  }
+  function doneMessage(found, when, who) {
+    return '<p class="lede">You\'re booked in for ' + esc(found.item.name) + (who ? " with " + esc(who) : "") + " on " + esc(when) + ".</p>" +
+      '<p>' + "It's in our diary. Need to change it? " + (data.whatsapp ? '<a href="https://wa.me/' + data.whatsapp + '">Message us on WhatsApp</a> or call ' : "Call ") + '<a href="tel:' + esc(data.phoneHref || "") + '">' + esc(data.phone || "us") + "</a>.</p>" +
+      (found.cat.patch ? '<p class="note">A patch test is needed before your first treatment. We\'ll be in touch to arrange it.</p>' : "") +
+      '<div class="actions"><a class="btn" href="/"><span>Back to home</span></a></div>';
+  }
+  function submitBooking(f) {
+    var found = findService(state.service);
+    ["firstName", "lastName", "mobile", "email"].forEach(function (k) { form[k] = f.elements[k].value.trim(); });
+    form.terms = document.getElementById("bf-terms").checked;
+    form.marketing = document.getElementById("bf-marketing").checked;
+    if (!form.firstName || !form.lastName) form.error = "Please give your first and last name.";
+    else if (!/^(\+?44|0)7\d{9}$/.test(form.mobile.replace(/[\s()-]/g, ""))) form.error = "Please give a UK mobile number, starting 07.";
+    else if (!form.terms) form.error = "Please tick to agree to the booking policies.";
+    else form.error = "";
+    if (form.error) return render();
+    form.busy = true;
+    render();
+    fetch("/api/book/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ serviceId: found.item.id, staffId: state.slot.staff, start: state.slot.start, firstName: form.firstName, lastName: form.lastName, mobile: form.mobile, email: form.email, marketing: form.marketing, terms: form.terms, openedAt: form.openedAt, website: f.elements.website.value }),
+    })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        form.busy = false;
+        var j = res.j;
+        if (j.status === "deposit" && j.url) { location.href = j.url; return; }
+        if (j.status === "confirmed") { state.done = true; render(); scrollTo(4); return; }
+        if (j.status === "taken") {
+          form.error = "Sorry, someone has just taken that time. Please pick another.";
+          state.slot = null;
+          loadSlots(false);
+          scrollTo(3);
+          return;
+        }
+        form.error = j.error || "Something went wrong. Nothing has been booked. Please try again, or message us.";
+        render();
+      })
+      .catch(function () {
+        form.busy = false;
+        form.error = "We couldn't reach the diary. Nothing has been booked. Please try again, or message us.";
+        render();
+      });
+  }
+  root.addEventListener("submit", function (e) {
+    if (e.target.id !== "bform") return;
+    e.preventDefault();
+    if (!form.busy) submitBooking(e.target);
+  });
+  // keep typed details if the page redraws
+  root.addEventListener("change", function (e) {
+    if (e.target.id === "bf-terms") form.terms = e.target.checked;
+    else if (e.target.id === "bf-marketing") form.marketing = e.target.checked;
+  });
 
   function render() {
     var parts = [stepTreatment()];
@@ -331,11 +407,13 @@
       render();
     } else if (act === "slot") {
       state.slot = { start: b.getAttribute("data-start"), staff: b.getAttribute("data-staff") };
+      form.error = "";
       render();
       scrollTo(4);
     }
   });
   root.addEventListener("input", function (e) {
+    if (e.target.id && e.target.id.indexOf("bf-") === 0 && e.target.id.slice(3) in form) form[e.target.id.slice(3)] = e.target.value;
     if (e.target.id !== "bsearch") return;
     state.search = e.target.value;
     render();

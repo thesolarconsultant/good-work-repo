@@ -266,7 +266,15 @@ Every "Book" button on the site now opens `/book/`, not Phorest's page. Details 
 - **Staff data kept:** first name, last initial when two share a name, and ids. Nothing else.
 - **57 online treatments have nobody set up for online booking** (HIFU 19, massage 13, nails 9, hair 6, lymphatic 5,
   lashes 3, fillers 2). The page offers WhatsApp or a call for those. Ask Jess and Hollie whether someone is missing in Phorest.
-- **Confirming on the site is off** (`confirmOnSite: false`). The last step offers a pre-filled WhatsApp request or Phorest.
+- **Confirming on the site is built (`api/book.js`) and switched off.** Two switches: `confirmOnSite` in
+  `data/booking-rules.json` and `BOOKING_LIVE=on` in Vercel. It re-checks the exact time live, finds the client by mobile and
+  surname (never books into someone else's record) or creates them, holds the slot as `RESERVED`, re-reads that practitioner's day
+  and cancels its own hold if anything overlaps, then activates the booking or returns the deposit link. Consultation-first and
+  prescription-only treatments are never confirmed on the site.
+- **Booking rules** (`data/booking-rules.json`): notice, how far ahead, and for everyone or per person the days, earliest start,
+  finish-by time and per-day exceptions. Every time offered and every booking goes through them. They are collected on Thursday
+  with `booking-rules-sheet.md`.
+- **Before this was built, confirming was off** (`confirmOnSite: false`). The last step offers a pre-filled WhatsApp request or Phorest.
   No personal details leave the browser. To switch on, once the data agreement is signed:
   1. Find the client by phone, or create them.
   2. `POST .../booking` as `RESERVED`, then create a deposit payment link where a deposit applies. Otherwise activate.

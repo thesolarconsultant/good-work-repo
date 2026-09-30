@@ -184,3 +184,14 @@ a.card h3::after{content:" →";color:var(--accent-ink)}
   .bwho button{flex:1 1 calc(50% - .6rem);justify-content:space-between}
   .bpick{padding:.9rem 1rem}
 }
+.bform{display:grid;gap:1rem;max-width:640px}
+.bform__row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.bfield{display:grid;gap:.4rem}
+.bfield input{font:inherit;padding:.8rem 1rem;border:1px solid var(--line-strong);border-radius:var(--round);background:var(--card);color:var(--ink);min-height:48px;width:100%}
+.bfield input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.bcheck{display:flex;gap:.7rem;align-items:flex-start;font-size:.95rem}
+.bcheck input{width:20px;height:20px;margin-top:.15rem;accent-color:var(--ink);flex:none}
+.bcheck a{border-bottom:1px solid var(--accent)}
+.bhp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.berror{border-left-color:#b3261e}
+@media (max-width: 640px){.bform__row{grid-template-columns:1fr}}

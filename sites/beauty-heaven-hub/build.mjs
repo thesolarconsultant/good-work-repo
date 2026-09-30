@@ -24,6 +24,7 @@ const CSV = join(ROOT, "docs/beauty-heaven-hub/services-master.csv");
 
 const site = JSON.parse(readFileSync(join(HERE, "data/site.json"), "utf8"));
 const groups = JSON.parse(readFileSync(join(HERE, "data/groups.json"), "utf8"));
+const rules = JSON.parse(readFileSync(join(HERE, "data/booking-rules.json"), "utf8"));
 const todo = new Set();
 
 // ---------------------------------------------------------------- helpers --
@@ -598,12 +599,14 @@ function bookingData() {
     name: g.name, slug: g.slug,
     cats: g.categories.filter((c) => c.items.some((s) => s.serviceId)).map((c) => {
       const showPrice = !c.pom || site.showPrescriptionOnlyPrices;
+      // Can a client confirm this on the website, or does the team book it?
+      const team = c.consult || c.pom || (rules.teamOnly || []).includes(c.title);
       return {
-        id: c.phorest, title: c.title, consult: !!c.consult, patch: !!c.patch,
+        id: c.phorest, title: c.title, consult: !!c.consult, patch: !!c.patch, deposit: !!(rules.deposits || {})[c.title],
         items: c.items.filter((s) => s.serviceId).map((s) => {
           const staff = staffPrices(s);
           staff.forEach((x) => used.add(x.id));
-          return { id: s.serviceId, name: tidy(s.Service), mins: Number(s["Duration (min)"]) || null, price: showPrice ? Number(s["Price £"]) : null, staff: staff.map((x) => [x.id, showPrice ? x.price : null]) };
+          return { id: s.serviceId, name: tidy(s.Service), mins: Number(s["Duration (min)"]) || null, price: showPrice ? Number(s["Price £"]) : null, confirm: !team && !isPom(s) && staff.length > 0, staff: staff.map((x) => [x.id, showPrice ? x.price : null]) };
         }),
       };
     }),
@@ -612,11 +615,26 @@ function bookingData() {
   if (nobody.length) todo.add(`/book/: these treatments are online in Phorest but nobody who shows on online booking is set up to do them, so the booking page offers WhatsApp or a call instead of times: ${nobody.join(", ")}. Right person missing in Phorest, or should they come off the website?`);
   const people = live.hubStaff.filter((p) => used.has(p.staffId));
   const label = (p) => (people.filter((q) => q.name === p.name).length > 1 && p.initial ? `${p.name} ${p.initial}.` : p.name);
+  // Booking rules, keyed by Phorest staff id and category id for the functions.
+  const byName = (name) => people.filter((p) => p.name.toLowerCase() === name.toLowerCase() || label(p).toLowerCase() === name.toLowerCase());
+  const peopleRules = {};
+  for (const [name, r] of Object.entries(rules.people || {})) {
+    const match = byName(name);
+    if (match.length !== 1) throw new Error(`booking-rules.json: "${name}" matches ${match.length} people in Phorest (${people.map(label).join(", ")})`);
+    peopleRules[match[0].staffId] = r;
+  }
+  const catIds = Object.fromEntries(groups.flatMap((g) => g.categories).map((c) => [c.title, c.phorest]));
+  for (const t of [...Object.keys(rules.deposits || {}), ...(rules.teamOnly || [])]) if (!catIds[t]) throw new Error(`booking-rules.json: no treatment section called "${t}"`);
+  const deposits = Object.fromEntries(Object.entries(rules.deposits || {}).filter(([, v]) => v).map(([t]) => [catIds[t], true]));
+  if (!rules.confirmOnSite) todo.add("/book/: confirming a booking on the site is switched off (the last step offers WhatsApp or Phorest). Switch on after the data agreement is signed and a dummy-client test passes");
+  if (!Object.keys(rules.people || {}).length && !Object.keys(rules.everyone || {}).length) todo.add("/book/: booking rules for each practitioner (earliest start, finish-by time, days, per-day exceptions), in data/booking-rules.json");
+  if (!Object.keys(rules.deposits || {}).length) todo.add("/book/: which treatments need a deposit, in data/booking-rules.json (Phorest sets the amount)");
   return {
     live: true,
     branchId: live.hubBranchId,
     updated: new Date().toISOString(),
-    confirmOnSite: false,
+    confirmOnSite: !!rules.confirmOnSite,
+    rules: { minNoticeHours: rules.minNoticeHours, maxDaysAhead: rules.maxDaysAhead, everyone: rules.everyone || {}, people: peopleRules, deposits },
     phorest: site.booking,
     whatsapp: (site.whatsapp || "").replace(/\D/g, ""),
     phone: site.phone,
@@ -627,7 +645,6 @@ function bookingData() {
 }
 
 function book() {
-  todo.add("/book/: confirming a booking on the site is switched off (the last step offers WhatsApp or Phorest). Switch on after the data agreement is signed and a dummy-client test passes; also check whether Phorest sends its own confirmation for API bookings, and set the deposit rules");
   return layout({
     path: "/book/", title: "Book online",
     description: "Book a treatment at Beauty Heaven Hub, Hoddesdon. Choose a treatment, who you'd like, and a time that suits you.",
