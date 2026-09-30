@@ -354,6 +354,18 @@ function home() {
   h = swap(h, "<body>\n", `<body>\n${draftBar()}\n`, "body");
   h = swap(h, /<header class="nav" id="nav">[\s\S]*?<\/header>/, header(true), "nav");
 
+  // The film: the rooms, silent and looping, before the story starts. The
+  // phone gets the portrait cut; a reduced-motion setting gets it paused.
+  if (heroFilm.desktop) h = swap(h, '<main id="top">\n', `<main id="top">
+<section class="film" aria-label="Inside Beauty Heaven Hub">
+  <video class="film__v" muted loop playsinline preload="metadata" data-desktop="${esc(heroFilm.desktop)}" data-phone="${esc(heroFilm.phone || heroFilm.desktop)}"></video>
+  <div class="film__shade" aria-hidden="true"></div>
+  <img class="film__mark" src="/logo/beauty-heaven-hub-wordmark-gold.svg" alt="Beauty Heaven Hub" width="420" height="60">
+  <a class="film__down" href="#story">Scroll</a>
+</section>
+<script>(function(){var v=document.querySelector('.film__v');if(!v)return;var f=v.parentNode;function fit(){f.style.height=Math.max(480,innerHeight-f.getBoundingClientRect().top-scrollY)+'px';}fit();addEventListener('resize',fit);var p=matchMedia('(max-aspect-ratio: 4/5)').matches;v.src=p?v.dataset.phone:v.dataset.desktop;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){v.autoplay=true;v.play().catch(function(){});}})();</script>
+`, "film");
+
   // Treatments journey: the five discipline cards open the real menus.
   const cardLinks = { Beauty: "/treatments/brows-lashes-pmu/", Hair: "/treatments/hair/", Skin: "/treatments/skin/", Aesthetics: "/treatments/aesthetics/", Wellness: "/treatments/body/" };
   for (const [name, href] of Object.entries(cardLinks)) {
@@ -744,6 +756,23 @@ const shelf = await Promise.all(library.map(async (it) => {
   return out;
 }));
 writeFileSync(join(LIB, "library.json"), JSON.stringify(shelf, null, 1));
+
+// The homepage film: the two hero cuts from the library, served publicly from
+// /media/. If the build can't reach Higgsfield, the page points at its copy.
+const heroFilm = {};
+mkdirSync(join(OUT, "media"), { recursive: true });
+for (const it of library.filter((x) => x.id.startsWith("hero-"))) {
+  const key = it.id.slice(5);
+  heroFilm[key] = it.url;
+  try {
+    const res = await fetch(it.url, { signal: AbortSignal.timeout(90000) });
+    if (!res.ok) throw new Error(`${res.status}`);
+    writeFileSync(join(OUT, "media", `${it.id}.mp4`), Buffer.from(await res.arrayBuffer()));
+    heroFilm[key] = `/media/${it.id}.mp4`;
+  } catch (e) {
+    console.warn(`Hero film: couldn't fetch ${it.id} (${e.message}); using Higgsfield's copy.`);
+  }
+}
 
 // The brand guidelines, inside the console (so behind its password), with the
 // assets the page uses. The console's menu link points here on this site.

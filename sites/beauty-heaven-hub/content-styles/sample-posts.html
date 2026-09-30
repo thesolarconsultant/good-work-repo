@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Jost; font-weight: 300; src: url(fonts/Jost-Light.woff2); }
+@font-face { font-family: Jost; font-weight: 400; src: url(fonts/Jost-Regular.woff2); }
+@font-face { font-family: Jost; font-weight: 500; src: url(fonts/Jost-Medium.woff2); }
+@font-face { font-family: Jost; font-weight: 700; src: url(fonts/Jost-Bold.woff2); }
+:root { --esp: #24211E; --esp2: #2E2A26; --ivory: #F4F0E9; --ivory2: #ECE6DD; --gold: #C9A65C; --goldlt: #E3CD94; --goldink: #7F6329; --taupe: #746B60; --stone: #B9AFA2; }
+* { box-sizing: border-box; margin: 0; }
+body { background: #555; font-family: Jost, 'Century Gothic', sans-serif; display: flex; flex-wrap: wrap; gap: 40px; padding: 40px; }
+.post { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--ivory); background: var(--esp); flex: none; }
+.post.tall { height: 1920px; }
+.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(36,33,30,.55) 0%, rgba(36,33,30,0) 22%, rgba(36,33,30,0) 45%, rgba(36,33,30,.88) 78%, rgba(36,33,30,.96) 100%); }
+.mark { position: absolute; height: 34px; }
+.micro { font-size: 22px; letter-spacing: .32em; text-transform: uppercase; font-weight: 500; color: var(--goldlt); }
+.micro.ink { color: var(--goldink); }
+h1, h2 { font-weight: 300; line-height: 1.02; letter-spacing: -.01em; }
+h1 b, h2 b { font-weight: 700; }
+.h1 { font-size: 104px; }
+.h2 { font-size: 80px; }
+.rule { display: block; width: 72px; height: 2px; background: var(--gold); }
+.foot { position: absolute; left: 80px; right: 80px; bottom: 80px; }
+.foot .rule { margin: 34px 0 30px; }
+.lede { font-size: 34px; line-height: 1.45; font-weight: 300; color: #E9E2D7; max-width: 820px; }
+.swipe { position: absolute; right: 80px; bottom: 86px; font-size: 22px; letter-spacing: .28em; text-transform: uppercase; color: var(--goldlt); }
+.pill { display: inline-block; margin-top: 40px; border: 2px solid var(--gold); color: var(--goldlt); border-radius: 999px; padding: 18px 40px; font-size: 26px; letter-spacing: .2em; text-transform: uppercase; }
+.arch { position: absolute; overflow: hidden; border-radius: 999px 999px 0 0; }
+.arch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.archline { position: absolute; border: 2px solid var(--gold); border-bottom: 0; border-radius: 999px 999px 0 0; }
+.num { font-size: 26px; letter-spacing: .3em; color: var(--goldink); font-weight: 500; }
+.label { position: absolute; left: 0; top: -34px; font: 500 20px Jost; color: #eee; letter-spacing: .1em; }
+.wrap { position: relative; }
+.list { list-style: none; padding: 0; margin-top: 50px; }
+.list li { font-size: 44px; font-weight: 300; line-height: 1.35; padding: 44px 0; border-top: 1px solid rgba(201,166,92,.45); display: flex; gap: 30px; }
+.list li:last-child { border-bottom: 1px solid rgba(201,166,92,.45); }
+.list li span { color: var(--goldlt); font-weight: 500; font-size: 26px; letter-spacing: .2em; padding-top: 8px; min-width: 50px; }
+.grid4 { position: absolute; left: 80px; right: 80px; top: 300px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid4 img { width: 100%; height: 410px; object-fit: cover; display: block; }
+.grid4 img:first-child { border-radius: 999px 999px 0 0; }
+.note { position: absolute; left: 80px; bottom: 60px; font-size: 20px; letter-spacing: .12em; text-transform: uppercase; }
+</style></head><body>
+
+<!-- 1. THE ROOM: reel cover, 9:16 -->
+<div class="wrap"><span class="label">The room · reel cover 9:16</span>
+<section class="post tall" id="p1">
+  <img class="bg" src="img/chair.jpg" alt="">
+  <div class="shade"></div>
+  <img class="mark" style="left:80px;top:90px" src="img/mark-gold.svg" alt="">
+  <div class="foot" style="bottom:170px">
+    <p class="micro">The treatment room</p>
+    <span class="rule"></span>
+    <h1 class="h1">the quiet<br><b>before</b> it starts.</h1>
+  </div>
+</section></div>
+
+<!-- 2. CLOSE-UP EXPLAINER: cover -->
+<div class="wrap"><span class="label">Close-up explainer · slide 1</span>
+<section class="post" id="p2">
+  <img class="bg" src="img/fanbrush.png" alt="">
+  <div class="shade"></div>
+  <p class="micro" style="position:absolute;left:80px;top:90px">Explained · Chemical peels</p>
+  <div class="foot" style="bottom:150px">
+    <h1 class="h1">what a peel<br><b>actually</b> feels like.</h1>
+  </div>
+  <span class="swipe">Swipe →</span>
+</section></div>
+
+<!-- 3. CLOSE-UP EXPLAINER: inside -->
+<div class="wrap"><span class="label">Close-up explainer · slide 2</span>
+<section class="post" id="p3" style="background:var(--ivory);color:var(--esp)">
+  <div class="arch" style="left:80px;top:80px;width:430px;height:600px"><img src="img/hands2.png" alt=""></div>
+  <div class="archline" style="left:64px;top:64px;width:462px;height:630px"></div>
+  <div style="position:absolute;left:580px;top:120px;right:80px">
+    <p class="num">01</p>
+    <h2 class="h2" style="margin-top:26px">we talk<br><b>first.</b></h2>
+    <p class="lede" style="color:var(--taupe);margin-top:30px;font-size:30px">Before anything touches your skin, we go through what you want, what you use at home, and anything that would change the plan.</p>
+  </div>
+  <div style="position:absolute;left:80px;right:80px;top:780px">
+    <p class="num">02</p>
+    <h2 class="h2" style="margin-top:26px">everything is <b>ready.</b></h2>
+    <p class="lede" style="color:var(--taupe);margin-top:30px;font-size:30px;max-width:900px">Gloves on, the tray laid out, the room warm. Nothing is rushed and you can stop and ask at any point.</p>
+  </div>
+  <img class="mark" style="left:80px;bottom:70px;height:26px" src="img/mark-espresso.svg" alt="">
+</section></div>
+
+<!-- 4. CLOSE-UP EXPLAINER: aftercare -->
+<div class="wrap"><span class="label">Close-up explainer · last slide</span>
+<section class="post" id="p4">
+  <div style="position:absolute;left:80px;right:80px;top:130px">
+    <p class="micro">Afterwards</p>
+    <h2 class="h2" style="margin-top:34px;font-size:92px">the next few days,<br><b>simply.</b></h2>
+    <ul class="list">
+      <li><span>01</span>SPF every morning, even when it's grey.</li>
+      <li><span>02</span>Leave the actives until we say.</li>
+      <li><span>03</span>No picking. It's hard. We know.</li>
+      <li><span>04</span>Anything you're unsure of, message us.</li>
+    </ul>
+  </div>
+  <img class="mark" style="left:80px;bottom:80px;height:30px" src="img/mark-gold.svg" alt="">
+  <p class="note" style="left:auto;right:80px;bottom:84px;color:var(--stone)">Book · link in bio</p>
+</section></div>
+
+<!-- 5. THIS WEEK AT THE HUB -->
+<div class="wrap"><span class="label">This week at the Hub</span>
+<section class="post" id="p5" style="background:var(--ivory);color:var(--esp)">
+  <div style="position:absolute;left:80px;top:100px;right:80px">
+    <p class="micro ink">This week at the Hub</p>
+    <h2 class="h2" style="margin-top:22px;font-size:72px">a few <b>favourites.</b></h2>
+  </div>
+  <div class="grid4">
+    <img src="img/treatment.jpg" alt=""><img src="img/mirrors.png" alt=""><img src="img/reception.png" alt=""><img src="img/lounge.png" alt="">
+  </div>
+  <img class="mark" style="left:80px;bottom:70px;height:26px" src="img/mark-espresso.svg" alt="">
+</section></div>
+
+<!-- 6. FIRST TIME? -->
+<div class="wrap"><span class="label">First time?</span>
+<section class="post" id="p6">
+  <div class="arch" style="left:290px;top:90px;width:500px;height:640px"><img src="img/couchface.png" alt=""></div>
+  <div class="archline" style="left:272px;top:72px;width:536px;height:676px"></div>
+  <div style="position:absolute;left:80px;right:80px;top:820px;text-align:center">
+    <p class="micro">First time?</p>
+    <h2 class="h2" style="margin-top:28px">that's <b>most people,</b><br>once.</h2>
+    <p class="lede" style="margin:30px auto 0;font-size:30px;max-width:780px">We'll talk you through what happens before it happens.</p>
+  </div>
+</section></div>
+
+<!-- 7. ACADEMY -->
+<div class="wrap"><span class="label">Academy</span>
+<section class="post" id="p7" style="background:var(--taupe)">
+  <img class="bg" src="img/hands.png" alt="" style="left:auto;width:58%;right:0">
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,var(--taupe) 42%,rgba(116,107,96,0) 70%)"></div>
+  <img class="mark" style="left:80px;top:90px;height:64px" src="img/academy-gold.svg" alt="">
+  <div style="position:absolute;left:80px;bottom:120px;width:560px">
+    <p class="micro">Foundation aesthetics</p>
+    <span class="rule" style="margin:30px 0"></span>
+    <h2 class="h2" style="font-size:84px">learn it<br><b>properly.</b></h2>
+    <p class="lede" style="margin-top:28px;font-size:30px;color:#F1EBE1">Online study first, then hands-on in a working salon. Next intake dates soon.</p>
+  </div>
+</section></div>
+
+<!-- 8. STORY: consultation -->
+<div class="wrap"><span class="label">Story 9:16</span>
+<section class="post tall" id="p8">
+  <img class="bg" src="img/desk.png" alt="">
+  <div class="shade"></div>
+  <div class="foot" style="bottom:220px;text-align:center">
+    <p class="micro">Consultations</p>
+    <h1 class="h1" style="margin-top:30px">start with a<br><b>conversation.</b></h1>
+    <span class="pill">Book · link in bio</span>
+  </div>
+  <img class="mark" style="left:50%;transform:translateX(-50%);top:110px" src="img/mark-gold.svg" alt="">
+</section></div>
+
+</body></html>
