@@ -22,7 +22,9 @@ function supa() {
   return (path, init = {}) =>
     fetch(`${url}/rest/v1/${path}`, {
       ...init,
-      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", ...(init.headers || {}) },
+      // Newer Supabase secret keys (sb_secret_...) go in apikey only; older
+      // service_role keys are JWTs and also go in Authorization.
+      headers: { apikey: key, ...(key.startsWith("eyJ") ? { Authorization: `Bearer ${key}` } : {}), "Content-Type": "application/json", ...(init.headers || {}) },
     });
 }
 
