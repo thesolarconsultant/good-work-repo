@@ -11,12 +11,18 @@
 //   2. Third-party consumption — messaging, telephony, model usage, hosting —
 //      is never implied to be included. Exclusions sit next to the offer.
 //
-// VAT: no VAT wording anywhere until the business confirms its treatment.
+// VAT: none. Goodwork doesn't charge VAT or any other tax, so every figure here
+// is the whole price, and checkout adds nothing on top.
 // =========================================================
 
-import { gbp, priceLabel } from "../lib/format.js";
+import { gbp, gbpRange, priceLabel } from "../lib/format.js";
 
 export const UPDATE_PERIOD_MONTHS = 12;
+
+// The CRM is priced as a range: the standard build, and the most that premium
+// connectors and integrations take it to, confirmed in the written scope.
+const CRM_FROM = 1700;
+const CRM_TO = 5300;
 
 // ---------------------------------------------------------------------------
 // The five commercial offers
@@ -109,7 +115,7 @@ export const OFFERS = [
     short: "Built by Goodwork",
     kind: "service",
     billing: "one-time",
-    price: 2800,
+    price: 3500,
     route: "/built-by-goodwork",
     purchase: "enquiry",
     form: "built",
@@ -159,7 +165,9 @@ export const OFFERS = [
     kind: "service",
     addon: true,
     billing: "one-time",
-    price: 1888,
+    price: CRM_FROM,
+    priceTo: CRM_TO,
+    priceNote: `${gbp(CRM_FROM)} for the standard build, with an interface and functionality shaped to the business. Premium connectors and integrations take it up to ${gbp(CRM_TO)}, confirmed in the written scope.`,
     route: "/crm",
     purchase: "enquiry",
     form: "crm",
@@ -167,10 +175,11 @@ export const OFFERS = [
     outcome: "Place your sales and customer-management system inside your wider Goodwork setup.",
     ladder: "A branded CRM inside your Goodwork system.",
     summary:
-      "Available as a standalone implementation or as an add-on to Built by Goodwork. The server is expressly excluded.",
+      "Available as a standalone implementation or as an add-on to Built by Goodwork. The price depends on the connectors it needs. The server is expressly excluded.",
     line: "Keep every lead, answer and next action in one place.",
     includes: [
       "Branded CRM access and login experience",
+      "An interface and functionality shaped to the business",
       "Customer and lead records",
       "Custom sales pipeline",
       "Website-form integration",
@@ -258,6 +267,7 @@ export const VALUE_LADDER_SENTENCE = `${gbp(OFFER.library.price)} to build websi
 export const COMBINED = {
   items: [OFFER.built, OFFER.crm],
   total: OFFER.built.price + OFFER.crm.price,
+  totalTo: OFFER.built.price + (OFFER.crm.priceTo || OFFER.crm.price),
   label: "Complete implementation",
   note: "plus infrastructure",
 };
@@ -273,9 +283,9 @@ export const MANAGED_PLANS = [
   {
     id: "care",
     name: "Website Care",
-    price: 28,
+    price: 58,
     billing: "monthly",
-    for: "A live website you want looked after.",
+    for: "Your website, kept online and looked after.",
     includes: [
       "Managed website hosting",
       "SSL and security monitoring",
@@ -287,28 +297,14 @@ export const MANAGED_PLANS = [
   {
     id: "console",
     name: "Website + Content Console",
-    price: 88,
-    billing: "monthly",
-    for: "A website and a hosted Content Console.",
-    includes: [
-      "Everything in Website Care",
-      "Hosted Content Console",
-      "Console maintenance",
-      "Account access and routine backups",
-    ],
-  },
-  {
-    id: "connected",
-    name: "Connected System",
     price: 188,
     billing: "monthly",
-    for: "Website, console and one managed agent.",
+    for: "Your website and Content Console, connected and run for you.",
     includes: [
-      "Website and Content Console",
-      "One managed WhatsApp bot or one managed voice agent",
-      "Integration monitoring",
-      "Defined fair-use allowance",
-      "Routine technical support",
+      "Everything in Website Care",
+      "Hosted Content Console, connected to your website",
+      "Console maintenance and updates",
+      "Account access and routine backups",
     ],
   },
   {
@@ -316,21 +312,53 @@ export const MANAGED_PLANS = [
     name: "Complete Managed System",
     price: 398,
     billing: "monthly",
-    for: "The whole operation, run by Goodwork.",
+    for: "Website, Content Console and both agents, with monthly credit.",
     includes: [
-      "Website",
-      "Content Console",
-      "WhatsApp bot",
-      "Voice agent",
+      "Everything in Website + Content Console",
+      "Managed WhatsApp chatbot, with chatbot credit",
+      "Managed AI voice agent, with voice-agent credit",
+      "API credit for the connected services",
+      "Content Console imagery made from your own photos",
       "Integration monitoring",
-      "Defined fair-use allowance",
       "Priority routine technical support",
+    ],
+  },
+  {
+    id: "complete-ai",
+    name: "Complete + AI Content",
+    price: 598,
+    billing: "monthly",
+    for: "Everything in Complete, plus AI imagery and B-roll video.",
+    includes: [
+      "Everything in Complete Managed System",
+      "The full Content Console, with AI-generated imagery",
+      "AI B-roll video for your posts and campaigns",
     ],
   },
 ];
 
+/** "From £58 per month": the cheapest plan, wherever a starting figure is quoted. */
+export const MANAGED_FROM = `From ${gbp(MANAGED_PLANS[0].price)} per month`;
+
+/** Running the Embedded CRM, added to whichever plan the client is on. */
+export const CRM_RUNNING = {
+  id: "crm-running",
+  name: "CRM running",
+  price: 28,
+  billing: "monthly",
+};
+
+/** Ads and business development. Scoped to each client, so no fixed price. */
+export const COACHING = {
+  id: "coaching",
+  name: "Coaching programme",
+  for: "Goodwork runs your ads and works with you, one to one, on business development.",
+  priceNote: "Priced to your scope",
+  scope: "Priced once we understand the business and everything it needs.",
+};
+
 export const FAIR_USE =
-  "Messaging, telephone, AI-model, email, SMS and other variable third-party consumption is subject to fair-use allowances or billed separately. Exact allowances are confirmed before launch. High-volume usage, additional agents, additional telephone numbers, complex integrations and bespoke maintenance are quoted separately.";
+  "The Complete plans include a monthly credit for chatbot conversations, voice-agent calls and API usage, agreed before launch. Usage beyond the credit, email, SMS and extra telephone numbers are billed separately. High-volume usage, additional agents, complex integrations and bespoke maintenance are quoted separately.";
 
 export const SELF_HOST_NOTE =
   "You can run compatible Goodwork products on your own infrastructure and pay your providers directly. A managed plan is only for when you want Goodwork to host, monitor and maintain the live system.";
@@ -383,7 +411,7 @@ export const COMPARISON = [
   {
     group: "CRM",
     rows: [
-      { label: "Embedded CRM implementation", library: false, studio: false, built: `Add-on, ${gbp(1888)} one-time`, agency: true },
+      { label: "Embedded CRM implementation", library: false, studio: false, built: `Add-on, ${gbpRange(OFFER.crm.price, OFFER.crm.priceTo)} one-time`, agency: true },
       { label: "CRM server and infrastructure", library: false, studio: false, built: "Not included", agency: "Not included" },
     ],
   },
@@ -409,7 +437,7 @@ export const COMPARISON = [
     rows: [
       { label: "Hosting, domains and servers", library: "Your own", studio: "Your own", built: "Your own or a managed plan", agency: "Hosting model defined; costs separate" },
       { label: "Messaging, telephony and AI-model usage", library: "Not applicable", studio: "Paid to your providers", built: "Paid to your providers", agency: "Paid to your providers" },
-      { label: "Optional managed plan", library: `From ${gbp(28)} per month`, studio: `From ${gbp(28)} per month`, built: `From ${gbp(28)} per month`, agency: `From ${gbp(28)} per month` },
+      { label: "Optional managed plan", library: MANAGED_FROM, studio: MANAGED_FROM, built: MANAGED_FROM, agency: MANAGED_FROM },
     ],
   },
 ];
@@ -439,7 +467,7 @@ export const LICENCE_PRINCIPLES = [
 export const FAQ = [
   {
     q: "Is each product a one-time payment?",
-    a: `Yes. Library (${priceLabel(280, "one-time")}), Studio (${priceLabel(888, "one-time")}), Built by Goodwork (${priceLabel(2800, "one-time")}), the Embedded CRM (${priceLabel(1888, "one-time")}) and the Agency programme (${priceLabel(8888.88, "one-time")}, or four agreed payments of ${gbp(2222.22)}) are all paid once. The only monthly charges are the optional managed plans, and you choose whether to take one.`,
+    a: `Yes. Library (${priceLabel(OFFER.library.price, "one-time")}), Studio (${priceLabel(OFFER.studio.price, "one-time")}), Built by Goodwork (${priceLabel(OFFER.built.price, "one-time")}), the Embedded CRM (${gbpRange(OFFER.crm.price, OFFER.crm.priceTo)} one-time, depending on its connectors) and the Agency programme (${priceLabel(OFFER.agency.price, "one-time")}, or four agreed payments of ${gbp(OFFER.agency.instalments.amount)}) are all paid once. The only monthly charges are the optional managed plans, and you choose whether to take one.`,
   },
   {
     q: "What is the difference between Library and Studio?",
@@ -455,23 +483,23 @@ export const FAQ = [
   },
   {
     q: "Does the £888 Studio package include installation?",
-    a: "No. Studio is self-build: Goodwork provides the source, systems and instructions, and you configure and deploy them. If you want Goodwork to install, customise and launch the system for you, that is Built by Goodwork at £2,800.",
+    a: `No. Studio is self-build: Goodwork provides the source, systems and instructions, and you configure and deploy them. If you want Goodwork to install, customise and launch the system for you, that is Built by Goodwork at ${gbp(OFFER.built.price)}.`,
   },
   {
-    q: "What exactly does the £2,800 service cover?",
+    q: `What exactly does the ${gbp(OFFER.built.price)} service cover?`,
     a: "One template-led, professionally customised website for one business, with your approved brand, copy and imagery applied; an agreed page set and navigation; core lead-capture forms; one agreed WhatsApp bot flow; one agreed AI voice-agent flow; the Content Console installed and configured; a practical brand-guideline document; the core integrations agreed before work begins; responsive testing, launch and handover; and a fixed revision allowance stated in the proposal. Bespoke applications, unusually complex integrations, ecommerce catalogues, large content migrations and additional agent flows are quoted separately.",
   },
   {
     q: "Are hosting and server costs included?",
-    a: "No. None of the one-time products or services include hosting, domains, servers or deployment infrastructure. You can run compatible Goodwork products on your own infrastructure and pay your providers directly, or choose a managed plan from £28 per month if you want Goodwork to host and maintain the live system.",
+    a: `No. None of the one-time products or services include hosting, domains, servers or deployment infrastructure. You can run compatible Goodwork products on your own infrastructure and pay your providers directly, or choose a managed plan from ${gbp(MANAGED_PLANS[0].price)} per month if you want Goodwork to host and maintain the live system.`,
   },
   {
     q: "Are WhatsApp messages, telephone calls and AI usage included?",
-    a: "No. WhatsApp conversation charges, telephone numbers, call minutes, AI-model and API usage, email and SMS are variable third-party costs and are never included in a one-time fee. On managed plans they are subject to a fair-use allowance that is confirmed before launch, or billed separately.",
+    a: "No. WhatsApp conversation charges, telephone numbers, call minutes, AI-model and API usage, email and SMS are variable third-party costs and are never included in a one-time fee. The Complete managed plans include a monthly credit for chatbot, voice-agent and API usage, agreed before launch; anything beyond it is billed separately.",
   },
   {
-    q: "What does the £1,888 CRM implementation include?",
-    a: "A branded CRM login experience, customer and lead records, a custom sales pipeline, website-form integration, tasks, notes and follow-up management, storage of discovery and onboarding responses, proposal or project-status tracking where supported, basic workflow automations, agreed user roles and permissions, dashboard configuration, and initial training and handover. The server, hosting, communication consumption, third-party API charges, large data migrations and bespoke CRM development are not included.",
+    q: "What does the CRM implementation include, and what does it cost?",
+    a: `${gbp(CRM_FROM)} one-time for the standard build: a branded CRM login experience, an interface and functionality shaped to the business, customer and lead records, a custom sales pipeline, website-form integration, tasks, notes and follow-up management, storage of discovery and onboarding responses, proposal or project-status tracking where supported, basic workflow automations, agreed user roles and permissions, dashboard configuration, and initial training and handover. Premium connectors and integrations take it up to ${gbp(CRM_TO)}, confirmed in the written scope before work starts. The server, hosting, communication consumption, third-party API charges, large data migrations and bespoke CRM development are not included; run on a managed plan, the CRM adds ${gbp(CRM_RUNNING.price)} per month.`,
   },
   {
     q: "Can I host everything myself?",

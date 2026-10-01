@@ -18,9 +18,10 @@ import ManagedPlans from "../components/ManagedPlans";
 import FaqList from "../components/FaqList";
 import LibraryGrid from "../components/LibraryGrid";
 import Price from "../components/Price";
+import OfferIcon from "../components/OfferIcon";
 import Shot from "../components/Shot";
 import { website, faqPage } from "../lib/schema";
-import { gbp } from "../lib/format";
+import { gbp, offerAmount } from "../lib/format";
 import { DESCRIPTION } from "../lib/site";
 import { OFFER, PROOF_LINE, TWO_WAYS, STUDIO_FEATURES, FAQ, OWNERSHIP_PRINCIPLE } from "../data/offers";
 import { ITEMS, CATEGORY_NAME, filterItems } from "../data/library";
@@ -242,10 +243,13 @@ export default function Home() {
               <div className="gw-card">
                 <div className="gw-pagehead__row">
                   <div>
-                    <p className="gw-eyebrow">Add-on or standalone</p>
-                    <h3 className="gw-h3 gw-mt-1">{OFFER.crm.name}</h3>
+                    <p className="gw-offer__who">
+                      <OfferIcon id="crm" />
+                      Add-on or standalone
+                    </p>
+                    <h3 className="gw-h3 gw-mt-2">{OFFER.crm.name}</h3>
                   </div>
-                  <Price amount={OFFER.crm.price} billing="one-time" />
+                  <Price amount={OFFER.crm.price} to={OFFER.crm.priceTo} billing="one-time" />
                 </div>
                 <ul className="gw-list gw-list--cols gw-mt-3">
                   {OFFER.crm.includes.slice(0, 8).map((x) => (
@@ -260,7 +264,7 @@ export default function Home() {
                 </ul>
               </div>
             </Reveal>
-            <SectionHead eyebrow={`Embedded CRM · ${gbp(OFFER.crm.price)} one-time`} title={<span id="crm">Keep every lead, answer and next action in one place.</span>} lead={`Add a branded CRM to your Goodwork system for a one-time implementation fee of ${gbp(OFFER.crm.price)}. Your server and variable communication costs remain separate, so you retain a clear view of ownership and operating cost.`}>
+            <SectionHead eyebrow={`Embedded CRM · ${offerAmount(OFFER.crm)} one-time`} title={<span id="crm">Keep every lead, answer and next action in one place.</span>} lead={`Add a branded CRM to your Goodwork system for a one-time implementation fee: ${gbp(OFFER.crm.price)} for the standard build, up to ${gbp(OFFER.crm.priceTo)} with premium connectors. Your server and variable communication costs remain separate, so you retain a clear view of ownership and operating cost.`}>
               <div className="gw-actions gw-mt-4">
                 <Button to="/crm" variant="secondary" arrow>
                   Explore the Embedded CRM

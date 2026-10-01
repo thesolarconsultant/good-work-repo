@@ -2,8 +2,9 @@
 
 The Goodwork website: a digital product studio and commercial system builder.
 Goodwork Products (Library £280, Studio £888) on one side; Goodwork Services
-(Built by Goodwork £2,800, Embedded CRM £1,888, the Agency programme
-£8,888.88, optional managed infrastructure from £28 per month) on the other.
+(Built by Goodwork £3,500, the Embedded CRM from £1,700 to £5,300 depending on
+its connectors, the Agency programme £8,888.88, optional managed plans from
+£58 to £598 per month, and a coaching programme priced to scope) on the other.
 
 React 19 + Vite, no UI framework, no animation library, Web-standard edge
 functions in `api/`.
@@ -30,6 +31,7 @@ npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chr
 | `npm run sitemap` | Regenerate `public/sitemap.xml` and `public/robots.txt` |
 | `npm run prices` | Fail the build if `server/products.js` (what checkout charges) disagrees with `src/data/offers.js` |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
+| `npm run icons` | Render the product icons (`src/data/icons.js`) as PNGs for Stripe, to `dist-icons/` |
 | `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js`, `api/claim.js`, `api/stripe-webhook.js`, `api/access.js` and `api/download.js` in Node against a local webhook sink and a stubbed Stripe: 39 checks |
 | `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states, the welcome page after payment, the sign-in form, the signed-in dashboard and item pages |
 | `npm run brand:*`, `logo`, `merch`, `portrait` | Brand asset generators, unchanged from before the rebuild |
@@ -41,6 +43,8 @@ src/
   data/offers.js        THE single source of truth: every price, inclusion,
                         exclusion, CTA, managed plan, comparison row, licence
                         principle and FAQ answer. Nothing else carries a figure.
+  data/icons.js         One round icon per product and plan, shared by the
+                        site's cards (components/OfferIcon) and the Stripe images
   data/nav.js           Header, dropdowns, footer, announcement
   data/forms.js         The five enquiry/application schemas, and the steps
                         that run four of them as one-question-at-a-time flows
@@ -135,8 +139,6 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
 - A database behind customer access. Keys are signed rather than stored, so
   none is needed to sell; refunds are revoked through `ACCESS_REVOKED` and a
   redeploy. `docs/BACKEND.md` says what a database would add.
-- VAT wording. Prices are shown without any VAT statement until the business
-  confirms its treatment.
 - Legal wording. Every legal page is a draft written to the commercial
   principles in `data/offers.js`, marked for solicitor review on the page and
   set `noindex` while marked.
@@ -161,7 +163,6 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
 6. **Switch payments on.** Follow "Setting it up" in `docs/BACKEND.md`: the
    Stripe terms URL, the secret key, the webhook, then one test-mode purchase
    on a preview before the live keys go on Production.
-7. **VAT.** Decide whether the prices include VAT before the first sale.
 
 ## Content
 

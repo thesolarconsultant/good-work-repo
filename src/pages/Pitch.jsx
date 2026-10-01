@@ -2,9 +2,9 @@ import Deck from "../components/deck/Deck";
 import Headline from "../components/Headline";
 import Button from "../components/Button";
 import Shot from "../components/Shot";
-import { LADDER, OFFER, MANAGED_PLANS, OWNERSHIP_PRINCIPLE, JOURNEY, VALUE_LADDER_SENTENCE } from "../data/offers";
+import { LADDER, OFFER, COMBINED, MANAGED_PLANS, CRM_RUNNING, COACHING, OWNERSHIP_PRINCIPLE, JOURNEY, VALUE_LADDER_SENTENCE } from "../data/offers";
 import { SHOWCASE } from "../data/showcase";
-import { gbp, priceLabel } from "../lib/format";
+import { gbp, gbpRange, offerAmount, priceLabel } from "../lib/format";
 
 // A live, presenter-driven pitch for Goodwork itself. Every price, inclusion
 // and case-study fact is read from the same data the public site uses, so the
@@ -93,7 +93,7 @@ const SLIDES = [
         </span>
         <Headline onMount as="h2" className="gw-h1" lines={[o.short]} />
         <div className="gw-deck__pkg-solo-price">
-          <span className="gw-deck__pkg-solo-figure gw-mono">{gbp(o.price)}</span>
+          <span className="gw-deck__pkg-solo-figure gw-mono">{offerAmount(o)}</span>
           <span className="gw-deck__pkg-solo-monthly">{o.billing === "monthly" ? "per month" : "one-time"}</span>
         </div>
         <p className="gw-deck__lede">{o.line}</p>
@@ -115,10 +115,10 @@ const SLIDES = [
         <Headline onMount as="h2" className="gw-h1" lines={[OFFER.crm.short]} />
         <div className="gw-deck__pkg-solo-price">
           <span className="gw-deck__pkg-solo-figure gw-mono">{gbp(OFFER.crm.price)}</span>
-          <span className="gw-deck__pkg-solo-monthly">one-time · server excluded</span>
+          <span className="gw-deck__pkg-solo-monthly">one-time, standard build · up to {gbp(OFFER.crm.priceTo)} with premium connectors · server excluded</span>
         </div>
         <p className="gw-deck__lede">
-          {OFFER.crm.outcome} With Built by Goodwork: {gbp(OFFER.built.price + OFFER.crm.price)} plus infrastructure.
+          {OFFER.crm.outcome} With Built by Goodwork: {gbpRange(COMBINED.total, COMBINED.totalTo)} plus infrastructure.
         </p>
       </>
     ),
@@ -139,6 +139,9 @@ const SLIDES = [
             </div>
           ))}
         </div>
+        <p className="gw-deck__pkg-note">
+          Goodwork running the CRM too: {priceLabel(CRM_RUNNING.price, "monthly")} on any plan. Ads and business development: the {COACHING.name.toLowerCase()}, {COACHING.priceNote.toLowerCase()}.
+        </p>
       </>
     ),
   },

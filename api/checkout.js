@@ -24,6 +24,9 @@
 // Raw fetch against Stripe's REST API rather than the SDK: the other
 // functions in this folder are plain fetch on the edge runtime.
 //
+// No tax is added: Goodwork doesn't charge VAT, so automatic_tax stays off and
+// the price is the whole amount.
+//
 // Access is NOT granted here. Stripe returns the customer to
 // /welcome?session_id=…, and api/claim.js asks Stripe whether that session is
 // actually paid before issuing a key. See docs/BACKEND.md.

@@ -11,15 +11,16 @@ import ComparisonTable from "../components/ComparisonTable";
 import ManagedPlans from "../components/ManagedPlans";
 import FaqList from "../components/FaqList";
 import BuyButton from "../components/BuyButton";
-import { OFFERS, OFFER, FAQ, VALUE_LADDER_SENTENCE, OWNERSHIP_PRINCIPLE, LICENCE_PRINCIPLES } from "../data/offers";
+import OfferIcon from "../components/OfferIcon";
+import { OFFERS, OFFER, COMBINED, MANAGED_PLANS, FAQ, VALUE_LADDER_SENTENCE, OWNERSHIP_PRINCIPLE, LICENCE_PRINCIPLES } from "../data/offers";
 import { productOffer, faqPage, breadcrumbs } from "../lib/schema";
-import { gbp } from "../lib/format";
+import { gbp, gbpRange, offerAmount } from "../lib/format";
 import { track, EVENTS } from "../lib/analytics";
 
 const THREE = [
   { q: "What am I buying?", a: "Library and Studio are one-time digital products you own. Built by Goodwork, the Embedded CRM and the Agency programme are one-time services scoped in writing." },
   { q: "Who does the implementation?", a: "You build it with Library and Studio. We build it with you on Built by Goodwork. We build the operation on the Agency programme." },
-  { q: "What will continue to cost money?", a: "Hosting, messaging, telephony and AI usage, paid to your providers, or an optional managed plan from £28 per month with a fair-use allowance." },
+  { q: "What will continue to cost money?", a: `Hosting, messaging, telephony and AI usage, paid to your providers, or an optional managed plan from ${gbp(MANAGED_PLANS[0].price)} per month.` },
 ];
 
 export default function Pricing() {
@@ -30,7 +31,7 @@ export default function Pricing() {
 
   return (
     <>
-      <Seo title="Pricing — £280 Library, £888 Studio, £2,800 Built by Goodwork, £1,888 CRM, £8,888.88 Agency" description={`${VALUE_LADDER_SENTENCE} ${OWNERSHIP_PRINCIPLE}`} schema={[...OFFERS.map((o) => productOffer(o, { path: "/pricing" })), faqPage(FAQ), breadcrumbs(crumbs)]} />
+      <Seo title={`Pricing — ${gbp(OFFER.library.price)} Library, ${gbp(OFFER.studio.price)} Studio, ${gbp(OFFER.built.price)} Built by Goodwork, CRM from ${gbp(OFFER.crm.price)}, ${gbp(OFFER.agency.price)} Agency`} description={`${VALUE_LADDER_SENTENCE} ${OWNERSHIP_PRINCIPLE}`} schema={[...OFFERS.map((o) => productOffer(o, { path: "/pricing" })), faqPage(FAQ), breadcrumbs(crumbs)]} />
 
       <PageHeader crumbs={crumbs} eyebrow="Pricing · all figures one-time unless marked per month" lines={["Simple to understand.", "Detailed when you want it."]} lead={VALUE_LADDER_SENTENCE}>
         <div className="gw-grid gw-grid--3">
@@ -69,7 +70,10 @@ export default function Pricing() {
               <Reveal key={o.id} variant="rise" asChild>
                 <div className={`gw-card${o.badge ? " gw-card--accent" : ""}`}>
                   <div className="gw-offer__top">
-                    <span className="gw-offer__who">{o.who}</span>
+                    <span className="gw-offer__who">
+                      <OfferIcon id={o.id} />
+                      {o.who}
+                    </span>
                     {o.badge && <span className="gw-badge gw-badge--solid">{o.badge}</span>}
                   </div>
                   <h3 className="gw-h3 gw-mt-2">{o.name}</h3>
@@ -108,7 +112,7 @@ export default function Pricing() {
       <section className="gw-section" id="addon" aria-labelledby="addon-title">
         <div className="gw-container">
           <div className="gw-split">
-            <SectionHead eyebrow={`Add-on · ${gbp(OFFER.crm.price)} one-time`} title={<span id="addon-title">Embedded CRM.</span>} lead={`${OFFER.crm.outcome} Standalone, or added to Built by Goodwork for a complete implementation of ${gbp(OFFER.built.price + OFFER.crm.price)} plus infrastructure. The server is expressly excluded.`}>
+            <SectionHead eyebrow={`Add-on · ${offerAmount(OFFER.crm)} one-time`} title={<span id="addon-title">Embedded CRM.</span>} lead={`${OFFER.crm.outcome} ${OFFER.crm.priceNote} Standalone, or added to Built by Goodwork for a complete implementation of ${gbpRange(COMBINED.total, COMBINED.totalTo)} plus infrastructure. The server is expressly excluded.`}>
               <div className="gw-actions gw-mt-4">
                 <Button to="/crm#enquire" arrow>
                   Discuss Your CRM

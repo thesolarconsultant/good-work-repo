@@ -70,7 +70,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="gw-footer__bottom">
-          <p>© {new Date().getFullYear()} Goodwork. All prices in GBP. One-time fees are paid once; managed plans are per month and optional.</p>
+          <p>© {new Date().getFullYear()} Goodwork. All prices in GBP, with no VAT added. One-time fees are paid once; managed plans are per month and optional.</p>
           <p>
             <Link to="/legal/licence">Commercial licence</Link> · <Link to="/legal/privacy">Privacy</Link> ·{" "}
             <Link to="/legal/terms">Terms</Link>

@@ -72,7 +72,7 @@ const html = `<!doctype html>
 <h1 class="headline">Build better.<br><span>Launch faster.</span></h1>
 <div class="foot">
   <p>Production-ready websites, AI agents and business systems. Use the tools yourself, or let Goodwork build the complete operation for you.</p>
-  <div class="pills"><span class="pill on">£280 Library</span><span class="pill">£888 Studio</span><span class="pill">£2,800 Built</span></div>
+  <div class="pills"><span class="pill on">£280 Library</span><span class="pill">£888 Studio</span><span class="pill">£3,500 Built</span></div>
 </div>
 <div class="rule"></div>
 `;

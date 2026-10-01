@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import Price from "./Price";
 import Reveal from "./Reveal";
+import OfferIcon from "./OfferIcon";
 import { LADDER, OFFER, COMBINED } from "../data/offers";
-import { gbp } from "../lib/format";
+import { gbp, gbpRange, offerAmount } from "../lib/format";
 
 export function OfferCard({ offer, cta = "ladder", delay = 0 }) {
   const action = cta === "primary" ? offer.primaryCta : offer.ladderCta;
@@ -11,7 +12,10 @@ export function OfferCard({ offer, cta = "ladder", delay = 0 }) {
     <Reveal variant="rise" delay={delay} asChild>
       <article className={`gw-offer${offer.badge ? " gw-offer--featured" : ""}`} aria-labelledby={`offer-${offer.id}`}>
         <div className="gw-offer__top">
-          <span className="gw-offer__who">{offer.who}</span>
+          <span className="gw-offer__who">
+            <OfferIcon id={offer.id} />
+            {offer.who}
+          </span>
           {offer.badge && <span className="gw-badge gw-badge--solid">{offer.badge}</span>}
         </div>
         <div>
@@ -19,7 +23,7 @@ export function OfferCard({ offer, cta = "ladder", delay = 0 }) {
             {offer.short}
           </h3>
           <div className="gw-mt-2">
-            <Price amount={offer.price} billing={offer.billing} />
+            <Price amount={offer.price} to={offer.priceTo} billing={offer.billing} />
           </div>
           {offer.instalments && (
             <p className="gw-offer__note gw-mt-1">
@@ -55,7 +59,10 @@ export default function OfferLadder({ showAddon = true }) {
         <Reveal variant="rise" className="gw-mt-3">
           <div className="gw-addon">
             <div>
-              <span className="gw-offer__who">Powerful add-on · {crm.who}</span>
+              <span className="gw-offer__who">
+                <OfferIcon id={crm.id} />
+                Powerful add-on · {crm.who}
+              </span>
               <h3 className="gw-offer__name gw-mt-1">{crm.name}</h3>
               <p className="gw-offer__copy gw-mt-2">{crm.outcome} Standalone, or added to Built by Goodwork. The server is expressly excluded.</p>
             </div>
@@ -66,7 +73,7 @@ export default function OfferLadder({ showAddon = true }) {
               </div>
               <div>
                 <span>{crm.short}</span>
-                <span>{gbp(crm.price)}</span>
+                <span>{offerAmount(crm)}</span>
               </div>
               <div>
                 <span>
@@ -74,11 +81,11 @@ export default function OfferLadder({ showAddon = true }) {
                   <br />
                   <small>{COMBINED.note}</small>
                 </span>
-                <span>{gbp(COMBINED.total)}</span>
+                <span>{gbpRange(COMBINED.total, COMBINED.totalTo)}</span>
               </div>
             </div>
             <div className="gw-actions" style={{ flexDirection: "column", alignItems: "stretch" }}>
-              <Price amount={crm.price} billing={crm.billing} />
+              <Price amount={crm.price} to={crm.priceTo} billing={crm.billing} />
               <Button to={crm.primaryCta.to} variant="secondary" arrow>
                 {crm.primaryCta.label}
               </Button>
