@@ -15,14 +15,41 @@ duplicates them, and **nothing clinical** goes in it.
 
 ## 1. Stand up the instance (in Beauty Heaven's name, not Good Work's)
 
-Self-host with Docker, the same way as the Good Work one, on a small box
-(VPS / Railway / Fly) under a Beauty Heaven subdomain, e.g.
-`crm.beautyheavenhub.co`. Follow the official self-host guide
-(twenty.com → Developers → Self-hosting) for the current compose file and
-version — don't copy an old one, it moves fast.
+Self-host with Docker, on a box under a Beauty Heaven subdomain, e.g.
+`crm.beautyheavenhub.co`. Keep it the client's: their box, their domain, their
+logins. Good Work gets a member seat, not ownership.
 
-Keep it the client's: their domain, their box, their logins. Good Work gets a
-member seat, not ownership.
+**The one-command installer** (official — pulls the current `docker-compose.yml`
+and `.env`, generates the secrets, runs `docker compose up -d`):
+
+```bash
+# a NEW folder, separate from the Good Work instance so data never mixes
+mkdir beautyheaven-crm && cd beautyheaven-crm
+bash <(curl -sL https://raw.githubusercontent.com/twentyhq/twenty/main/packages/twenty-docker/scripts/install.sh)
+```
+
+- When it asks for a directory name, give it something like `beautyheaven-crm`.
+- If **port 3000 is already taken** (the Good Work instance), pick another, e.g.
+  `3001`.
+- It writes a `.env` with `ENCRYPTION_KEY`, `PG_DATABASE_PASSWORD`, `TAG` and
+  `SERVER_URL` (defaults to `http://localhost:3000`).
+
+**Make it reachable from the website.** The integration needs a public HTTPS
+URL, so point `crm.beautyheavenhub.co` at the box, put it behind a reverse proxy
+with TLS (Caddy/Nginx/Cloudflare Tunnel), then set in `.env`:
+
+```
+SERVER_URL=https://crm.beautyheavenhub.co
+```
+
+and `docker compose up -d` again. (For a quick look you can use the box's
+IP/port, but the live website integration needs the HTTPS URL.)
+
+Then open it and create the first account — that's the Beauty Heaven workspace.
+
+> **No time for hosting right now?** Twenty Cloud (twenty.com) gives you an
+> instance instantly — it's a subscription and the data sits on their cloud, but
+> you can start there and move to self-host later. Everything below is identical.
 
 ## 2. Create the Lead object
 
