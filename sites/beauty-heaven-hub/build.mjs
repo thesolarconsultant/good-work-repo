@@ -394,7 +394,7 @@ function home() {
   h = swap(h, '<h2 id="rev-h" class="loved" data-loved>Loved by <b>hundreds</b> of clients.</h2>', `<h2 id="rev-h" class="loved" data-loved>Loved by <b>hundreds</b> of clients.</h2>\n    <p>${tbc("swap these paraphrased reviews for real ones, word for word, with permission, and check \"hundreds\"", P)}</p>`, "reviews");
 
   // Before your first visit: two answers corrected against Phorest.
-  h = swap(h, "For skin and aesthetics, yes, always, and it's part of the appointment rather than an extra. For most beauty and hair treatments the conversation happens in the chair.", "For aesthetics, semi-permanent make-up and some skin treatments, yes. Some consultations are free and some have a small fee, and we'll tell you which when you book. For most beauty and hair treatments the conversation happens in the chair.", "consultation answer");
+  h = swap(h, "For skin and aesthetics, yes, always, and it's part of the appointment rather than an extra. For most beauty and hair treatments the conversation happens in the chair.", "You can book most treatments straight in. First-time anti-wrinkle clients have a free consultation with Jessica first, and any consultation fee comes off the price of your treatment. For everything else the conversation happens in the chair.", "consultation answer");
   h = swap(h, "With a foundation course, and a conversation with Jessica or Hollie about where you'd like to end up. Every route through the Academy starts from nothing, and every course comes with support after you've qualified.", "With a conversation about where you are now and where you'd like to end up. We'll tell you which course fits, and anything you need before you start.", "academy answer");
 
   // The closing band's two buttons go somewhere real.
@@ -510,17 +510,17 @@ function consultations() {
   return layout({
     path: "/consultations/", title: "Consultations",
     description: "Which treatments at Beauty Heaven Hub start with a consultation, what they cost and how to book one.",
-    body: `${pageHead("Before your treatment", "we start with <b>a chat.</b>", "For aesthetic treatments, semi-permanent make-up and some skin treatments, we start with a consultation: what you'd like, whether it's right for you, and every question answered, with no pressure to go ahead.")}
+    body: `${pageHead("Before your treatment", "we start with <b>a chat.</b>", "You can book most treatments straight in. First-time anti-wrinkle clients have a free 15-minute consultation with Jessica first, booked over the phone. And a Slim Jab booking is itself a free consultation with our nurse.")}
 <section class="section" style="padding-top:0"><div class="wrap menus">
   <section class="menu" data-gw-reveal>
     <div class="menu__head"><span class="rule"></span><h2>Consultations</h2></div>
     <ul class="items">${rows}</ul>
-    <p>${tbc("whether consultation fees come off the treatment price", "/consultations/")}</p>
+    <p>Any consultation fee is taken off the price of your treatment.</p>
     <div class="actions">${ask("Hi Beauty Heaven, I'd like to book a consultation", "Book a consultation", true)}<a class="btn" href="${BOOK}"><span>Book online</span></a></div>
   </section>
   <section class="menu" data-gw-reveal>
     <div class="menu__head"><span class="rule"></span><h2>Patch tests</h2></div>
-    <p>Lashes, laser and semi-permanent make-up need a patch test before your first treatment. We'll arrange it when you book.</p>
+    <p>Tinting, lash lifts and extensions, brow lamination, hair colour and laser need a patch test at least 48 hours before your first treatment, and again every 12 months. We arrange it by phone when you book.</p>
   </section>
 </div></section>`,
   });
@@ -665,7 +665,13 @@ function bookingData() {
   };
 }
 
-todo.add("patch tests: which treatments need one before the first appointment (tints, lash lifts and extensions, brow lamination, hair colour, others?), how long before, and should the assistant book the patch test first? Only laser is marked so far. Question B6");
+// Patch tests confirmed (discovery 1 Oct): tinting, LVL/lash extensions, brow
+// lamination, hair colour and laser-first; 48h before, repeat every 12 months
+// and after pregnancy; booked by phone. Flagged in data/groups.json on the
+// categories where it's whole-category (Tinting, Lashes, Laser). Hair colour and
+// brow lamination live in mixed categories (Hair, Brows), so they're named in
+// the copy rather than gated per service.
+todo.add("patch tests: hair colour and brow lamination need one, but sit in the mixed Hair and Brows categories, so they aren't gated per service. Split those categories in data/groups.json if per-service patch gating is needed. Question B6");
 
 function book() {
   return layout({

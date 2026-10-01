@@ -2,7 +2,7 @@
   {
     "slug": "aesthetics",
     "name": "Aesthetics",
-    "line": "Anti-wrinkle, fillers, skin boosters and more. Every aesthetic treatment starts with a consultation.",
+    "line": "Anti-wrinkle, fillers, skin boosters and more. First-time anti-wrinkle clients have a quick consultation with Jessica first.",
     "photo": "treatment-room",
     "categories": [
       {
@@ -14,20 +14,17 @@
       {
         "csv": "Dermal Fillers",
         "title": "Dermal fillers",
-        "phorest": "ATSugCAeEeTW2B9ss-KYig",
-        "consult": true
+        "phorest": "ATSugCAeEeTW2B9ss-KYig"
       },
       {
         "csv": "Profhilo",
         "title": "Profhilo",
-        "phorest": "ieO1GpqBoYy6kduak07s5A",
-        "consult": true
+        "phorest": "ieO1GpqBoYy6kduak07s5A"
       },
       {
         "csv": "Skin Boosters",
         "title": "Skin boosters",
-        "phorest": "FPEEn7v3vpzyr_52beUkhg",
-        "consult": true
+        "phorest": "FPEEn7v3vpzyr_52beUkhg"
       },
       {
         "csv": "Fat Dissolving",
@@ -51,8 +48,7 @@
       {
         "csv": "Hair Growth Therapy",
         "title": "Hair growth therapy",
-        "phorest": "nFGP-SCqbTHahgC8AJkQhw",
-        "consult": true
+        "phorest": "nFGP-SCqbTHahgC8AJkQhw"
       }
     ]
   },
@@ -90,8 +86,7 @@
       {
         "csv": "PRP Facial",
         "title": "PRP facial",
-        "phorest": "PszNUCCE2BnWznBl1DcVMw",
-        "consult": true
+        "phorest": "PszNUCCE2BnWznBl1DcVMw"
       },
       {
         "csv": "Flawless Skin",
@@ -114,13 +109,13 @@
       {
         "csv": "Semi Permanent Make up",
         "title": "Semi-permanent make-up",
-        "phorest": "coSh2jvIzyB15_TcfINw1Q",
-        "consult": true
+        "phorest": "coSh2jvIzyB15_TcfINw1Q"
       },
       {
         "csv": "Eyelashes",
         "title": "Lashes",
-        "phorest": "tz0MjqUDFhgaLoQaCY2lIg"
+        "phorest": "tz0MjqUDFhgaLoQaCY2lIg",
+        "patch": true
       },
       {
         "csv": "Eyebrows",
@@ -130,7 +125,8 @@
       {
         "csv": "Tinting",
         "title": "Tinting",
-        "phorest": "p2QTpY7Hx5IIybkljdhRGg"
+        "phorest": "p2QTpY7Hx5IIybkljdhRGg",
+        "patch": true
       },
       {
         "csv": "BY EMH",
