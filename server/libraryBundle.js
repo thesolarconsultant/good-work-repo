@@ -21,6 +21,7 @@
 // =========================================================
 
 import { LICENCE_PRINCIPLES, UPDATE_PERIOD_MONTHS } from "../src/data/offers.js";
+import { FIT_SCRIPT } from "../src/lib/previewDoc.js";
 
 // Mirrors CONTACT_EMAIL in src/lib/site.js, which reads import.meta.env and
 // so cannot be imported by server code.
@@ -261,8 +262,11 @@ body{margin:0;background:var(--bg);color:var(--paper);font-family:var(--sans);li
   var items = DATA.items, names = DATA.categories;
   var FONT = "${FONT}";
   var TOKENS = "${TOKENS}";
+  // Centres each snippet and scales it down if it is bigger than its frame,
+  // the same fit the website's previews use.
+  var FIT = ${JSON.stringify(FIT_SCRIPT)};
   function wrap(code) {
-    return '<!doctype html><html><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>' + TOKENS + '*{box-sizing:border-box}html,body{height:100%;margin:0}body{display:grid;place-items:center;background:transparent;color:var(--ink);font-family:' + FONT + ';overflow:hidden;padding:18px;text-align:center}a{cursor:default}</style></head><body>' + code + '</body></html>';
+    return '<!doctype html><html><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><style>' + TOKENS + '*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:transparent;color:var(--ink);font-family:' + FONT + ';overflow:hidden;text-align:center}#gw-stage{min-height:100%;display:grid;place-items:center;align-content:center;padding:18px}a{cursor:default}</style></head><body><div id="gw-stage">' + code + '</div><script>' + FIT + '<\/script></body></html>';
   }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function standalone(item) {

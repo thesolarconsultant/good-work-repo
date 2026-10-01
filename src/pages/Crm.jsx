@@ -72,7 +72,7 @@ export default function Crm() {
 
       <section className="gw-section" id="enquire" aria-labelledby="enquire-title">
         <div className="gw-container">
-          <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
+          <div className="gw-split" style={{ "--gw-split": "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
             <SectionHead eyebrow="Discuss your CRM" title={<span id="enquire-title">Tell us how you sell.</span>} lead="Users, pipeline stages, what needs connecting and where you'd like it hosted. We confirm the setup before anything is built." />
             <Reveal variant="rise" delay={100}>
               <div className="gw-card">

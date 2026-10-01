@@ -91,7 +91,9 @@ for (const vp of VIEWPORTS) {
         const step = Math.max(300, Math.floor(window.innerHeight * 0.8));
         for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
           window.scrollTo({ top: y, behavior: "instant" });
-          await new Promise((r) => setTimeout(r, 60));
+          // Two painted frames at each stop, not a fixed delay: observers only
+          // run on a rendering opportunity, and a busy frame can outlast 60ms.
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 40))));
         }
         window.scrollTo({ top: 0, behavior: "instant" });
         await new Promise((r) => setTimeout(r, 100));
@@ -101,7 +103,10 @@ for (const vp of VIEWPORTS) {
     }
     await page.waitForTimeout(450);
     const title = await page.title();
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    // The body clips horizontal overflow, which hides it from the document's
+    // scrollWidth but not from the reader: text past the edge is simply cut
+    // off. The body's own scrollWidth still measures it.
+    const overflow = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - document.documentElement.clientWidth);
     const links = await page.$$eval('a[href^="/"]', (as) => as.map((a) => a.getAttribute("href")));
     for (const l of links) seenLinks.add(l.split("#")[0].split("?")[0]);
     const label = `${vp.name} ${route}`;
@@ -136,12 +141,17 @@ for (const vp of VIEWPORTS) {
     const drawerLinks = await page.$$eval("#gw-drawer a", (as) => as.length);
     if (drawerLinks < 10) problems.push(`mobile drawer: only ${drawerLinks} links`);
     await page.keyboard.press("Escape");
-    // Library filter sheet.
+    // The Library's sidebar becomes a side sheet on phones.
     await page.goto(`${base}/library`, { waitUntil: "networkidle" });
-    await page.click("text=Filters");
-    await page.waitForSelector(".gw-sheet");
+    await page.click("text=Browse the Library");
+    await page.waitForSelector(".gw-sheet--side");
     await page.waitForTimeout(400);
-    await page.screenshot({ path: join(shots, "mobile-library-filters.png") });
+    await page.screenshot({ path: join(shots, "mobile-library-browse.png") });
+    const sheetLinks = await page.$$eval(".gw-sheet--side a", (as) => as.length);
+    if (sheetLinks < 150) problems.push(`library browse sheet: only ${sheetLinks} links`);
+    await page.click('.gw-sheet--side a[href="/library/shimmer"]');
+    await page.waitForURL("**/library/shimmer", { timeout: 5000 }).catch(() => problems.push("library browse sheet: tapping an item did not open it"));
+    if (await page.$(".gw-sheet--side")) problems.push("library browse sheet: still open after navigating");
   }
   if (vp.name === "desktop") {
     await page.goto(`${base}/`, { waitUntil: "networkidle" });
@@ -176,9 +186,9 @@ for (const vp of VIEWPORTS) {
     await page.waitForSelector("text=Checkout not switched on yet", { timeout: 5000 });
     await page.waitForTimeout(300);
     await page.screenshot({ path: join(shots, "desktop-checkout-unavailable.png") });
-    // Library filters change the URL and the grid.
+    // The sidebar's category links filter the grid through the URL.
     await page.goto(`${base}/library`, { waitUntil: "networkidle" });
-    await page.click("text=Heroes >> nth=0");
+    await page.click('.gw-docs__side a.gw-side__title[href="/library?category=heroes"]');
     await page.waitForTimeout(400);
     if (!page.url().includes("category=heroes")) problems.push("library filters: category chip did not update the URL");
     const heroCount = await page.$$eval(".gw-lib-card", (els) => els.length);
@@ -197,6 +207,23 @@ for (const vp of VIEWPORTS) {
     await page.waitForTimeout(600);
     const searchCount = await page.$$eval(".gw-lib-card", (els) => els.length);
     if (searchCount < 3) problems.push(`library search: expected pricing results across the whole library, saw ${searchCount}`);
+    // An item page for a visitor: Preview/Code tabs, arrow keys switch them,
+    // the Code tab shows an excerpt and how to get the rest, and the rail's
+    // "On this page" lists the sections.
+    await page.goto(`${base}/library/pricingtiers`, { waitUntil: "networkidle" });
+    await page.focus("#tab-preview");
+    await page.keyboard.press("ArrowRight");
+    const codeSelected = await page.getAttribute("#tab-code", "aria-selected");
+    if (codeSelected !== "true") problems.push("library item: ArrowRight did not move to the Code tab");
+    if (!(await page.$(".gw-code--locked .gw-code__lock"))) problems.push("library item: a visitor should see the excerpt with how to get the full source");
+    const tocLinks = await page.$$eval(".gw-toc a", (as) => as.map((a) => a.getAttribute("href")));
+    for (const id of ["#preview", "#installation", "#tokens", "#details", "#licence", "#related"]) if (!tocLinks.includes(id)) problems.push(`library item: "On this page" is missing ${id}`);
+    for (const id of tocLinks) if (!(await page.$(id))) problems.push(`library item: "On this page" links to ${id}, which is not on the page`);
+    const tokenRows = await page.$$eval("#tokens ~ .gw-table-wrap tbody tr, #tokens + * tbody tr", (r) => r.length).catch(() => 0);
+    const tokenRows2 = await page.$$eval(".gw-table tbody tr", (r) => r.length);
+    if (Math.max(tokenRows, tokenRows2) < 3) problems.push(`library item: expected the brand tokens table, saw ${tokenRows2} rows`);
+    if (!(await page.$('.gw-pager a[rel="next"]'))) problems.push("library item: no next link in the pager");
+    await page.screenshot({ path: join(shots, "desktop-library-item-code.png") });
     // Live previews actually mount sandboxed iframes with the snippet inside.
     await page.goto(`${base}/library?category=buttons`, { waitUntil: "networkidle" });
     await page.waitForTimeout(1200);
@@ -229,7 +256,7 @@ for (const vp of VIEWPORTS) {
         document.documentElement.style.scrollBehavior = "auto";
         for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
           window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 40));
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 40))));
         }
         window.scrollTo(0, 0);
       });
@@ -242,8 +269,10 @@ for (const vp of VIEWPORTS) {
     if (navLabel !== "Dashboard") problems.push(`nav: expected the sign-in link to read "Dashboard" when signed in, saw "${navLabel}"`);
     await walk(sp);
     await sp.screenshot({ path: join(shots, "desktop-dashboard-signed-in.png"), fullPage: true });
-    // navbar is a 20-line snippet, so the 14-line excerpt and the whole thing differ.
+    // navbar is a 20-line snippet, so the 12-line excerpt and the whole thing
+    // differ. The source sits behind the Code tab, as in component docs.
     await sp.goto(`${base}/library/navbar`, { waitUntil: "networkidle" });
+    await sp.click('role=tab[name="Code"]').catch(() => problems.push("library item: no Code tab"));
     const copyBtn = await sp.waitForSelector(".gw-code__copy", { timeout: 5000 }).catch(() => null);
     if (!copyBtn) problems.push("library item: a signed-in session did not show the full source with Copy code");
     if (!(await sp.$('a[href="/api/download?product=library"]'))) problems.push("library item: a signed-in session did not show the bundle download");

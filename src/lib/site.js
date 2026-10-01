@@ -4,6 +4,8 @@ export const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://goodwork.agen
 
 export const SITE_NAME = "Goodwork";
 export const WORDMARK = "GOOD WORK.";
+// The brushed-silver line under the wordmark.
+export const DESCRIPTOR = "Product studio";
 export const CONTACT_EMAIL = "hello@goodwork.agency";
 export const TAGLINE = "Build better. Launch faster.";
 export const DESCRIPTION =

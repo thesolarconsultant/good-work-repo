@@ -40,7 +40,7 @@ export default function Legal() {
 
       <section className="gw-section--tight">
         <div className="gw-container">
-          <div className="gw-lib-detail" style={{ gridTemplateColumns: "minmax(220px,0.5fr) minmax(0,1.5fr)" }}>
+          <div className="gw-lib-detail" style={{ "--gw-detail": "minmax(220px,0.5fr) minmax(0,1.5fr)" }}>
             <aside className="gw-aside" aria-label="Legal pages">
               <nav className="gw-toc">
                 {LEGAL.map((l) => (

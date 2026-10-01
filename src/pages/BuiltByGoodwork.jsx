@@ -100,7 +100,7 @@ export default function BuiltByGoodwork() {
             <div>
               <p className="gw-eyebrow gw-eyebrow--accent">Add the CRM</p>
               <h2 className="gw-h3 gw-mt-1" id="crm-title">
-                {OFFER.crm.name}, {gbp(OFFER.crm.price)} one-time
+                {OFFER.crm.name}, <span className="gw-nowrap">{gbp(OFFER.crm.price)} one-time</span>
               </h2>
               <p className="gw-body gw-mt-2">{OFFER.crm.outcome} The server is expressly excluded.</p>
             </div>
@@ -130,7 +130,7 @@ export default function BuiltByGoodwork() {
 
       <section className="gw-section gw-surface" id="enquire" aria-labelledby="enquire-title">
         <div className="gw-container">
-          <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
+          <div className="gw-split" style={{ "--gw-split": "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
             <SectionHead eyebrow="Start your build" title={<span id="enquire-title">Tell us about the business.</span>} lead="This is the structured enquiry, not a payment. We confirm scope, timeline and the fixed fee in writing, and nothing starts until you've agreed it.">
               <div className="gw-card gw-card--flat gw-mt-4">
                 <p className="gw-eyebrow">What happens next</p>

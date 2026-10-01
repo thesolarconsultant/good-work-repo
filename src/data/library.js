@@ -246,7 +246,50 @@ export const ITEMS = [
 export const ITEM_BY_SLUG = Object.fromEntries(ITEMS.map((i) => [i.slug, i]));
 
 export const FEATURED = ITEMS.filter((i) => i.featured);
-export const RECENT = [...ITEMS].filter((i) => i.status === "available").sort((a, b) => (a.updated < b.updated ? 1 : -1)).slice(0, 8);
+
+// ---------------------------------------------------------------------------
+// The docs-style navigation: the sidebar's groups, in the order it lists them,
+// and the reading order the previous/next pager walks.
+// ---------------------------------------------------------------------------
+
+export const GETTING_STARTED = [
+  { to: "/library", label: "Overview" },
+  { to: "/docs/installing-components", label: "Installation" },
+  { to: "/docs/brand-tokens", label: "Brand tokens" },
+  { to: "/legal/licence", label: "Licence" },
+];
+
+const CATALOGUE_CATEGORIES = CATEGORIES.filter((c) => CATALOGUE.some((i) => i.category === c.id));
+
+export const LIBRARY_GROUPS = [
+  { id: "templates", title: "Templates", to: "/library?type=template", items: TEMPLATES },
+  ...CATALOGUE_CATEGORIES.map((c) => ({
+    id: c.id,
+    title: c.name,
+    to: `/library?category=${c.id}`,
+    items: ITEMS.filter((i) => i.category === c.id && (i.kind === "component" || i.kind === "section")),
+  })),
+  { id: "systems", title: "Studio systems", to: "/library?type=system", items: SYSTEM_ITEMS },
+];
+
+const ORDERED = LIBRARY_GROUPS.flatMap((g) => g.items);
+
+/** The items either side of this one in sidebar order, for the pager. */
+export function neighbours(item) {
+  const i = ORDERED.findIndex((x) => x.slug === item.slug);
+  return { prev: i > 0 ? ORDERED[i - 1] : null, next: i >= 0 && i < ORDERED.length - 1 ? ORDERED[i + 1] : null };
+}
+
+/** The sidebar group an item sits in. */
+export function groupOf(item) {
+  return LIBRARY_GROUPS.find((g) => g.items.some((x) => x.slug === item.slug)) || null;
+}
+
+/** "HTML · CSS · JS" */
+export const stackLabel = (item) => item.stack.map((s) => (s === "JavaScript" ? "JS" : s)).join(" · ");
+
+/** Live, sandboxed previews exist for catalogue components and sections. */
+export const isLive = (item) => item.status === "available" && (item.kind === "component" || item.kind === "section");
 
 export const STACKS = [...new Set(ITEMS.flatMap((i) => i.stack))];
 

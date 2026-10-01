@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import AnnouncementBar from "./components/AnnouncementBar";
 import { useAnnouncement } from "./lib/announcement";
 import RouteManager from "./components/RouteManager";
+import ScrollProgress from "./components/ScrollProgress";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Home from "./pages/Home";
 import { organization } from "./lib/schema";
@@ -100,6 +101,7 @@ function Chrome() {
 
   return (
     <>
+      <ScrollProgress />
       <a className="gw-skip" href="#gw-main">
         Skip to content
       </a>

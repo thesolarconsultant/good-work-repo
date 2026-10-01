@@ -35,7 +35,7 @@ export default function Contact() {
 
       <section className="gw-section--tight">
         <div className="gw-container">
-          <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,1.2fr) minmax(0,0.8fr)" }}>
+          <div className="gw-split" style={{ "--gw-split": "minmax(0,1.2fr) minmax(0,0.8fr)" }}>
             <Reveal variant="rise" asChild>
               <div className="gw-card">
                 <EnquiryForm formId="contact" prefill={prefill} source="contact-page" />

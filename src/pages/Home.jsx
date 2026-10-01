@@ -3,9 +3,15 @@ import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import Button from "../components/Button";
 import Headline from "../components/Headline";
+import ShaderField from "../components/ShaderField";
+import SparklesText from "../components/SparklesText";
+import Stamp from "../components/Stamp";
+import Marquee from "../components/Marquee";
+import Display from "../components/Display";
+import GlowCard from "../components/GlowCard";
+import HorizontalWork from "../components/HorizontalWork";
 import Reveal from "../components/Reveal";
 import SectionHead from "../components/SectionHead";
-import HeroStack from "../components/HeroStack";
 import OfferLadder from "../components/OfferLadder";
 import SystemJourney from "../components/SystemJourney";
 import ManagedPlans from "../components/ManagedPlans";
@@ -23,6 +29,19 @@ import { FOUNDER } from "../data/founder";
 
 const HOME_CATEGORIES = ["websites", "landing", "heroes", "pricing", "navigation", "forms", "dashboards", "content-systems", "agents", "crm"];
 
+// What Goodwork builds, on the strip under the hero.
+const TICKER = ["Website Library", "Goodwork Studio", "WhatsApp bots", "AI voice agents", "Content Console", "Embedded CRM", "Brand guidelines", "Automations", "Managed hosting"];
+
+// The showcase, travelling sideways as you scroll.
+const WORK = SHOWCASE.map((s) => ({
+  to: `/showcase#${s.id}`,
+  name: s.name,
+  tag: `${s.status} · ${s.tag}`,
+  site: s.site,
+  desc: s.lede,
+  shot: s.shots[0].src,
+}));
+
 const ICONS = {
   "whatsapp-bot": <path d="M4 5h16v10H9l-5 4V5zM8 9h8M8 12h5" />,
   "voice-agent": <path d="M12 3v10M12 13a4 4 0 0 0 4-4V7a4 4 0 0 0-8 0v2a4 4 0 0 0 4 4zM6 11a6 6 0 0 0 12 0M12 17v4" />,
@@ -37,22 +56,44 @@ export default function Home() {
       <Seo title="Goodwork — Build better. Launch faster." description={DESCRIPTION} schema={[website(), faqPage(FAQ)]} />
 
       {/* 3. Hero */}
-      <header className="gw-hero gw-gridbg gw-wash gw-wash--brandline">
+      <header className="gw-hero gw-aurora-host">
+        <div className="gw-aurora" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+        <ShaderField />
         <div className="gw-container">
-          <div className="gw-hero__grid">
-            <div className="gw-hero__copy">
+          <div className="gw-hero__grid gw-hero__grid--stamp">
+            <div>
               <Reveal variant="fade">
-                <p className="gw-eyebrow gw-eyebrow--accent">Websites. Agents. Business systems.</p>
+                <p className="gw-eyebrow gw-pulse">Websites · Agents · Business systems</p>
               </Reveal>
-              <Headline onMount className="gw-h1" lines={["Build better.", "Launch faster."]} />
-              <Reveal variant="rise" delay={180}>
-                <p className="gw-lead gw-max">
-                  Production-ready websites, AI agents and business systems for people who want to move. Use
-                  Goodwork's code and systems yourself—or let us build the complete operation for you.
+              <SparklesText as="div" className="gw-mt-3" count={14}>
+                <Headline
+                  onMount
+                  className="gw-h1"
+                  lines={[
+                    "Build better.",
+                    <>
+                      Launch{" "}
+                      <span className="gw-nowrap">
+                        <em className="gw-grad">faster</em>
+                        <span className="gw-dot" aria-hidden="true" />
+                      </span>
+                    </>,
+                  ]}
+                />
+              </SparklesText>
+              <Reveal variant="rise" delay={260}>
+                <p className="gw-lead gw-max gw-mt-4">
+                  Production-ready websites, AI agents and business systems for people who want to move. Use Goodwork's code and systems yourself—or let
+                  us build the complete operation for you.
                 </p>
               </Reveal>
-              <Reveal variant="rise" delay={260}>
-                <div className="gw-actions">
+              <Reveal variant="rise" delay={380}>
+                <div className="gw-actions gw-mt-4">
                   <Button to="/library" size="lg" arrow>
                     Explore the Library
                   </Button>
@@ -61,40 +102,50 @@ export default function Home() {
                   </Button>
                 </div>
               </Reveal>
-              <Reveal variant="fade" delay={340}>
-                <p className="gw-proof">
+              <Reveal variant="fade" delay={460}>
+                <p className="gw-proof gw-mt-4">
                   {PROOF_LINE.map((p) => (
                     <span key={p}>{p}</span>
                   ))}
                 </p>
               </Reveal>
             </div>
-            <div className="gw-hero__visual">
-              <HeroStack />
-            </div>
+            <Reveal variant="scale" delay={420} className="gw-hero__stamp">
+              <Stamp size={168} />
+            </Reveal>
           </div>
         </div>
       </header>
 
-      {/* 4. Two ways to work with Goodwork */}
-      <section className="gw-section gw-light" aria-labelledby="two-ways">
+      <Marquee items={TICKER} />
+
+      {/* 4. Two ways to work with Goodwork: the original's hard black block */}
+      <section className="gw-dark gw-block" aria-labelledby="two-ways">
         <div className="gw-container">
-          <SectionHead eyebrow="Two ways in" title={<span id="two-ways">Build with Goodwork—or have Goodwork build it.</span>} />
-          <div className="gw-grid gw-grid--2 gw-mt-4">
+          <Reveal variant="rise">
+            <p className="gw-eyebrow">Two ways in</p>
+            <Display id="two-ways" className="gw-mt-2">
+              Two ways
+              <br />
+              to work
+            </Display>
+            <p className="gw-lead gw-max gw-mt-3">Build with Goodwork—or have Goodwork build it.</p>
+          </Reveal>
+          <div className="gw-grid gw-grid--2 gw-mt-5">
             {TWO_WAYS.map((w, i) => (
               <Reveal key={w.id} variant="rise" delay={i * 90} asChild>
-                <article className="gw-way">
-                  <span className="gw-way__n">0{i + 1}</span>
-                  <h3 className="gw-h2" style={{ fontSize: "clamp(1.5rem,2.6vw,2.1rem)" }}>
-                    {w.title}
-                  </h3>
-                  <p className="gw-lead">{w.copy}</p>
-                  <div className="gw-actions">
+                <GlowCard>
+                  <span className="gw-card__mark" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <h3 className="gw-h3">{w.title}</h3>
+                  <p className="gw-body gw-mt-2">{w.copy}</p>
+                  <div className="gw-actions gw-mt-3">
                     <Button to={w.cta.to} variant={i === 0 ? "primary" : "secondary"} arrow>
                       {w.cta.label}
                     </Button>
                   </div>
-                </article>
+                </GlowCard>
               </Reveal>
             ))}
           </div>
@@ -115,7 +166,7 @@ export default function Home() {
       </section>
 
       {/* 7. Product-system demonstration */}
-      <section className="gw-section gw-wash" aria-labelledby="journey">
+      <section className="gw-section" aria-labelledby="journey">
         <div className="gw-container">
           <SectionHead eyebrow="The connected system" title={<span id="journey">More than a collection of pretty sections.</span>} lead="A website is only one part of the operation. Goodwork connects the customer journey—from the first visit and conversation to content, follow-up and sales management." />
           <div className="gw-mt-4">
@@ -221,12 +272,13 @@ export default function Home() {
       </section>
 
       {/* 11. Agency programme */}
-      <section className="gw-section" aria-labelledby="agency">
+      <section className="gw-section gw-dark" aria-labelledby="agency">
         <div className="gw-container">
           <div className="gw-split">
             <SectionHead eyebrow="The Agency programme" title={<span id="agency">A website does not make an agency. The operation behind it does.</span>} lead="Goodwork helps shape the positioning, offers, brand, sales process, delivery system, CRM, automation and launch infrastructure required to operate a modern agency.">
-              <p className="gw-mono gw-mt-4" style={{ fontSize: "0.95rem" }}>
-                {gbp(OFFER.agency.price)} or four agreed payments of {gbp(OFFER.agency.instalments.amount)}
+              <p className="gw-price gw-mt-4">
+                <span className="gw-price__amount gw-price__amount--sm">{gbp(OFFER.agency.price)}</span>
+                <span className="gw-price__term">or four agreed payments of {gbp(OFFER.agency.instalments.amount)}</span>
               </p>
               <div className="gw-actions gw-mt-3">
                 <Button to="/agency#apply" arrow>
@@ -264,37 +316,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 13. Showcase */}
-      <section className="gw-section gw-surface" aria-labelledby="showcase">
-        <div className="gw-container">
-          <div className="gw-pagehead__row">
-            <SectionHead eyebrow="Showcase" title={<span id="showcase">Good work should be visible.</span>} lead="Live projects and completed builds on the Goodwork system, with the problem, what was created and which systems it used. No invented results." />
-            <Reveal variant="rise" delay={120}>
-              <Button to="/showcase" variant="secondary" arrow>
+      {/* 13. Showcase: the work, travelling sideways as you scroll */}
+      <section className="gw-dark" aria-labelledby="showcase">
+        <div className="gw-block__rule" aria-hidden="true" />
+        <div className="gw-section--tight">
+          <div className="gw-container">
+            <Reveal variant="rise">
+              <p className="gw-eyebrow">Showcase · selected work</p>
+              <SparklesText as="div" count={10}>
+                <h2 className="gw-display gw-mt-2" id="showcase">
+                  Recent
+                  <br />
+                  projects
+                </h2>
+              </SparklesText>
+              <p className="gw-lead gw-max gw-mt-3">
+                Live projects and completed builds on the Goodwork system, with the problem, what was created and which systems it used. No invented
+                results.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+        <HorizontalWork items={WORK} endLabel="That's the showcase" endLine="Yours could be next" />
+        <div className="gw-section--tight">
+          <div className="gw-container">
+            <Reveal variant="rise">
+              <Button to="/showcase" arrow>
                 See the showcase
               </Button>
             </Reveal>
           </div>
-          <div className="gw-grid gw-grid--3 gw-mt-4">
-            {SHOWCASE.slice(0, 3).map((s, i) => (
-              <Reveal key={s.id} variant="rise" delay={i * 80} asChild>
-                <Link to={`/showcase#${s.id}`} className="gw-card gw-card--link" style={{ display: "grid", gap: "0.8rem" }}>
-                  <Shot src={s.shots[0].src} alt={`${s.name} — ${s.shots[0].caption}`} sizes="(max-width: 600px) 100vw, 380px" />
-                  <div className="gw-lib-card__meta" style={{ marginTop: 0 }}>
-                    <span>{s.status}</span>
-                    <span>{s.sector}</span>
-                  </div>
-                  <h3 className="gw-h4">{s.name}</h3>
-                  <p className="gw-small gw-body">{s.problem}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+        </div>
+      </section>
+
+      {/* How we work: the original's white statement with the stamp */}
+      <section className="gw-section" aria-labelledby="how-we-work">
+        <div className="gw-container">
+          <Reveal variant="rise">
+            <div className="gw-approved">
+              <Stamp size={120} />
+              <div>
+                <p className="gw-eyebrow">How we work</p>
+                <h2 className="gw-display gw-mt-2" id="how-we-work">
+                  Understand.
+                  <br />
+                  Think. Make.
+                  <br />
+                  Improve.
+                </h2>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal variant="rise" delay={120}>
+            <p className="gw-lead gw-max gw-mt-4">
+              No unnecessary agency process. We work out what matters, then we make it better—and keep making it better once it's live.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* 14. Founder-led */}
-      <section className="gw-section" aria-labelledby="founder">
+      <section className="gw-section gw-light" aria-labelledby="founder">
         <div className="gw-container">
           <div className="gw-founder">
             <Reveal variant="rise">
@@ -329,9 +411,9 @@ export default function Home() {
       </section>
 
       {/* 15. FAQ */}
-      <section className="gw-section gw-light" aria-labelledby="faq">
+      <section className="gw-section" aria-labelledby="faq">
         <div className="gw-container">
-          <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,0.7fr) minmax(0,1.3fr)" }}>
+          <div className="gw-split" style={{ "--gw-split": "minmax(0,0.7fr) minmax(0,1.3fr)" }}>
             <SectionHead eyebrow="Questions" title={<span id="faq">Straight answers.</span>} lead="Every answer here agrees with the pricing page and the licence. Where a policy is still with our solicitor, it says so." />
             <Reveal variant="rise" delay={100}>
               <FaqList items={FAQ} />
@@ -340,21 +422,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 16. Final CTA */}
-      <section className="gw-section gw-gridbg gw-wash" aria-labelledby="final">
-        <div className="gw-container gw-center">
-          <SectionHead align="center" eyebrow="Choose your route" title={<span id="final">Choose the fastest route to better work.</span>} lead="Start with the code, take the complete Studio toolkit or ask Goodwork to build the system with you.">
-            <div className="gw-actions gw-mt-4" style={{ justifyContent: "center" }}>
-              <Button to="/pricing" size="lg" arrow>
-                Get access
-              </Button>
-              <Button to="/contact" variant="secondary" size="lg">
-                Talk to Goodwork
-              </Button>
-            </div>
-          </SectionHead>
-        </div>
-      </section>
+      {/* 16. The final call to action is the footer's statement on this page. */}
     </>
   );
 }
@@ -373,7 +441,7 @@ function LibraryPreviewSection() {
   }, [category]);
 
   return (
-    <section className="gw-section gw-surface" aria-labelledby="lib-preview">
+    <section className="gw-section" aria-labelledby="lib-preview">
       <div className="gw-container">
         <div className="gw-pagehead__row">
           <SectionHead eyebrow="The Library" title={<span id="lib-preview">Start with something that already works.</span>} lead="Browse complete websites, individual sections and reusable business tools. Preview the experience, inspect what is included and choose the fastest route from idea to launch." />

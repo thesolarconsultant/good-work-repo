@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PRIMARY_NAV, NAV_CTA, NAV_SIGN_IN, PRODUCTS_MENU, SERVICES_MENU } from "../data/nav";
-import { WORDMARK, CONTACT_EMAIL } from "../lib/site";
+import { WORDMARK, DESCRIPTOR, CONTACT_EMAIL } from "../lib/site";
 import { useScrollDirection } from "../lib/motion";
 import { useSession } from "../lib/auth";
 
@@ -90,8 +90,10 @@ export default function Nav({ announce = false }) {
   const toggleRef = useRef(null);
   const drawerRef = useRef(null);
 
-  // Retract only once clear of the top, never while a menu is open.
-  const hidden = !open && openId == null && past && direction === "down";
+  // Retract only once clear of the top, never while a menu is open, and never
+  // on the Library, whose sticky sidebar sits directly under the bar.
+  const pinned = pathname === "/library" || pathname.startsWith("/library/");
+  const hidden = !pinned && !open && openId == null && past && direction === "down";
 
   useEffect(() => {
     setOpen(false);
@@ -137,8 +139,9 @@ export default function Nav({ announce = false }) {
     <>
       <nav className={navClass} aria-label="Primary">
         <div className="gw-container gw-nav__inner">
-          <Link to="/" className="gw-brand" aria-label="Goodwork, home">
-            <span className="gw-brand__word">{WORDMARK}</span>
+          <Link to="/" className="gw-logo" aria-label="Goodwork, home">
+            <span className="gw-logo__wordmark">{WORDMARK}</span>
+            <span className="gw-logo__descriptor">{DESCRIPTOR}</span>
           </Link>
 
           <ul className="gw-nav__links" style={{ listStyle: "none" }}>

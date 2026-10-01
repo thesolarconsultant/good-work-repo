@@ -99,8 +99,8 @@ function loop(){el.classList.remove('in');requestAnimationFrame(function(){reque
 loop();setInterval(loop,2600);
 </script>
 @@@ stagger :: Staggered Card Grid :: Animations :: Cards pop in one after another.
-<style>.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:230px}
-.sg i{display:block;height:56px;border-radius:12px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);
+<style>.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:240px}
+.sg i{display:block;height:58px;border-radius:12px;background:color-mix(in srgb,var(--accent,#3366FF) 22%,var(--card,#171B22));border:1px solid color-mix(in srgb,var(--accent,#3366FF) 55%,transparent);
  opacity:0;transform:translateY(18px) scale(.96);animation:sgin .6s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes sgin{to{opacity:1;transform:none}}</style>
 <div class="sg" id="sg"></div>
@@ -306,9 +306,9 @@ for(var i=0;i<48;i++)ps.push({x:Math.random()*240,y:Math.random()*130,r:Math.ran
 @keyframes rg2m{to{background-position:0 24px}}</style>
 <div class="rg2"><div class="floor"></div></div>
 @@@ dotpattern :: Dot Pattern :: Backgrounds :: A masked dot grid — subtle texture behind sections.
-<style>.dp{width:240px;height:130px;border-radius:14px;background:var(--card,#171B22);
- background-image:radial-gradient(var(--accent,#3366FF) 1.4px,transparent 1.4px);background-size:18px 18px;
- -webkit-mask:radial-gradient(circle at 50% 50%,#000,transparent 72%);mask:radial-gradient(circle at 50% 50%,#000,transparent 72%);
+<style>.dp{width:260px;height:150px;border-radius:14px;border:1px solid var(--line,#262C34);background-color:var(--card,#171B22);
+ background-image:radial-gradient(var(--accent,#3366FF) 1.8px,transparent 1.9px);background-size:18px 18px;
+ -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 30%,rgba(0,0,0,.35) 85%);mask:radial-gradient(ellipse at 50% 50%,#000 30%,rgba(0,0,0,.35) 85%);
  animation:dpm 6s linear infinite}
 @keyframes dpm{to{background-position:18px 18px}}</style>
 <div class="dp"></div>
@@ -465,14 +465,15 @@ var notif=['Payment received','New quote request','Panel activated'];
 document.getElementById('bnl').innerHTML=notif.map(function(n){return '<div class="nrow"><b></b>'+n+'</div>';}).join('');
 </script>
 @@@ animatedbeam :: Animated Beam :: Special Effects :: A pulse of light travels the wire between two nodes.
-<style>.abeam{position:relative;width:230px;height:96px}
-.abeam .node{position:absolute;top:50%;width:34px;height:34px;margin-top:-17px;border-radius:10px;background:var(--card,#171B22);border:1px solid var(--line,#262C34)}
+<style>.abeam{position:relative;width:260px;height:110px}
+.abeam .node{position:absolute;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:12px;background:var(--card,#171B22);border:1px solid var(--line,#262C34);display:grid;place-items:center}
+.abeam .node::after{content:"";width:14px;height:14px;border-radius:50%;background:var(--accent,#3366FF);box-shadow:0 0 14px var(--accent,#3366FF)}
 .abeam .n1{left:0}.abeam .n2{right:0}
-.abeam svg{position:absolute;inset:0;width:100%;height:100%}
-.abeam path{fill:none}.abeam .base{stroke:var(--line,#262C34);stroke-width:2}
-.abeam .flow{stroke:var(--accent,#3366FF);stroke-width:2.5;stroke-dasharray:14 130;animation:abf 1.6s linear infinite}
-@keyframes abf{to{stroke-dashoffset:-144}}</style>
-<div class="abeam"><svg viewBox="0 0 230 96"><path class="base" d="M28 48 C90 48,140 48,202 48"/><path class="flow" d="M28 48 C90 48,140 48,202 48"/></svg><div class="node n1"></div><div class="node n2"></div></div>
+.abeam svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.abeam path{fill:none;stroke-linecap:round}.abeam .base{stroke:var(--line,#262C34);stroke-width:2}
+.abeam .flow{stroke:var(--accent,#3366FF);stroke-width:3;stroke-dasharray:46 220;animation:abf 1.8s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes abf{from{stroke-dashoffset:46}to{stroke-dashoffset:-220}}</style>
+<div class="abeam"><svg viewBox="0 0 260 110"><path class="base" d="M44 55 C110 12,150 98,216 55"/><path class="flow" d="M44 55 C110 12,150 98,216 55"/></svg><div class="node n1"></div><div class="node n2"></div></div>
 @@@ circularprogress :: Circular Progress :: Community :: A ring fills while the label counts up.
 <style>.cp{position:relative;width:96px;height:96px}.cp svg{transform:rotate(-90deg)}
 .cp .bg{fill:none;stroke:var(--line,#262C34);stroke-width:8}
@@ -809,15 +810,15 @@ go();setInterval(go,1400);</script>
 <script>var g=['Enphase','JA Solar','LONGi','Huawei','GoodWe','Tesla'],u=document.getElementById('llpl');u.innerHTML=g.concat(g).map(function(x){return '<li>'+x+'</li>';}).join('');</script>
 @@@ navbar :: Sticky Nav Bar :: Components :: On scroll the logo tucks away and Get Started slides into the pill.
 <style>
-.nvb{width:300px;font-family:Inter,system-ui,sans-serif}
+.nvb{width:400px;max-width:100%;font-family:inherit}
 .nvb .row{display:flex;align-items:center;height:64px;gap:6px;padding:0 8px;overflow:hidden}
 .nvb .logo{flex:none;width:26px;height:26px;border-radius:8px;background:var(--accent,#3366FF);transition:.35s cubic-bezier(.22,1,.36,1)}
 .nvb .pill{margin:0 auto;display:flex;align-items:center;background:var(--card,#171B22);border:1px solid transparent;border-radius:999px;padding:5px 6px;transition:.35s cubic-bezier(.22,1,.36,1)}
-.nvb .pill a{font:600 12px Inter,sans-serif;color:var(--ink,#F4F6F9);text-decoration:none;padding:6px 9px;border-radius:999px;transition:.2s}
+.nvb .pill a{font-family:inherit;font-weight:600;font-size:12px;color:var(--ink,#F4F6F9);text-decoration:none;padding:6px 9px;border-radius:999px;transition:.2s}
 .nvb .pill a:hover{background:rgba(255,255,255,.07)}
 .nvb .getin{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .4s cubic-bezier(.22,1,.36,1)}
 .nvb .getin a{background:var(--accent,#3366FF);color:#fff;margin-left:4px}
-.nvb .cta0{flex:none;font:700 12px Inter,sans-serif;color:#fff;background:var(--accent,#3366FF);padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.35s cubic-bezier(.22,1,.36,1)}
+.nvb .cta0{flex:none;font-family:inherit;font-weight:700;font-size:12px;color:#fff;background:var(--accent,#3366FF);padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.35s cubic-bezier(.22,1,.36,1)}
 .nvb.scrolled .pill{border-color:var(--line,#262C34);box-shadow:0 8px 24px -10px #000}
 .nvb.scrolled .getin{max-width:130px}
 .nvb.scrolled .logo{width:0;opacity:0;transform:translateY(-30px);margin-right:-6px}

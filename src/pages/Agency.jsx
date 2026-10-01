@@ -113,7 +113,7 @@ export default function Agency() {
 
       <section className="gw-section gw-light" id="apply" aria-labelledby="apply-title">
         <div className="gw-container">
-          <div className="gw-split" style={{ gridTemplateColumns: "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
+          <div className="gw-split" style={{ "--gw-split": "minmax(0,0.8fr) minmax(0,1.2fr)" }}>
             <SectionHead eyebrow="Apply" title={<span id="apply-title">Apply to build your agency.</span>} lead="Tell us where the agency is, what it sells and what is holding it back. If it looks like a fit, the next step is a conversation.">
               <div className="gw-card gw-mt-4">
                 <p className="gw-eyebrow">Payment routes</p>
