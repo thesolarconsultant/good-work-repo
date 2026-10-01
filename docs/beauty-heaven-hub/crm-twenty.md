@@ -1,9 +1,16 @@
-# Beauty Heaven CRM — Twenty (self-hosted)
+# Beauty Heaven CRM — Twenty
 
-Beauty Heaven's **own** Twenty instance, separate from Good Work's. It holds the
-**leads** the website and the assistant pick up — the things Phorest doesn't do.
-Phorest stays the system of record for clients and bookings; the CRM never
-duplicates them, and **nothing clinical** goes in it.
+Holds the **leads** the website and the assistant pick up — the things Phorest
+doesn't do. Phorest stays the system of record for clients and bookings; the CRM
+never duplicates them, and **nothing clinical** goes in it.
+
+**Ownership (decided 1 Oct):** for speed we start on **Good Work's existing
+Twenty instance**, set up for Beauty Heaven, and **sign it over to the salon
+later**. To keep that hand-over clean, all Beauty Heaven data lives in its own
+`Lead` object (with a `source` field) — it exports/transfers as one lump when
+ownership moves, without dragging Good Work's own CRM data along. Section 1 below
+(self-host a dedicated instance) is the alternative if you'd rather separate from
+day one.
 
 - **Captures:** academy course enquiries, model-opportunity interest, general
   treatment enquiries, and bot conversations that don't become a booking.
