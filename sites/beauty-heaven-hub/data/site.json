@@ -6,7 +6,7 @@
   "phone": "01992 511383",
   "phoneHref": "+441992511383",
   "whatsapp": "447424219417",
-  "email": "TBC",
+  "email": "halo@beautyheavenhub.co",
   "address": [
     "23-24 Conduit Lane",
     "Hoddesdon",
@@ -14,7 +14,14 @@
     "EN11 8FN"
   ],
   "addressConfirmed": false,
-  "hours": [],
+  "hours": [
+    ["Monday", "9:30am – 5pm"],
+    ["Tuesday", "9:30am – 7pm"],
+    ["Wednesday", "9:30am – 7pm"],
+    ["Thursday", "9:30am – 7pm"],
+    ["Friday", "9:30am – 5pm"],
+    ["Saturday", "9:30am – 5pm"]
+  ],
   "instagram": {
     "treatments": "https://www.instagram.com/beautyheavenuk/",
     "academy": "https://www.instagram.com/beautyheavenacademy/"

@@ -492,7 +492,7 @@ function academy() {
   <div class="stack"><p class="micro micro--gold eyebrow" data-gw-reveal><span class="t">How it works</span></p><h2 class="display d2" data-gw-reveal="mask"><span class="mask">three <b>steps.</b></span></h2></div>
   <div class="cards steps" data-gw-stagger>
     <article class="card" data-gw-reveal><span class="rule"></span><h3>Ask</h3><p>Tell us which course you're interested in. We'll talk you through dates and anything you need before you start.</p></article>
-    <article class="card" data-gw-reveal><span class="rule"></span><h3>Secure your place</h3><p>A 50% deposit holds your place, and we'll confirm by email.</p></article>
+    <article class="card" data-gw-reveal><span class="rule"></span><h3>Secure your place</h3><p>A £100 deposit holds your place on a classroom course, with the balance due two weeks before you train. Fully online courses are paid in full. We'll confirm by email.</p></article>
     <article class="card" data-gw-reveal><span class="rule"></span><h3>Study, then train</h3><p>You'll get a login for the online pre-study, to finish before your classroom day. It works on a computer or tablet, not a phone.</p></article>
   </div>
   <p>When you finish: ${tbc("what the certificate says and who issues it", "/academy/")}</p>
@@ -565,14 +565,14 @@ function policies() {
     <p>Some treatments have age limits and need a consultation or patch test first. We'll tell you when you book.</p></section>
   <section class="menu" id="academy"><div class="menu__head"><span class="rule"></span><h2>Academy courses</h2></div>
     <ul class="plain">
-      <li>A 50% deposit secures your place. We confirm by email.</li>
+      <li>A £100 deposit secures your place on a classroom course, with the balance due two weeks before it starts. Fully online courses are paid in full. We confirm by email.</li>
       <li>Classroom courses can be rescheduled up to 48 hours before the course date.</li>
       <li>To cancel a classroom course, tell us at least 15 working days before. A 30% admin fee applies. Cancellations made later than that are not refunded.</li>
       <li>Online distance courses have a 14-day cancellation right, refunded less a 25% admin fee, and no refund once your login details have been issued.</li>
     </ul>
     <p>${tbc("these Academy terms are taken from the current website; check they are still current", "/policies/")}</p></section>
   <section class="menu"><div class="menu__head"><span class="rule"></span><h2>Paying</h2></div>
-    <p>${tbc("payment options to show (card, Klarna, finance, gift vouchers)", "/policies/")}</p></section>
+    <p>We take card, cash and gift vouchers.</p></section>
 </div></section>`,
   });
 }
