@@ -26,7 +26,8 @@
     </a>
 
     <nav class="rail__nav" aria-label="Sections">
-      <button data-view="dashboard" class="on"><i></i>Dashboard</button>
+      <button data-view="week" class="on"><i></i>This week</button>
+      <button data-view="dashboard"><i></i>Dashboard</button>
       <button data-view="campaign"><i></i>Write something</button>
       <button data-view="approvals"><i></i>Waiting on you <em class="pill" id="waitingPill" hidden>0</em></button>
       <button data-view="calendar"><i></i>Calendar</button>
@@ -46,7 +47,63 @@
   <main class="screen" id="main">
 
     <!-- ═══ DASHBOARD ═══════════════════════════════════════════════════ -->
-    <section class="view on" data-view="dashboard">
+    <!-- ═══ THIS WEEK ═══════════════════════════════════════════════════ -->
+    <section class="view on" data-view="week">
+      <header class="head wkhead">
+        <div>
+          <p class="eyebrow">This week</p>
+          <h1 class="h1" id="wkTitle">this <b>week.</b></h1>
+        </div>
+        <div class="wknav">
+          <button class="btn btn--quiet" id="wkPrev" aria-label="Previous week">←</button>
+          <button class="btn btn--quiet" id="wkThis" hidden>This week</button>
+          <button class="btn btn--quiet" id="wkNext" aria-label="Next week">→</button>
+        </div>
+      </header>
+
+      <section class="panel wkbrief">
+        <label class="field"><span>What's happening this week? <em>offers, new dates, something the girls did, anything. Blank is fine.</em></span>
+          <textarea id="wkBrief" rows="2" placeholder="September Academy intake opens Monday. Hollie has two HIFU slots free on Thursday."></textarea></label>
+        <div class="row">
+          <button class="btn btn--gold" id="wkWrite">Write the week</button>
+          <span class="wkcount" id="wkCount"></span>
+          <span class="wkspacer"></span>
+          <button class="btn btn--quiet" id="wkApproveAll">Approve all</button>
+          <button class="btn btn--quiet" id="wkDownloadAll">Download approved</button>
+        </div>
+      </section>
+
+      <div class="wkgrid" id="wkGrid"></div>
+      <p class="note wknote">Every post is drawn in the brand from the library and your photos. Open one to change the words or the picture; approve it and it's ready to post.</p>
+
+      <dialog class="wked" id="wkEdit">
+        <div class="wked__top">
+          <div><p class="eyebrow" id="wkEdTitle"></p><p class="note" id="wkEdNote"></p></div>
+          <button class="btn btn--quiet" id="wkEdClose" aria-label="Close">Close</button>
+        </div>
+        <div class="wked__body">
+          <div class="wked__left">
+            <div class="wked__preview" id="wkPreview"></div>
+            <div class="wked__dots" id="wkDots"></div>
+          </div>
+          <div class="wked__right">
+            <form id="wkForm" autocomplete="off" onsubmit="return false"></form>
+            <p class="micro wked__sub">Picture</p>
+            <div id="wkPics"></div>
+          </div>
+        </div>
+        <div class="wked__bar">
+          <button class="btn btn--quiet" id="wkEdBin">Bin</button>
+          <button class="btn btn--quiet" id="wkRewrite">Rewrite with Claude</button>
+          <span class="wkspacer"></span>
+          <button class="btn btn--quiet" id="wkEdCaption">Copy caption</button>
+          <button class="btn btn--quiet" id="wkEdDownload">Download</button>
+          <button class="btn btn--gold" id="wkEdApprove">Approve</button>
+        </div>
+      </dialog>
+    </section>
+
+    <section class="view" data-view="dashboard">
       <header class="head">
         <div>
           <p class="eyebrow">This week</p>

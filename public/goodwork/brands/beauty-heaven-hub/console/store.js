@@ -78,6 +78,10 @@ export const SEED = {
 
   campaigns: [],
   email: { template: "signature", drafts: {} },
+
+  /* The weeks the console has made, keyed by the Monday they start on
+     ("2026-10-05"): the brief for the week and its posts. */
+  weeks: {},
   calendar: [
     { id: "c1", day: "Mon", what: "Autumn skin reset — carousel", state: "scheduled" },
     { id: "c2", day: "Wed", what: "Academy: September intake open", state: "draft" },
@@ -211,6 +215,18 @@ export function setEmailTemplate(id) {
 export function setEmailDraft(id, fields) {
   const e = email();
   e.drafts = { ...(e.drafts || {}), [id]: fields };
+  save();
+}
+
+/* ------------------------------------------------------------------ weeks -- */
+export function getWeek(key) {
+  const s = load();
+  s.weeks = s.weeks || {};
+  return s.weeks[key] || null;
+}
+export function setWeek(key, week) {
+  const s = load();
+  s.weeks = { ...(s.weeks || {}), [key]: week };
   save();
 }
 

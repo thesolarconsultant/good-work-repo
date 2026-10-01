@@ -12,6 +12,7 @@
    ========================================================================== */
 
 import * as store from "./store.js";
+import { mountWeek, renderWeek } from "./week.js";
 import { makeSet, toBlob } from "./cards.js";
 
 const API = "/api/console";
@@ -967,6 +968,7 @@ $("#pdfCampaign").addEventListener("click", () => {
 
 /* ===================================================================== BOOT == */
 const VIEWS = {
+  week: renderWeek,
   dashboard: renderDashboard,
   campaign: renderPieces,
   approvals: renderApprovals,
@@ -978,13 +980,15 @@ const VIEWS = {
   about: renderAbout,
 };
 
+mountWeek({ $, $$, esc, toast });
+
 function renderAll() {
   Object.values(VIEWS).forEach((fn) => fn());
 }
 
 store.load();
 renderAll();
-show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "dashboard");
+show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "week");
 
 // The shared copy: fetch it now, then whenever the tab comes back into view
 // and every minute while it is open, so the team see each other's work.

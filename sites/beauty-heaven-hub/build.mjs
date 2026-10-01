@@ -705,7 +705,7 @@ for (const f of ["Jost-Light", "Jost-Regular", "Jost-Medium", "Jost-Bold"]) {
   cpSync(join(BRAND, `fonts/${f}.ttf`), join(OUT, `fonts/${f}.ttf`));
 }
 mkdirSync(join(OUT, "logo"), { recursive: true });
-for (const f of ["favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-192.png", "favicon-512.png", "wordmark-mask.png", "beauty-heaven-hub-wordmark-espresso.svg", "beauty-heaven-hub-wordmark-gold.svg"]) {
+for (const f of ["favicon.svg", "favicon-32.png", "favicon-180.png", "favicon-192.png", "favicon-512.png", "wordmark-mask.png", "beauty-heaven-hub-wordmark-espresso.svg", "beauty-heaven-hub-wordmark-gold.svg", "beauty-heaven-hub-academy-gold.svg"]) {
   cpSync(join(BRAND, `logo/${f}`), join(OUT, `logo/${f}`));
 }
 cpSync(join(BRAND, "photos/derived"), join(OUT, "photos"), { recursive: true, filter: (p) => !p.endsWith(".json") });

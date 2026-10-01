@@ -11,6 +11,7 @@ export const config = {
     "/api/console", "/api/console/:path*",
     "/api/console-image", "/api/console-image/:path*",
     "/api/console-store", "/api/console-store/:path*",
+    "/api/console-week", "/api/console-week/:path*",
   ],
 };
 
