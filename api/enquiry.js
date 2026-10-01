@@ -46,6 +46,8 @@ const FORMS = {
   access: { title: "Library access interest", required: ["email", "product"] },
 };
 const HONEYPOT = "website_url";
+// Exported for scripts/test-api.mjs, which checks it against src/data/forms.js.
+export { FORMS as FORM_SPECS };
 
 // Per-IP throttle. Best-effort only: serverless instances don't share memory,
 // so this thins out a naive flood rather than stopping a determined one. The

@@ -43,6 +43,22 @@ async function test(name, fn) {
 // ---------------------------------------------------------------- enquiry --
 const enquiry = (await import("../api/enquiry.js")).default;
 
+await test("forms: the browser's schemas and the server's rules agree, and every field has a step", async () => {
+  const { FORM_SPECS } = await import("../api/enquiry.js");
+  const { FORMS } = await import("../src/data/forms.js");
+  for (const [id, spec] of Object.entries(FORM_SPECS)) {
+    const form = FORMS[id];
+    assert.ok(form, `${id}: no schema in src/data/forms.js`);
+    const required = form.fields.filter((f) => f.required && f.type !== "checkbox").map((f) => f.name).sort();
+    assert.deepEqual(required, [...spec.required].sort(), `${id}: required fields differ between browser and server`);
+    assert.equal(form.fields.find((f) => f.type === "checkbox" && f.required)?.name, spec.confirm, `${id}: confirmation field differs`);
+    if (form.steps) {
+      const placed = form.steps.flatMap((s) => s.fields).sort();
+      assert.deepEqual(placed, form.fields.map((f) => f.name).sort(), `${id}: the steps must hold every field exactly once`);
+    }
+  }
+});
+
 await test("enquiry: 503 when no delivery route is configured", async () => {
   delete process.env.ENQUIRY_WEBHOOK_URL;
   delete process.env.RESEND_API_KEY;

@@ -42,7 +42,8 @@ src/
                         exclusion, CTA, managed plan, comparison row, licence
                         principle and FAQ answer. Nothing else carries a figure.
   data/nav.js           Header, dropdowns, footer, announcement
-  data/forms.js         The five enquiry/application schemas
+  data/forms.js         The five enquiry/application schemas, and the steps
+                        that run four of them as one-question-at-a-time flows
   data/library.js       Catalogue + templates + Studio systems, filters, related
   data/libraryCatalogue.json   Generated from library-src/components.txt
   data/systems.js       The Studio system pages
@@ -51,11 +52,13 @@ src/
   lib/                  format (GBP), schema (JSON-LD), analytics (provider-agnostic
                         intent events), auth (session store), forms (validation),
                         previewDoc (the sandboxed preview document and its fit script)
-  components/           Nav, Footer, EnquiryForm, BuyButton, Library*, OfferLadder,
+  components/           Nav, Footer, EnquiryForm + EnquiryFlow, BuyButton, Library*, OfferLadder,
                         ComparisonTable, ManagedPlans, SystemJourney, HeroStack …
   pages/                One file per route
-  styles.css            Design system: dark foundation, warm off-white, one accent
+  styles.css            Design system: white ground, near-black ink, hard black
+                        blocks, the brand gradient used with intent
   styles/motion.css     Everything that moves, and the reduced-motion off switch
+  styles/flow.css       The step-by-step enquiry flow
 api/
   enquiry.js            All forms → webhook and/or Resend (503 until configured)
   checkout.js           Stripe Checkout Session (503 until configured)
