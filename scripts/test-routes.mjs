@@ -91,7 +91,9 @@ for (const vp of VIEWPORTS) {
         const step = Math.max(300, Math.floor(window.innerHeight * 0.8));
         for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
           window.scrollTo({ top: y, behavior: "instant" });
-          await new Promise((r) => setTimeout(r, 60));
+          // Two painted frames at each stop, not a fixed delay: observers only
+          // run on a rendering opportunity, and a busy frame can outlast 60ms.
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 40))));
         }
         window.scrollTo({ top: 0, behavior: "instant" });
         await new Promise((r) => setTimeout(r, 100));
@@ -101,7 +103,10 @@ for (const vp of VIEWPORTS) {
     }
     await page.waitForTimeout(450);
     const title = await page.title();
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    // The body clips horizontal overflow, which hides it from the document's
+    // scrollWidth but not from the reader: text past the edge is simply cut
+    // off. The body's own scrollWidth still measures it.
+    const overflow = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - document.documentElement.clientWidth);
     const links = await page.$$eval('a[href^="/"]', (as) => as.map((a) => a.getAttribute("href")));
     for (const l of links) seenLinks.add(l.split("#")[0].split("?")[0]);
     const label = `${vp.name} ${route}`;
@@ -251,7 +256,7 @@ for (const vp of VIEWPORTS) {
         document.documentElement.style.scrollBehavior = "auto";
         for (let y = 0; y < document.documentElement.scrollHeight; y += 600) {
           window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 40));
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 40))));
         }
         window.scrollTo(0, 0);
       });
