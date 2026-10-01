@@ -1,14 +1,19 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Button from "./Button";
+import EnquiryFlow from "./EnquiryFlow";
 import { FORMS } from "../data/forms";
-import { validate, asPlainText, mailtoFallback, initialValues } from "../lib/forms";
+import { validate, mailtoFallback, initialValues, submitEnquiry } from "../lib/forms";
 import { track } from "../lib/analytics";
 import { CONTACT_EMAIL } from "../lib/site";
 
 /**
  * One component, every enquiry. Driven by the schemas in data/forms.js.
  *
- * - Validates on submit with accessible errors and focus management.
+ * A form with `steps` runs as a step-by-step conversation (EnquiryFlow). A
+ * short one, or any form shown `compact`, stays a single classic form below.
+ * Both post the same payload through lib/forms.js:
+ *
+ * - Validates with accessible errors and focus management.
  * - Honeypot field bots fill and people never see.
  * - POSTs to /api/enquiry and believes only a 2xx. A 503 (unconfigured) or a
  *   network failure shows an honest error plus a mailto carrying everything
@@ -17,6 +22,11 @@ import { CONTACT_EMAIL } from "../lib/site";
  */
 export default function EnquiryForm({ formId, prefill = {}, compact = false, source }) {
   const form = FORMS[formId];
+  if (form.steps && !compact) return <EnquiryFlow form={form} prefill={prefill} source={source} />;
+  return <ClassicForm form={form} formId={formId} prefill={prefill} compact={compact} source={source} />;
+}
+
+function ClassicForm({ form, formId, prefill, compact, source }) {
   const uid = useId();
   const storageKey = `gw:form:${formId}`;
   const [values, setValues] = useState(() => initialValues(form, prefill));
@@ -73,18 +83,7 @@ export default function EnquiryForm({ formId, prefill = {}, compact = false, sou
     setStatus("sending");
     setFailure("");
     try {
-      const response = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: formId, fields: values, text: asPlainText(form, values), page: window.location.pathname }),
-      });
-      if (!response.ok) {
-        const detail = await response.json().catch(() => ({}));
-        throw new Error(
-          detail.error ||
-            (response.status === 404 ? "The enquiry endpoint isn't deployed on this host yet." : `The server returned ${response.status}.`),
-        );
-      }
+      await submitEnquiry(form, values);
       setStatus("sent");
       track(form.event, { form: formId, source });
       try {

@@ -169,13 +169,19 @@ for (const vp of VIEWPORTS) {
     await page.keyboard.press("Escape");
     const menuGone = await page.$("#gw-menu-Library");
     if (menuGone) problems.push("products menu: Escape did not close it");
-    // A form's honest failure path against the 503 API.
+    // A form's honest failure path against the 503 API, step by step: a
+    // pointer pick on the topic moves on by itself, Enter moves on from a
+    // field, and only the review sends.
     await page.goto(`${base}/contact`, { waitUntil: "networkidle" });
+    await page.click(".gw-flow__opt:has-text('Goodwork Library')");
+    await page.waitForSelector('textarea[name="message"]', { timeout: 5000 });
+    await page.fill('textarea[name="message"]', "Checking the honest failure state.");
+    await page.click('.gw-flow button[type="submit"]');
+    await page.waitForSelector('input[name="name"]', { timeout: 5000 });
     await page.fill('input[name="name"]', "Test Person");
     await page.fill('input[name="email"]', "test@example.com");
-    await page.selectOption('select[name="topic"]', "library");
-    await page.fill('textarea[name="message"]', "Checking the honest failure state.");
-    await page.click('button[type="submit"]');
+    await page.press('input[name="email"]', "Enter");
+    await page.click(".gw-flow .gw-btn:has-text('Send')");
     await page.waitForSelector(".gw-alert", { timeout: 5000 });
     const alertText = await page.$eval(".gw-alert", (el) => el.textContent);
     if (!/didn't send/i.test(alertText)) problems.push(`contact form: unexpected alert "${alertText.slice(0, 80)}"`);
