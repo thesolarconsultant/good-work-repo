@@ -967,7 +967,82 @@ $("#pdfCampaign").addEventListener("click", () => {
 });
 
 /* ===================================================================== BOOT == */
+/* ------------------------------------------------------------------- CRM --- */
+/* Twenty runs headless; this is the brand's own face over its API. One fetch
+   feeds both the home panel and the CRM table; searching is done here. */
+const CRM_API = "/api/crm-leads";
+const SRC_LABEL = { booking: "Booking", academy: "Academy", model: "Model", treatment: "Enquiry", bot: "Assistant" };
+let crmCache = null;
+
+async function fetchLeads(limit) {
+  const res = await fetch(`${CRM_API}?limit=${limit}`, { cache: "no-cache" });
+  if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j.message || `HTTP ${res.status}`); }
+  return (await res.json()).leads || [];
+}
+async function loadLeads(force) {
+  if (crmCache && !force) return crmCache;
+  crmCache = await fetchLeads(200);
+  return crmCache;
+}
+function leadWhen(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+function srcChip(s) {
+  return s ? `<span class="chip chip--${esc(s)}">${esc(SRC_LABEL[s] || s)}</span>` : "";
+}
+
+async function renderHome() {
+  const countEl = $("#homeLeadCount"), recentEl = $("#homeRecent");
+  if (!countEl || !recentEl) return;
+  try {
+    const leads = await loadLeads();
+    countEl.textContent = leads.length >= 200 ? "200+" : String(leads.length);
+    recentEl.innerHTML = leads.length
+      ? leads.slice(0, 5).map((l) => `<li><b>${esc(l.name || "(no name)")}</b>${srcChip(l.source)}</li>`).join("")
+      : '<li class="muted">No leads yet — they land here from bookings, enquiries and the assistant.</li>';
+  } catch (e) {
+    countEl.textContent = "—";
+    recentEl.innerHTML = `<li class="muted">CRM not reachable (${esc(e.message)}).</li>`;
+  }
+}
+
+function drawLeads(leads) {
+  const host = $("#crmList");
+  if (!host) return;
+  host.innerHTML = leads.length
+    ? leads.map((l) => `
+      <article class="lead">
+        <div class="lead__top"><b class="lead__name">${esc(l.name || "(no name)")}</b>${srcChip(l.source)}<span class="lead__when">${esc(leadWhen(l.createdAt))}</span></div>
+        <div class="lead__meta">${[l.email, l.phone, l.subject].filter(Boolean).map(esc).join(" · ") || "<span class='muted'>no details</span>"}</div>
+        ${l.message ? `<p class="lead__msg">${esc(l.message)}</p>` : ""}
+      </article>`).join("")
+    : '<p class="muted">No matches.</p>';
+}
+
+async function renderCrm() {
+  const host = $("#crmList"), countEl = $("#crmCount"), search = $("#crmSearch");
+  if (!host) return;
+  try {
+    const leads = await loadLeads();
+    const apply = () => {
+      const q = (search?.value || "").trim().toLowerCase();
+      const list = q ? leads.filter((l) => `${l.name} ${l.email} ${l.phone} ${l.source} ${l.subject}`.toLowerCase().includes(q)) : leads;
+      if (countEl) countEl.textContent = `${list.length} ${list.length === 1 ? "lead" : "leads"}`;
+      drawLeads(list);
+    };
+    if (search) search.oninput = apply;
+    apply();
+  } catch (e) {
+    if (countEl) countEl.textContent = "";
+    host.innerHTML = `<p class="muted">Couldn't load the CRM (${esc(e.message)}). Check it's connected.</p>`;
+  }
+}
+
 const VIEWS = {
+  home: renderHome,
+  crm: renderCrm,
   week: renderWeek,
   dashboard: renderDashboard,
   campaign: renderPieces,
@@ -988,7 +1063,7 @@ function renderAll() {
 
 store.load();
 renderAll();
-show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "week");
+show(VIEWS[location.hash.slice(1)] ? location.hash.slice(1) : "home");
 
 // The shared copy: fetch it now, then whenever the tab comes back into view
 // and every minute while it is open, so the team see each other's work.

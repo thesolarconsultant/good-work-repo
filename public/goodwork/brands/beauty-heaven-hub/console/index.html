@@ -26,7 +26,9 @@
     </a>
 
     <nav class="rail__nav" aria-label="Sections">
-      <button data-view="week" class="on"><i></i>This week</button>
+      <button data-view="home" class="on"><i></i>Home</button>
+      <button data-view="crm"><i></i>CRM</button>
+      <button data-view="week"><i></i>This week</button>
       <button data-view="dashboard"><i></i>Dashboard</button>
       <button data-view="campaign"><i></i>Write something</button>
       <button data-view="approvals"><i></i>Waiting on you <em class="pill" id="waitingPill" hidden>0</em></button>
@@ -48,7 +50,51 @@
 
     <!-- ═══ DASHBOARD ═══════════════════════════════════════════════════ -->
     <!-- ═══ THIS WEEK ═══════════════════════════════════════════════════ -->
-    <section class="view on" data-view="week">
+    <!-- ═══ HOME ════════════════════════════════════════════════════════ -->
+<section class="view on" data-view="home">
+  <header class="vhead">
+    <p class="vtag">The hub</p>
+    <h1 class="vtitle">Beauty <b>Heaven</b> Hub</h1>
+    <p class="vsub">Everything in one place — your customers on one side, your content on the other.</p>
+  </header>
+  <div class="home">
+    <div class="home__panel home__panel--crm" data-go="crm" role="button" tabindex="0">
+      <span class="home__eyebrow">CRM</span>
+      <h2 class="home__h">Customers &amp; leads</h2>
+      <p class="home__stat"><b id="homeLeadCount">—</b><span>in the CRM</span></p>
+      <ul class="home__recent" id="homeRecent"><li class="muted">Loading…</li></ul>
+      <span class="home__go">Open CRM →</span>
+    </div>
+    <div class="home__panel home__panel--content">
+      <span class="home__eyebrow">Content console</span>
+      <h2 class="home__h">Make &amp; send</h2>
+      <div class="home__links">
+        <button data-go="week">This week</button>
+        <button data-go="campaign">Write something</button>
+        <button data-go="email">Email</button>
+        <button data-go="styles">Content styles</button>
+        <button data-go="library">Library</button>
+        <button data-go="brand">Brand</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CRM ═════════════════════════════════════════════════════════ -->
+<section class="view" data-view="crm">
+  <header class="vhead">
+    <p class="vtag">CRM</p>
+    <h1 class="vtitle">Customers &amp; <b>leads</b></h1>
+    <p class="vsub">Everyone who's booked or been in touch. Held in Twenty, shown here in the brand.</p>
+  </header>
+  <div class="crm__bar">
+    <input id="crmSearch" type="search" placeholder="Search name, email, phone, source…" autocomplete="off" spellcheck="false">
+    <span class="crm__count" id="crmCount"></span>
+  </div>
+  <div id="crmList" class="crm__list"><p class="muted">Loading…</p></div>
+</section>
+
+<section class="view" data-view="week">
       <header class="head wkhead">
         <div>
           <p class="eyebrow">This week</p>
