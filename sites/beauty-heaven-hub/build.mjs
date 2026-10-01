@@ -848,4 +848,7 @@ writeFileSync(join(HERE, "CONTENT-TODO.md"), `# Beauty Heaven Hub website: still
 
 const listed = groups.reduce((n, g) => n + g.count, 0);
 console.log(`Menu from ${menuSource}.`);
+// Read-only CRM connection line, like the Phorest one above, so a deploy shows
+// at a glance whether the Twenty link is wired.
+try { const { crmStatus } = await import("./api/_crm.js"); console.log(`CRM (Twenty): ${await crmStatus()}`); } catch (e) { console.log(`CRM (Twenty): check skipped (${e?.message || e})`); }
 console.log(`Built ${pages.length} pages. ${listed} treatments listed, ${courses.length} courses. ${lines.length} items still to confirm.`);
