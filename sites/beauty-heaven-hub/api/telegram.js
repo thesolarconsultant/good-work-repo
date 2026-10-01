@@ -2,10 +2,10 @@
 //
 //   POST /api/telegram/   Telegram's webhook, set up by /api/telegram-setup/
 //
-// Needs TELEGRAM_BOT_TOKEN and ANTHROPIC_API_KEY in Vercel. Only chats listed
-// in TELEGRAM_ALLOWED (comma-separated chat ids) get the assistant; anyone
-// else is told their chat id and nothing more, because a booking made here
-// is real. TELEGRAM_HANDOVER_CHAT, if set, receives hand-over notes.
+// Needs TELEGRAM_BOT_TOKEN and ANTHROPIC_API_KEY in Vercel. TELEGRAM_ALLOWED
+// (comma-separated chat ids) is optional: set it to restrict the assistant to
+// those chats, or leave it empty to let anyone use it. Remember a booking made
+// here is real. TELEGRAM_HANDOVER_CHAT, if set, receives hand-over notes.
 
 import { reply } from "./_brain.js";
 import { startFresh } from "./_store.js";
@@ -39,8 +39,10 @@ export async function POST(request) {
   if (seen.size > 500) seen.clear();
 
   const chatId = String(msg.chat.id);
+  // Allow-list is optional: set TELEGRAM_ALLOWED (comma-separated chat ids) to
+  // restrict to those chats; leave it empty to let anyone use the assistant.
   const allowed = (process.env.TELEGRAM_ALLOWED || "").split(",").map((s) => s.trim()).filter(Boolean);
-  if (!allowed.includes(chatId)) {
+  if (allowed.length && !allowed.includes(chatId)) {
     await send(chatId, `This is a private test assistant. Your chat id is ${chatId}. Ask Good Work to add it.`);
     return new Response("ok");
   }
