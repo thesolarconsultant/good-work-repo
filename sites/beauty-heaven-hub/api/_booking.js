@@ -6,8 +6,32 @@
 // goes through allowed(), so a rule like "Jess finishes by 6pm" holds on the
 // website, and later in the WhatsApp and phone assistants, the same way.
 
+import { createLead } from "./_crm.js";
+
 export const BASE = "https://platform.phorest.com/third-party-api-server/api/business";
 const TZ = "Europe/London";
+
+// A booking confirmed in Phorest also lands in the CRM as a contact, so the
+// salon has one view of every customer. Never throws, never blocks: the booking
+// is already secured by the time this runs. Capped so a slow CRM can't hold up
+// the client's confirmation.
+async function copyBookingToCrm(p, cat, item, when, source) {
+  try {
+    await Promise.race([
+      createLead({
+        name: `${p.firstName} ${p.lastName}`.trim(),
+        email: p.email,
+        phone: p.mobile,
+        source: "booking",
+        subject: `${cat.title}: ${item.name}`,
+        message: `Booked via ${source} for ${when.date} ${when.time}.`,
+        consent: !!p.marketing,
+        channel: source,
+      }),
+      new Promise((r) => setTimeout(r, 2500)),
+    ]);
+  } catch { /* a CRM hiccup never affects a booking */ }
+}
 
 export const json = (body, status = 200, cache = false) =>
   new Response(JSON.stringify(body), {
@@ -235,10 +259,12 @@ export async function makeBooking(data, input, source = "the website") {
       });
       const paid = await body(link);
       if (!link.ok || !paid?.url) throw new Error(`deposit link: HTTP ${link.status}`);
+      await copyBookingToCrm(p, cat, item, when, source);
       return { status: "deposit", url: paid.url };
     }
     const act = await phorest(`/branch/${branchId}/booking/${bookingId}/activate`, { method: "POST", body: {} });
     if (!act.ok) throw new Error(`activate: HTTP ${act.status}`);
+    await copyBookingToCrm(p, cat, item, when, source);
     return { status: "confirmed" };
   } catch (e) {
     console.error(`booking by ${source} failed:`, String(e.message || e));

@@ -19,7 +19,7 @@
 // The Lead object and its fields are documented in
 // docs/beauty-heaven-hub/crm-twenty.md — create them in the instance first.
 
-const SOURCES = new Set(["academy", "model", "treatment", "bot"]);
+const SOURCES = new Set(["academy", "model", "treatment", "bot", "booking"]);
 
 // Tolerates a pasted URL with a trailing slash or /rest on the end.
 const baseUrl = () => (process.env.TWENTY_API_URL || "").trim().replace(/\/+$/, "").replace(/\/rest$/, "");
