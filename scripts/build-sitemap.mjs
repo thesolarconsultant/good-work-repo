@@ -85,6 +85,7 @@ const robots = `User-agent: *
 Allow: /
 Disallow: /dashboard
 Disallow: /login
+Disallow: /welcome
 Disallow: /pitch
 Disallow: /api/
 

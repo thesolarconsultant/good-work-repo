@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
@@ -14,9 +14,12 @@ import { CONTACT_EMAIL } from "../lib/site";
  * Customer sign-in with an access key.
  *
  * The key is checked by /api/access, which sets an HttpOnly cookie; nothing is
- * stored or decided in the browser. Until ACCESS_KEYS is configured on the
- * server the endpoint answers 503 and this page says so, taking an email
- * instead of showing a form that cannot work. See docs/BACKEND.md.
+ * stored or decided in the browser. Until the server can honour keys the
+ * endpoint answers 503 and this page says so, taking an email instead of
+ * showing a form that cannot work. See docs/BACKEND.md.
+ *
+ * Checkout used to return here; a link carrying a Stripe session id is sent
+ * on to /welcome, which confirms the payment and issues the key.
  */
 export default function Login() {
   const [params] = useSearchParams();
@@ -24,7 +27,7 @@ export default function Login() {
   const uid = useId();
   const next = params.get("next");
   const destination = next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
-  const purchase = params.get("purchase");
+  const checkoutSession = params.get("session_id");
   const session = useSession({ probe: true });
   const [key, setKey] = useState("");
   const [busy, setBusy] = useState(false);
@@ -55,6 +58,8 @@ export default function Login() {
 
   const checking = !session.asked && session.status !== "authenticated";
 
+  if (checkoutSession) return <Navigate to={`/welcome?session_id=${encodeURIComponent(checkoutSession)}`} replace />;
+
   return (
     <>
       <Seo title="Sign in" description="Customer sign-in for Goodwork Library and Studio downloads." noindex />
@@ -66,13 +71,6 @@ export default function Login() {
           <div className="gw-split">
             <Reveal variant="rise" asChild>
               <div className="gw-card">
-                {purchase && (
-                  <div className="gw-notice gw-notice--info gw-mb-3">
-                    <strong>Thank you</strong>
-                    <span>Once the payment is confirmed, your access key follows by email. Sign in with it here.</span>
-                  </div>
-                )}
-
                 {session.status === "authenticated" ? (
                   <>
                     <p className="gw-eyebrow gw-eyebrow--accent">Signed in</p>
@@ -118,7 +116,7 @@ export default function Login() {
                         </span>
                       </label>
                       <span className="gw-field__hint" id={`${uid}-hint`}>
-                        Paste the key from your purchase email. Keys are case-sensitive.
+                        The key shown after you paid, or the one we emailed you. Keys are case-sensitive.
                       </span>
                       <input
                         id={`${uid}-key`}
@@ -161,8 +159,8 @@ export default function Login() {
                   <p className="gw-eyebrow">How access works</p>
                   <ol className="gw-steps gw-mt-3">
                     <li><p className="gw-small gw-body">Choose Library ({gbp(OFFER.library.price)}) or Studio ({gbp(OFFER.studio.price)}) and read the licence and exclusions.</p></li>
-                    <li><p className="gw-small gw-body">Pay through secure checkout or by invoice. A verified payment is what creates your access, never the page you land on afterwards.</p></li>
-                    <li><p className="gw-small gw-body">You receive an access key by email. It's your licence: one key per purchase, and it stays private.</p></li>
+                    <li><p className="gw-small gw-body">Pay through secure checkout. Your access comes from Stripe confirming the payment to our server, never from the page you land on.</p></li>
+                    <li><p className="gw-small gw-body">Straight after paying you're signed in and shown your access key. It's your licence: one key per purchase, and it stays private.</p></li>
                     <li><p className="gw-small gw-body">Sign in here. The dashboard lists only what your key covers, and every download is authorised on the server and logged.</p></li>
                   </ol>
                 </div>

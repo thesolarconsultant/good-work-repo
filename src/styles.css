@@ -968,6 +968,11 @@ fieldset.gw-field > legend { padding: 0; margin-bottom: 0.4rem; }
    Route states
    --------------------------------------------------------- */
 .gw-route-loading { min-height: 70vh; display: grid; place-items: center; }
+/* The access key, shown once after purchase. */
+.gw-keybox { display: grid; gap: 0.6rem; margin-top: 1.25rem; padding: 1rem 1.1rem; border: 1px solid var(--gw-text); border-radius: var(--gw-r-md); background: var(--gw-bg-1); }
+.gw-keybox__label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gw-text-3); }
+.gw-keybox__row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.gw-keybox__key { min-width: 0; font-family: var(--gw-mono); font-size: 1rem; font-weight: 600; color: var(--gw-text); overflow-wrap: anywhere; user-select: all; }
 .gw-spinner { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gw-line-strong); border-top-color: var(--gw-accent-text); }
 .gw-error { padding: clamp(2rem, 6vw, 4rem) 0; }
 
