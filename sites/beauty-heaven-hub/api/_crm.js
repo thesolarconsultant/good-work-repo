@@ -85,6 +85,38 @@ export async function createLead(lead = {}) {
   }
 }
 
+// Recent leads for the console's CRM view. Returns { status, leads } where
+// leads is newest-first; searching is done in the console over this set.
+export async function listLeads(limit = 60) {
+  if (!crmLive()) return { status: "off", leads: [] };
+  try {
+    const n = Math.min(Math.max(Number(limit) || 60, 1), 200);
+    const res = await api(`${leadsPath()}?limit=${n}&order_by=createdAt[DescNullsLast]`);
+    if (!res.ok) {
+      const text = (await res.text().catch(() => "")).slice(0, 160);
+      return { status: "error", error: `HTTP ${res.status}: ${text}`, leads: [] };
+    }
+    const out = await res.json().catch(() => ({}));
+    // Twenty returns the records under data (shape varies a little by version).
+    const rows = out?.data?.[leadsPath()] || out?.data || out?.records || [];
+    const leads = (Array.isArray(rows) ? rows : []).map((r) => ({
+      id: r.id || "",
+      name: r.name || "",
+      email: r.email || "",
+      phone: r.phone || "",
+      source: r.source || "",
+      subject: r.subject || "",
+      message: r.message || "",
+      consent: !!r.consent,
+      channel: r.channel || "",
+      createdAt: r.createdAt || "",
+    }));
+    return { status: "ok", leads };
+  } catch (e) {
+    return { status: "error", error: e?.message || "unreachable", leads: [] };
+  }
+}
+
 // For a setup check: can we reach the Lead object? -> "off" | "ok" | a problem.
 export async function crmStatus() {
   if (!crmLive()) return "off (TWENTY_API_URL / TWENTY_API_KEY not set)";
