@@ -91,9 +91,12 @@ export async function crmStatus() {
   try {
     const res = await api(`${leadsPath()}?limit=1`);
     if (res.ok) return "ok";
-    if (res.status === 404) return `the "${leadsPath()}" object wasn't found — create the Lead object in Twenty (see crm-twenty.md)`;
-    if (res.status === 401) return "the API key was rejected";
-    return `HTTP ${res.status}: ${(await res.text().catch(() => "")).slice(0, 120)}`;
+    const text = (await res.text().catch(() => "")).slice(0, 200);
+    // Twenty answers 400/404 with "object '<path>' not found" when the object
+    // isn't created yet — the key is fine, the schema just isn't there.
+    if (res.status === 401 || res.status === 403) return "connected, but the API key was rejected";
+    if (/not found/i.test(text) || res.status === 404) return `connected, but the "${leadsPath()}" object wasn't found — create the Lead object in Twenty (see crm-twenty.md)`;
+    return `HTTP ${res.status}: ${text}`;
   } catch (e) {
     return `unreachable: ${e?.message || e}`;
   }
