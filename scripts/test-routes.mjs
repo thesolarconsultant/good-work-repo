@@ -50,7 +50,7 @@ const ROUTES = [
   "/studio", "/systems", "/systems/content-console", "/systems/whatsapp-bot", "/systems/voice-agent", "/systems/brand-guide", "/systems/automations",
   "/services", "/built-by-goodwork", "/crm", "/agency", "/managed", "/pricing", "/showcase",
   "/learn", "/learn/category/content-systems", "/learn/build-a-site-from-the-engine",
-  "/docs", "/docs/getting-started", "/docs/brand-tokens", "/login", "/dashboard", "/contact", "/contact?topic=crm",
+  "/docs", "/docs/getting-started", "/docs/brand-tokens", "/login", "/dashboard", "/welcome", "/contact", "/contact?topic=crm",
   "/legal/licence", "/legal/terms", "/legal/refunds", "/legal/privacy", "/legal/cookies", "/legal/acceptable-use",
   "/work", "/case-studies", "/content-console", "/pitch", "/this-page-does-not-exist",
 ];
@@ -315,6 +315,45 @@ for (const vp of VIEWPORTS) {
       if (posted?.key !== "gw_test_key_0123456789") problems.push("login: the key was not posted to /api/access as typed");
     }
     await signingIn.close();
+
+    // After paying: /welcome claims the purchase with /api/claim, mocked here
+    // (the real endpoint is covered by test-api). A payment still clearing
+    // says so and offers a retry; a confirmed one shows the key, a working
+    // Copy button and the download. The old success URL forwards here.
+    const KEY = "gw-lib-0123456789abcdef-AbCdEfGhIjKlMnOpQrStUv";
+    const welcome = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await welcome.grantPermissions(["clipboard-read", "clipboard-write"], { origin: base });
+    let claims = 0;
+    let claimStatus = 409;
+    await welcome.route("**/api/claim", (route) => {
+      claims++;
+      const body = claimStatus === 200
+        ? { ok: true, key: KEY, product: "library", products: ["library"], email: "jo@example.com", name: "Jo Buyer" }
+        : { ok: false, pending: true, error: "Your payment hasn't been confirmed yet." };
+      return route.fulfill({ status: claimStatus, contentType: "application/json", body: JSON.stringify(body) });
+    });
+    const wp = await welcome.newPage();
+    const wpErrors = [];
+    wp.on("pageerror", (e) => wpErrors.push(e.message));
+    await wp.goto(`${base}/welcome?session_id=cs_test_a1b2c3d4e5f6g7h8`, { waitUntil: "networkidle" });
+    if (!(await wp.waitForSelector("text=Still confirming", { timeout: 5000 }).catch(() => null))) problems.push("welcome: a payment still clearing should say so");
+    claimStatus = 200;
+    await wp.click("text=Check again");
+    const keyBox = await wp.waitForSelector(".gw-keybox__key", { timeout: 5000 }).catch(() => null);
+    if (!keyBox) problems.push("welcome: a confirmed purchase did not show the key");
+    else {
+      if ((await keyBox.textContent()).trim() !== KEY) problems.push("welcome: the key shown is not the one the server issued");
+      await wp.click("text=Copy key");
+      if ((await wp.evaluate(() => navigator.clipboard.readText()).catch(() => "")) !== KEY) problems.push("welcome: Copy key did not copy the key");
+      if (!(await wp.$('a[href="/api/download?product=library"]'))) problems.push("welcome: no Library download after the purchase");
+      await walk(wp);
+      await wp.screenshot({ path: join(shots, "desktop-welcome.png"), fullPage: true });
+    }
+    if (claims !== 2) problems.push(`welcome: expected one claim on load and one on "Check again", saw ${claims}`);
+    await wp.goto(`${base}/login?purchase=library&session_id=cs_test_legacy0123456`, { waitUntil: "networkidle" });
+    if (!wp.url().endsWith("/welcome?session_id=cs_test_legacy0123456")) problems.push(`login: a checkout return should forward to /welcome, went to ${wp.url()}`);
+    if (wpErrors.length) problems.push(`welcome: ${wpErrors.slice(0, 2).join(" | ")}`);
+    await welcome.close();
   }
   await context.close();
 }

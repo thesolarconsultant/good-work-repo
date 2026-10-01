@@ -8,6 +8,9 @@
 // things that exist in this repository: the engine's build guide, the console
 // that is running for clients, and the licence and pricing model itself.
 
+import { OFFER, MANAGED_PLANS } from "./offers.js";
+import { gbp, offerAmount } from "../lib/format.js";
+
 export const LEARN_CATEGORIES = [
   { slug: "website-builds", name: "Website builds" },
   { slug: "components", name: "Component demonstrations" },
@@ -75,7 +78,7 @@ export const LEARN = [
     slug: "one-time-ownership-monthly-only-if-we-run-it",
     title: "Pay once to own it. Pay monthly only if we run it.",
     summary:
-      "Why Goodwork separates the build fee from the running cost, what the fair-use allowance actually covers, and how to read the managed plans.",
+      "Why Goodwork separates the build fee from the running cost, what the monthly credit actually covers, and how to read the managed plans.",
     author: "Jordan",
     date: "2026-09-26",
     category: "releases",
@@ -83,11 +86,11 @@ export const LEARN = [
     readTime: "4 min",
     relatedProduct: { label: "Pricing", to: "/pricing" },
     body: [
-      { type: "p", text: "Every Goodwork product and service is paid once. Library at £280, Studio at £888, Built by Goodwork at £2,800, the Embedded CRM at £1,888 and the Agency programme at £8,888.88. You own what you bought." },
+      { type: "p", text: `Every Goodwork product and service is paid once. Library at ${gbp(OFFER.library.price)}, Studio at ${gbp(OFFER.studio.price)}, Built by Goodwork at ${gbp(OFFER.built.price)}, the Embedded CRM at ${offerAmount(OFFER.crm)} depending on its connectors, and the Agency programme at ${gbp(OFFER.agency.price)}. You own what you bought.` },
       { type: "h2", text: "What continues to cost money" },
       { type: "p", text: "Hosting, domains, WhatsApp conversations, telephone numbers and minutes, AI-model usage, email and SMS are variable third-party costs. They are never inside a one-time fee. You can pay your providers directly and run compatible products on your own infrastructure." },
       { type: "h2", text: "When a managed plan makes sense" },
-      { type: "p", text: "If you would rather Goodwork hosted, monitored and maintained the live system, the managed plans start at £28 per month for a website and go up to £398 per month for the complete system with both agents. Each plan includes a defined fair-use allowance for variable usage, confirmed before launch, and anything beyond it is billed separately rather than hidden." },
+      { type: "p", text: `If you would rather Goodwork hosted, monitored and maintained the live system, the managed plans start at ${gbp(MANAGED_PLANS[0].price)} per month for a website and go up to ${gbp(MANAGED_PLANS.at(-1).price)} per month for the whole system with both agents and AI-made imagery and B-roll. The Complete plans include a monthly credit for chatbot, voice-agent and API usage, agreed before launch, and anything beyond it is billed separately rather than hidden.` },
       { type: "cta", label: "Compare every option", to: "/pricing" },
     ],
   },

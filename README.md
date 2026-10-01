@@ -2,8 +2,9 @@
 
 The Goodwork website: a digital product studio and commercial system builder.
 Goodwork Products (Library £280, Studio £888) on one side; Goodwork Services
-(Built by Goodwork £2,800, Embedded CRM £1,888, the Agency programme
-£8,888.88, optional managed infrastructure from £28 per month) on the other.
+(Built by Goodwork £3,500, the Embedded CRM from £1,700 to £5,300 depending on
+its connectors, the Agency programme £8,888.88, optional managed plans from
+£58 to £598 per month, and a coaching programme priced to scope) on the other.
 
 React 19 + Vite, no UI framework, no animation library, Web-standard edge
 functions in `api/`.
@@ -12,7 +13,7 @@ functions in `api/`.
 npm install
 npm run dev        # dev server
 npm run check      # lint + production build (runs the prebuild pipeline)
-npm run test:api     # call the edge functions directly: validation, delivery, Stripe signatures
+npm run test:api     # call the edge functions directly: forms, checkout, claim, Stripe signatures, access
 npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chromium
 ```
 
@@ -28,10 +29,11 @@ npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chr
 | `npm run library:bundle` | Build the customer bundle (zip + offline gallery) to `dist-library/`; identical to what `/api/download` serves |
 | `npm run images` | Regenerate responsive image derivatives — run after adding a screenshot |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` and `public/robots.txt` |
-| `npm run prices` | Fail the build if `api/checkout.js` disagrees with `src/data/offers.js` |
+| `npm run prices` | Fail the build if `server/products.js` (what checkout charges) disagrees with `src/data/offers.js` |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
-| `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js`, `api/stripe-webhook.js`, `api/access.js` and `api/download.js` in Node against a local webhook sink: 26 checks |
-| `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states, the sign-in form, the signed-in dashboard and item pages |
+| `npm run icons` | Render the product icons (`src/data/icons.js`) as PNGs for Stripe, to `dist-icons/` |
+| `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js`, `api/claim.js`, `api/stripe-webhook.js`, `api/access.js` and `api/download.js` in Node against a local webhook sink and a stubbed Stripe: 39 checks |
+| `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states, the welcome page after payment, the sign-in form, the signed-in dashboard and item pages |
 | `npm run brand:*`, `logo`, `merch`, `portrait` | Brand asset generators, unchanged from before the rebuild |
 
 ## Where things live
@@ -41,6 +43,8 @@ src/
   data/offers.js        THE single source of truth: every price, inclusion,
                         exclusion, CTA, managed plan, comparison row, licence
                         principle and FAQ answer. Nothing else carries a figure.
+  data/icons.js         One round icon per product and plan, shared by the
+                        site's cards (components/OfferIcon) and the Stripe images
   data/nav.js           Header, dropdowns, footer, announcement
   data/forms.js         The five enquiry/application schemas, and the steps
                         that run four of them as one-question-at-a-time flows
@@ -61,17 +65,18 @@ src/
   styles/flow.css       The step-by-step enquiry flow
 api/
   enquiry.js            All forms → webhook and/or Resend (503 until configured)
-  checkout.js           Stripe Checkout Session (503 until configured)
-  stripe-webhook.js     Signature-verified; emits entitlement.granted
+  checkout.js           Stripe Checkout Session; finds or creates its own prices (503 until configured)
+  claim.js              After checkout: confirms the payment with Stripe, issues the buyer's key
+  stripe-webhook.js     Signature-verified; tells the owner about each sale, emails the buyer their key
   access.js             Sign in with an access key: GET session, POST sign-in, DELETE sign-out
   download.js           The Library bundle, zipped in memory after the key check
   accept.js, console.js, console-image.js, broll.js   Unchanged client tooling
 library-src/            Component source of truth (moved out of public/)
-server/                 Shared by api/ and scripts: access keys, the bundle builder,
+server/                 Shared by api/ and scripts: products and prices, access keys, the bundle builder,
                         generated/ (the catalogue with code, committed)
 public/library/items/   One JSON per component, fetched lazily for previews
 public/goodwork/        Client brand deliverables and the engine (starter, motion)
-docs/BACKEND.md         How access and downloads work, the interim key store, what retires it
+docs/BACKEND.md         How purchase, access and downloads work, and how to switch payments on
 ```
 
 ## Routes
@@ -79,7 +84,8 @@ docs/BACKEND.md         How access and downloads work, the interim key store, wh
 `/`, `/library`, `/library/:slug`, `/studio`, `/systems`, `/systems/:slug`,
 `/services`, `/built-by-goodwork`, `/crm`, `/agency`, `/managed`, `/pricing`,
 `/showcase`, `/learn`, `/learn/category/:category`, `/learn/:slug`,
-`/docs/:slug`, `/login`, `/dashboard`, `/contact`, `/legal/:slug`, `/pitch`.
+`/docs/:slug`, `/login`, `/dashboard`, `/welcome`, `/contact`, `/legal/:slug`,
+`/pitch`.
 Old routes `/work`, `/case-studies` and `/content-console` redirect.
 
 ## What is live, what needs credentials, what is deliberately configurable
@@ -95,7 +101,8 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
 - Analytics intent events (`page_view`, `library_preview`, `library_detail`,
   `library_filter`, `pricing_view`, `checkout_start`, `checkout_unavailable`,
   `service_enquiry_start/submit`, `agency_application_submit`,
-  `contact_submit`, `access_interest`, `sign_in`, `download`, `library_copy`)
+  `contact_submit`, `access_interest`, `purchase_confirmed`, `sign_in`,
+  `download`, `library_copy`)
   pushed to `window.dataLayer`, to
   `window.gwAnalytics.track` if defined, and as a `gw:track` DOM event. No
   provider is loaded until one is approved.
@@ -107,31 +114,31 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
   returns 503 and every form shows an honest error with a mailto carrying the
   whole submission. Tested: the crawler drives the contact form into that
   state and checks the message.
-- Direct purchase of Library and Studio: `STRIPE_SECRET_KEY`,
-  `STRIPE_PRICE_LIBRARY`, `STRIPE_PRICE_STUDIO`, `STRIPE_WEBHOOK_SECRET`, and
-  a Stripe webhook endpoint pointed at `/api/stripe-webhook`. Until then buy
-  buttons show "checkout isn't switched on yet" and take an email. The
-  checkout call has not been exercised against a live Stripe account in this
-  repository; the webhook's signature verification is Stripe's documented
-  scheme implemented with Web Crypto.
-- Customer sign-in and the licensed download: `ACCESS_KEYS`, one
-  `library:<key>` or `studio:<key>` entry per purchase (generate a key with
-  the command in `.env.example`). Until then `/login` says access isn't
-  switched on yet and `/api/download` answers 503. Tested end to end: the API
-  harness signs in, downloads and validates the zip; the crawler drives the
-  sign-in form and the signed-in dashboard and item pages against a mocked
-  session.
+- Direct purchase of Library and Studio, with access issued automatically:
+  `STRIPE_SECRET_KEY` and `ACCESS_SIGNING_SECRET`, plus a terms of service URL
+  in Stripe's public details. Checkout creates its own Stripe prices on first
+  use; after paying, the buyer lands on `/welcome`, which confirms the payment
+  with Stripe, shows their key and signs them in. Add `STRIPE_WEBHOOK_SECRET`
+  and a webhook endpoint for `/api/stripe-webhook` so the owner hears about
+  each sale and, with Resend, the buyer is emailed their key. Until then buy
+  buttons show "checkout isn't switched on yet" and take an email. Tested
+  against a stubbed Stripe, not yet a live account: `docs/BACKEND.md` has the
+  setup steps and a test-mode run to do first.
+- Customer sign-in and the licensed download: purchase keys (above), or
+  hand-issued keys in `ACCESS_KEYS` for invoiced sales and comps. With
+  neither set, `/login` says access isn't switched on yet and `/api/download`
+  answers 503. Tested end to end: the API harness claims a purchase, signs
+  in, downloads and validates the zip; the crawler drives the welcome page,
+  the sign-in form and the signed-in dashboard and item pages against a
+  mocked server.
 - The Content Console demo pages under `/goodwork/brands/` and the live
   B-roll panel: `DEEPSEEK_API_KEY`, `HIGGSFIELD_API_KEY`, `HF_CREDENTIALS`.
 
 **Deliberately not built yet, and said so on the site**
 
-- A database behind customer access. Sign-in, the dashboard and the licensed
-  download are real (above), but entitlements live in the `ACCESS_KEYS`
-  variable and keys are issued by hand from verified payments.
-  `docs/BACKEND.md` says exactly what retires that.
-- VAT wording. Prices are shown without any VAT statement until the business
-  confirms its treatment.
+- A database behind customer access. Keys are signed rather than stored, so
+  none is needed to sell; refunds are revoked through `ACCESS_REVOKED` and a
+  redeploy. `docs/BACKEND.md` says what a database would add.
 - Legal wording. Every legal page is a draft written to the commercial
   principles in `data/offers.js`, marked for solicitor review on the page and
   set `noindex` while marked.
@@ -153,16 +160,16 @@ Old routes `/work`, `/case-studies` and `/content-console` redirect.
    them with real builds or remove them before launch.
 5. **Founder video.** Set `video` in `src/data/founder.js` and the section
    switches from the photograph to the film.
-6. **Issue the first access keys.** Set `ACCESS_KEYS` (see `.env.example`)
-   and redeploy. Your own key gives you the whole Library from the site;
-   each buyer gets one from their verified payment until the database exists.
+6. **Switch payments on.** Follow "Setting it up" in `docs/BACKEND.md`: the
+   Stripe terms URL, the secret key, the webhook, then one test-mode purchase
+   on a preview before the live keys go on Production.
 
 ## Content
 
 Change what the site *says* in `src/data/`. A price changes in exactly one
 place (`offers.js`) and the homepage, offer pages, pricing table, FAQ, pitch
-deck, structured data and the checkout guard all follow; `npm run prices`
-fails the build if the Stripe map drifts.
+deck and structured data all follow; `npm run prices` fails the build if
+`server/products.js`, which sets what checkout charges, drifts from it.
 
 The Library catalogue is generated. Add a component to
 `library-src/components.txt` and run `npm run library`; map it to a browsing

@@ -6,19 +6,21 @@
 //                                 cookie and returns what the key covers
 //   DELETE /api/access            clears the cookie
 //
-// All three answer 503 until ACCESS_KEYS is set (server/accessKeys.js,
-// .env.example), and the sign-in page says so instead of showing a form that
-// cannot work. The response never contains a key: it carries the products the
-// key covers and the downloads the server will honour for it, which is what
-// the dashboard renders. Entitlements come from the server's list, never from
-// anything the browser claims.
+// All three answer 503 until ACCESS_KEYS or ACCESS_SIGNING_SECRET is set
+// (server/accessKeys.js, .env.example), and the sign-in page says so instead
+// of showing a form that cannot work. The response never contains a key: it
+// carries the products the key covers and the downloads the server will
+// honour for it, which is what the dashboard renders. Entitlements come from
+// the key's signature or the server's list, never from anything the browser
+// claims.
 //
-// This is the interim store described in docs/BACKEND.md: keys are issued by
-// hand from verified payment events until a database exists. When one does,
-// authorise() in server/accessKeys.js is the only function that changes.
+// Keys come from two places (docs/BACKEND.md): purchase keys, issued and
+// signed automatically after Stripe confirms a payment, and hand-issued keys
+// in ACCESS_KEYS. When a database exists, authorise() in
+// server/accessKeys.js is the only function that changes.
 // =========================================================
 
-import { authorise, keyFromRequest, sessionCookies, clearCookies } from "../server/accessKeys.js";
+import { authorise, accessConfigured, keyFromRequest, sessionCookies, clearCookies } from "../server/accessKeys.js";
 import { LIBRARY_VERSION, LIBRARY_UPDATED, LIBRARY_COUNT } from "../server/generated/libraryMeta.js";
 
 export const config = { runtime: "edge" };
@@ -50,7 +52,7 @@ function sessionBody(auth) {
     ok: true,
     configured: true,
     user: { id: auth.keyId, name: auth.label },
-    entitlements: auth.products.map((productId) => ({ productId, source: "access-key" })),
+    entitlements: auth.products.map((productId) => ({ productId, source: auth.source || "access-key" })),
     downloads: DOWNLOADS.filter((d) => auth.products.includes(d.product)),
     pending: auth.products.includes("studio") ? ["The Studio systems are released in stages and will appear here as they ship."] : [],
   };
@@ -60,7 +62,7 @@ export default async function handler(request) {
   const method = request.method.toUpperCase();
   if (method === "OPTIONS") return new Response(null, { status: 204, headers: { Allow: "GET, POST, DELETE, OPTIONS" } });
 
-  if (!process.env.ACCESS_KEYS) {
+  if (!accessConfigured()) {
     return json({ ok: false, configured: false, error: "Customer access isn't switched on for this deployment yet." }, 503);
   }
 

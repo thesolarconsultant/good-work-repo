@@ -29,6 +29,7 @@ const LearnPost = lazy(() => import("./pages/LearnPost"));
 const Docs = lazy(() => import("./pages/Docs"));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Welcome = lazy(() => import("./pages/Welcome"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Legal = lazy(() => import("./pages/Legal"));
 const Pitch = lazy(() => import("./pages/Pitch"));
@@ -73,6 +74,7 @@ function AppRoutes() {
       <Route path="/docs/:slug" element={<Docs />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/welcome" element={<Welcome />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/legal/:slug" element={<Legal />} />
       <Route path="/pitch" element={<Pitch />} />

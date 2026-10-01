@@ -5,8 +5,9 @@
 // "<timestamp>.<raw body>" with STRIPE_WEBHOOK_SECRET, tolerance 5 minutes)
 // using Web Crypto, so it runs on the edge runtime without the SDK.
 //
-// On checkout.session.completed with payment_status=paid it emits a
-// normalised entitlement event:
+// On checkout.session.completed (or, for a bank payment that clears later,
+// checkout.session.async_payment_succeeded) with payment_status=paid it emits
+// a normalised entitlement event:
 //
 //   {
 //     type: "entitlement.granted",
@@ -16,17 +17,32 @@
 //   }
 //
 // and delivers it to ENTITLEMENT_WEBHOOK_URL (or ENQUIRY_WEBHOOK_URL as a
-// fallback) and/or emails it via Resend. THIS DEPLOYMENT HAS NO DATABASE, so
-// that delivery is where an entitlement store must pick it up — the shape is
-// the contract. Until a store exists, a purchase reaches the inbox/CRM as a
-// verified paid event and access is issued by hand. See docs/BACKEND.md.
+// fallback) and/or emails it to the owner via Resend.
+//
+// Access itself doesn't wait for this: the customer claims their key on
+// /welcome straight after paying (api/claim.js). When ACCESS_SIGNING_SECRET is
+// set the event carries that same key (it is derived from the session), so the
+// owner can resend it, and with Resend configured the customer is emailed it
+// too, which is their copy if they close the tab. See docs/BACKEND.md.
+//
+// Sessions for anything else on the same Stripe account (say a payment link
+// for a service) are acknowledged and ignored.
 //
 //   STRIPE_WEBHOOK_SECRET   Required. whsec_… from the Stripe dashboard.
 //   ENTITLEMENT_WEBHOOK_URL Optional. Falls back to ENQUIRY_WEBHOOK_URL.
 //   RESEND_API_KEY + ENQUIRY_TO + ENQUIRY_FROM  Optional email route.
+//   ACCESS_EMAIL_FROM       Optional sender for the customer's key email;
+//                           falls back to ENQUIRY_FROM.
 // =========================================================
 
+import { issueKey } from "../server/accessKeys.js";
+import { PRODUCTS } from "../server/products.js";
+
 const TOLERANCE_S = 5 * 60;
+
+// Cards are paid by checkout.session.completed. Slower methods (bank debits)
+// complete unpaid and are paid later, on checkout.session.async_payment_succeeded.
+const PAID_EVENTS = new Set(["checkout.session.completed", "checkout.session.async_payment_succeeded"]);
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
@@ -105,6 +121,42 @@ async function deliver(payload) {
   return "delivered";
 }
 
+/** The customer's own copy of their key. Best-effort: the welcome page has already shown it. */
+async function emailCustomer(payload, origin) {
+  const resendKey = process.env.RESEND_API_KEY;
+  const from = process.env.ACCESS_EMAIL_FROM || process.env.ENQUIRY_FROM;
+  if (!resendKey || !from || !payload.email || !payload.accessKey) return "skipped";
+  const site = (process.env.SITE_URL || origin || "").replace(/\/$/, "");
+  const product = PRODUCTS[payload.productId]?.name || "Goodwork";
+  const text = [
+    `Thanks for buying ${product}.`,
+    "",
+    "Your access key:",
+    "",
+    `    ${payload.accessKey}`,
+    "",
+    "It's your licence: one key per purchase. Keep it private, and use it to sign in on any device.",
+    site ? `Sign in: ${site}/login` : "",
+    site ? `Licence: ${site}/legal/licence` : "",
+    "",
+    "Reply to this email if anything isn't right.",
+  ]
+    .filter((line, i, all) => line !== "" || all[i - 1] !== "")
+    .join("\n");
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ from, to: [payload.email], reply_to: process.env.ENQUIRY_TO?.split(",")[0]?.trim() || undefined, subject: `Your ${product} access key`, text }),
+    });
+    if (!r.ok) throw new Error(`resend ${r.status}`);
+    return "sent";
+  } catch (err) {
+    console.error("customer key email failed:", err.message);
+    return "failed";
+  }
+}
+
 export const config = { runtime: "edge" };
 
 export default async function handler(request) {
@@ -124,15 +176,15 @@ export default async function handler(request) {
     return json({ error: "Malformed event." }, 400);
   }
 
-  if (event.type !== "checkout.session.completed") return json({ received: true, ignored: event.type });
+  if (!PAID_EVENTS.has(event.type)) return json({ received: true, ignored: event.type });
 
   const session = event.data?.object || {};
   if (session.payment_status !== "paid") return json({ received: true, ignored: "unpaid" });
 
   const productId = session.metadata?.product;
-  if (!["library", "studio"].includes(productId)) {
-    console.error("paid session without a known product:", session.id);
-    return json({ received: true, ignored: "unknown-product" });
+  if (!Object.hasOwn(PRODUCTS, productId)) {
+    console.log("paid session for something other than Library or Studio:", session.id);
+    return json({ received: true, ignored: "not-a-library-or-studio-purchase" });
   }
 
   const payload = {
@@ -149,11 +201,16 @@ export default async function handler(request) {
     termsAccepted: session.consent?.terms_of_service === "accepted",
     eventId: event.id,
   };
+  if (process.env.ACCESS_SIGNING_SECRET) {
+    payload.accessKey = await issueKey(productId, session.id);
+    payload.accessKeyId = payload.accessKey.split("-")[2];
+  }
 
   try {
     const status = await deliver(payload);
     if (status === "unrouted") console.warn("entitlement.granted received but no ENTITLEMENT_WEBHOOK_URL or email route is set:", payload.sessionId);
-    return json({ received: true, status });
+    const customer = await emailCustomer(payload, new URL(request.url).origin);
+    return json({ received: true, status, customer });
   } catch (err) {
     // Stripe retries on non-2xx, which is what we want when delivery fails.
     console.error("entitlement delivery failed:", err.message);

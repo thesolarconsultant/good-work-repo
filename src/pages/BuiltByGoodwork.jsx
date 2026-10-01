@@ -10,7 +10,7 @@ import EnquiryForm from "../components/EnquiryForm";
 import ManagedPlans from "../components/ManagedPlans";
 import { OFFER, COMBINED } from "../data/offers";
 import { productOffer, breadcrumbs } from "../lib/schema";
-import { gbp } from "../lib/format";
+import { gbp, gbpRange, offerAmount } from "../lib/format";
 
 const offer = OFFER.built;
 
@@ -100,14 +100,14 @@ export default function BuiltByGoodwork() {
             <div>
               <p className="gw-eyebrow gw-eyebrow--accent">Add the CRM</p>
               <h2 className="gw-h3 gw-mt-1" id="crm-title">
-                {OFFER.crm.name}, <span className="gw-nowrap">{gbp(OFFER.crm.price)} one-time</span>
+                {OFFER.crm.name}, <span className="gw-nowrap">{offerAmount(OFFER.crm)} one-time</span>
               </h2>
               <p className="gw-body gw-mt-2">{OFFER.crm.outcome} The server is expressly excluded.</p>
             </div>
             <div className="gw-sum">
               <div><span>Built by Goodwork</span><span>{gbp(OFFER.built.price)}</span></div>
-              <div><span>Embedded CRM</span><span>{gbp(OFFER.crm.price)}</span></div>
-              <div><span>{COMBINED.label}<br /><small>{COMBINED.note}</small></span><span>{gbp(COMBINED.total)}</span></div>
+              <div><span>Embedded CRM</span><span>{offerAmount(OFFER.crm)}</span></div>
+              <div><span>{COMBINED.label}<br /><small>{COMBINED.note}</small></span><span>{gbpRange(COMBINED.total, COMBINED.totalTo)}</span></div>
             </div>
             <div className="gw-actions" style={{ flexDirection: "column", alignItems: "stretch" }}>
               <Button to="/crm" variant="paper" arrow>

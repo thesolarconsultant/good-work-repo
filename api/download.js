@@ -16,7 +16,7 @@
 // deflated one the build script writes.
 // =========================================================
 
-import { authorise, keyFromRequest } from "../server/accessKeys.js";
+import { authorise, accessConfigured, keyFromRequest } from "../server/accessKeys.js";
 import ITEMS from "../server/generated/libraryItems.js";
 import { LIBRARY_VERSION, LIBRARY_UPDATED, CATEGORY_NAMES } from "../server/generated/libraryMeta.js";
 import { bundleFiles, bundleName, zip } from "../server/libraryBundle.js";
@@ -42,7 +42,7 @@ export default async function handler(request) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: { Allow: "GET, OPTIONS" } });
   if (request.method !== "GET") return json({ error: "Use GET." }, 405);
 
-  if (!process.env.ACCESS_KEYS) return json({ error: "Customer access isn't switched on for this deployment yet." }, 503);
+  if (!accessConfigured()) return json({ error: "Customer access isn't switched on for this deployment yet." }, 503);
 
   const auth = await authorise(keyFromRequest(request));
   if (!auth.ok) return json({ error: "Sign in with your access key to download." }, 401, { "WWW-Authenticate": 'Bearer realm="goodwork"' });

@@ -490,6 +490,12 @@ body[data-gw-locked="true"] { overflow: hidden; }
 .gw-offer__top .gw-badge--solid::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: 0.45rem; border-radius: 50%; background: var(--gw-gradient); vertical-align: 0.02em; }
 .gw-light .gw-offer__top .gw-badge--solid { color: var(--gw-mark); }
 .gw-offer__who { font-family: var(--gw-font); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gw-text-3); font-weight: 600; }
+/* Product icons (components/OfferIcon.jsx): a black disc, so on a dark block
+   it gets a hairline ring to keep its edge. */
+.gw-offer-icon { display: block; flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%; }
+.gw-offer-icon--lg { width: 3.5rem; height: 3.5rem; }
+.gw-dark .gw-offer-icon, .gw-ondark .gw-offer-icon { box-shadow: 0 0 0 1px var(--gw-line-strong); }
+.gw-offer__who:has(.gw-offer-icon) { display: inline-flex; align-items: center; gap: 0.7rem; }
 .gw-offer__name { font-size: 1.2rem; font-weight: var(--gw-w-bold); letter-spacing: -0.02em; }
 .gw-offer__copy { font-size: 0.92rem; line-height: 1.5; color: var(--gw-text-2); }
 /* The foot sits on the card's floor, so anything between copy and foot stays with the copy. */
@@ -504,6 +510,7 @@ body[data-gw-locked="true"] { overflow: hidden; }
 @media (max-width: 900px) { .gw-addon { grid-template-columns: minmax(0, 1fr); } }
 .gw-sum { display: grid; gap: 0.35rem; font-family: var(--gw-font); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 .gw-sum div { display: flex; justify-content: space-between; gap: 1rem; color: var(--gw-text-2); }
+.gw-sum div > span:last-child { white-space: nowrap; text-align: right; }
 .gw-sum div:last-child { padding-top: 0.45rem; border-top: 1px solid var(--gw-line-strong); color: var(--gw-text); font-weight: 600; }
 .gw-sum small { font-size: 0.72rem; color: var(--gw-text-3); font-weight: 400; }
 .gw-light .gw-addon { background: var(--gw-light-card); border-color: var(--gw-light-line); }
@@ -587,6 +594,14 @@ body[data-gw-locked="true"] { overflow: hidden; }
 .gw-fairuse strong { display: block; font-family: var(--gw-font); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gw-text); margin-bottom: 0.4rem; font-weight: 600; }
 .gw-light .gw-fairuse { border-color: var(--gw-light-line-strong); color: var(--gw-light-text-2); }
 .gw-light .gw-fairuse strong { color: var(--gw-light-text); }
+/* Around the plans: the CRM add-on and the coaching programme. */
+.gw-plan-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 760px) { .gw-plan-extras { grid-template-columns: minmax(0, 1fr); } }
+.gw-plan-extra { display: flex; align-items: flex-start; gap: 1rem; padding: clamp(1.1rem, 2vw, 1.4rem); border: 1px solid var(--gw-line); border-radius: var(--gw-r-md); background: var(--gw-bg-2); }
+.gw-plan-extra > div { flex: 1; min-width: 0; }
+.gw-plan__scope { font-weight: 400; color: var(--gw-text-3); }
+.gw-light .gw-plan-extra { background: var(--gw-light-card); border-color: var(--gw-light-line); }
+.gw-light .gw-plan__scope { color: var(--gw-light-text-3); }
 
 /* ---------------------------------------------------------
    Comparison table
@@ -968,6 +983,11 @@ fieldset.gw-field > legend { padding: 0; margin-bottom: 0.4rem; }
    Route states
    --------------------------------------------------------- */
 .gw-route-loading { min-height: 70vh; display: grid; place-items: center; }
+/* The access key, shown once after purchase. */
+.gw-keybox { display: grid; gap: 0.6rem; margin-top: 1.25rem; padding: 1rem 1.1rem; border: 1px solid var(--gw-text); border-radius: var(--gw-r-md); background: var(--gw-bg-1); }
+.gw-keybox__label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gw-text-3); }
+.gw-keybox__row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.gw-keybox__key { min-width: 0; font-family: var(--gw-mono); font-size: 1rem; font-weight: 600; color: var(--gw-text); overflow-wrap: anywhere; user-select: all; }
 .gw-spinner { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gw-line-strong); border-top-color: var(--gw-accent-text); }
 .gw-error { padding: clamp(2rem, 6vw, 4rem) 0; }
 

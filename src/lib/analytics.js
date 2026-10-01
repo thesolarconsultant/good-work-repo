@@ -21,6 +21,7 @@ export const EVENTS = {
   PRICING_VIEW: "pricing_view",
   CHECKOUT_START: "checkout_start",
   CHECKOUT_UNAVAILABLE: "checkout_unavailable",
+  PURCHASE_CONFIRMED: "purchase_confirmed",
   SERVICE_ENQUIRY_START: "service_enquiry_start",
   SERVICE_ENQUIRY_SUBMIT: "service_enquiry_submit",
   AGENCY_APPLICATION_SUBMIT: "agency_application_submit",

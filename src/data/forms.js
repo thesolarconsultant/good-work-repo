@@ -25,7 +25,8 @@
 // field belongs to exactly one step.
 // =========================================================
 
-import { gbp } from "../lib/format.js";
+import { gbp, offerAmount } from "../lib/format.js";
+import { OFFER } from "./offers.js";
 
 const CONTACT_METHODS = [
   { value: "email", label: "Email" },
@@ -50,12 +51,12 @@ export const FORMS = {
   built: {
     id: "built",
     title: "Built by Goodwork enquiry",
-    intro: `Tell us about the business and what it needs. We confirm the scope and the fixed ${gbp(2800)} implementation fee before anything starts.`,
+    intro: `Tell us about the business and what it needs. We confirm the scope and the fixed ${gbp(OFFER.built.price)} implementation fee before anything starts.`,
     submitLabel: "Send the enquiry",
     successTitle: "That's with us.",
     doneTitle: (v) => (firstName(v) ? `That's with us, ${firstName(v)}.` : "That's with us."),
     successCopy: "We'll come back within one working day with any questions, then a written scope. Nothing starts until you've agreed it.",
-    next: ["A reply from a person within one working day, with any questions.", `Then a written scope with the fixed ${gbp(2800)} fee.`, "Nothing starts until you've agreed it."],
+    next: ["A reply from a person within one working day, with any questions.", `Then a written scope with the fixed ${gbp(OFFER.built.price)} fee.`, "Nothing starts until you've agreed it."],
     event: "service_enquiry_submit",
     fields: [
       { name: "name", label: "Your name", type: "text", required: true, autoComplete: "name", placeholder: "Jane Smith" },
@@ -95,7 +96,7 @@ export const FORMS = {
           { value: "whatsapp", label: "WhatsApp bot flow" },
           { value: "voice", label: "AI voice-agent flow" },
           { value: "console", label: "Content Console" },
-          { value: "crm", label: `Embedded CRM (add-on, ${gbp(1888)} one-time)` },
+          { value: "crm", label: `Embedded CRM (add-on, ${offerAmount(OFFER.crm)} one-time)` },
           { value: "brand", label: "Brand-guideline document" },
         ],
       },
@@ -113,7 +114,7 @@ export const FORMS = {
       { name: "launch", label: "Target launch", type: "select", required: true, ui: "chips", options: LAUNCH_WINDOWS },
       {
         name: "budgetConfirmed",
-        label: `I understand the implementation fee is ${gbp(2800)} one-time, and that hosting, messaging, telephony and AI usage are charged separately.`,
+        label: `I understand the implementation fee is ${gbp(OFFER.built.price)} one-time, and that hosting, messaging, telephony and AI usage are charged separately.`,
         type: "checkbox",
         required: true,
         requiredMessage: "Please confirm you've read the fee and what sits outside it.",
@@ -144,7 +145,7 @@ export const FORMS = {
         short: "Systems",
         kicker: "The systems",
         title: "Which systems should we set up?",
-        help: `Each is included once in the ${gbp(2800)} build, except the Embedded CRM, which is a ${gbp(1888)} add-on. Skip any you don't need.`,
+        help: `Each is included once in the ${gbp(OFFER.built.price)} build, except the Embedded CRM, which is a ${offerAmount(OFFER.crm)} add-on depending on its connectors. Skip any you don't need.`,
         fields: ["systems"],
       },
       { id: "brand", short: "Brand", kicker: "The brand", title: "Where's the brand at?", fields: ["brandStatus"] },
@@ -157,7 +158,7 @@ export const FORMS = {
   crm: {
     id: "crm",
     title: "Embedded CRM enquiry",
-    intro: `The ${gbp(1888)} one-time fee covers implementation. Your server and communication costs stay separate, so tell us how you'd like it hosted.`,
+    intro: `The one-time fee covers implementation: ${gbp(OFFER.crm.price)} for the standard build, up to ${gbp(OFFER.crm.priceTo)} with premium connectors. Your server and communication costs stay separate, so tell us how you'd like it hosted.`,
     submitLabel: "Send the enquiry",
     successTitle: "That's with us.",
     doneTitle: (v) => (firstName(v) ? `That's with us, ${firstName(v)}.` : "That's with us."),
@@ -230,7 +231,7 @@ export const FORMS = {
       { id: "now", short: "Today", kicker: "Where you are now", title: "What are you using today?", help: "A spreadsheet, an inbox or nothing at all is completely normal.", fields: ["currentCrm", "dataSource"] },
       { id: "pipeline", short: "Pipeline", kicker: "The pipeline", title: "Sketch the pipeline.", help: "Tap the stages a lead moves through, in order. Rename or add your own in the box.", fields: ["pipeline"] },
       { id: "connect", short: "Connections", kicker: "Connections", title: "What should it connect to, and what should it do by itself?", help: "Tap what applies, then add detail in your own words. Both optional.", fields: ["connections", "automations"] },
-      { id: "hosting", short: "Hosting", kicker: "Hosting", title: "Where should it live?", help: `The ${gbp(1888)} fee covers implementation. The server is separate either way.`, fields: ["hosting"] },
+      { id: "hosting", short: "Hosting", kicker: "Hosting", title: "Where should it live?", help: `The ${offerAmount(OFFER.crm)} fee covers implementation. The server is separate either way.`, fields: ["hosting"] },
       { id: "reach", short: "Contact", kicker: almost, title: "How should we reach you?", fields: ["email", "phone", "contactMethod"] },
       { id: "final", short: "Last bits", kicker: "Last thing", title: "Anything else we should know?", help: "Optional.", fields: ["notes"] },
     ],
@@ -239,7 +240,7 @@ export const FORMS = {
   agency: {
     id: "agency",
     title: "Agency programme application",
-    intro: `The programme is ${gbp(8888.88)} paid in full, or four payments of ${gbp(2222.22)} subject to agreement and contract. Applications are reviewed by a person, not a form.`,
+    intro: `The programme is ${gbp(OFFER.agency.price)} paid in full, or four payments of ${gbp(OFFER.agency.instalments.amount)} subject to agreement and contract. Applications are reviewed by a person, not a form.`,
     submitLabel: "Submit the application",
     successTitle: "Application received.",
     doneTitle: (v) => (firstName(v) ? `Application received. Thanks, ${firstName(v)}.` : "Application received."),
@@ -285,7 +286,7 @@ export const FORMS = {
       { name: "launch", label: "Desired launch date", type: "select", required: true, ui: "chips", options: LAUNCH_WINDOWS },
       {
         name: "investmentConfirmed",
-        label: `I understand the programme is a ${gbp(8888.88)} investment and that hosting, telephony, messaging and AI usage for the agency and its clients are charged separately.`,
+        label: `I understand the programme is a ${gbp(OFFER.agency.price)} investment and that hosting, telephony, messaging and AI usage for the agency and its clients are charged separately.`,
         type: "checkbox",
         required: true,
         requiredMessage: "Please confirm you understand the investment before applying.",
@@ -296,8 +297,8 @@ export const FORMS = {
         type: "radio",
         required: true,
         options: [
-          { value: "full", label: `${gbp(8888.88)} paid in full` },
-          { value: "instalments", label: `Four payments of ${gbp(2222.22)}, subject to agreement and contract` },
+          { value: "full", label: `${gbp(OFFER.agency.price)} paid in full` },
+          { value: "instalments", label: `Four payments of ${gbp(OFFER.agency.instalments.amount)}, subject to agreement and contract` },
         ],
       },
       { name: "notes", label: "Anything else we should know", type: "textarea", rows: 4, placeholder: "Anything that would help us judge fit." },
@@ -335,11 +336,11 @@ export const FORMS = {
         type: "select",
         required: true,
         options: [
-          { value: "library", label: "Goodwork Library (£280)" },
-          { value: "studio", label: "Goodwork Studio (£888)" },
-          { value: "built", label: "Built by Goodwork (£2,800)" },
-          { value: "crm", label: "Embedded CRM (£1,888)" },
-          { value: "agency", label: "Agency programme (£8,888.88)" },
+          { value: "library", label: `Goodwork Library (${gbp(OFFER.library.price)})` },
+          { value: "studio", label: `Goodwork Studio (${gbp(OFFER.studio.price)})` },
+          { value: "built", label: `Built by Goodwork (${gbp(OFFER.built.price)})` },
+          { value: "crm", label: `Embedded CRM (${offerAmount(OFFER.crm)})` },
+          { value: "agency", label: `Agency programme (${gbp(OFFER.agency.price)})` },
           { value: "managed", label: "Managed infrastructure" },
           { value: "licence", label: "Licensing question" },
           { value: "other", label: "Something else" },
@@ -370,8 +371,8 @@ export const FORMS = {
         type: "radio",
         required: true,
         options: [
-          { value: "library", label: "Goodwork Library, £280 one-time" },
-          { value: "studio", label: "Goodwork Studio, £888 one-time" },
+          { value: "library", label: `Goodwork Library, ${gbp(OFFER.library.price)} one-time` },
+          { value: "studio", label: `Goodwork Studio, ${gbp(OFFER.studio.price)} one-time` },
           { value: "undecided", label: "Not decided yet" },
         ],
       },

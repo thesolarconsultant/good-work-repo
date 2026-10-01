@@ -4,15 +4,23 @@ import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
 import Button from "../components/Button";
 import EnquiryForm from "../components/EnquiryForm";
-import { OFFERS } from "../data/offers";
-import { gbp } from "../lib/format";
+import { OFFER, OFFERS, MANAGED_PLANS, COACHING } from "../data/offers";
+import { gbp, offerAmount } from "../lib/format";
 import { CONTACT_EMAIL } from "../lib/site";
 
 const ROUTES = [
-  { label: "Built by Goodwork enquiry", to: "/built-by-goodwork#enquire", note: `${gbp(2800)} implementation for one business` },
-  { label: "Embedded CRM enquiry", to: "/crm#enquire", note: `${gbp(1888)} implementation, server excluded` },
-  { label: "Agency application", to: "/agency#apply", note: `${gbp(8888.88)} programme, reviewed by a person` },
+  { label: "Built by Goodwork enquiry", to: "/built-by-goodwork#enquire", note: `${gbp(OFFER.built.price)} implementation for one business` },
+  { label: "Embedded CRM enquiry", to: "/crm#enquire", note: `${offerAmount(OFFER.crm)} implementation, server excluded` },
+  { label: "Agency application", to: "/agency#apply", note: `${gbp(OFFER.agency.price)} programme, reviewed by a person` },
 ];
+
+// "Ask about …" buttons on the plans pass ?plan=<id>; the message starts with it.
+const PLANS = Object.fromEntries([...MANAGED_PLANS, COACHING].map((p) => [p.id, p]));
+function interestIn(id) {
+  const p = Object.hasOwn(PLANS, id) ? PLANS[id] : null;
+  if (!p) return "";
+  return p.price ? `I'm interested in the ${p.name} plan (${gbp(p.price)} per month).\n\n` : `I'm interested in the ${p.name.toLowerCase()}.\n\n`;
+}
 
 export default function Contact() {
   const [params] = useSearchParams();
@@ -20,7 +28,7 @@ export default function Contact() {
   const plan = params.get("plan");
   const prefill = {
     topic: OFFERS.some((o) => o.id === topic) || ["managed", "licence", "other"].includes(topic) ? topic : "",
-    message: plan ? `I'm interested in the ${plan} managed plan.\n\n` : "",
+    message: interestIn(plan),
   };
 
   return (

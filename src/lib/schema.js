@@ -38,7 +38,7 @@ export function website() {
   };
 }
 
-/** A Product with one Offer, for the offer pages and the pricing page. */
+/** A Product with one Offer (an AggregateOffer when it's priced as a range), for the offer pages and the pricing page. */
 export function productOffer(offer, { path } = {}) {
   const url = `${SITE_URL}${path || offer.route}`;
   return {
@@ -51,8 +51,9 @@ export function productOffer(offer, { path } = {}) {
     brand: { "@id": ORG_ID },
     provider: { "@id": ORG_ID },
     offers: {
-      "@type": "Offer",
-      price: String(offer.price),
+      ...(offer.priceTo
+        ? { "@type": "AggregateOffer", lowPrice: String(offer.price), highPrice: String(offer.priceTo), offerCount: 1 }
+        : { "@type": "Offer", price: String(offer.price) }),
       priceCurrency: "GBP",
       availability: "https://schema.org/InStock",
       url,

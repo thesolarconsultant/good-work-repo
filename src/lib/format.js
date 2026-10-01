@@ -15,6 +15,14 @@ export function gbp(amount) {
   return GBP.format(n).replace(/\.00$/, "") + (hasPence ? "" : "");
 }
 
+/** 1700, 5300 -> "£1,700–£5,300"; a single figure when there is no upper one. */
+export function gbpRange(from, to) {
+  return to && to !== from ? `${gbp(from)}–${gbp(to)}` : gbp(from);
+}
+
+/** An offer's figure as shown: "£280", or "£1,700–£5,300" for one priced as a range. */
+export const offerAmount = (offer) => gbpRange(offer.price, offer.priceTo);
+
 /** "one-time" | "monthly" -> the words the brief insists on. */
 export function billingWord(billing) {
   return billing === "monthly" ? "per month" : "one-time";

@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import { OFFER, MANAGED_PLANS, COMBINED } from "../data/offers";
-import { gbp } from "../lib/format";
+import OfferIcon from "./OfferIcon";
+import { OFFER, MANAGED_PLANS, COMBINED, CRM_RUNNING } from "../data/offers";
+import { gbp, gbpRange, offerAmount } from "../lib/format";
 import { track, EVENTS } from "../lib/analytics";
 
 /**
@@ -84,17 +85,17 @@ function recommend(answers) {
         why:
           answers.who === "self"
             ? "Every lead in one place. The Embedded CRM is implemented by Goodwork, on its own or alongside a build."
-            : `Every lead in one place, added to the build: ${gbp(COMBINED.total)} together, ${COMBINED.note}.`,
+            : `Every lead in one place, added to the build: ${gbpRange(COMBINED.total, COMBINED.totalTo)} together depending on the CRM's connectors, ${COMBINED.note}.`,
       });
     }
   }
 
   let plan = null;
   if (answers.run === "goodwork") {
-    plan = need.has("agents") ? PLAN.connected : need.has("content") ? PLAN.console : PLAN.care;
-    if (answers.scale === "agency" || (need.has("agents") && need.has("content") && need.has("crm"))) plan = PLAN.complete;
+    plan = need.has("agents") || answers.scale === "agency" ? PLAN.complete : need.has("content") ? PLAN.console : PLAN.care;
   }
-  return { offers, plan };
+  // Goodwork running the CRM as well adds to whichever plan fits.
+  return { offers, plan, crmRunning: Boolean(plan) && need.has("crm") };
 }
 
 export default function RouteFinder() {
@@ -199,12 +200,15 @@ export default function RouteFinder() {
             {result.offers.map(({ offer, why }) => (
               <article key={offer.id} className="gw-offer">
                 <div className="gw-offer__top">
-                  <span className="gw-offer__who">{offer.who}</span>
+                  <span className="gw-offer__who">
+                    <OfferIcon id={offer.id} />
+                    {offer.who}
+                  </span>
                   {offer.badge && <span className="gw-badge gw-badge--solid">{offer.badge}</span>}
                 </div>
                 <h3 className="gw-offer__name">{offer.name}</h3>
                 <p className="gw-price">
-                  <span className="gw-price__amount gw-price__amount--sm">{gbp(offer.price)}</span>
+                  <span className="gw-price__amount gw-price__amount--sm">{offerAmount(offer)}</span>
                   <span className="gw-price__term">one-time</span>
                 </p>
                 {offer.instalments && (
@@ -226,14 +230,22 @@ export default function RouteFinder() {
             {result.plan && (
               <article className="gw-offer">
                 <div className="gw-offer__top">
-                  <span className="gw-offer__who">Managed · optional</span>
+                  <span className="gw-offer__who">
+                    <OfferIcon id={result.plan.id} />
+                    Managed · optional
+                  </span>
                 </div>
                 <h3 className="gw-offer__name">{result.plan.name}</h3>
                 <p className="gw-price">
                   <span className="gw-price__amount gw-price__amount--sm">{gbp(result.plan.price)}</span>
                   <span className="gw-price__term">per month</span>
                 </p>
-                <p className="gw-offer__copy">{result.plan.for} Variable messaging, calling and model usage stays visible, never folded in.</p>
+                {result.crmRunning && (
+                  <p className="gw-offer__note">
+                    Plus {gbp(CRM_RUNNING.price)} per month for Goodwork to run the CRM.
+                  </p>
+                )}
+                <p className="gw-offer__copy">{result.plan.for} Anything beyond the plan is shown separately, never folded in.</p>
                 <div className="gw-offer__foot">
                   <Button to="/managed" variant="secondary" arrow>
                     See the managed plans

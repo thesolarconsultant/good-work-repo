@@ -5,13 +5,14 @@ import SectionHead from "../components/SectionHead";
 import Reveal from "../components/Reveal";
 import Button from "../components/Button";
 import Price from "../components/Price";
+import OfferIcon from "../components/OfferIcon";
 import Display from "../components/Display";
 import Stamp from "../components/Stamp";
 import RouteFinder from "../components/RouteFinder";
 import ManagedPlans from "../components/ManagedPlans";
-import { OFFER, COMBINED } from "../data/offers";
+import { OFFER, COMBINED, MANAGED_PLANS } from "../data/offers";
 import { breadcrumbs } from "../lib/schema";
-import { gbp } from "../lib/format";
+import { gbp, gbpRange, offerAmount } from "../lib/format";
 
 const SERVICES = [OFFER.built, OFFER.crm, OFFER.agency];
 
@@ -30,7 +31,7 @@ export default function Services() {
     <>
       <Seo
         title="Services — implementation, CRM, agency building and managed infrastructure"
-        description={`Built by Goodwork (${gbp(OFFER.built.price)}), the Embedded CRM (${gbp(OFFER.crm.price)}), the Agency programme (${gbp(OFFER.agency.price)}) and optional managed infrastructure from ${gbp(28)} per month. Scoped first, then built.`}
+        description={`Built by Goodwork (${gbp(OFFER.built.price)}), the Embedded CRM (${offerAmount(OFFER.crm)}), the Agency programme (${gbp(OFFER.agency.price)}) and optional managed infrastructure from ${gbp(MANAGED_PLANS[0].price)} per month. Scoped first, then built.`}
         schema={breadcrumbs(crumbs)}
       />
 
@@ -62,9 +63,7 @@ export default function Services() {
               <Reveal key={o.id} variant="rise" delay={i * 70} asChild>
                 <article className="gw-offer" aria-labelledby={`svc-${o.id}`}>
                   <div className="gw-offer__top">
-                    <span className="gw-card__mark" style={{ margin: 0 }} aria-hidden="true">
-                      {i + 1}
-                    </span>
+                    <OfferIcon id={o.id} className="gw-offer-icon--lg" />
                     {o.addon && <span className="gw-badge gw-badge--muted">Add-on or standalone</span>}
                   </div>
                   <div>
@@ -72,7 +71,7 @@ export default function Services() {
                       {o.name}
                     </h3>
                     <div className="gw-mt-2">
-                      <Price amount={o.price} billing="one-time" />
+                      <Price amount={o.price} to={o.priceTo} billing="one-time" />
                     </div>
                     {o.instalments && (
                       <p className="gw-offer__note gw-mt-1">
@@ -101,8 +100,8 @@ export default function Services() {
           <Reveal variant="rise" className="gw-mt-3">
             <div className="gw-card gw-card--flat" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
               <p className="gw-body">
-                <span className="gw-strong">{COMBINED.label}:</span> Built by Goodwork {gbp(OFFER.built.price)} + Embedded CRM {gbp(OFFER.crm.price)} ={" "}
-                <span className="gw-strong">{gbp(COMBINED.total)}</span> {COMBINED.note}.
+                <span className="gw-strong">{COMBINED.label}:</span> Built by Goodwork {gbp(OFFER.built.price)} + Embedded CRM {offerAmount(OFFER.crm)} ={" "}
+                <span className="gw-strong">{gbpRange(COMBINED.total, COMBINED.totalTo)}</span> {COMBINED.note}.
               </p>
               <Button to="/built-by-goodwork#enquire" variant="secondary" size="sm" arrow>
                 Start Your Build

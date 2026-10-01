@@ -1,8 +1,22 @@
 // =========================================================
-// Access keys — the interim entitlement store.
+// Access keys — entitlements without a database.
 //
-// Until there is a database, entitlements are the ACCESS_KEYS environment
-// variable: a comma-, semicolon- or newline-separated list of
+// Two kinds of key are honoured.
+//
+// Purchase keys are issued automatically once Stripe confirms a payment
+// (api/claim.js, api/stripe-webhook.js). They look like
+//
+//   gw-<lib|stu>-<16 hex id>-<22-character signature>
+//
+// The id is derived from the Checkout Session, so claiming the same purchase
+// twice gives the same key, never a second licence; the signature is
+// HMAC-SHA256 under ACCESS_SIGNING_SECRET, so a key is checked without being
+// stored anywhere. ACCESS_REVOKED lists ids no longer honoured (a refund, a
+// leaked key). Changing ACCESS_SIGNING_SECRET withdraws every purchase key at
+// once, so it is set once and left alone.
+//
+// Hand-issued keys are the ACCESS_KEYS environment variable: a comma-,
+// semicolon- or newline-separated list of
 //
 //   <product>:<key>[:<label>]
 //
@@ -13,8 +27,9 @@
 //
 // Rules this module keeps:
 //   - keys are compared in constant time, through SHA-256 digests;
-//   - keys never reach the browser as page data: the browser sends a key in,
-//     the server answers yes or no;
+//   - a key reaches the browser once, from api/claim.js, to the person whose
+//     payment Stripe has just confirmed; otherwise the browser sends a key in
+//     and the server answers yes or no;
 //   - the session cookie is HttpOnly, Secure, SameSite=Strict and scoped to
 //     /api, so page scripts never see it; a separate non-sensitive marker
 //     cookie only tells the app whether it is worth asking the server;
@@ -25,6 +40,10 @@
 // =========================================================
 
 export const PRODUCTS = new Set(["library", "studio"]);
+const CODES = { library: "lib", studio: "stu" };
+const FROM_CODE = { lib: "library", stu: "studio" };
+const SIGNED = /^gw-(lib|stu)-([0-9a-f]{16})-([A-Za-z0-9_-]{22})$/;
+const MIN_SECRET_LENGTH = 32;
 export const COOKIE = "gw_access";
 export const MARKER = "gw_signed_in";
 export const SESSION_DAYS = 30;
@@ -67,30 +86,85 @@ export function productsCovered(product) {
   return product === "studio" ? ["studio", "library"] : ["library"];
 }
 
+const b64url = (bytes) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+async function hmac(secret, text) {
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(text)));
+}
+
+const signature = async (secret, code, id) => b64url(await hmac(secret, `gw1:${code}:${id}`)).slice(0, 22);
+
+/** Whether any kind of key can be honoured on this deployment. */
+export const accessConfigured = () => Boolean(process.env.ACCESS_KEYS || process.env.ACCESS_SIGNING_SECRET);
+
+/** Ids (purchase key ids or hand-issued key ids) that are no longer honoured. */
+export function revokedIds(raw = process.env.ACCESS_REVOKED) {
+  return new Set(
+    String(raw || "")
+      .split(/[\s,;]+/)
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean),
+  );
+}
+
 /**
- * authorise(candidate, raw)
- *   -> { ok: false, reason: "unconfigured" | "missing" | "invalid" }
- *   -> { ok: true, keyId, label, product, products }
- *
- * Every configured key is compared, whichever one matches, so the time taken
- * does not say which entry a candidate resembled.
+ * The purchase key for a verified payment. Deterministic: the same purchase
+ * always yields the same key.
  */
-export async function authorise(candidate, raw = process.env.ACCESS_KEYS) {
-  if (!raw) return { ok: false, reason: "unconfigured" };
+export async function issueKey(product, purchaseId, secret = process.env.ACCESS_SIGNING_SECRET) {
+  if (!secret || secret.length < MIN_SECRET_LENGTH) throw new Error(`ACCESS_SIGNING_SECRET must be set to ${MIN_SECRET_LENGTH}+ random characters.`);
+  const code = CODES[product];
+  if (!code) throw new Error(`Unknown product "${product}".`);
+  if (!purchaseId) throw new Error("A purchase id is required.");
+  const id = hex(await sha256(`gw-purchase:${purchaseId}`)).slice(0, 16);
+  return `gw-${code}-${id}-${await signature(secret, code, id)}`;
+}
+
+async function checkPurchaseKey(candidate, secret) {
+  const m = SIGNED.exec(candidate);
+  if (!m || !secret || secret.length < MIN_SECRET_LENGTH) return null;
+  const [, code, id, sig] = m;
+  if (!(await sameKey(await signature(secret, code, id), sig))) return null;
+  return { product: FROM_CODE[code], id };
+}
+
+/**
+ * authorise(candidate, raw, secret)
+ *   -> { ok: false, reason: "unconfigured" | "missing" | "invalid" }
+ *   -> { ok: true, keyId, label, product, products, source }
+ *
+ * A purchase key is checked by its signature. Otherwise every hand-issued key
+ * is compared, whichever one matches, so the time taken does not say which
+ * entry a candidate resembled.
+ */
+export async function authorise(candidate, raw = process.env.ACCESS_KEYS, secret = process.env.ACCESS_SIGNING_SECRET) {
+  if (!raw && !secret) return { ok: false, reason: "unconfigured" };
   const key = typeof candidate === "string" ? candidate.trim() : "";
   if (!key) return { ok: false, reason: "missing" };
+  const revoked = revokedIds();
+
+  const purchase = await checkPurchaseKey(key, secret);
+  if (purchase) {
+    if (revoked.has(purchase.id)) return { ok: false, reason: "invalid" };
+    return { ok: true, keyId: purchase.id, label: null, product: purchase.product, products: productsCovered(purchase.product), source: "purchase" };
+  }
+
   let match = null;
   for (const entry of parseAccessKeys(raw)) {
     const same = await sameKey(entry.key, key);
     if (same && !match) match = entry;
   }
   if (!match) return { ok: false, reason: "invalid" };
+  const keyId = hex(await sha256(match.key)).slice(0, 12);
+  if (revoked.has(keyId)) return { ok: false, reason: "invalid" };
   return {
     ok: true,
-    keyId: hex(await sha256(match.key)).slice(0, 12),
+    keyId,
     label: match.label,
     product: match.product,
     products: productsCovered(match.product),
+    source: "access-key",
   };
 }
 
