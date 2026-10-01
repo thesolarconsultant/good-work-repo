@@ -6,7 +6,9 @@ handover"), preserved here as the source of truth for the website, the
 phone/WhatsApp assistants, the branded client emails and the content console.
 
 **How to read it.** Section 1 consolidates the main meeting and the latest owner
-follow-up. Section 2 is the latest owner follow-up reproduced verbatim. Where the
+follow-up. Section 2 is the latest owner follow-up reproduced verbatim. **Section 3
+(appended below) is reception's own answers, verbatim — received after the main
+handover, which had them still awaited.** Where the
 later follow-up corrects an earlier statement, the later answer governs and the
 history is kept. "Confirmed" means reported by the participants — not
 independently verified against settings, contracts, insurance, accreditation or
@@ -691,3 +693,155 @@ E9
 E10
 - No music styles have been specified as exclusions.
 End of supplied follow-up. Receptionist response still awaited.
+---
+
+## Section 3 — Receptionist answers (verbatim)
+
+*Received 1 October 2026, after the main handover above (which recorded the
+receptionist answers as still awaited). This completes B3–B9 from reception's
+side. Where it contradicts an earlier source, it is flagged in
+[`outstanding.md`](outstanding.md) — most importantly the booking-fee amount
+(reception says £1.20; the owner follow-up said £1.50).*
+
+B3 — PHONE BOOKINGS
+
+1. Opening:
+- "Good morning/afternoon, Beauty Heaven Hub, how can I help?"
+
+2. Initial client details:
+- "Could I take your name and contact number? If you are registered with us, I can get your account details up."
+- Then: "What can I help you with?"
+- If booking: "What would you like to book in for?"
+- Then: "What day/times are good for you?"
+- Reception cross-references the diary and provides availability.
+
+3. Details collected:
+- Name.
+- Contact number.
+- Email address.
+- No other details are collected before confirming the booking.
+
+4. Booking system/confirmation:
+- Bookings are entered directly into Phorest.
+- Phone bookings are added straight into the diary.
+- No deposits are taken over the phone.
+- The appointment is confirmed once it has been added to the diary.
+
+5. Receptionist permissions:
+- Every receptionist can book every treatment.
+
+6. Before ending the call:
+- Cancellation rules are explained.
+- Client is asked to complete their consultation form before the appointment.
+
+
+B4 — CONSULTATIONS
+
+- All treatments require a consultation form.
+- Not all treatments require a face-to-face consultation.
+- Consultation forms are checked via Phorest.
+- Face-to-face consultations are conducted by the relevant practitioner.
+- Face-to-face consultations are 15 minutes and free.
+- Any consultation fee charged is deducted from the treatment price.
+- First-time anti-wrinkle/Botox clients require a face-to-face consultation with Jessica.
+- Anti-wrinkle/Botox consultations must be booked by phone rather than online.
+- Slim Jab booking is itself a consultation, conducted by a nurse, 15 minutes, free and bookable online.
+
+
+B5 — PRACTITIONER QUESTIONS
+
+- Anti-wrinkle/Botox questions are passed to Jessica.
+- Questions about suitability, pregnancy, medication, medical history, risks and treatment recommendations are passed to Jessica or Hollie.
+- These enquiries can be passed to them by either phone or message.
+
+
+B6 / B16 — PATCH TESTS
+
+Required patch tests:
+- Tinting.
+- Hair colour.
+- LVL lashes.
+- Eyelash extensions.
+- Eyebrow lamination.
+- Laser requires a patch test for the first treatment.
+
+Repeat patch tests:
+- Tinting/hair colour/LVL/extensions/brow lamination: every 12 months.
+- A repeat patch test is also required after pregnancy.
+- No other repeat-test circumstances identified.
+
+Patch-test booking:
+- Patch tests are booked by phone.
+- Patch tests are overlapped with the booked treatment appointment.
+- Completion is recorded on the client card within Phorest.
+
+
+B6 / B16 — BOOKING FEES
+
+- All treatments require a booking fee.
+- Current booking fee: £1.20.
+- Taken using the client's pre-authorised stored card.
+- If the client fails to attend, the stored card is charged.
+- Phone bookings do not take the booking fee at the time of the call; the appointment is added directly to the diary.
+
+Consultation forms:
+- Clients are asked to complete their consultation form before the appointment.
+- If the form is still incomplete 48 hours before the appointment, the client can complete it on the day.
+
+
+B6 / B16 — LATENESS
+
+- Standard grace period: 10 minutes where another client is booked immediately afterwards.
+- If there is no appointment immediately afterwards, the team/practitioner is happy to extend the lateness allowance.
+- If the appointment has to be rebooked because of lateness:
+  - The original £1.20 booking fee is retained/charged.
+  - A new £1.20 booking fee is taken for the replacement appointment.
+
+
+B6 / B16 — AGE RESTRICTIONS
+
+Under-18 clients can currently book:
+- Brow waxing.
+- Nails.
+- Spray tanning.
+- Hair treatments.
+
+18+:
+- Sunbeds.
+- ID is checked for sunbed use.
+
+No other age restrictions or booking restrictions were identified as not being reflected in the diary.
+
+
+B6 / B16 — URGENT BOOKINGS
+
+- If the diary is full and an urgent booking request is received, Jessica or Hollie approve any exception.
+
+
+B9 — HANDOVER
+
+Medical questions:
+- Jessica or Hollie.
+
+Client complaints:
+- Jessica or Hollie.
+
+Urgent booking requests:
+- Jessica or Hollie.
+
+Other enquiries reception cannot resolve:
+- Jessica or Hollie.
+
+If Jessica or Hollie are unavailable:
+- A member of the team will make contact with the client when they become available.
+
+Anything else missed:
+- No.
+
+
+OUTSTANDING ITEMS
+
+- The exact method used to pass practitioner enquiries between reception and Jessica/Hollie was described as both phone and message, but the specific preferred channel was not defined.
+- The exact process for checking/recording the £1.20 booking fee against phone bookings may need confirmation from the live Phorest setup.
+- The exact ID type accepted for sunbeds was not specified beyond "ID".
+- No separate exceptions to the patch-test rules were identified.

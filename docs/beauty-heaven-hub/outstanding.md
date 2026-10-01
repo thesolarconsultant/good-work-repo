@@ -7,7 +7,8 @@ sending messages or switching on payments — the conflicts marked **blocks live
 behaviour** must be confirmed by Jess or Hollie before the booking flow, the
 assistants or the emails change.
 
-Last reviewed: 2026-10-01.
+Last reviewed: 2026-10-01 (updated with reception's B3–B9 answers, now in the
+discovery record as Section 3).
 
 ---
 
@@ -19,43 +20,55 @@ before the affected feature goes live.
 
 | # | Conflict | What we have | Needs | Impact |
 |---|----------|--------------|-------|--------|
-| C1 | **Deposit vs booking fee** | Site copy says "50% deposit"; meeting said £1.20 pre-auth; latest says £1.50 **currently taken and labelled a deposit**, with Jessica wanting it reconfigured as a **£1.50 booking fee on top** of the price. | Confirm the final amount, whether it is added or deducted, and refund/cancellation handling. Not yet configured. | **blocks live behaviour** + site copy is now wrong |
+| C1 | **Booking-fee amount — three sources disagree** | Meeting: **£1.20** pre-auth. Owner follow-up: **£1.50** currently taken, labelled a deposit, wants it reconfigured as a **£1.50 booking fee on top**. Reception (latest): **£1.20**, taken via the client's pre-authorised stored card, charged if they no-show. So the current mechanism is a card pre-auth, not a deducted deposit — but the amount is unresolved (£1.20 vs £1.50). | **One decision needed before anything is configured:** the exact amount, and whether it's added on top (owner's ask) or stays a pre-auth. Then confirm refund/no-show handling. | **blocks live behaviour**; site treatment-deposit copy still a to-confirm, so nothing wrong is published yet |
 | C2 | **Public hours vs Jessica's schedule** | Public close Tue/Thu 19:00; Jessica works an extra Tue/Thu 17:00–20:00 (finishes 20:00). | Confirm whether practitioners legitimately run past public closing, or this is a schedule mismatch. | blocks practitioner booking rules |
-| C3 | **Same-day bookings vs 48h forms** | Same-day bookings allowed; online forms expected 48h before. | How a same-day booking satisfies (or is exempt from) the 48h form rule. | blocks assistant/booking logic |
+| C3 | ~~**Same-day bookings vs 48h forms**~~ **RESOLVED (reception)** | All treatments need a consultation **form** (checked in Phorest), not all need a face-to-face. The form is asked for before the appointment; if still incomplete 48h before, the client can complete it **on the day**. So a same-day booking is fine — the form just gets done on the day. | Done — fold into assistant/booking copy when built. | resolved |
 | C4 | **"Late bookings on otherwise empty days"** | Jessica: treatments **over £85**; Hollie: **over £50**; ≥1h notice; assistant may confirm without asking. "Otherwise empty day" and "late" undefined; no rule authorises booking outside working hours. | Operational definition of "late" and "otherwise empty day". Note "over" means strictly over, not "at least". | blocks assistant auto-confirm rule |
 | C5 | **Reminder vs cancellation window** | Reminder 48h before (seven-day idea withdrawn); cancellation cutoff also 48h, full price inside it or for a no-show. | Confirm the reminder wording explains the 48h cancellation deadline clearly, and the timing relationship. | email/assistant copy |
 | C6 | **Review request "immediately" vs difficult-client exclusion** | Request immediately after the client leaves; owner wants difficult/inappropriate clients excluded ("if the client is a dick"). | Immediate automation can't apply a manual exclusion — confirm process, criteria, platform suitability. | review automation |
-| C7 | **`groups.json` consult flags vs latest rule** | Live site flags 10 categories as consult-first. Latest rule: only **first-time anti-wrinkle** needs a consult before booking (Jessica, 15 min, free, not online); fillers and SPMU need none; **Slim Jab booking is itself** a free online consult (nurse, 15 min). | Reconcile the live `data/groups.json` flags against the actual Phorest settings. | **blocks live behaviour** |
-| C8 | **Patch-test list vs current flags** | Live site flags 2 categories as patch. Latest list: **tinting, hair colour, LVL lashes, eyelash extensions, brow lamination**, 48h before; booked **by phone** (test is in person, not by phone). | Reconcile the patch flags; add brow lamination / hair colour / LVL if missing; set phone-booking route. | **blocks live behaviour** |
+| C7 | **`groups.json` consult flags vs the confirmed rule** | Live site flags 10 categories as consult-first. Confirmed rule (owner + reception): a consultation **form** applies to **all** treatments (checked in Phorest — not a booking blocker); a **face-to-face** consult is required before booking **only for first-time anti-wrinkle/Botox** (Jessica, 15 min, free, **phone-booked, not online**). Fillers and SPMU need no face-to-face. **Slim Jab booking is itself** a free online consult (nurse, 15 min). Any consult fee charged is deducted from the treatment. | Set `groups.json` so only first-time anti-wrinkle is phone/consult-first; drop the over-flagging on the rest. Ready to apply on your go. | **blocks live behaviour** (held) |
+| C8 | **Patch-test list vs current flags** | Live site flags 2 categories as patch. Confirmed full list (reception): **tinting, hair colour, LVL lashes, eyelash extensions, eyebrow lamination, and laser (first treatment only)**. Repeat **every 12 months**, and again **after pregnancy**. Booked **by phone**, **overlapped with the treatment appointment**; completion recorded on the client card in Phorest. | Set the patch flags to this list (incl. laser-first and hair colour); phone-booking route. Ready to apply on your go. | **blocks live behaviour** (held) |
 | C9 | **Contact & email** | Site email "TBC"; hours empty `[]`; phone 01992 511383. Latest: email **halo@beautyheavenhub.co** ("halo", not "hello"); hours Mon/Fri/Sat 09:30–17:00, Tue–Thu 09:30–19:00 (Sunday not stated). | Set the email, hours and confirm phone. Escalation number **+44 7424 219417** is the same number planned for the WhatsApp bot — resolve the clash. | site content + bot config |
 | C10 | **Payment options** | Earlier research mentioned Klarna; site copy had a "Klarna, finance, gift vouchers" TBC. Latest: **card, cash, gift vouchers** only. | Remove Klarna/finance from site copy. | site copy |
 | C11 | **Unevidenced claims** | Site may still carry "97% pass rate" and "award-winning". | Remove both; do not replace with a new numerical/universal pass claim ("all students pass anyway"). "Recognised by all major insurance companies" and "CPD accredited" are supplied claims, not validated — don't present as proven. | **blocks publish** of claims |
 | C12 | **B-TOX facial vs Microtox** | "B-TOX FACIAL" described as a "Botox facial"; a separate catalogue entry is **Microtox Facial** (£600). | Don't infer ingredients/claims or treat the two as equivalent. | menu/content accuracy |
 | C13 | **Academy balance deadline** | Older desk research: balance 7 days vs one month. Latest: **£100 deposit, balance two weeks before** in-person training; **£599 Access course paid in full** (fully online). | Use the latest rule; retire the 7-day/1-month figures. | Academy copy |
 | C14 | **"Foundation" vs "Beginners"** | Course list names "Beginners Dermal Filler" / "Beginners Anti-Wrinkle", but advanced courses list prerequisites as "Foundation Dermal Filler" / "Foundation Anti-Wrinkle". | Confirm these are the same course under two names; settle terminology; clarify what "Level 3" means in prerequisites. | Academy copy/prereqs |
-| C15 | **Sunbeds featured, no age rule** | Sunbeds to be featured (under-booked). Age rule for sunbeds **not supplied** (other 18+ rules are). | Supply the sunbed age rule before publishing a sunbed booking route. | blocks sunbed feature |
+| C15 | ~~**Sunbeds, no age rule**~~ **RESOLVED (reception)** | Sunbeds are **18+** and **ID is checked**. (Exact ID type accepted not specified — minor, see §C.) Under-18s can book brow waxing, nails, spray tanning and hair treatments. | Done — fold into the sunbed feature and age-check logic when built. | resolved |
 | C16 | **TikTok wanted, self-scheduled** | TikTok wanted; but Jessica manages IG/FB/scheduling herself and does **not** want Good Work scheduling access. | Confirm TikTok account/workflow; do not enable auto-publishing from approval-console scope. | content console scope |
 | C17 | **Trending music vs "own tracks" plan** | Latest: **trending music**, original branded tracks not required, no excluded styles. Guidelines section 13 and BRAND.md previously said "own music / to be chosen". | Guidelines amended 2026-10-01 (see below). Usage rights / platform availability for business accounts **not verified**. | content, rights unverified |
 | C18 | **SPMU cancellation / no-show** | Latest: SPMU no-show charged **in full**. | Confirm against the general 48h full-price rule and configure. | blocks live behaviour |
 
 ---
 
-## B. Awaiting the receptionist (keep open — do not fill with assumptions)
+## B. Receptionist answers — RECEIVED (now in the record, Section 3)
 
-- **B3** — caller questions and their order, client details captured, diary
-  entry/confirmation steps, and which receptionist can book which treatment
-  (don't assume every receptionist can book everything).
-- **B4** — practical consultation checks at the desk, and the existing
-  online-booking exclusions as actually applied.
-- **B5** — the medical/suitability escalation process at reception.
-- **B6 / B16** — patch-test repeat interval and other triggers; booking-fee /
-  deposit collection steps; what happens with incomplete forms; late-arrival
-  charge mechanics (is the original appointment also charged?); age/ID practice
-  including sunbeds; rules for bookings outside the diary; full-diary exception
-  handling.
-- **B9** — operational escalation contacts, backups, and out-of-hours follow-up
-  timing. No backup contact has been supplied for medical/suitability,
-  complaints or urgent bookings.
+Reception answered B3–B9 after the main handover. What this settled:
+
+- **B3** — phone-booking script and flow; details captured are **name, contact
+  number, email** only; bookings go straight into Phorest/the diary; **no
+  deposit taken over the phone**; confirmed once in the diary. **Every
+  receptionist can book every treatment** (earlier caution lifted). Cancellation
+  rules explained, and the client is asked to complete their consultation form,
+  before the call ends.
+- **B4** — **all treatments need a consultation form** (checked in Phorest);
+  not all need a **face-to-face**. Face-to-face: 15 min, free, by the relevant
+  practitioner; any fee is deducted. **First-time anti-wrinkle/Botox = face-to-
+  face with Jessica, phone-booked.** Slim Jab booking is itself a free online
+  nurse consult. (Feeds C7.)
+- **B5** — anti-wrinkle/Botox questions → Jessica; suitability / pregnancy /
+  medication / medical history / risks / recommendations → Jessica **or** Hollie;
+  passed by phone **or** message (preferred channel not fixed — see §C).
+- **B6 / B16** — patch tests (C8), booking fee (C1), lateness, age limits (C15)
+  and urgent bookings all answered. Lateness: 10-min grace when a client follows;
+  extended when the slot after is empty; on a lateness rebook the **original
+  £1.20 fee is kept and a new £1.20 fee is taken**. Urgent-when-full: Jessica or
+  Hollie approve the exception.
+- **B9** — medical / complaints / urgent / unresolved all → Jessica or Hollie;
+  if both unavailable, a team member contacts the client once they're free.
+  (Still no separate backup contact — see §C.)
+
+Small items reception left open are folded into §C.
 
 ---
 
@@ -73,6 +86,10 @@ before the affected feature goes live.
   some hair, lymphatic drainage, some lashes, two filler treatments.
 - Course **certificate / accreditation body evidence** (exact CPD body not
   named); exact certificate wording if required.
+- **From reception (small, non-blocking):** the preferred channel for passing
+  practitioner enquiries (phone vs message); confirmation of how the £1.20 fee is
+  recorded against phone bookings in the live Phorest set-up; and the exact ID
+  type accepted for sunbeds. (No patch-test exceptions beyond the list.)
 - **Team assets:** proper headshots, titles/bios, before-and-afters, Google
   reviews (permission given — "we can use all the reviews"), certificates.
   Personal information must never be shown; permission is via consent forms
@@ -139,6 +156,22 @@ before the affected feature goes live.
 - **Content:** weekly team photos to a shared folder (Jessica organises); Jessica
   approves daily and manages IG/FB and scheduling herself; TikTok wanted;
   trending music; never show personal information.
+- **Reception / phone booking (confirmed 1 Oct):** every receptionist can book
+  every treatment; phone bookings go straight into the Phorest diary with **no
+  fee taken on the call**; details captured are name, contact number and email;
+  the call ends with the cancellation rules and a nudge to complete the
+  consultation form.
+- **Consultation form:** required for all treatments, checked in Phorest; if not
+  done by 48h before, it can be completed on the day.
+- **Lateness:** 10-minute grace when a client follows; extended when the slot
+  after is empty; a lateness rebook keeps the original £1.20 fee **and** takes a
+  new £1.20 fee.
+- **Age:** under-18s can book brow waxing, nails, spray tanning and hair; sunbeds
+  18+ with ID checked (ID type unspecified); SPMU, intimate waxing, Botox,
+  fillers, aesthetics and laser remain 18+ with ID.
+- **Urgent-when-full & escalation:** Jessica or Hollie approve full-diary
+  exceptions and take medical/complaints/unresolved; if both are unavailable, a
+  team member follows up when they're free (no separate backup).
 
 ---
 
