@@ -5,4 +5,4 @@ Disallow: /login
 Disallow: /pitch
 Disallow: /api/
 
-Sitemap: https://goodwork.agency/sitemap.xml
+Sitemap: https://goodworkagency.uk/sitemap.xml

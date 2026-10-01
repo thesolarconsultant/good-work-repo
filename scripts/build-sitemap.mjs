@@ -13,7 +13,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const site = (process.env.VITE_SITE_URL || "https://goodwork.agency").replace(/\/$/, "");
+const site = (process.env.VITE_SITE_URL || "https://goodworkagency.uk").replace(/\/$/, "");
 
 const STATIC = [
   ["/", "1.0", "weekly"],

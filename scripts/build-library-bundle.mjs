@@ -21,7 +21,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const out = join(root, "dist-library");
 const name = bundleName(LIBRARY_VERSION);
 const dir = join(out, name);
-const siteUrl = (process.env.SITE_URL || "https://goodwork.agency").replace(/\/$/, "");
+const siteUrl = (process.env.SITE_URL || "https://goodworkagency.uk").replace(/\/$/, "");
 
 const files = bundleFiles({ items: ITEMS, version: LIBRARY_VERSION, updated: LIBRARY_UPDATED, categoryNames: CATEGORY_NAMES, siteUrl });
 
