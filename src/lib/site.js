@@ -1,6 +1,6 @@
 // Canonical origin for canonical URLs, Open Graph tags and JSON-LD.
 // Override at build time if the site ever moves: VITE_SITE_URL=https://…
-export const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://goodwork.agency").replace(/\/$/, "");
+export const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://goodworkagency.uk").replace(/\/$/, "");
 
 export const SITE_NAME = "Goodwork";
 export const WORDMARK = "GOOD WORK.";
