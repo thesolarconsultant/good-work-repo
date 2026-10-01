@@ -2,6 +2,20 @@
 
 One page that pulls together everything decided in this session. The detail sits in the linked files.
 
+> **Update — 1 Oct 2026.** The owner discovery handover is now filed as the source
+> of truth: [`discovery-2026-10-01.md`](discovery-2026-10-01.md). The open
+> questions, the conflicts, and what still blocks live behaviour are tracked in
+> [`outstanding.md`](outstanding.md). This handover does **not** authorise
+> deployment, live-setting changes, sending messages or switching on payments.
+> Key confirmed corrections since the figures below were written: Hoddesdon
+> (EN11 8FN), not Barnsley; email **halo@beautyheavenhub.co**; payments **card,
+> cash, gift vouchers** (no Klarna/finance); **48-hour** reminder and cancellation
+> window; consult required for **first-time anti-wrinkle only** (plus Slim Jab
+> booking = a free consult); **£25** prescription fee (deducted); the online
+> charge is a **£1.50** deposit today, to be reconfigured as a £1.50 booking fee
+> on top; **20** Academy courses; **trending music**, not own tracks; drop the
+> "97% pass rate" and "award-winning" claims.
+
 ## 1. What we are building (signed: £2,800 build, £398 a month)
 - **Website, one site with two sides:** "I want a treatment" (browse and book through Phorest links; anything not bookable online goes to
   WhatsApp) and "I want to learn" (courses, and "ask about this course" opens WhatsApp with a message ready). Phone and a short form for

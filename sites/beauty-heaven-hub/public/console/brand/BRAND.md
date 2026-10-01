@@ -362,8 +362,9 @@ pull-backs, nobody walking in, dissolves between rooms. The website hero is
 full width at the top of the homepage, silent and looping, the gold wordmark
 over the lower third, portrait on a phone, with a pause button.
 
-**Music.** One house sound across every reel: a small set of the salon's own
-tracks, owned outright, not platform library music. To be chosen.
+**Music.** Trending sounds, chosen per post to ride what's moving on the feed —
+the owner's call (1 Oct 2026). Original branded tracks aren't wanted. No styles
+ruled out. Usage rights for business accounts still to be checked.
 
 **Email.** Four templates: **Signature** (the all-rounder), **Ivory** (reads
 expensive rather than busy), **Evening** (espresso; launches and intakes) and
