@@ -2,10 +2,10 @@
 // Proposal acceptance — server-side record
 //
 // A signature that nobody recorded is decoration. This is the bit that turns
-// "she typed her name on a webpage" into something you could actually show
+// "the client typed a name on a webpage" into something you could actually show
 // someone: who signed, what they were looking at when they did, and when.
 //
-// The page sends a hash of the proposal text as rendered in her browser. That
+// The page sends a hash of the proposal text as rendered in the client's browser. That
 // is the part that matters in a disagreement — not the signature, which only
 // proves somebody typed a name, but the hash, which pins the signature to one
 // exact version of one exact document. Change a price afterwards and the hash
@@ -24,7 +24,7 @@
 //
 // Unconfigured returns 503, deliberately. Showing a client "accepted, thank
 // you" while the acceptance went nowhere is the worst outcome available here:
-// she believes she has a contract and you do not know she signed.
+// the client believes there is a contract and you do not know they signed.
 // =========================================================
 
 // Generous next to enquiry.js because a drawn signature is a PNG data URL.
@@ -182,14 +182,14 @@ export default async function handler(request) {
     title: clean(body.documentTitle, 200) || "Proposal",
     version: clean(body.documentVersion, 60),
     // Computed in the browser over the rendered text. Recorded, never trusted:
-    // it is evidence of what she saw, not an assertion this server can check.
+    // it is evidence of what the client saw, not an assertion this server can check.
     hash: clean(body.documentHash, 128),
     url: clean(body.documentUrl, 500),
   };
 
   // Held as a preference, not a commitment. The monthly is agreed in
   // conversation before anything starts running, and the wording on the page
-  // says so — so recording it as "chosen" would misrepresent what she did.
+  // says so — so recording it as "chosen" would misrepresent what the client did.
   const monthlyPreference = clean(body.monthlyPreference, 120);
 
   const acceptedAt = new Date().toISOString();

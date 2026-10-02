@@ -1,7 +1,7 @@
 // Drawn botanicals for a client brand — olive sprigs, flowering stems, vines.
 //
 //   node scripts/build-brand-botanicals.mjs <brand-slug>
-//   e.g. npm run brand:botanicals -- beauty-heaven-hub
+//   e.g. npm run brand:botanicals -- your-brand
 //
 // Writes SVGs into public/goodwork/brands/<slug>/botanicals/, one file per
 // sprig, plus a paste-ready inline copy of each in inline.html.
@@ -136,7 +136,7 @@ const SET = {
   // Climbs the left edge of the scroll story, one leaf per beat.
   "olive-tall": sprig({ seed: 12, w: 170, h: 900, from: [104, 892], to: [66, 34], sway: 46,
     leaves: 16, leafLen: 52, fat: 0.3, first: 0.05, last: 0.99, jitter: 0.35 }),
-  // Beside the treatments heading: shorter, fuller, with three blooms.
+  // Beside a services heading: shorter, fuller, with three blooms.
   "flower-stem": sprig({ seed: 7, w: 190, h: 420, from: [104, 412], to: [72, 22], sway: 34,
     leaves: 8, leafLen: 40, fat: 0.4, blooms: 3, bloomRadius: 17, first: 0.08, last: 0.78 }),
   // Arcs over the closing band's logo.

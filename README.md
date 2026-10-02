@@ -80,7 +80,7 @@ library-src/            Component source of truth (moved out of public/)
 server/                 Shared by api/ and scripts: products and prices, access keys, the bundle builder,
                         generated/ (the catalogue with code, committed)
 public/library/items/   One JSON per component, fetched lazily for previews
-public/goodwork/        Client brand deliverables and the engine (starter, motion)
+public/goodwork/        The engine (starter, motion), the invoice template, and brands/<slug>/ for brand folders
 docs/BACKEND.md         How purchase, access and downloads work, and how to switch payments on
 ```
 

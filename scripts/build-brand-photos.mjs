@@ -1,7 +1,7 @@
 // Responsive photography for a client brand folder.
 //
 //   node scripts/build-brand-photos.mjs <brand-slug>
-//   e.g. npm run brand:photos -- beauty-heaven-hub
+//   e.g. npm run brand:photos -- your-brand
 //
 // Reads every image in public/goodwork/brands/<slug>/photos/ and writes WebP
 // copies into photos/derived/ at 480, 800 and 1200 wide, plus one at the
