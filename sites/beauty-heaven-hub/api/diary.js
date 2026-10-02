@@ -13,13 +13,12 @@ import { loadMenu, phorest } from "./_booking.js";
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
-// Minutes-since-midnight from an appointment time, in the branch's wall clock.
-function mins(iso) {
-  if (!iso) return null;
-  const m = String(iso).match(/T(\d{2}):(\d{2})/);
-  if (m) return (+m[1]) * 60 + (+m[2]);
-  const d = new Date(iso);
-  return isNaN(d) ? null : d.getHours() * 60 + d.getMinutes();
+// Minutes-since-midnight from a Phorest appointment time. Phorest sends these
+// time-only ("16:00:00.000"); also handle a full ISO just in case ("...T16:00").
+function mins(t) {
+  if (!t) return null;
+  const m = String(t).match(/(?:T|^)(\d{2}):(\d{2})/);
+  return m ? (+m[1]) * 60 + (+m[2]) : null;
 }
 const hhmm = (n) => `${String(Math.floor(n / 60)).padStart(2, "0")}:${String(n % 60).padStart(2, "0")}`;
 
@@ -59,10 +58,10 @@ export async function GET(request) {
     open = Math.min(open, startMin);
     close = Math.max(close, endMin);
     rows.push({
-      id: a.appointmentId || a.id || `${a.staffMemberId || a.staffId}-${startMin}`,
-      staffId: a.staffMemberId || a.staffId || "",
+      id: a.appointmentId || a.id || `${a.staffId}-${startMin}`,
+      staffId: a.staffId || a.staffMemberId || "",
       startMin, endMin, start: hhmm(startMin),
-      service: s?.name || "Appointment",
+      service: a.serviceName || s?.name || "Appointment",
     });
   }
 
@@ -79,9 +78,8 @@ export async function GET(request) {
 
   // Diagnostic: field names and counts only, no client data. Remove once mapped.
   console.log("diary debug:", JSON.stringify({
-    date, branchId: data.branchId, raw: appts.length, mapped: rows.length, staff: staff.length,
-    keys: appts[0] ? Object.keys(appts[0]) : [],
-    sampleTimes: appts[0] ? { startTime: appts[0].startTime, endTime: appts[0].endTime, staff: appts[0].staffMemberId || appts[0].staffId } : null,
+    date, raw: appts.length, mapped: rows.length, staffCols: staff.length,
+    staffNames: staff.map((s) => s.name),
   }));
 
   return json({ date, open, close, staff, appts: rows });
