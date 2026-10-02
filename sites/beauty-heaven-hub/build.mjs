@@ -852,4 +852,43 @@ console.log(`Menu from ${menuSource}.`);
 // at a glance whether the Twenty link is wired.
 try { const { crmStatus } = await import("./api/_crm.js"); console.log(`CRM (Twenty): ${await crmStatus()}`); } catch (e) { console.log(`CRM (Twenty): check skipped (${e?.message || e})`); }
 try { const { emailStatus } = await import("./api/_email.js"); console.log(`Email (Resend): ${emailStatus()}`); } catch (e) { console.log(`Email (Resend): check skipped (${e?.message || e})`); }
+// TEMP: read-only Phorest capability probe — logs endpoint status + shape only,
+// never any records. Tells us which resources this account exposes. Remove after.
+try {
+  const { PHOREST_USERNAME: u, PHOREST_PASSWORD: p, PHOREST_BUSINESS_ID: biz } = process.env;
+  if (u && p && biz) {
+    const PB = "https://platform.phorest.com/third-party-api-server/api/business";
+    const auth = "Basic " + Buffer.from(`${u}:${p}`).toString("base64");
+    const hit = async (pth) => {
+      try {
+        const r = await fetch(`${PB}/${biz}${pth}`, { headers: { Authorization: auth, Accept: "application/json" } });
+        if (!r.ok) return `${r.status}`;
+        const b = await r.json().catch(() => ({}));
+        const emb = b._embedded ? Object.keys(b._embedded).join(",") : "";
+        return `200 total=${b.page?.totalElements ?? ""} embedded=[${emb}] keys=[${Object.keys(b).join(",")}]`;
+      } catch (e) { return `ERR ${e.message}`; }
+    };
+    const br = await (await fetch(`${PB}/${biz}/branch`, { headers: { Authorization: auth, Accept: "application/json" } })).json().catch(() => ({}));
+    const b = br?._embedded?.branches?.[0]?.branchId;
+    const today = new Date().toISOString().slice(0, 10);
+    for (const pth of [
+      `/branch/${b}/client?size=1`,
+      `/branch/${b}/service-category?size=1`,
+      `/branch/${b}/product?size=1`,
+      `/branch/${b}/purchase?size=1`,
+      `/branch/${b}/transaction?size=1`,
+      `/branch/${b}/voucher?size=1`,
+      `/branch/${b}/gift-card?size=1`,
+      `/branch/${b}/course?size=1`,
+      `/branch/${b}/package?size=1`,
+      `/branch/${b}/roster?size=1`,
+      `/branch/${b}/staff-member?size=1`,
+      `/branch/${b}/appointment?from_date=${today}&to_date=${today}&size=1`,
+      `/branch/${b}/booking?size=1`,
+      `/branch/${b}/consultation?size=1`,
+      `/branch/${b}/product-category?size=1`,
+      `/webhook`,
+    ]) console.log(`PROBE ${pth.replace(`/branch/${b}`, "")} -> ${await hit(pth)}`);
+  }
+} catch (e) { console.log("PROBE error:", e.message); }
 console.log(`Built ${pages.length} pages. ${listed} treatments listed, ${courses.length} courses. ${lines.length} items still to confirm.`);
