@@ -1,0 +1,66 @@
+/* =========================================================
+   The hero scene (components/HeroScene.jsx): the product
+   screens in a perspective world around a glowing centre,
+   the spokes and pulses drawn on a canvas beneath them, and
+   the travelling tags in a flat layer above.
+
+   Sizes are in container units of the scene, so it scales
+   with whatever column it is put in.
+   ========================================================= */
+
+.gw-hscene { position: relative; width: 100%; aspect-ratio: 1.02; container-type: inline-size; perspective: 1600px; }
+
+.gw-hscene::before {
+  content: ""; position: absolute; inset: 6%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(122, 92, 255, 0.34), rgba(255, 45, 179, 0.12) 55%, transparent 76%);
+  filter: blur(30px);
+}
+.gw-hscene__grid {
+  position: absolute; inset: -6%; pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 5cqw 5cqw; background-position: center;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0, transparent 68%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0, transparent 68%);
+}
+.gw-hscene__links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.gw-hscene__world { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+
+/* The screens. */
+.gw-hscene__panel { position: absolute; left: 50%; top: 50%; width: calc(var(--w) * 100cqw); opacity: 0; will-change: transform, opacity; }
+.gw-hscene__card > .gw-mock > * { box-shadow: 0 2.4cqw 5cqw rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.1); transition: box-shadow 0.35s ease; }
+.gw-hscene__panel.is-hit .gw-hscene__card > .gw-mock > * { box-shadow: 0 0 0 0.25cqw #fff, 0 0 3.2cqw rgba(255, 45, 179, 0.65), 0 2.4cqw 5cqw rgba(0, 0, 0, 0.55); }
+.gw-hscene__badge { position: absolute; z-index: 2; bottom: calc(100% + 0.9cqw); left: 0; width: 4.2cqw; height: 4.2cqw; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 0.8cqw 1.6cqw rgba(0, 0, 0, 0.45); }
+
+/* The centre: a lit orb inside turning rings. */
+.gw-hscene__core { position: absolute; left: 50%; top: 50%; width: 14cqw; height: 14cqw; transform: translate(-50%, -50%) translateZ(0); }
+.gw-hscene__orb {
+  position: absolute; inset: 25%; border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff 0, #ddd2ff 7%, #8f74ff 28%, #3366ff 52%, #ff2db3 78%, #2a0f2a 100%);
+  box-shadow: 0 0 5cqw rgba(122, 92, 255, 0.7), 0 0 1.6cqw rgba(255, 45, 179, 0.7);
+  animation: gw-hs-breathe 4s ease-in-out infinite;
+}
+.gw-hscene__ring { position: absolute; inset: 9%; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, 0.38); animation: gw-hs-spin 22s linear infinite; }
+.gw-hscene__ring--arc { inset: 16%; border: 0.35cqw solid transparent; border-top-color: rgba(255, 45, 179, 0.9); border-right-color: rgba(51, 102, 255, 0.8); animation-duration: 5s; animation-direction: reverse; }
+.gw-hscene__ring--ticks {
+  inset: -10%; border: 0.6cqw solid rgba(255, 255, 255, 0.16); animation-duration: 60s;
+  -webkit-mask: repeating-conic-gradient(#000 0 1.5deg, transparent 1.5deg 9deg);
+  mask: repeating-conic-gradient(#000 0 1.5deg, transparent 1.5deg 9deg);
+}
+.gw-hscene__label { position: absolute; left: 50%; top: 100%; transform: translate(-50%, 1.2cqw); font-size: max(9px, 1.3cqw); font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62); white-space: nowrap; }
+@keyframes gw-hs-spin { to { transform: rotate(1turn); } }
+@keyframes gw-hs-breathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.06); filter: brightness(1.15); } }
+
+/* The tags that travel between the parts. */
+.gw-hscene__chips { position: absolute; inset: 0; pointer-events: none; }
+.gw-hscene__chip {
+  position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 0.6em;
+  padding: 0.55em 0.95em; border-radius: 999px; background: rgba(17, 17, 20, 0.92); border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff; font-size: max(10px, 1.75cqw); font-weight: 600; letter-spacing: -0.01em; white-space: nowrap;
+  box-shadow: 0 0.6em 1.6em rgba(0, 0, 0, 0.45); opacity: 0; will-change: transform, opacity;
+}
+.gw-hscene__chip i { flex: none; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--gw-gradient); box-shadow: 0 0 0.8em rgba(255, 45, 179, 0.8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-hscene__ring, .gw-hscene__orb { animation: none; }
+  .gw-hscene__chips { display: none; }
+}

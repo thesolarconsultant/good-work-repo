@@ -1,10 +1,10 @@
 /* =========================================================
-   Product mock-ups (components/Mockups.jsx) and the hero deck
-   (components/ProductDeck.jsx).
+   Product mock-ups (components/Mockups.jsx), used in the hero
+   scene (components/HeroScene.jsx), the Studio bento and the phones.
 
    Every mock is a size container. Everything inside is measured in
    em off one font-size set in container units, so a mock is the same
-   drawing at any width: the hero deck, a bento tile, a phone.
+   drawing at any width: the hero scene, a bento tile, a phone.
    ========================================================= */
 
 .gw-mock { container-type: inline-size; width: 100%; color: #111; font-family: var(--gw-font); }
@@ -106,23 +106,6 @@
 .mf__steps small { color: #777; font-size: 0.85em; }
 .mf__steps li.is-last { border-color: transparent; background: linear-gradient(#fff, #fff) padding-box, linear-gradient(90deg, #3366ff, #7a5cff, #ff2db3, #ff6b5e) border-box; border: 0.14em solid transparent; }
 
-/* =========================================================
-   Hero deck: four mocks in a cascading stack, each with its
-   round product icon. Positions are percentages of the deck.
-   ========================================================= */
-.gw-pdeck { position: relative; container-type: inline-size; aspect-ratio: 1.22; perspective: 2200px; }
-.gw-pdeck__panel { position: absolute; transform: rotateY(-11deg) rotateX(2deg); transform-origin: 0 50%; }
-.gw-pdeck__lift { position: relative; filter: drop-shadow(0 2cqw 2.6cqw rgba(17, 17, 17, 0.15)) drop-shadow(0 0.25cqw 0.5cqw rgba(17, 17, 17, 0.08)); animation: gw-pdeck-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both, gw-pdeck-float 8s ease-in-out 1s infinite; animation-delay: calc(var(--i) * 0.12s), calc(1s + var(--i) * -2s); }
-.gw-pdeck__badge { position: absolute; z-index: 2; width: 9cqw; height: 9cqw; top: -3.8cqw; box-shadow: 0 0.6cqw 1.6cqw rgba(17, 17, 17, 0.22); }
-.gw-pdeck__panel--site { left: 2%; top: 9%; width: 62%; z-index: 1; }
-.gw-pdeck__panel--site .gw-pdeck__badge { left: -5.6cqw; top: -5cqw; }
-.gw-pdeck__panel--chat { left: 43%; top: 38%; width: 28%; z-index: 3; }
-.gw-pdeck__panel--call { left: 69%; top: 57%; width: 20%; z-index: 4; }
-.gw-pdeck__panel--console { left: 72%; top: 14%; width: 27%; z-index: 2; }
-.gw-pdeck__panel--chat .gw-pdeck__badge, .gw-pdeck__panel--call .gw-pdeck__badge, .gw-pdeck__panel--console .gw-pdeck__badge { right: -2.6cqw; }
-@keyframes gw-pdeck-in { from { opacity: 0; transform: translateY(6cqw); } to { opacity: 1; transform: none; } }
-@keyframes gw-pdeck-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.1cqw; } }
-
 @media (prefers-reduced-motion: reduce) {
-  .gw-pdeck__lift, .mv__wave span { animation: none !important; }
+  .mv__wave span { animation: none !important; }
 }

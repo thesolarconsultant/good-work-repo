@@ -8,7 +8,7 @@ import Marquee from "../components/Marquee";
 import Reveal from "../components/Reveal";
 import SectionHead from "../components/SectionHead";
 import OfferLadder, { CrmBand } from "../components/OfferLadder";
-import ProductDeck from "../components/ProductDeck";
+import HeroScene from "../components/HeroScene";
 import PathChoice from "../components/PathChoice";
 import StudioBento from "../components/StudioBento";
 import ServicePosters from "../components/ServicePosters";
@@ -59,7 +59,7 @@ export default function Home() {
           </div>
         </div>
         <div className="gw-hero2__stage">
-          <ProductDeck />
+          <HeroScene />
         </div>
       </header>
 
