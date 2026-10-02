@@ -6,8 +6,9 @@ import { MANAGED_PLANS, CRM_RUNNING, COACHING, FAIR_USE, SELF_HOST_NOTE } from "
 import { gbp } from "../lib/format";
 
 /**
- * The four monthly plans side by side, then what sits around them: the CRM
- * add-on, the coaching programme (priced to scope, so no figure) and the
+ * The four monthly plans, two to a row, each listing everything it includes in
+ * full (never "everything in" another plan), then what sits around them: the
+ * CRM add-on, the coaching programme (priced to scope, so no figure) and the
  * credit statement.
  */
 export default function ManagedPlans({ cta = true }) {
@@ -26,11 +27,18 @@ export default function ManagedPlans({ cta = true }) {
                 <p className="gw-plan__for">{p.for}</p>
               </div>
               <Price amount={p.price} billing="monthly" />
-              <ul className="gw-list gw-list--tight">
-                {p.includes.map((x) => (
-                  <li key={x}>{x}</li>
+              <div className="gw-plan__groups">
+                {p.groups.map((g) => (
+                  <div key={g.title} className="gw-plan__group">
+                    <p className="gw-plan__group-title">{g.title}</p>
+                    <ul className="gw-list gw-list--tight">
+                      {g.items.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
               {cta && (
                 <div style={{ marginTop: "auto", paddingTop: "0.5rem" }}>
                   <Button to={`/contact?topic=managed&plan=${p.id}`} variant="secondary" size="sm" block>

@@ -72,7 +72,7 @@ function recommend(answers) {
     if (answers.who !== "us") {
       offers.push(
         systems
-          ? { offer: OFFER.studio, why: "You want the systems as well as the site: Studio adds the WhatsApp bot, voice agent, Content Console and brand system to everything in the Library." }
+          ? { offer: OFFER.studio, why: "You want the systems as well as the site: Studio is every component and template, plus the WhatsApp bot, voice agent, Content Console and brand system." }
           : { offer: OFFER.library, why: "A website you build yourself from production-ready sections and templates." },
       );
     }

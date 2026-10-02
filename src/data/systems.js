@@ -3,6 +3,13 @@
 // none quotes a result Goodwork has not measured.
 
 import { gbp } from "../lib/format";
+import { MANAGED_PLANS } from "./offers";
+
+/** Which monthly plan first runs a system for the client, with its price. */
+const runFrom = (planId, what) => {
+  const plan = MANAGED_PLANS.find((p) => p.id === planId);
+  return `Run for you${what ? `, ${what},` : ""} from ${gbp(plan.price)} per month, on the ${plan.name} plan.`;
+};
 
 export const SYSTEMS = [
   {
@@ -25,7 +32,7 @@ export const SYSTEMS = [
       "Somewhere to host the console (your own, or a managed plan)",
       "A repository or file store for the content it writes",
     ],
-    managed: `Hosted Content Console is included from the ${gbp(88)} per month plan.`,
+    managed: runFrom("console"),
     ctas: [
       { label: "Get Goodwork Studio — £888", to: "/studio#access" },
       { label: "Have Goodwork install it", to: "/built-by-goodwork", variant: "outline" },
@@ -52,7 +59,7 @@ export const SYSTEMS = [
       "A messaging provider (conversation charges billed to you)",
       "Hosting for the flow runtime, or a managed plan",
     ],
-    managed: `One managed WhatsApp bot is included from the ${gbp(188)} per month plan.`,
+    managed: runFrom("complete", "with chatbot credit"),
     ctas: [
       { label: "Get Goodwork Studio — £888", to: "/studio#access" },
       { label: "Have Goodwork configure one flow", to: "/built-by-goodwork", variant: "outline" },
@@ -79,7 +86,7 @@ export const SYSTEMS = [
       "A voice and model provider (usage billed to you)",
       "Hosting for the agent runtime, or a managed plan",
     ],
-    managed: `One managed voice agent is included from the ${gbp(188)} per month plan; both agents from ${gbp(398)} per month.`,
+    managed: runFrom("complete", "with voice-agent credit"),
     ctas: [
       { label: "Get Goodwork Studio — £888", to: "/studio#access" },
       { label: "Have Goodwork configure one flow", to: "/built-by-goodwork", variant: "outline" },

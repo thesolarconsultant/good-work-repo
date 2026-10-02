@@ -98,7 +98,7 @@ export default function Services() {
               <p className="gw-body gw-max gw-mt-2">{OFFER.built.summary}</p>
             </Reveal>
             <ul className="gw-features-detail gw-mt-4">
-              {OFFER.built.includes.slice(1, 9).map((x, i) => (
+              {OFFER.built.includes.slice(0, 8).map((x, i) => (
                 <Reveal key={x} variant="rise" delay={Math.min(i * 60, 280)} asChild>
                   <li>{x}</li>
                 </Reveal>

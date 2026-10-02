@@ -69,7 +69,7 @@ export default function Dashboard() {
 
                   {has && o.id === "studio" && (
                     <div className="gw-mt-3">
-                      <p className="gw-small gw-body">Studio includes everything in the Library: use the Library download on the left.</p>
+                      <p className="gw-small gw-body">Your components, sections and templates are in the Library download on the left.</p>
                       {session.pending.map((note) => (
                         <div key={note} className="gw-notice gw-notice--info gw-mt-2">
                           <strong>Still to ship</strong>
