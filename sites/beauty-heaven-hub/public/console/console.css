@@ -493,3 +493,17 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .tag--src-treatment { background: #E4EDE5; color: #3F6B48; }
 .tag--src-bot { background: #E6ECF2; color: #3F567A; }
 .muted { color: var(--muted-ink); }
+
+/* ─────────────────────────────────────────────── diary (Phorest-style) ─── */
+.diarywrap { overflow-x: auto; }
+.diary { display: grid; grid-template-columns: 54px minmax(0, 1fr); min-width: 520px; }
+.diary__colhd { height: 38px; display: flex; align-items: center; justify-content: center; font-size: .78rem; color: var(--bh-espresso); border-bottom: 1px solid var(--line); background: var(--bh-ivory-2); position: sticky; top: 0; z-index: 1; }
+.diary__axis .diary__colhd { color: var(--muted-ink); }
+.diary__axislane { position: relative; }
+.diary__hr { position: absolute; left: 0; transform: translateY(-50%); font-size: .68rem; color: var(--muted-ink); font-variant-numeric: tabular-nums; }
+.diary__cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(132px, 1fr); }
+.diary__col { border-left: 1px solid var(--line); min-width: 0; }
+.diary__col .diary__colhd { font-weight: 400; }
+.diary__lane { position: relative; background-image: repeating-linear-gradient(var(--line) 0 1px, transparent 1px 54px); }
+.appt { position: absolute; left: 3px; right: 3px; background: rgba(201,166,92,.16); border-left: 3px solid var(--bh-gold); border-radius: 6px; padding: 2px 6px; font-size: .72rem; color: var(--bh-espresso); overflow: hidden; line-height: 1.3; }
+.appt b { font-weight: 500; margin-right: .2em; }

@@ -28,6 +28,7 @@
     <nav class="rail__nav" aria-label="Sections">
       <button data-view="home" class="on"><i></i>Home</button>
       <button data-view="crm"><i></i>CRM</button>
+      <button data-view="diary"><i></i>Diary</button>
       <button data-view="week"><i></i>This week</button>
       <button data-view="dashboard"><i></i>Dashboard</button>
       <button data-view="campaign"><i></i>Write something</button>
@@ -93,6 +94,24 @@
   </header>
   <p class="note lede">Everyone who's booked or been in touch. Held in Twenty, shown here in the brand. <span class="saved" id="crmCount"></span></p>
   <div id="crmList" class="crmlist"><p class="empty">Loading…</p></div>
+</section>
+
+<!-- ═══ DIARY ═══════════════════════════════════════════════════════ -->
+<section class="view" data-view="diary">
+  <header class="head">
+    <div>
+      <p class="eyebrow">Diary</p>
+      <h1 class="h1">The day's schedule</h1>
+    </div>
+    <div class="row">
+      <button class="btn btn--tiny" id="diPrev" aria-label="Previous day">‹</button>
+      <button class="btn btn--tiny" id="diToday">Today</button>
+      <button class="btn btn--tiny" id="diNext" aria-label="Next day">›</button>
+      <span class="saved" id="diDate"></span>
+    </div>
+  </header>
+  <p class="note lede">Live from Phorest. A read-only view for now — Phorest stays the booking system of record.</p>
+  <div id="diGrid" class="diarywrap"><p class="empty">Loading…</p></div>
 </section>
 
 <section class="view" data-view="week">

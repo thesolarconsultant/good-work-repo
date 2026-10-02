@@ -1040,9 +1040,54 @@ async function renderCrm() {
   }
 }
 
+/* ----------------------------------------------------------------- DIARY --- */
+/* The day's Phorest schedule, laid out by practitioner and time. Read-only. */
+const DIARY_PXMIN = 0.9;              // 60 min = 54px (matches the lane gridlines)
+let diaryDate = new Date().toISOString().slice(0, 10);
+const two = (n) => String(n).padStart(2, "0");
+const minToHHMM = (n) => `${two(Math.floor(n / 60))}:${two(n % 60)}`;
+function shiftDate(iso, days) {
+  const [y, m, d] = iso.split("-").map(Number);
+  const dt = new Date(y, m - 1, d + days);
+  return `${dt.getFullYear()}-${two(dt.getMonth() + 1)}-${two(dt.getDate())}`;
+}
+function prettyDate(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+}
+async function renderDiary() {
+  const grid = $("#diGrid"); if (!grid) return;
+  const dateEl = $("#diDate"); if (dateEl) dateEl.textContent = prettyDate(diaryDate);
+  const prev = $("#diPrev"), today = $("#diToday"), next = $("#diNext");
+  if (prev) prev.onclick = () => { diaryDate = shiftDate(diaryDate, -1); renderDiary(); };
+  if (next) next.onclick = () => { diaryDate = shiftDate(diaryDate, 1); renderDiary(); };
+  if (today) today.onclick = () => { diaryDate = new Date().toISOString().slice(0, 10); renderDiary(); };
+  grid.innerHTML = '<p class="empty">Loading…</p>';
+  try {
+    const d = await (await fetch(`/api/diary?date=${diaryDate}`, { cache: "no-cache" })).json();
+    if (d.error) throw new Error(d.message || d.error);
+    if (!d.staff || !d.staff.length) { grid.innerHTML = '<p class="empty">Nothing booked this day.</p>'; return; }
+    const H = (d.close - d.open) * DIARY_PXMIN;
+    const axisRows = [];
+    for (let m = d.open; m <= d.close; m += 60) axisRows.push(`<div class="diary__hr" style="top:${(m - d.open) * DIARY_PXMIN}px">${minToHHMM(m)}</div>`);
+    const cols = d.staff.map((st) => {
+      const blocks = d.appts.filter((a) => a.staffId === st.id).map((a) => {
+        const top = (a.startMin - d.open) * DIARY_PXMIN;
+        const h = Math.max((a.endMin - a.startMin) * DIARY_PXMIN, 15);
+        return `<div class="appt" style="top:${top}px;height:${h}px"><b>${esc(a.start)}</b> ${esc(a.service)}</div>`;
+      }).join("");
+      return `<div class="diary__col"><div class="diary__colhd">${esc(st.name)}</div><div class="diary__lane" style="height:${H}px">${blocks}</div></div>`;
+    }).join("");
+    grid.innerHTML = `<div class="diary"><div class="diary__axis"><div class="diary__colhd"></div><div class="diary__axislane" style="height:${H}px">${axisRows.join("")}</div></div><div class="diary__cols">${cols}</div></div>`;
+  } catch (e) {
+    grid.innerHTML = `<p class="empty">Couldn't load the diary (${esc(e.message)}).</p>`;
+  }
+}
+
 const VIEWS = {
   home: renderHome,
   crm: renderCrm,
+  diary: renderDiary,
   week: renderWeek,
   dashboard: renderDashboard,
   campaign: renderPieces,

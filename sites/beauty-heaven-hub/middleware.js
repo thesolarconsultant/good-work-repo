@@ -14,6 +14,7 @@ export const config = {
     "/api/console-week", "/api/console-week/:path*",
     "/api/send-email", "/api/send-email/:path*",
     "/api/crm-leads", "/api/crm-leads/:path*",
+    "/api/diary", "/api/diary/:path*",
   ],
 };
 
