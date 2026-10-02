@@ -6,7 +6,7 @@ import SectionHead from "../components/SectionHead";
 import Reveal from "../components/Reveal";
 import Button from "../components/Button";
 import Price from "../components/Price";
-import OfferLadder from "../components/OfferLadder";
+import OfferLadder, { CrmBand } from "../components/OfferLadder";
 import ComparisonTable from "../components/ComparisonTable";
 import ManagedPlans from "../components/ManagedPlans";
 import FaqList from "../components/FaqList";
@@ -44,13 +44,14 @@ export default function Pricing() {
         </div>
       </PageHeader>
 
-      <section className="gw-section--tight" aria-labelledby="ladder-title">
+      <section className="gw-section--tight gw-section--flush" aria-labelledby="ladder-title">
         <div className="gw-container">
           <h2 className="gw-sr-only" id="ladder-title">
             The offers
           </h2>
           <OfferLadder />
         </div>
+        <CrmBand />
       </section>
 
       <section className="gw-section" id="compare" aria-labelledby="compare-title">

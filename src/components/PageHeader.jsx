@@ -1,27 +1,18 @@
 import { Link } from "react-router-dom";
 import Headline from "./Headline";
 import Reveal from "./Reveal";
-import ShaderField from "./ShaderField";
 import { withDot } from "../lib/withDot";
 
 /**
- * The header block every inner page opens with, in the original site's style:
- * a soft four-colour aurora behind (plus the live WebGL field when `shader`
- * is set), breadcrumbs, a pulsing eyebrow, the headline with its coral full
- * stop, a lead and actions. `aside` renders on the right on wide screens.
+ * The header block every inner page opens with: white, with a faint dot grid
+ * that fades out, breadcrumbs, a pulsing eyebrow, the headline with its coral
+ * full stop, a lead and actions. `aside` renders on the right on wide screens.
  */
-export default function PageHeader({ crumbs, eyebrow, title, lines, lead, children, aside, shader = false, className = "" }) {
+export default function PageHeader({ crumbs, eyebrow, title, lines, lead, children, aside, className = "" }) {
   const all = lines || [title];
   const shown = all.map((l, i) => (i === all.length - 1 ? withDot(l) : l));
   return (
-    <header className={`gw-pagehead gw-aurora-host ${className}`.trim()}>
-      <div className="gw-aurora" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
-      {shader && <ShaderField />}
+    <header className={`gw-pagehead gw-pagehead--clean ${className}`.trim()}>
       <div className="gw-container">
         {crumbs && (
           <nav aria-label="Breadcrumb">

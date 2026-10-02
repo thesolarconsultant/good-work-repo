@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import PageHeader from "../components/PageHeader";
 import SectionHead from "../components/SectionHead";
 import Reveal from "../components/Reveal";
 import Button from "../components/Button";
-import Price from "../components/Price";
-import OfferIcon from "../components/OfferIcon";
+import ServicePosters from "../components/ServicePosters";
 import Display from "../components/Display";
 import Stamp from "../components/Stamp";
 import RouteFinder from "../components/RouteFinder";
@@ -13,8 +11,6 @@ import ManagedPlans from "../components/ManagedPlans";
 import { OFFER, COMBINED, MANAGED_PLANS } from "../data/offers";
 import { breadcrumbs } from "../lib/schema";
 import { gbp, gbpRange, offerAmount } from "../lib/format";
-
-const SERVICES = [OFFER.built, OFFER.crm, OFFER.agency];
 
 // How every service runs: the original site's four words, with what each
 // step means for the services Goodwork sells now.
@@ -36,7 +32,6 @@ export default function Services() {
       />
 
       <PageHeader
-        shader
         crumbs={crumbs}
         eyebrow="Services · we build it with you"
         lines={["I want the outcome,", "not the assembly."]}
@@ -58,44 +53,8 @@ export default function Services() {
       <section className="gw-section" aria-labelledby="services-title">
         <div className="gw-container">
           <SectionHead eyebrow="The services" title={<span id="services-title">Three ways Goodwork builds it with you.</span>} />
-          <div className="gw-grid gw-grid--3 gw-mt-4">
-            {SERVICES.map((o, i) => (
-              <Reveal key={o.id} variant="rise" delay={i * 70} asChild>
-                <article className="gw-offer" aria-labelledby={`svc-${o.id}`}>
-                  <div className="gw-offer__top">
-                    <OfferIcon id={o.id} className="gw-offer-icon--lg" />
-                    {o.addon && <span className="gw-badge gw-badge--muted">Add-on or standalone</span>}
-                  </div>
-                  <div>
-                    <h3 className="gw-offer__name" id={`svc-${o.id}`}>
-                      {o.name}
-                    </h3>
-                    <div className="gw-mt-2">
-                      <Price amount={o.price} to={o.priceTo} billing="one-time" />
-                    </div>
-                    {o.instalments && (
-                      <p className="gw-offer__note gw-mt-1">
-                        or {o.instalments.count} payments of {gbp(o.instalments.amount)}, {o.instalments.note}
-                      </p>
-                    )}
-                  </div>
-                  <p className="gw-offer__copy">{o.outcome}</p>
-                  <ul className="gw-list gw-list--tight">
-                    {o.includes.slice(0, 4).map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                  <div className="gw-offer__foot">
-                    <Button to={o.primaryCta.to} variant={i === 0 ? "primary" : "secondary"} arrow>
-                      {o.primaryCta.label}
-                    </Button>
-                    <Link to={o.route} className="gw-small gw-link">
-                      Scope, inclusions and exclusions
-                    </Link>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
+          <div className="gw-mt-4">
+            <ServicePosters timeline={false} />
           </div>
           <Reveal variant="rise" className="gw-mt-3">
             <div className="gw-card gw-card--flat" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>

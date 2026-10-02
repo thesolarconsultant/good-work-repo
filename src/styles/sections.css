@@ -1,0 +1,202 @@
+/* =========================================================
+   The product-led sections: the split hero, the offer
+   staircase and CRM band, the Studio bento, the service
+   posters and timeline, the plan highlights, the showcase
+   panels, the statement strip and the closing type.
+
+   White ground, near-black ink, light grey panels, the brand
+   gradient used for one thing at a time.
+   ========================================================= */
+
+:root {
+  --gw-panel: #f4f4f6;
+  --gw-edge: max(var(--gw-gutter), calc((100vw - var(--gw-container)) / 2));
+  --gw-gradient-steps: linear-gradient(90deg, #3366ff 0 25%, #7a5cff 25% 50%, #ff2db3 50% 75%, #ff6b5e 75% 100%);
+}
+
+.gw-section--flush { padding-bottom: 0 !important; }
+
+/* --- Split hero ---------------------------------------------------- */
+.gw-hero2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: clamp(560px, calc(100svh - 120px), 820px); background: #fff; }
+.gw-hero2__lead { display: flex; align-items: center; background: #111; color: #fff; padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem) var(--gw-edge); }
+.gw-hero2__inner { max-width: 36rem; }
+.gw-hero2__title { font-size: clamp(2.6rem, 4.9vw, 5rem); font-weight: 800; letter-spacing: -0.048em; line-height: 0.98; color: #fff; }
+.gw-hero2__title span { display: block; }
+.gw-hero2__rule { display: block; width: min(100%, 26rem); height: 4px; margin-top: clamp(1.5rem, 3vw, 2.25rem); border-radius: 2px; background: var(--gw-gradient); }
+.gw-hero2__sub { margin-top: 1.4rem; max-width: 28rem; font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
+.gw-hero2__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 2rem; }
+.gw-hero2__alt { font-size: 0.95rem; color: rgba(255, 255, 255, 0.78); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.35); text-underline-offset: 0.3em; }
+.gw-hero2__alt:hover { color: #fff; }
+.gw-hero2__stage { display: flex; align-items: center; overflow: hidden; padding: clamp(2.5rem, 4vw, 3.5rem) clamp(1rem, 2vw, 2rem) clamp(2.5rem, 4vw, 3.5rem) clamp(2.25rem, 3.5vw, 3.25rem); }
+.gw-hero2__stage .gw-pdeck { width: 100%; }
+@media (max-width: 980px) {
+  .gw-hero2 { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .gw-hero2__lead { padding: clamp(2.75rem, 9vw, 4rem) var(--gw-gutter); }
+  .gw-hero2__stage { padding: 2.75rem var(--gw-gutter) 2.25rem calc(var(--gw-gutter) + 0.75rem); }
+}
+
+/* --- Offer staircase ----------------------------------------------- */
+.gw-stairs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(0.75rem, 1.6vw, 1.5rem); align-items: end; }
+.gw-stair { position: relative; display: flex; flex-direction: column; min-height: calc(18.5rem + var(--i, 0) * 3.25rem); padding: clamp(1.25rem, 2vw, 1.75rem); background: #fff; border: 1.5px solid #111; border-bottom: 0; border-radius: 22px 22px 0 0; }
+.gw-stair--featured { box-shadow: 0 -18px 40px -24px rgba(122, 92, 255, 0.45); }
+.gw-stair__name { margin-top: 1.1rem; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+.gw-stair__price { margin-top: 0.35rem; font-size: clamp(1.7rem, 2.6vw, 2.5rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1.05; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gw-stair__who { margin-top: 0.55rem; font-size: 0.98rem; color: var(--gw-text-2); }
+.gw-stair__tag { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.5rem; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gw-mark, #c0267f); }
+.gw-stair__tag::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--gw-gradient); }
+.gw-stair__note { margin-top: 0.4rem; font-size: 0.8rem; color: var(--gw-text-3); }
+.gw-stair__foot { display: grid; gap: 0.6rem; margin-top: auto; padding-top: 1.5rem; }
+.gw-stair__foot .gw-btn { white-space: normal; text-align: center; }
+@media (max-width: 960px) {
+  .gw-stairs { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .gw-stair { min-height: 0; border-bottom: 1.5px solid #111; border-radius: 20px; }
+}
+@media (max-width: 560px) { .gw-stairs { grid-template-columns: minmax(0, 1fr); } }
+
+/* The band under the staircase: four colour steps, then black. */
+.gw-crmband__rule { height: 8px; background: var(--gw-gradient-steps); }
+.gw-crmband__body { background: #111; color: #fff; padding-block: clamp(1.75rem, 3.5vw, 2.5rem); }
+.gw-crmband__row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 1.75rem; }
+.gw-crmband__text { flex: 1 1 22rem; font-size: clamp(1.25rem, 2.6vw, 2.1rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; }
+.gw-crmband__text small { display: block; margin-top: 0.4rem; font-size: 0.95rem; font-weight: 400; letter-spacing: 0; color: rgba(255, 255, 255, 0.7); }
+@media (max-width: 960px) { .gw-crmband__rule { margin-top: clamp(1.5rem, 4vw, 2.5rem); } }
+
+/* --- Studio bento ---------------------------------------------------- */
+.gw-bento { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto; gap: 1rem; }
+.gw-bento__tile { position: relative; display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; padding: clamp(1.1rem, 2vw, 1.5rem); border-radius: 22px; background: #1b1b1e; border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; transition: border-color 0.2s ease, transform 0.3s var(--gw-ease-out, ease); }
+.gw-bento__tile:hover { border-color: rgba(255, 255, 255, 0.24); transform: translateY(-2px); }
+.gw-bento__tile--whatsapp-bot { grid-row: span 2; background: linear-gradient(#1b1b1e, #1b1b1e) padding-box, linear-gradient(160deg, #3366ff, #7a5cff, #ff2db3, #ff6b5e) border-box; border: 1.5px solid transparent; }
+.gw-bento__head { display: flex; gap: 0.9rem; align-items: flex-start; }
+.gw-bento__head b { display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+.gw-bento__head small { display: block; margin-top: 0.25rem; font-size: 0.86rem; line-height: 1.45; color: rgba(255, 255, 255, 0.66); }
+.gw-bento__stage { display: flex; align-items: flex-end; justify-content: center; margin-top: auto; }
+.gw-bento__stage > .gw-mock { width: min(100%, 22rem); }
+.gw-bento__tile--whatsapp-bot .gw-bento__stage { margin-block: auto; }
+.gw-bento__tile--voice-agent .gw-bento__stage > .gw-mock { width: min(100%, 15rem); }
+.gw-bento__phone { width: min(78%, 17rem); }
+.gw-bento__tile--voice-agent .mv { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); }
+.gw-bento__go { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.7); }
+.gw-bento__tile:hover .gw-bento__go { color: #fff; }
+@media (max-width: 960px) {
+  .gw-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gw-bento__tile--whatsapp-bot { grid-row: span 1; grid-column: 1 / -1; }
+}
+@media (max-width: 600px) { .gw-bento { grid-template-columns: minmax(0, 1fr); } }
+
+/* --- Service posters and the timeline ------------------------------ */
+.gw-posters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.75rem, 1.6vw, 1.25rem); }
+.gw-poster { display: flex; flex-direction: column; gap: 0.9rem; min-width: 0; padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: 24px; border: 1.5px solid #111; background: #fff; color: #111; }
+.gw-poster--ink { background: #111; color: #fff; border-color: #111; }
+.gw-poster--edge { background: linear-gradient(#fff, #fff) padding-box, var(--gw-gradient) border-box; border: 3px solid transparent; }
+.gw-poster .gw-offer-icon { width: 4rem; height: 4rem; }
+.gw-poster--ink .gw-offer-icon { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28); }
+.gw-poster__name { margin-top: 0.5rem; font-size: clamp(1.4rem, 2.2vw, 1.85rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.08; }
+.gw-poster__price { font-size: clamp(1.6rem, 2.6vw, 2.3rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; }
+.gw-poster__price small { display: block; margin-top: 0.4rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.66; }
+.gw-poster__line { font-size: 1rem; line-height: 1.5; opacity: 0.86; }
+.gw-poster__foot { display: grid; gap: 0.7rem; margin-top: auto; padding-top: 0.75rem; }
+.gw-poster__foot .gw-btn { white-space: normal; text-align: center; }
+.gw-poster__more { font-size: 0.86rem; text-decoration: underline; text-underline-offset: 0.25em; opacity: 0.75; }
+.gw-poster__more:hover { opacity: 1; }
+@media (max-width: 960px) { .gw-posters { grid-template-columns: minmax(0, 1fr); } }
+
+.gw-timeline { list-style: none; margin: clamp(1.5rem, 3vw, 2.25rem) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; counter-reset: gw-tl; }
+.gw-timeline li { position: relative; padding-top: 1.6rem; counter-increment: gw-tl; }
+.gw-timeline li::before { content: ""; position: absolute; left: 0; right: -1rem; top: 0.45rem; height: 2px; background: #e4e4e8; }
+.gw-timeline li:last-child::before { right: 0; }
+.gw-timeline li::after { content: ""; position: absolute; left: 0; top: 0; width: 1.05rem; height: 1.05rem; border-radius: 50%; background: #111; box-shadow: 0 0 0 4px #fff; }
+.gw-timeline li:last-child::after { background: var(--gw-gradient); }
+.gw-timeline b { display: block; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
+.gw-timeline b::before { content: counter(gw-tl, decimal-leading-zero) "  "; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: var(--gw-text-3); white-space: pre; }
+.gw-timeline span { display: block; margin-top: 0.35rem; font-size: 0.9rem; line-height: 1.5; color: var(--gw-text-2); }
+@media (max-width: 760px) {
+  .gw-timeline { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-left: 1.75rem; }
+  .gw-timeline li { padding-top: 0; }
+  .gw-timeline li::before { left: -1.25rem; right: auto; top: 0.6rem; bottom: -1.25rem; width: 2px; height: auto; }
+  .gw-timeline li:last-child::before { display: none; }
+  .gw-timeline li::after { left: -1.75rem; top: 0.15rem; }
+}
+
+/* --- Plans: the featured plan, the bands, price discs on phones ---- */
+.gw-plan--featured { background: linear-gradient(var(--gw-bg-2), var(--gw-bg-2)) padding-box, var(--gw-gradient) border-box; border: 2px solid transparent; }
+.gw-light .gw-plan--featured { background: linear-gradient(var(--gw-light-card), var(--gw-light-card)) padding-box, var(--gw-gradient) border-box; border-color: transparent; }
+.gw-plan__tag { display: inline-block; margin-left: 0.5rem; padding: 0.18rem 0.55rem; border-radius: 999px; background: #111; color: #fff; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; vertical-align: 0.2em; }
+.gw-plan-bands { display: grid; gap: 0.75rem; }
+.gw-plan-band { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.25rem; padding: 1rem clamp(1rem, 2vw, 1.4rem); border-radius: 16px; background: var(--gw-panel); }
+.gw-plan-band__text { flex: 1 1 18rem; font-size: 0.98rem; line-height: 1.45; }
+.gw-plan-band__text b { font-weight: 700; }
+.gw-plan-band__text span { color: var(--gw-text-2); }
+.gw-plan-band .gw-btn { white-space: normal; }
+@media (max-width: 600px) {
+  .gw-plan { display: grid; grid-template-columns: 5rem minmax(0, 1fr); column-gap: 1rem; row-gap: 0.75rem; align-items: center; }
+  .gw-plan > div:first-child { grid-column: 2; grid-row: 1; }
+  .gw-plan > div:first-child .gw-offer-icon { display: none; }
+  .gw-plan > div:first-child .gw-plan__name { margin-top: 0; }
+  .gw-plan > .gw-price { grid-column: 1; grid-row: 1; display: grid; place-content: center; justify-items: center; gap: 0.15rem; width: 5rem; height: 5rem; border-radius: 50%; background: #111; text-align: center; }
+  .gw-plan > .gw-price .gw-price__amount { color: #fff; font-size: 1.3rem; }
+  .gw-plan > .gw-price .gw-price__term { color: rgba(255, 255, 255, 0.7); font-size: 0.5rem; letter-spacing: 0.1em; }
+  .gw-plan > ul, .gw-plan > div:last-child { grid-column: 1 / -1; }
+}
+
+/* --- Showcase panels ------------------------------------------------- */
+.gw-showcase-head { text-align: center; }
+.gw-showcase-head .gw-h2 { font-size: clamp(2.2rem, 5.6vw, 4.4rem); }
+.gw-showpanels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.75rem, 1.8vw, 1.5rem); }
+.gw-showpanel { display: block; min-width: 0; color: inherit; }
+.gw-showpanel__name, .gw-showpanel__caption, .gw-laptop, .gw-laptop__screen, .gw-laptop__base { display: block; }
+.gw-showpanel__stage { display: grid; place-items: center; aspect-ratio: 1.12; padding: clamp(1rem, 3vw, 2rem); border-radius: 22px; background: var(--gw-panel); overflow: hidden; transition: background 0.3s ease; }
+.gw-showpanel:hover .gw-showpanel__stage { background: #ececf0; }
+/* A device photograph fills the panel: its studio grey is the panel. */
+.gw-showpanel__stage--photo { display: block; padding: 0; background: #efeff1; }
+.gw-showpanel__stage--photo picture, .gw-showpanel__stage--photo img { display: block; width: 100%; height: 100%; }
+.gw-showpanel__stage--photo img { object-fit: cover; transition: transform 0.6s var(--gw-ease-out, ease); }
+.gw-showpanel:hover .gw-showpanel__stage--photo img { transform: scale(1.035); }
+@media (prefers-reduced-motion: reduce) { .gw-showpanel:hover .gw-showpanel__stage--photo img { transform: none; } }
+.gw-showpanel__name { margin-top: 1rem; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+.gw-showpanel__caption { margin-top: 0.3rem; font-size: clamp(0.95rem, 1.3vw, 1.15rem); color: var(--gw-text-2); }
+@media (max-width: 860px) { .gw-showpanels { grid-template-columns: minmax(0, 1fr); } .gw-showpanel__stage { aspect-ratio: 1.35; } }
+
+/* Device frames, drawn in CSS around a real screenshot. */
+.gw-laptop { width: 100%; }
+.gw-laptop__screen { position: relative; padding: 2.2% 2.2% 2.6%; border-radius: 14px 14px 0 0; background: #121214; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.gw-laptop__screen::before { content: ""; position: absolute; top: 0; left: 50%; width: 12%; height: 2.6%; transform: translateX(-50%); border-radius: 0 0 6px 6px; background: #121214; z-index: 1; }
+.gw-laptop__screen img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; border-radius: 3px; }
+.gw-laptop__base { position: relative; height: clamp(8px, 1.6vw, 14px); margin-inline: -7%; border-radius: 0 0 14px 14px; background: linear-gradient(#d9dade, #b9bbc1 70%, #a3a5ab); box-shadow: 0 14px 22px -12px rgba(17, 17, 17, 0.45); }
+.gw-laptop__base::before { content: ""; position: absolute; left: 50%; top: 0; width: 16%; height: 40%; transform: translateX(-50%); border-radius: 0 0 8px 8px; background: #9a9ca2; }
+
+/* The photographed phone, cut out with a clear screen, around live markup
+   (components/PhoneFrame.jsx). The geometry comes from scripts/build-devices.mjs. */
+.gw-pframe { position: relative; container-type: inline-size; aspect-ratio: var(--pf-ratio); filter: drop-shadow(0 26px 34px rgba(17, 17, 17, 0.28)); }
+.gw-pframe__screen { position: absolute; left: var(--pf-left); top: var(--pf-top); width: var(--pf-width); height: var(--pf-height); z-index: 0; border-radius: var(--pf-radius); overflow: hidden; background: #fff; }
+.gw-pframe__body { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; user-select: none; }
+/* The chat mock, full screen: under the camera island, messages down by the input. */
+.gw-pframe .gw-mock--chat { height: 100%; }
+.gw-pframe .mc { height: 100%; border-radius: 0; font-size: 5.4cqw; }
+.gw-pframe .mc__head { padding-top: 3.3em; }
+.gw-pframe .mc__thread { flex: 1; align-content: end; }
+.gw-pframe .mc__input { margin-bottom: 1.7em; }
+
+/* --- Statement strip -------------------------------------------------- */
+.gw-statement { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.25em 0.9em; margin: 0; padding: 0; list-style: none; font-size: clamp(2.1rem, 6.4vw, 5.6rem); font-weight: 800; letter-spacing: -0.05em; line-height: 1.02; text-align: center; }
+.gw-statement li { white-space: nowrap; }
+@media (max-width: 640px) { .gw-statement { flex-direction: column; align-items: center; } .gw-statement li { white-space: normal; } }
+
+/* --- Closing type ------------------------------------------------------ */
+.gw-bigclose { position: relative; overflow: hidden; background-image: radial-gradient(rgba(17, 17, 17, 0.09) 1px, transparent 1.2px); background-size: 22px 22px; }
+.gw-bigclose__row { position: relative; }
+.gw-bigclose__stamp { position: absolute; right: 0; top: 0; }
+.gw-bigclose__title { font-size: clamp(3rem, 9.2vw, 8.6rem); font-weight: 800; letter-spacing: -0.06em; line-height: 0.92; }
+.gw-bigclose__title .gw-dot { width: 0.24em; height: 0.24em; }
+.gw-bigclose__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; margin-top: clamp(2rem, 4vw, 3rem); padding-top: clamp(1.25rem, 2.5vw, 1.75rem); border-top: 1px solid var(--gw-line); }
+.gw-bigclose__foot p { max-width: 34rem; font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.5; color: var(--gw-text-2); }
+.gw-bigclose__how { display: block; margin-top: 0.4rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gw-text-3); }
+@media (max-width: 900px) { .gw-bigclose__stamp { position: static; margin-top: 1.5rem; } }
+
+/* --- Calmer page headers: white, with a dot grid that fades out ------ */
+.gw-pagehead--clean { position: relative; background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1.2px); background-size: 22px 22px; -webkit-mask-image: none; }
+.gw-pagehead--clean::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 92%); }
+.gw-pagehead--clean > .gw-container { position: relative; z-index: 1; }
+
+/* --- Welcome: the confirmed tick and a gradient-edged key ------------- */
+.gw-tick { display: block; width: 3.25rem; height: 3.25rem; }
+.gw-keybox--grad { background: linear-gradient(#fafafa, #fafafa) padding-box, var(--gw-gradient) border-box; border: 2px solid transparent; }

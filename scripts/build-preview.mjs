@@ -49,8 +49,11 @@ let js = escapeUnicode(readFileSync(join(dist, 'assets', jsName), 'utf8'), (hex)
 // The 2160px source JPEGs are skipped deliberately: this build sets
 // VITE_HASH_ROUTER, which makes <Shot> render the WebP derivative instead, so
 // the originals only survive in the bundle as image-manifest keys. Inlining
-// them would add megabytes of base64 that nothing ever displays.
+// them would add megabytes of base64 that nothing ever displays. The device
+// photographs' source JPEGs are skipped for the same reason; the phone frame
+// beside them is drawn directly, so it stays in.
 const SKIP_DIRS = new Set(['assets', 'case-studies', 'console']);
+const SKIP_FILES = /^\/devices\/[^/]+\.jpg$/;
 
 const walk = (dir, prefix) => {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -61,7 +64,7 @@ const walk = (dir, prefix) => {
       continue;
     }
     const ext = entry.name.split('.').pop().toLowerCase();
-    if (!mime[ext] || !js.includes(ref)) continue;
+    if (!mime[ext] || SKIP_FILES.test(ref) || !js.includes(ref)) continue;
     js = js.split(ref).join(dataUri(path));
   }
 };

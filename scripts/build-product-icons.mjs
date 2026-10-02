@@ -27,7 +27,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const out = resolve(process.argv[2] || join(root, "dist-icons"));
 mkdirSync(out, { recursive: true });
 
-// Every icon, named as the product is named on the site.
+// Every product's icon, named as the product is named on the site. The Studio
+// system glyphs in the same file are drawn for the site only, not for Stripe.
 const names = {
   ...Object.fromEntries(Object.values(OFFER).map((o) => [o.id, o.name])),
   ...Object.fromEntries(MANAGED_PLANS.map((p) => [p.id, p.name])),
@@ -35,7 +36,9 @@ const names = {
   "crm-running": CRM_RUNNING.name,
 };
 const slug = (s) => s.toLowerCase().replace(/\+/g, " ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-const items = Object.keys(ICONS).map((id, i) => ({ id, name: names[id] || id, file: `${String(i + 1).padStart(2, "0")}-${slug(names[id] || id)}` }));
+const items = Object.keys(ICONS)
+  .filter((id) => names[id])
+  .map((id, i) => ({ id, name: names[id] || id, file: `${String(i + 1).padStart(2, "0")}-${slug(names[id] || id)}` }));
 
 const html = `<!doctype html><html><head><style>
   body { margin: 0; background: #fff; font: 600 15px/1.3 system-ui, sans-serif; color: #111; }

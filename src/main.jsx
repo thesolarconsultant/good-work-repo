@@ -14,6 +14,8 @@ import "./styles/motion.css";
 import "./styles/flow.css";
 import "./styles/deck.css";
 import "./styles/phoneStory.css";
+import "./styles/mock.css";
+import "./styles/sections.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

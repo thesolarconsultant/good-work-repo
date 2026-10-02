@@ -16,11 +16,12 @@ export default function ManagedPlans({ cta = true }) {
       <div className="gw-plans">
         {MANAGED_PLANS.map((p, i) => (
           <Reveal key={p.id} variant="rise" delay={i * 60} asChild>
-            <article className="gw-plan" aria-labelledby={`plan-${p.id}`}>
+            <article className={`gw-plan${p.featured ? " gw-plan--featured" : ""}`} aria-labelledby={`plan-${p.id}`}>
               <div>
                 <OfferIcon id={p.id} />
                 <h3 className="gw-plan__name gw-mt-2" id={`plan-${p.id}`}>
                   {p.name}
+                  {p.tag && <span className="gw-plan__tag">{p.tag}</span>}
                 </h3>
                 <p className="gw-plan__for">{p.for}</p>
               </div>
@@ -42,33 +43,28 @@ export default function ManagedPlans({ cta = true }) {
         ))}
       </div>
       <Reveal variant="rise" className="gw-mt-3">
-        <div className="gw-plan-extras">
-          <div className="gw-plan-extra">
+        <div className="gw-plan-bands">
+          <div className="gw-plan-band">
             <OfferIcon id={CRM_RUNNING.id} />
-            <div>
-              <p className="gw-plan__name">Running your CRM too?</p>
-              <p className="gw-plan__for gw-mt-1">
-                Add {gbp(CRM_RUNNING.price)} per month to any plan and Goodwork runs the Embedded CRM as well.
-              </p>
-            </div>
+            <p className="gw-plan-band__text">
+              <b>Running your CRM too?</b> <span>Add {gbp(CRM_RUNNING.price)} per month to any plan and Goodwork runs the Embedded CRM as well.</span>
+            </p>
           </div>
-          <div className="gw-plan-extra">
+          <div className="gw-plan-band">
             <OfferIcon id={COACHING.id} />
-            <div>
-              <p className="gw-plan__name">
-                {COACHING.name} <span className="gw-plan__scope">· {COACHING.priceNote}</span>
-              </p>
-              <p className="gw-plan__for gw-mt-1">
+            <p className="gw-plan-band__text">
+              <b>
+                {COACHING.name}: {COACHING.priceNote.toLowerCase()}.
+              </b>{" "}
+              <span>
                 {COACHING.for} {COACHING.scope}
-              </p>
-              {cta && (
-                <div className="gw-mt-2">
-                  <Button to={`/contact?topic=managed&plan=${COACHING.id}`} variant="secondary" size="sm" arrow>
-                    Talk to us about coaching
-                  </Button>
-                </div>
-              )}
-            </div>
+              </span>
+            </p>
+            {cta && (
+              <Button to={`/contact?topic=managed&plan=${COACHING.id}`} variant="secondary" size="sm" arrow>
+                Talk to us about coaching
+              </Button>
+            )}
           </div>
         </div>
       </Reveal>

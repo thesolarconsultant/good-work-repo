@@ -12,35 +12,12 @@
 }
 .gw-phonestory__intro { max-width: 460px; }
 
-.gw-phonestory__phone {
-  --phone-w: 300px;
-  --phone-h: 610px;
-  width: var(--phone-w);
-  height: var(--phone-h);
-  border-radius: 42px;
-  background: #0b0b0c;
-  padding: 14px;
-  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.14) inset;
-  position: relative;
-  flex: none;
-}
-.gw-phonestory__notch {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 22px;
-  background: #0b0b0c;
-  border-radius: 0 0 16px 16px;
-  z-index: 2;
-}
-.gw-phonestory__screen {
-  position: relative;
-  width: 100%;
-  height: 100%;
+/* The phone is the Higgsfield photograph (components/PhoneFrame.jsx); these
+   rules are for what shows on its screen. */
+.gw-phonestory__phone { width: var(--phone-w, 300px); flex: none; }
+.gw-pframe .gw-phonestory__screen {
   background: #f4f2ee;
-  border-radius: 30px;
+  text-align: left;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -107,17 +84,6 @@
   border-bottom-right-radius: 4px;
 }
 
-.gw-phonestory__home {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 110px;
-  height: 4px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
 .gw-phonestory--static {
   display: grid;
   gap: clamp(2rem, 5vw, 3rem);
@@ -126,7 +92,7 @@
   text-align: center;
 }
 .gw-phonestory--static .gw-phonestory__intro { max-width: 520px; }
-.gw-phonestory--static .gw-phonestory__phone { --phone-h: 560px; }
+.gw-phonestory--static .gw-phonestory__phone { --phone-w: 276px; }
 
 @media (max-width: 1000px) {
   .gw-phonestory__pin { grid-template-columns: 1fr; justify-items: center; text-align: center; }

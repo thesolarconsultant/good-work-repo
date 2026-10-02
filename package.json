@@ -14,6 +14,7 @@
     "logo": "node scripts/build-logo.mjs",
     "og": "node scripts/build-og.mjs",
     "icons": "node scripts/build-product-icons.mjs",
+    "devices": "node scripts/build-devices.mjs",
     "sitemap": "node scripts/build-sitemap.mjs",
     "portrait": "node scripts/build-portrait.mjs",
     "merch": "node scripts/build-merch.mjs",

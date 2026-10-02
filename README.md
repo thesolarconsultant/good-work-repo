@@ -32,6 +32,7 @@ npm run test:routes  # after a build: crawl every route at 390/768/1440 with Chr
 | `npm run prices` | Fail the build if `server/products.js` (what checkout charges) disagrees with `src/data/offers.js` |
 | `npm run og` | Regenerate `public/og.png`, the social share card |
 | `npm run icons` | Render the product icons (`src/data/icons.js`) as PNGs for Stripe, to `dist-icons/` |
+| `npm run devices` | Put the showcase screenshots on the Higgsfield laptop and cut out the phone frame (`brand/devices/` → `public/devices/`); run `images` after |
 | `npm run test:api` | Runs `api/enquiry.js`, `api/checkout.js`, `api/claim.js`, `api/stripe-webhook.js`, `api/access.js` and `api/download.js` in Node against a local webhook sink and a stubbed Stripe: 39 checks |
 | `npm run test:routes` | Playwright crawl of the built site: console errors, overflow, broken links, menus, filters, previews, form failure states, the welcome page after payment, the sign-in form, the signed-in dashboard and item pages |
 | `npm run brand:*`, `logo`, `merch`, `portrait` | Brand asset generators, unchanged from before the rebuild |
@@ -45,6 +46,7 @@ src/
                         principle and FAQ answer. Nothing else carries a figure.
   data/icons.js         One round icon per product and plan, shared by the
                         site's cards (components/OfferIcon) and the Stripe images
+  data/devices.js       Which showcase projects are photographed on the laptop
   data/nav.js           Header, dropdowns, footer, announcement
   data/forms.js         The five enquiry/application schemas, and the steps
                         that run four of them as one-question-at-a-time flows
@@ -63,6 +65,9 @@ src/
                         blocks, the brand gradient used with intent
   styles/motion.css     Everything that moves, and the reduced-motion off switch
   styles/flow.css       The step-by-step enquiry flow
+  styles/mock.css       The small product screens (components/Mockups) and the hero deck
+  styles/sections.css   The home page blocks: staircase, bento, posters, plans,
+                        showcase panels, the phone frame, the big close
 api/
   enquiry.js            All forms → webhook and/or Resend (503 until configured)
   checkout.js           Stripe Checkout Session; finds or creates its own prices (503 until configured)
@@ -170,6 +175,13 @@ Change what the site *says* in `src/data/`. A price changes in exactly one
 place (`offers.js`) and the homepage, offer pages, pricing table, FAQ, pitch
 deck and structured data all follow; `npm run prices` fails the build if
 `server/products.js`, which sets what checkout charges, drifts from it.
+
+The showcase laptops are photographs: a Higgsfield render with a green
+screen (`brand/devices/`), with the project's real screenshot keyed onto it by
+`npm run devices`. To put another project on a laptop, add its screenshot to
+`LAPTOP_SHOTS` in `src/data/devices.js`, then run `npm run devices` and
+`npm run images`. The phone in the WhatsApp demos is the same kind of render,
+cut out with a clear screen; the conversation on it is live markup.
 
 The Library catalogue is generated. Add a component to
 `library-src/components.txt` and run `npm run library`; map it to a browsing

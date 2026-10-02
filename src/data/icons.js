@@ -82,6 +82,30 @@ export const ICONS = {
   },
 };
 
+// The five Studio systems, in the same hand, for the system cards and the
+// product illustrations.
+ICONS["whatsapp-bot"] = {
+  // A conversation.
+  grad: [352, 402, 672, 482],
+  body: `<path d="M 292 262 H 732 Q 792 262 792 322 V 562 Q 792 622 732 622 H 452 L 332 742 V 622 H 292 Q 232 622 232 562 V 322 Q 232 262 292 262 Z" ${S}/><circle cx="392" cy="442" r="44" fill="url(#g)"/><circle cx="512" cy="442" r="44" fill="url(#g)"/><circle cx="632" cy="442" r="44" fill="url(#g)"/>`,
+};
+ICONS["voice-agent"] = {
+  // A voice, answered.
+  grad: [332, 332, 692, 692],
+  body: `<circle cx="512" cy="512" r="290" ${S}/><line x1="392" y1="462" x2="392" y2="562" ${GS}/><line x1="472" y1="402" x2="472" y2="622" ${GS}/><line x1="552" y1="362" x2="552" y2="662" ${GS}/><line x1="632" y1="432" x2="632" y2="592" ${GS}/>`,
+};
+ICONS["content-console"] = ICONS.console;
+ICONS["brand-guide"] = {
+  // A guideline page: the mark, then the rules.
+  grad: [432, 312, 592, 472],
+  body: `<rect x="292" y="212" width="440" height="600" rx="48" ${S}/><circle cx="512" cy="392" r="92" fill="url(#g)"/><line x1="392" y1="572" x2="632" y2="572" ${S}/><line x1="392" y1="662" x2="572" y2="662" ${S}/>`,
+};
+ICONS.automations = {
+  // Two inputs, one outcome.
+  grad: [422, 622, 602, 802],
+  body: `<rect x="222" y="222" width="180" height="180" rx="40" ${S}/><rect x="622" y="222" width="180" height="180" rx="40" ${S}/><path d="M 312 402 V 512 H 712 V 402" ${S}/><line x1="512" y1="512" x2="512" y2="600" ${S}/><rect x="410" y="610" width="204" height="204" rx="46" fill="url(#g)"/>`,
+};
+
 export const GRADIENT_STOPS = [
   [0, "#3366ff"],
   [0.32, "#7a5cff"],

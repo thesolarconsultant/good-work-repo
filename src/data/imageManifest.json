@@ -268,5 +268,35 @@
     ],
     "base": "/derived/founder/jordan",
     "flat": "/derived/founder/jordan-960.webp"
+  },
+  "/devices/8energy-laptop.jpg": {
+    "width": 1409,
+    "height": 1258,
+    "widths": [
+      640,
+      960
+    ],
+    "base": "/derived/devices/8energy-laptop",
+    "flat": "/derived/devices/8energy-laptop-960.webp"
+  },
+  "/devices/keystone-laptop.jpg": {
+    "width": 1409,
+    "height": 1258,
+    "widths": [
+      640,
+      960
+    ],
+    "base": "/derived/devices/keystone-laptop",
+    "flat": "/derived/devices/keystone-laptop-960.webp"
+  },
+  "/devices/tsc-laptop.jpg": {
+    "width": 1409,
+    "height": 1258,
+    "widths": [
+      640,
+      960
+    ],
+    "base": "/derived/devices/tsc-laptop",
+    "flat": "/derived/devices/tsc-laptop-960.webp"
   }
 }
