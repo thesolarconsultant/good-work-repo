@@ -9,6 +9,7 @@ import Reveal from "../components/Reveal";
 import SectionHead from "../components/SectionHead";
 import OfferLadder, { CrmBand } from "../components/OfferLadder";
 import ProductDeck from "../components/ProductDeck";
+import PathChoice from "../components/PathChoice";
 import StudioBento from "../components/StudioBento";
 import ServicePosters from "../components/ServicePosters";
 import ShowcasePanels from "../components/ShowcasePanels";
@@ -63,6 +64,16 @@ export default function Home() {
       </header>
 
       <Marquee items={TICKER} />
+
+      {/* Two ways to work with Goodwork: build it yourself, or have it built. */}
+      <section className="gw-section" aria-labelledby="paths">
+        <div className="gw-container">
+          <SectionHead eyebrow="Two ways to work with Goodwork" title={<span id="paths">Choose your path.</span>} lead="Both paths use the same Goodwork code and systems. The difference is who puts them together." />
+          <div className="gw-mt-5">
+            <PathChoice />
+          </div>
+        </div>
+      </section>
 
       {/* The offers, as a staircase, on the CRM band. */}
       <section className="gw-section gw-section--flush" id="offers" aria-labelledby="ladder">

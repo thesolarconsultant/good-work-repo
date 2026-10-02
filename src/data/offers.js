@@ -265,6 +265,48 @@ export const LADDER = ["library", "studio", "built", "agency"].map((id) => OFFER
 
 export const VALUE_LADDER_SENTENCE = `${gbp(OFFER.library.price)} to build websites. ${gbp(OFFER.studio.price)} to build intelligent systems. ${gbp(OFFER.built.price)} to have Goodwork build it for you. ${gbp(OFFER.agency.price)} to build the agency behind it.`;
 
+/**
+ * The two ways to work with Goodwork, for "Choose your path": build it
+ * yourself, or have Goodwork build it. Each says what that path gives you, in
+ * full, and the price it starts from.
+ */
+export const PATHS = [
+  {
+    id: "diy",
+    step: "Path one",
+    who: "You build it",
+    title: "Do it yourself.",
+    line: "Production-ready code, templates and systems. You build the website, and the systems behind it, on your own schedule, and keep everything you download.",
+    points: [
+      "Components, sections and complete website templates",
+      "With Studio: the WhatsApp bot, AI voice-agent, Content Console, brand and automation systems",
+      `Live previews, setup guides and ${UPDATE_PERIOD_MONTHS} months of updates`,
+      "A commercial licence for the sites you finish",
+    ],
+    from: OFFER.library.price,
+    icons: ["library", "studio"],
+    primary: { label: "Explore the Library", to: "/library" },
+    secondary: { label: "See Goodwork Studio", to: "/studio" },
+  },
+  {
+    id: "dfy",
+    step: "Path two",
+    who: "We build it",
+    title: "We do it for you.",
+    line: "Give us the business. Goodwork scopes it in writing first, then builds and launches the whole system, and can run it for you afterwards.",
+    points: [
+      "Your website customised, built and launched",
+      "A WhatsApp bot flow and an AI voice-agent flow, configured",
+      "The Content Console installed and your brand guidelines written",
+      "The Embedded CRM and monthly running, if you want them",
+    ],
+    from: OFFER.built.price,
+    icons: ["built", "crm", "agency", "care"],
+    primary: { label: "Start your build", to: "/built-by-goodwork#enquire" },
+    secondary: { label: "See the services", to: "/services" },
+  },
+];
+
 /** Built by Goodwork + Embedded CRM, the combination worth showing. */
 export const COMBINED = {
   items: [OFFER.built, OFFER.crm],
