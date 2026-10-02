@@ -77,5 +77,12 @@ export async function GET(request) {
   close = Math.min(24 * 60, Math.ceil(close / 60) * 60);
   if (close <= open) { open = 9 * 60; close = 18 * 60; }
 
+  // Diagnostic: field names and counts only, no client data. Remove once mapped.
+  console.log("diary debug:", JSON.stringify({
+    date, branchId: data.branchId, raw: appts.length, mapped: rows.length, staff: staff.length,
+    keys: appts[0] ? Object.keys(appts[0]) : [],
+    sampleTimes: appts[0] ? { startTime: appts[0].startTime, endTime: appts[0].endTime, staff: appts[0].staffMemberId || appts[0].staffId } : null,
+  }));
+
   return json({ date, open, close, staff, appts: rows });
 }
