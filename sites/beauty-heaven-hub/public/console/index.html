@@ -52,29 +52,31 @@
     <!-- ═══ THIS WEEK ═══════════════════════════════════════════════════ -->
     <!-- ═══ HOME ════════════════════════════════════════════════════════ -->
 <section class="view on" data-view="home">
-  <header class="vhead">
-    <p class="vtag">The hub</p>
-    <h1 class="vtitle">Beauty <b>Heaven</b> Hub</h1>
-    <p class="vsub">Everything in one place — your customers on one side, your content on the other.</p>
-  </header>
-  <div class="home">
-    <div class="home__panel home__panel--crm" data-go="crm" role="button" tabindex="0">
-      <span class="home__eyebrow">CRM</span>
-      <h2 class="home__h">Customers &amp; leads</h2>
-      <p class="home__stat"><b id="homeLeadCount">—</b><span>in the CRM</span></p>
-      <ul class="home__recent" id="homeRecent"><li class="muted">Loading…</li></ul>
-      <span class="home__go">Open CRM →</span>
+  <header class="head">
+    <div>
+      <p class="eyebrow">The hub</p>
+      <h1 class="h1">Beauty Heaven Hub</h1>
     </div>
-    <div class="home__panel home__panel--content">
-      <span class="home__eyebrow">Content console</span>
-      <h2 class="home__h">Make &amp; send</h2>
-      <div class="home__links">
-        <button data-go="week">This week</button>
-        <button data-go="campaign">Write something</button>
-        <button data-go="email">Email</button>
-        <button data-go="styles">Content styles</button>
-        <button data-go="library">Library</button>
-        <button data-go="brand">Brand</button>
+  </header>
+  <p class="note lede">Your customers on one side, your content on the other.</p>
+  <div class="cols">
+    <div class="panel panel--crm" data-go="crm" role="button" tabindex="0">
+      <p class="eyebrow eyebrow--ondark">CRM</p>
+      <h3 class="h3 h3--ondark">Customers &amp; leads</h3>
+      <p class="crmstat"><b id="homeLeadCount">—</b> <span>in the CRM</span></p>
+      <ul class="crmrecent" id="homeRecent"><li class="empty--ondark">Loading…</li></ul>
+      <span class="crmgo">Open CRM →</span>
+    </div>
+    <div class="panel">
+      <p class="eyebrow">Content console</p>
+      <h3 class="h3">Make &amp; send</h3>
+      <div class="row" style="margin-top:1rem">
+        <button class="btn" data-go="week">This week</button>
+        <button class="btn" data-go="campaign">Write something</button>
+        <button class="btn" data-go="email">Email</button>
+        <button class="btn" data-go="styles">Content styles</button>
+        <button class="btn" data-go="library">Library</button>
+        <button class="btn" data-go="brand">Brand</button>
       </div>
     </div>
   </div>
@@ -82,16 +84,15 @@
 
 <!-- ═══ CRM ═════════════════════════════════════════════════════════ -->
 <section class="view" data-view="crm">
-  <header class="vhead">
-    <p class="vtag">CRM</p>
-    <h1 class="vtitle">Customers &amp; <b>leads</b></h1>
-    <p class="vsub">Everyone who's booked or been in touch. Held in Twenty, shown here in the brand.</p>
+  <header class="head">
+    <div>
+      <p class="eyebrow">CRM</p>
+      <h1 class="h1">Customers &amp; leads</h1>
+    </div>
+    <input id="crmSearch" class="crmsearch" type="search" placeholder="Search name, email, phone, source…" autocomplete="off" spellcheck="false">
   </header>
-  <div class="crm__bar">
-    <input id="crmSearch" type="search" placeholder="Search name, email, phone, source…" autocomplete="off" spellcheck="false">
-    <span class="crm__count" id="crmCount"></span>
-  </div>
-  <div id="crmList" class="crm__list"><p class="muted">Loading…</p></div>
+  <p class="note lede">Everyone who's booked or been in touch. Held in Twenty, shown here in the brand. <span class="saved" id="crmCount"></span></p>
+  <div id="crmList" class="crmlist"><p class="empty">Loading…</p></div>
 </section>
 
 <section class="view" data-view="week">

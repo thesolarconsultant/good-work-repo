@@ -990,7 +990,7 @@ function leadWhen(iso) {
   return isNaN(d) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 }
 function srcChip(s) {
-  return s ? `<span class="chip chip--${esc(s)}">${esc(SRC_LABEL[s] || s)}</span>` : "";
+  return s ? `<span class="tag tag--src-${esc(s)}">${esc(SRC_LABEL[s] || s)}</span>` : "";
 }
 
 async function renderHome() {
@@ -1001,10 +1001,10 @@ async function renderHome() {
     countEl.textContent = leads.length >= 200 ? "200+" : String(leads.length);
     recentEl.innerHTML = leads.length
       ? leads.slice(0, 5).map((l) => `<li><b>${esc(l.name || "(no name)")}</b>${srcChip(l.source)}</li>`).join("")
-      : '<li class="muted">No leads yet — they land here from bookings, enquiries and the assistant.</li>';
+      : '<li class="empty--ondark">No leads yet — they land here from bookings, enquiries and the assistant.</li>';
   } catch (e) {
     countEl.textContent = "—";
-    recentEl.innerHTML = `<li class="muted">CRM not reachable (${esc(e.message)}).</li>`;
+    recentEl.innerHTML = `<li class="empty--ondark">CRM not reachable (${esc(e.message)}).</li>`;
   }
 }
 
@@ -1018,7 +1018,7 @@ function drawLeads(leads) {
         <div class="lead__meta">${[l.email, l.phone, l.subject].filter(Boolean).map(esc).join(" · ") || "<span class='muted'>no details</span>"}</div>
         ${l.message ? `<p class="lead__msg">${esc(l.message)}</p>` : ""}
       </article>`).join("")
-    : '<p class="muted">No matches.</p>';
+    : '<p class="empty">No matches.</p>';
 }
 
 async function renderCrm() {
@@ -1036,7 +1036,7 @@ async function renderCrm() {
     apply();
   } catch (e) {
     if (countEl) countEl.textContent = "";
-    host.innerHTML = `<p class="muted">Couldn't load the CRM (${esc(e.message)}). Check it's connected.</p>`;
+    host.innerHTML = `<p class="empty">Couldn't load the CRM (${esc(e.message)}). Check it's connected.</p>`;
   }
 }
 
