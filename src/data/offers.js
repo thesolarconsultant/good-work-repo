@@ -80,12 +80,13 @@ export const OFFERS = [
     outcome: "Build the website, brand and intelligent systems yourself.",
     ladder: "Build websites, brands and intelligent systems.",
     summary:
-      "The main self-build product. Everything in Goodwork Library plus the systems, templates and documentation required to assemble a more complete modern business platform.",
+      "The main self-build product: the complete component library and quick-launch templates, plus the systems and documentation required to assemble a more complete modern business platform.",
     line: "The complete Goodwork toolkit for building websites, brands, content systems and customer-facing automation.",
     distinction:
       "Studio is self-build. Goodwork provides the source, systems and instructions; you configure and deploy them.",
     includes: [
-      "Everything in Goodwork Library",
+      "The complete core component library: heroes, navigation, feature and pricing sections, FAQs, forms, footers and conversion sections",
+      "Complete quick-launch website templates, with responsive source code and live previews",
       "WhatsApp bot system and implementation guidance",
       "AI voice-agent system and implementation guidance",
       "Goodwork Content Console",
@@ -93,8 +94,10 @@ export const OFFERS = [
       "Brand discovery framework and AI-assisted brand prompts",
       "Automation templates and workflow blueprints",
       "Lead-capture and qualification flows",
-      "Setup guides, system diagrams and implementation checklists",
-      `${UPDATE_PERIOD_MONTHS} months of included Studio updates`,
+      "Installation and setup guides, system diagrams and implementation checklists",
+      "Commercial use for completed websites created for you or your clients",
+      "Permanent rights to continue using code already downloaded under the licence",
+      `${UPDATE_PERIOD_MONTHS} months of included updates and new releases`,
     ],
     excludes: [
       "Goodwork implementation or customisation",
@@ -126,7 +129,6 @@ export const OFFERS = [
       "A defined implementation service based on the Goodwork Studio system. It is not unlimited bespoke software development.",
     line: "Give us the business. We will turn the Goodwork system into a complete, branded and launch-ready digital operation.",
     includes: [
-      "Everything in the Goodwork Studio toolkit, as required for the agreed build",
       "One template-led, professionally customised website for one business",
       "Application of your approved brand, copy and imagery",
       "Agreed page set and navigation",
@@ -227,7 +229,7 @@ export const OFFERS = [
       "Name evaluation or naming support where required",
       "Brand identity direction and complete brand guidelines",
       "Premium agency website",
-      "Goodwork Library and Studio systems needed for the agency",
+      "The component library, website templates, and the WhatsApp, voice-agent, content and brand systems the agency needs",
       "Commercial white-label implementation rights for finished client work",
       "Content Console",
       "WhatsApp bot and voice-agent configuration",
@@ -279,64 +281,46 @@ export const COMBINED = {
 export const OWNERSHIP_PRINCIPLE =
   "Pay once to own the system. Pay monthly only if you want Goodwork to run it for you.";
 
+// What Goodwork runs, in groups. Every plan lists all of what it includes, so
+// no plan is ever described by pointing at another one.
+const RUN_WEBSITE = ["Managed website hosting", "SSL and security monitoring", "Routine backups", "Uptime monitoring", "Core dependency maintenance"];
+const RUN_CONSOLE = ["Hosted Content Console, connected to your website", "Console maintenance and updates", "Console account access and routine backups"];
+const RUN_AGENTS = ["Managed WhatsApp chatbot, with chatbot credit", "Managed AI voice agent, with voice-agent credit", "API credit for the connected services"];
+const RUN_SUPPORT = ["Integration monitoring", "Priority routine technical support"];
+const PHOTO_IMAGERY = "Content Console imagery made from your own photos";
+const AI_CONTENT = ["The full Content Console, with AI-generated imagery", "AI B-roll video for your posts and campaigns"];
+
+/** A plan, with its groups and the same items as one flat list. */
+const plan = (fields, groups) => ({ ...fields, billing: "monthly", groups, includes: groups.flatMap((g) => g.items) });
+
 export const MANAGED_PLANS = [
-  {
-    id: "care",
-    name: "Website Care",
-    price: 58,
-    billing: "monthly",
-    for: "Your website, kept online and looked after.",
-    includes: [
-      "Managed website hosting",
-      "SSL and security monitoring",
-      "Routine backups",
-      "Uptime monitoring",
-      "Core dependency maintenance",
+  plan({ id: "care", name: "Website Care", price: 58, for: "Your website, kept online and looked after." }, [{ title: "Website", items: RUN_WEBSITE }]),
+  plan({ id: "console", name: "Website + Content Console", price: 188, for: "Your website and Content Console, connected and run for you." }, [
+    { title: "Website", items: RUN_WEBSITE },
+    { title: "Content Console", items: RUN_CONSOLE },
+  ]),
+  plan({ id: "complete", name: "Complete Managed System", price: 398, for: "Website, Content Console and both agents, with monthly credit." }, [
+    { title: "Website", items: RUN_WEBSITE },
+    { title: "Content Console", items: [...RUN_CONSOLE, PHOTO_IMAGERY] },
+    { title: "Agents and credit", items: RUN_AGENTS },
+    { title: "Support", items: RUN_SUPPORT },
+  ]),
+  plan(
+    {
+      id: "complete-ai",
+      name: "Complete + AI Content",
+      price: 598,
+      featured: true,
+      tag: "Everything",
+      for: "Website, Content Console and both agents, with monthly credit, AI imagery and B-roll video.",
+    },
+    [
+      { title: "Website", items: RUN_WEBSITE },
+      { title: "Content Console", items: [...RUN_CONSOLE, PHOTO_IMAGERY, ...AI_CONTENT] },
+      { title: "Agents and credit", items: RUN_AGENTS },
+      { title: "Support", items: RUN_SUPPORT },
     ],
-  },
-  {
-    id: "console",
-    name: "Website + Content Console",
-    price: 188,
-    billing: "monthly",
-    for: "Your website and Content Console, connected and run for you.",
-    includes: [
-      "Everything in Website Care",
-      "Hosted Content Console, connected to your website",
-      "Console maintenance and updates",
-      "Account access and routine backups",
-    ],
-  },
-  {
-    id: "complete",
-    name: "Complete Managed System",
-    price: 398,
-    billing: "monthly",
-    for: "Website, Content Console and both agents, with monthly credit.",
-    includes: [
-      "Everything in Website + Content Console",
-      "Managed WhatsApp chatbot, with chatbot credit",
-      "Managed AI voice agent, with voice-agent credit",
-      "API credit for the connected services",
-      "Content Console imagery made from your own photos",
-      "Integration monitoring",
-      "Priority routine technical support",
-    ],
-  },
-  {
-    id: "complete-ai",
-    name: "Complete + AI Content",
-    price: 598,
-    billing: "monthly",
-    featured: true,
-    tag: "Everything",
-    for: "Everything in Complete, plus AI imagery and B-roll video.",
-    includes: [
-      "Everything in Complete Managed System",
-      "The full Content Console, with AI-generated imagery",
-      "AI B-roll video for your posts and campaigns",
-    ],
-  },
+  ),
 ];
 
 /** "From £58 per month": the cheapest plan, wherever a starting figure is quoted. */
@@ -473,7 +457,7 @@ export const FAQ = [
   },
   {
     q: "What is the difference between Library and Studio?",
-    a: "Library is the website code: the component library, quick-launch templates, previews and guidance. Studio includes everything in Library and adds the intelligent systems: the WhatsApp bot system, the AI voice-agent system, the Content Console, the brand-guideline system, automation blueprints, lead-capture flows and the setup documentation to assemble them. Both are self-build.",
+    a: "Library is the website code: the component library, quick-launch templates, previews and guidance. Studio is the same component library, templates, previews and guidance, plus the intelligent systems: the WhatsApp bot system, the AI voice-agent system, the Content Console, the brand-guideline system, automation blueprints, lead-capture flows and the setup documentation to assemble them. Both are self-build.",
   },
   {
     q: "Can I use the code for client websites?",

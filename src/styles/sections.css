@@ -120,6 +120,10 @@
 /* --- Plans: the featured plan, the bands, price discs on phones ---- */
 .gw-plan--featured { background: linear-gradient(var(--gw-bg-2), var(--gw-bg-2)) padding-box, var(--gw-gradient) border-box; border: 2px solid transparent; }
 .gw-light .gw-plan--featured { background: linear-gradient(var(--gw-light-card), var(--gw-light-card)) padding-box, var(--gw-gradient) border-box; border-color: transparent; }
+/* Each plan's contents in full, in groups: side by side when the card has room. */
+.gw-plan__groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.1rem 1.5rem; align-items: start; }
+.gw-plan__group-title { margin: 0 0 0.5rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gw-text-3); }
+.gw-light .gw-plan__group-title { color: var(--gw-light-text-3); }
 .gw-plan__tag { display: inline-block; margin-left: 0.5rem; padding: 0.18rem 0.55rem; border-radius: 999px; background: #111; color: #fff; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; vertical-align: 0.2em; }
 .gw-plan-bands { display: grid; gap: 0.75rem; }
 .gw-plan-band { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.25rem; padding: 1rem clamp(1rem, 2vw, 1.4rem); border-radius: 16px; background: var(--gw-panel); }
@@ -135,7 +139,7 @@
   .gw-plan > .gw-price { grid-column: 1; grid-row: 1; display: grid; place-content: center; justify-items: center; gap: 0.15rem; width: 5rem; height: 5rem; border-radius: 50%; background: #111; text-align: center; }
   .gw-plan > .gw-price .gw-price__amount { color: #fff; font-size: 1.3rem; }
   .gw-plan > .gw-price .gw-price__term { color: rgba(255, 255, 255, 0.7); font-size: 0.5rem; letter-spacing: 0.1em; }
-  .gw-plan > ul, .gw-plan > div:last-child { grid-column: 1 / -1; }
+  .gw-plan > .gw-plan__groups, .gw-plan > div:last-child { grid-column: 1 / -1; }
 }
 
 /* --- Showcase panels ------------------------------------------------- */

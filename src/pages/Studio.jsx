@@ -47,7 +47,7 @@ export default function Studio() {
 
       <section className="gw-section--tight" id="included" aria-labelledby="included-title">
         <div className="gw-container">
-          <SectionHead eyebrow="Everything included" title={<span id="included-title">Everything in Library, plus the systems.</span>} lead={offer.summary} />
+          <SectionHead eyebrow="Everything included" title={<span id="included-title">Every component and template, and all five systems.</span>} lead={offer.summary} />
           <div className="gw-mt-4">
             <Includes includes={offer.includes} excludes={offer.excludes} note="Hosting, messaging, telephony, AI-model usage and third-party subscriptions are paid to your providers, or covered by an optional managed plan with a fair-use allowance." />
           </div>
@@ -74,9 +74,9 @@ export default function Studio() {
             <Reveal variant="rise" delay={300} asChild>
               <Link to="/library" className="gw-feature">
                 <p className="gw-eyebrow">Also inside</p>
-                <h3 className="gw-h4">The whole Library</h3>
-                <p className="gw-body gw-small">Every component, section and template in Goodwork Library is included in Studio.</p>
-                <span className="gw-feature__go">Browse the Library →</span>
+                <h3 className="gw-h4">Every component and template</h3>
+                <p className="gw-body gw-small">Heroes, navigation, feature and pricing sections, FAQs, forms, footers, conversion sections and complete quick-launch templates, with the code and live previews.</p>
+                <span className="gw-feature__go">Browse them →</span>
               </Link>
             </Reveal>
           </div>

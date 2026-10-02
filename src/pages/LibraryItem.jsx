@@ -303,7 +303,7 @@ export default function LibraryItem() {
                 ) : (
                   <>
                     <p>
-                      {gbp(offer.price)} one-time for {item.tier === "studio" ? "every Studio system, plus everything in the Library" : "every component, the starter and the templates as they ship"}, with {UPDATE_PERIOD_MONTHS} months of updates and a commercial licence
+                      {gbp(offer.price)} one-time for {item.tier === "studio" ? "every component and template, plus the WhatsApp bot, voice agent, Content Console, brand and automation systems" : "every component, the starter and the templates as they ship"}, with {UPDATE_PERIOD_MONTHS} months of updates and a commercial licence
                       for finished sites.
                     </p>
                     <div className="gw-mt-2 gw-docs-steps__buy">
