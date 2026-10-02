@@ -76,11 +76,5 @@ export async function GET(request) {
   close = Math.min(24 * 60, Math.ceil(close / 60) * 60);
   if (close <= open) { open = 9 * 60; close = 18 * 60; }
 
-  // Diagnostic: field names and counts only, no client data. Remove once mapped.
-  console.log("diary debug:", JSON.stringify({
-    date, raw: appts.length, mapped: rows.length, staffCols: staff.length,
-    staffNames: staff.map((s) => s.name),
-  }));
-
   return json({ date, open, close, staff, appts: rows });
 }
