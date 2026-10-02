@@ -70,7 +70,7 @@ const CHANNELS = {
     brief:
       "A carousel of five slides. Give each slide a heading of no more than six words and one or two " +
       "sentences beneath it. Slide one earns the swipe, slide five says what to do next. " +
-      "Then the caption, under 120 words, and 8–12 hashtags mixing the treatment, the town and the salon.",
+      "Then the caption, under 120 words, and 8–12 hashtags mixing the service, the town and the business.",
   },
   blog: {
     label: "Blog post",
@@ -78,7 +78,7 @@ const CHANNELS = {
     brief:
       "An article of 700–1000 words answering the question properly, in Markdown. Open with the " +
       "reassurance, not with a definition. Use H2 subheadings a person would actually search for. " +
-      "End with what happens at a consultation and how to book. Then, after a line of three dashes, " +
+      "End with what happens next and how to get in touch. Then, after a line of three dashes, " +
       "give a meta title under 60 characters and a meta description under 155.",
   },
   email: {
@@ -93,7 +93,7 @@ const CHANNELS = {
     label: "WhatsApp reply",
     maxTokens: 700,
     brief:
-      "The reply the salon would send if someone asked this on WhatsApp at nine in the evening. " +
+      "The reply the business would send if someone asked this on WhatsApp at nine in the evening. " +
       "Under 60 words, warm, no marketing language, and it ends by offering the next step rather " +
       "than demanding it. Then, on a new line after three dashes, three quick-reply button labels " +
       "of three words or fewer.",
@@ -102,7 +102,7 @@ const CHANNELS = {
     label: "Website answer",
     maxTokens: 900,
     brief:
-      "The permanent answer to this on the treatment page: a heading in the customer's own words " +
+      "The permanent answer to this on the service page: a heading in the customer's own words " +
       "and 80–120 words beneath it. This one is read by someone deciding, so it is plain and it " +
       "does not sell.",
   },
@@ -112,7 +112,7 @@ const CHANNELS = {
     brief:
       "A 30-second script as a table of timecode, what is on screen, and what is said or captioned. " +
       "The first three seconds have to earn the rest. Then one line on what to film it with and where " +
-      "in the building.",
+      "to film it.",
   },
 };
 
@@ -125,9 +125,9 @@ const CHANNELS = {
    Held here rather than in the browser for the same reason the channels are:
    these are editorial rules, and a form field is not the place to keep them.
 
-   Eight, because each one changes the actual order of the sentences. A ninth
-   that only changes the topic — "autumn skin", "party season" — belongs in the
-   brief, not in here. */
+   Seven, because each one changes the actual order of the sentences. An eighth
+   that only changes the topic — "the busy season", "a new price list" — belongs
+   in the brief, not in here. */
 const STYLES = {
   answer: {
     label: "Straight answer",
@@ -140,26 +140,26 @@ const STYLES = {
     brief:
       "Name the belief in the first line, in the words people actually use. Say why it gets believed " +
       "— it is almost always a reasonable mistake. Then what is true instead, and what to do about it. " +
-      "Never make the person who believed it feel stupid: she is the one reading.",
+      "Never make the person who believed it feel stupid: they are the one reading.",
   },
   happens: {
     label: "What actually happens",
     brief:
-      "Walk through it in order — before, during, after. What it feels like, how long each part takes, " +
-      "what she looks like walking out. Written for someone who is nervous and has not told anybody " +
-      "she is nervous.",
+      "Walk through it in order — before, during, after. What it is like, how long each part takes, " +
+      "what they are left with at the end. Written for someone who is unsure and has not told anybody " +
+      "they are unsure.",
   },
   question: {
     label: "A client asked us",
     brief:
       "Open by quoting the question the way it was really asked, in quotation marks, including the " +
-      "hesitation if it was there. Then answer it the way the salon would answer it across the desk. " +
+      "hesitation if it was there. Then answer it the way the business would answer it in person. " +
       "It ends by offering the next step, never by pushing it.",
   },
   behind: {
     label: "Behind the work",
     brief:
-      "Observational. The room, the tools, the preparation, the part a client never sees. Show the " +
+      "Observational. The place, the tools, the preparation, the part a customer never sees. Show the " +
       "competence instead of claiming it. No call to action bolted on the end — this one is for trust, " +
       "not for bookings.",
   },
@@ -175,13 +175,6 @@ const STYLES = {
     brief:
       "An announcement. The news in the first line, the detail underneath, one thing to do. Short. No " +
       "build-up and no drum roll.",
-  },
-  academy: {
-    label: "For the Academy",
-    brief:
-      "A different reader entirely: someone weighing this up as a career, not booking a treatment. The " +
-      "work, the training, what the days are actually like, what they walk away qualified to do. Never " +
-      "promise an income, a job or a place.",
   },
 };
 const DEFAULT_STYLE = "answer";
@@ -202,7 +195,7 @@ so it has to sound like them and not like a marketing department.`,
   if (b.what) sections.push(`WHAT THEY ARE\n${b.what}`);
   if (b.audience) sections.push(`WHO THEY ARE TALKING TO\n${b.audience}`);
   if (b.voice) sections.push(`VOICE\n${b.voice}`);
-  if (list(b.treatments)) sections.push(`WHAT THEY OFFER\n${list(b.treatments)}`);
+  if (list(b.services)) sections.push(`WHAT THEY OFFER\n${list(b.services)}`);
   if (list(b.team)) sections.push(`THE TEAM\n${list(b.team)}`);
   if (b.offers) sections.push(`WHAT IS ON AT THE MOMENT\n${b.offers}`);
   if (list(b.never)) {
@@ -219,15 +212,15 @@ so it has to sound like them and not like a marketing department.`,
   sections.push(
     `HOW TO WRITE
 - British English.
-- Say the thing. No "we are delighted to announce", no "elevate your", no "indulge".
+- Say the thing. No "we are delighted to announce", no "elevate your", no "unlock".
 - Short sentences are allowed to be short.
 - Never invent a price, a qualification, a result, a guarantee or a statistic. If a number would
   help and you have not been given it, leave a bracketed gap like [price] for a human to fill.
-- Never invent a fact about this business either. The building, the rooms, who teaches, who does
-  what, what a course includes, how long anything has been running, awards, partnerships — if it
+- Never invent a fact about this business either. The premises, who does what, what a service
+  includes, how long anything has been running, awards, partnerships — if it
   is not written above or in the brief, you do not know it. Leave a gap like [how long] or write
   around it. A plausible invention is worse than an obvious gap, because nobody catches it.
-- Never claim a medical or clinical outcome.
+- Never claim a medical, financial or legal outcome.
 - Where a length is given, it is a limit and not a target. Cut to fit it. Running over is a
   failure even when the extra sentence is a good one.
 - Read the last line back before you finish it. A sentence that does not parse undoes everything
@@ -406,7 +399,7 @@ export default async function handler(request) {
     `Where the form and the shape pull against each other, the shape wins. Length and format ` +
     `are not negotiable.\n\n` +
     `THE BRIEF\n${brief}` +
-    (body.context ? `\n\nCONTEXT THE SALON GAVE\n${String(body.context).slice(0, MAX_BRIEF)}` : "");
+    (body.context ? `\n\nCONTEXT THE BUSINESS GAVE\n${String(body.context).slice(0, MAX_BRIEF)}` : "");
 
   let upstream;
   try {

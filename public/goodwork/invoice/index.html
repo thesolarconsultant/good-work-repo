@@ -265,10 +265,10 @@ footer{margin-top:2.2rem;padding-top:1.2rem;border-top:1px solid var(--line);
    floating-point penny out. */
 const INVOICE = {
   kind: "Invoice",
-  number: "GW-001",
-  issued: "20 September 2026",
+  number: "GW-000",
+  issued: "[Date]",
   due: "On receipt",
-  ref: "Ref · Beauty Heaven Hub build",
+  ref: "Ref · [What this invoice is for]",
   footRight: "Thank you",
 
   from: {
@@ -279,48 +279,42 @@ const INVOICE = {
     email: "support@thesolarconsultant.uk",
   },
   to: {
-    name: "Beauty Heaven Hub",
+    name: "[Client name]",
     line1: "[Address line]",
     line2: "[Town, postcode]",
-    email: "FAO Jess &amp; Hollie",
+    email: "[For the attention of]",
   },
 
   lines: [
     {
-      title: "Build — deposit (50%)",
-      note: "Website, Content Console, AI voice agent with booking-system " +
-            "connection, and the WhatsApp chatbot. One-off build fee of " +
-            "£2,800. Work starts on receipt of this deposit.",
-      amount: 140000,
+      title: "[Item]",
+      note: "[What it covers.]",
+      amount: 0,
     },
   ],
 
   totals: [
-    { label: "Subtotal", amount: 140000 },
+    { label: "Subtotal", amount: 0 },
     { label: "VAT", amount: 0, as: "—" },
   ],
-  due_amount: 140000,
+  due_amount: 0,
 
+  /* Leave href empty and the payment button is left off the page. */
   pay: {
-    head: "Pay the deposit and we start",
-    note: "£1,400 now, £1,400 when it is finished and you have seen it working. " +
-          "About ten working days from the day we start.",
-    cta: "Pay £1,400 →",
-    href: "https://buy.stripe.com/7sY00k6Fvgwq2Gz8H53ks01",
+    head: "[How to pay]",
+    note: "[When payment is due, and what happens on receipt.]",
+    cta: "Pay now →",
+    href: "",
   },
 
   bank: [
     { label: "Account name", value: "[Account name]", mono: false },
     { label: "Sort code",    value: "[00-00-00]",     mono: true  },
     { label: "Account no.",  value: "[00000000]",     mono: true  },
-    { label: "Reference",    value: "GW-001",         mono: true  },
+    { label: "Reference",    value: "GW-000",         mono: true  },
   ],
 
   notes: [
-    "The balance of £1,400 is invoiced on completion and due on receipt. Nothing is " +
-      "charged in between.",
-    "The monthly running cost is billed separately by subscription, starting the month " +
-      "the site goes live. A month's notice either way, no lock-in.",
     "The work is yours. Everything built stays with you whatever happens after.",
     "Late payment: interest at 8% above the Bank of England base rate under the Late " +
       "Payment of Commercial Debts (Interest) Act 1998.",
@@ -358,10 +352,14 @@ document.getElementById("notes").innerHTML =
   INVOICE.notes.map((n) => `<li>${n}</li>`).join("");
 
 const btn = document.getElementById("payBtn");
-btn.textContent = INVOICE.pay.cta;
-btn.href = INVOICE.pay.href;
-btn.target = "_blank";
-btn.rel = "noopener";
+if (INVOICE.pay.href) {
+  btn.textContent = INVOICE.pay.cta;
+  btn.href = INVOICE.pay.href;
+  btn.target = "_blank";
+  btn.rel = "noopener";
+} else {
+  btn.remove();
+}
 
 document.title = `${INVOICE.from.name} ${INVOICE.number} — ${INVOICE.to.name}`;
 </script>

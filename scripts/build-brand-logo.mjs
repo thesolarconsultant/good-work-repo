@@ -2,7 +2,7 @@
 // outlines — no font dependency in the output.
 //
 //   node scripts/build-brand-logo.mjs <brand-slug>
-//   e.g. npm run brand:logo -- beauty-heaven-hub
+//   e.g. npm run brand:logo -- your-brand
 //
 // Reads public/goodwork/brands/<slug>/logo.config.mjs, which describes the
 // marks (which words, in which weights, on which lines) and the colour

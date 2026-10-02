@@ -3,24 +3,23 @@
 //
 // The writing endpoint next door turns one idea into six pieces of copy. This
 // turns a piece of copy into the photograph that goes with it, on Higgsfield,
-// conditioned on a real photograph of the real salon.
+// conditioned on a real photograph of the business's real premises.
 //
 //   HIGGSFIELD_API_KEY   Required, and it is a pair: "{key_id}:{key_secret}".
 //                        Without it this returns 503 and says so.
 //
-// Two rules decide the shape of everything below, and both were learned the
-// expensive way on this brand:
+// Two rules decide the shape of everything below:
 //
-//   1. Generate people and light. Never generate the place. Every look here
-//      passes a real photograph of a real room as the reference. A generated
-//      building is worse than a stock photo, because a stock photo does not
-//      claim to be theirs.
+//   1. Generate people and light. Never generate the place. Every picture is
+//      made against a real photograph of the real premises, which the console
+//      sends as `reference`: a path to a photograph on this same site. A
+//      generated building is worse than a stock photo, because a stock photo
+//      does not claim to be theirs.
 //
-//   2. The prompt is not a text box. Three rounds of open prompting produced
-//      three rounds of generic AI salon stock — the precise thing the brand
-//      guidelines warn against, reached by a more expensive route. So the
-//      looks live here, server-side, the same as the channels and the styles.
-//      The browser chooses between them. It does not write them.
+//   2. The prompt is not a text box. Open prompting produces generic AI stock,
+//      reached by an expensive route. So the looks live here, server-side, the
+//      same as the channels and the styles. The browser chooses between them.
+//      It does not write them.
 //
 // The wire is a job queue, not a stream: POST creates a request and returns an
 // id, GET polls it. That is Higgsfield's shape and there is no way around it —
@@ -49,108 +48,90 @@ function findKey() {
 }
 
 /* ------------------------------------------------------------------ GRADE --
-   The part of every prompt that never changes: the brand's own guidelines,
-   written as direction a photographer would recognise rather than as
-   adjectives. One dominant soft source and no fill is the whole difference
-   between this and the flat, evenly-lit look that makes salon photography
-   read as a brochure. */
+   The part of every prompt that never changes, written as direction a
+   photographer would recognise rather than as adjectives. One dominant soft
+   source and no fill is the whole difference between this and the flat,
+   evenly-lit look that makes business photography read as a brochure. */
 const GRADE =
-  "Photographed, not illustrated. Editorial, quiet, expensive. " +
-  "Palette: warm ivory, greige, deep espresso, soft stone, a little champagne gold — " +
-  "the colours of the room in the reference, not a filter laid over them. " +
-  "Lighting is the whole shot: one dominant soft source, placed and motivated; warm practical " +
+  "Photographed, not illustrated. Editorial and quiet. " +
+  "Palette: the colours of the place in the reference, not a filter laid over them. " +
+  "Lighting is the whole shot: one dominant soft source, placed and motivated; practical " +
   "lamps doing the work in the background; the shadow side left alone with no fill, so faces and " +
   "surfaces are modelled rather than flattened. Shallow depth of field. Fine film grain. " +
   "Nobody looks at the camera and nobody is grinning — absorbed beats posed.";
 
-/* The lines. Not style preferences: a needle entering a face advertises a
-   prescription-only medicine to the public, and two frames where the second
-   looks better is a before-and-after however it is captioned. */
+/* The lines. A before-and-after is one however it is captioned, and a word in
+   frame is a word nobody checked. */
 const NEVER =
-  "No needles, syringes or injections of any kind. No before-and-after and nothing implying a " +
-  "result. No text, lettering, words, numbers, watermarks or logos anywhere in frame. " +
-  "No packaging with readable branding.";
-
-/* -------------------------------------------------------------------ROOMS --
-   Real photographs, served from this same deployment, so the reference and the
-   console can never drift apart. Higgsfield fetches them by URL, which is why
-   they are paths rather than uploads. */
-const ROOMS = {
-  treatmentRoom: "photos/treatment-room.jpg",
-  reception: "photos/reception-wide.png",
-  salonFloor: "photos/salon-mirrors.png",
-  lounge: "photos/lounge-wings.png",
-};
-const PHOTO_BASE = "/goodwork/brands/beauty-heaven-hub/";
+  "No before-and-after and nothing implying a result. No text, lettering, words, numbers, " +
+  "watermarks or logos anywhere in frame. No packaging with readable branding.";
 
 /* ------------------------------------------------------------------ LOOKS --
-   Five, because five cover what a salon actually posts. Each is a sentence a
-   photographer could shoot from, plus the room it is shot in. `subject` is the
-   only part the brief gets to colour, and it arrives as a short phrase rather
-   than as a prompt. */
+   Five, because five cover what most businesses actually post. Each is a
+   sentence a photographer could shoot from. `subject` is the only part the
+   brief gets to colour, and it arrives as a short phrase rather than as a
+   prompt. */
 const LOOKS = {
-  treatment: {
-    label: "Treatment in progress",
-    room: "treatmentRoom",
+  work: {
+    label: "The work, in progress",
     aspect: "4:3",
     scene:
-      "A treatment in progress in the room shown in the reference, photographed from close by. " +
-      "A practitioner's gloved hands working carefully; the client reclined with her eyes closed, " +
-      "face bare, a towel at her hairline. Only hands, forearms and the client's face in frame. " +
-      "Absorbed and unhurried.",
+      "The work in progress in the place shown in the reference, photographed from close by. " +
+      "Hands working carefully with the tools of the trade. Only hands, forearms and the work in " +
+      "frame. Absorbed and unhurried.",
   },
-  room: {
-    label: "The room, empty",
-    room: "treatmentRoom",
+  place: {
+    label: "The place, empty",
     aspect: "4:3",
     scene:
-      "The room in the reference, empty and waiting. Nobody in frame. The couch made up, the " +
-      "trolley set, a lamp lit warm. Late afternoon light, long soft shadows. Calm and expensive, " +
-      "the kind of quiet a room has before the first appointment.",
+      "The place in the reference, empty and ready. Nobody in frame. Everything set out, a lamp lit " +
+      "warm. Late afternoon light, long soft shadows. Calm and cared for, the kind of quiet a place has " +
+      "before the first customer of the day.",
   },
   product: {
-    label: "Product, on marble",
-    room: "treatmentRoom",
+    label: "Product or tools, still life",
     aspect: "1:1",
     scene:
-      "A close still life on a warm marble counter: two or three unbranded skincare bottles, a " +
-      "small amber dropper, a folded cloth, a clean tray. Every label blank. Warm lamp light from " +
-      "one side, one soft highlight along the glass, deep shadow behind.",
+      "A close still life on a clean surface in the place shown in the reference: the products or " +
+      "tools of the business, unbranded, arranged as they would really be used. Every label blank. " +
+      "Lamp light from one side, one soft highlight, deep shadow behind.",
   },
   detail: {
     label: "Close detail",
-    room: "treatmentRoom",
     aspect: "1:1",
     scene:
-      "A macro close-up: skin texture, a gloved hand, a brush, a cloth — one thing, filling the " +
-      "frame, lit so the texture reads. Real skin with real pores and fine down, unretouched. " +
-      "No product visible, nothing branded.",
+      "A macro close-up of the materials of the work — a texture, a hand, a tool, a finish — one " +
+      "thing, filling the frame, lit so the texture reads. Real and unretouched. No product " +
+      "visible, nothing branded.",
   },
   portrait: {
-    label: "A client, waiting",
-    room: "lounge",
+    label: "A customer, waiting",
     aspect: "3:4",
     scene:
-      "A woman seated in the room shown in the reference, coat still on, looking away from camera. " +
-      "Not being treated and not selling anything — waiting, and a little unsure. Caught rather " +
+      "A customer in the place shown in the reference, coat still on, looking away from camera. " +
+      "Not being served and not selling anything — waiting, and a little unsure. Caught rather " +
       "than arranged.",
   },
 };
 
 /* Which look a piece gets when nobody picks one. A myth correction wants a
-   detail shot, aftercare wants the product, an announcement wants the room —
+   detail shot, aftercare wants the product, an announcement wants the place —
    and getting that right by default is most of the value, because the default
    is what almost everyone uses. */
 const STYLE_LOOK = {
-  answer: "treatment",
+  answer: "work",
   myth: "detail",
-  happens: "treatment",
+  happens: "work",
   question: "portrait",
-  behind: "room",
+  behind: "place",
   aftercare: "product",
-  news: "room",
-  academy: "room",
+  news: "place",
 };
+
+/* The reference photograph: a path on this same site, to an image. Anything
+   else is refused, so this endpoint cannot be pointed at someone else's
+   pictures, or at anything that is not a picture. */
+const REFERENCE = /^\/(?!\/)(?!.*\.\.)[\w\-/.]+\.(?:jpe?g|png|webp)$/i;
 
 const MAX_SUBJECT = 240;
 
@@ -279,16 +260,28 @@ export default async function handler(request) {
     return json({ error: "bad_json" }, 400);
   }
 
-  const lookKey = LOOKS[body.look] ? body.look : STYLE_LOOK[body.style] || "treatment";
+  const lookKey = LOOKS[body.look] ? body.look : STYLE_LOOK[body.style] || "work";
   const look = LOOKS[lookKey];
+
+  if (typeof body.reference !== "string" || !REFERENCE.test(body.reference)) {
+    return json(
+      {
+        error: "no_reference",
+        message:
+          "Send `reference`: the path to a real photograph of the premises on this site, such as " +
+          "/goodwork/brands/your-brand/photos/front.jpg. Pictures here are always made against a " +
+          "real place, never an invented one.",
+      },
+      400,
+    );
+  }
 
   /* The reference is resolved against whatever host this is running on, so a
      preview references the preview's photographs and production references
      production's. Hard-coding the live domain here would mean a preview
      silently generating against whatever the live site happened to be serving,
      which is exactly the sort of thing nobody notices for a month. */
-  const origin = url.origin;
-  const reference = `${origin}${PHOTO_BASE}${ROOMS[look.room]}`;
+  const reference = `${url.origin}${body.reference}`;
 
   const payload = {
     prompt: buildPrompt(look, body.subject),
@@ -298,7 +291,7 @@ export default async function handler(request) {
       : look.aspect,
     resolution: "1080p",
     batch_size: 1,
-    /* The reference is there for the room's colour and fittings, not to be
+    /* The reference is there for the place's colour and fittings, not to be
        copied. Too high and it returns the reference photograph with the light
        changed; too low and it forgets where it is. */
     style_strength: 0.6,

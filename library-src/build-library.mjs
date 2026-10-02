@@ -224,7 +224,7 @@ const page = `<meta charset="utf-8">
   </div>
   <div class="tray__form" id="brandForm">
     <label>Brand name<input id="bName" placeholder="e.g. Nocturne"></label>
-    <label>What they do<input id="bWhat" placeholder="e.g. luxury cosmetics, for London studios"></label>
+    <label>What they do<input id="bWhat" placeholder="e.g. commercial cleaning, for offices across Manchester"></label>
     <label>Accent colour<input id="bAccent" placeholder="#3366FF"></label>
     <label>Tone / vibe<input id="bVibe" placeholder="e.g. dramatic, premium, editorial"></label>
   </div>
