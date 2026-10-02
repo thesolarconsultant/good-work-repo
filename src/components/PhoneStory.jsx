@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "../lib/motion";
+import PhoneFrame from "./PhoneFrame";
 
 const SCROLL_PER_MESSAGE = 220;
 
@@ -97,29 +98,25 @@ export default function PhoneStory({ kicker, title, intro, contact, subtitle, me
   }, [active, enabled]);
 
   const phone = (
-    <div className="gw-phonestory__phone">
-      <div className="gw-phonestory__notch" aria-hidden="true" />
-      <div className="gw-phonestory__screen" ref={screenRef}>
-        <div className="gw-phonestory__header">
-          <span className="gw-phonestory__avatar" aria-hidden="true">{contact.slice(0, 1)}</span>
-          <div>
-            <p className="gw-phonestory__contact">{contact}</p>
-            <p className="gw-phonestory__status">{subtitle}</p>
-          </div>
-        </div>
-        <div className="gw-phonestory__messages">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={`gw-phonestory__bubble gw-phonestory__bubble--${m.from}${!enabled || i <= active ? " is-visible" : ""}`}
-            >
-              {m.text}
-            </div>
-          ))}
+    <PhoneFrame className="gw-phonestory__phone" screenClassName="gw-phonestory__screen" ref={screenRef}>
+      <div className="gw-phonestory__header">
+        <span className="gw-phonestory__avatar" aria-hidden="true">{contact.slice(0, 1)}</span>
+        <div>
+          <p className="gw-phonestory__contact">{contact}</p>
+          <p className="gw-phonestory__status">{subtitle}</p>
         </div>
       </div>
-      <div className="gw-phonestory__home" aria-hidden="true" />
-    </div>
+      <div className="gw-phonestory__messages">
+        {messages.map((m, i) => (
+          <div
+            key={i}
+            className={`gw-phonestory__bubble gw-phonestory__bubble--${m.from}${!enabled || i <= active ? " is-visible" : ""}`}
+          >
+            {m.text}
+          </div>
+        ))}
+      </div>
+    </PhoneFrame>
   );
 
   const copy = (

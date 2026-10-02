@@ -1,0 +1,128 @@
+/* =========================================================
+   Product mock-ups (components/Mockups.jsx) and the hero deck
+   (components/ProductDeck.jsx).
+
+   Every mock is a size container. Everything inside is measured in
+   em off one font-size set in container units, so a mock is the same
+   drawing at any width: the hero deck, a bento tile, a phone.
+   ========================================================= */
+
+.gw-mock { container-type: inline-size; width: 100%; color: #111; font-family: var(--gw-font); }
+.gw-mock p { margin: 0; }
+
+/* --- Website ------------------------------------------------------- */
+.ms { font-size: 1.85cqw; background: #fff; border-radius: 1.1em; overflow: hidden; }
+.ms__nav { display: flex; align-items: center; gap: 1.6em; padding: 1.3em 1.8em; font-size: 0.85em; }
+.ms__logo { display: inline-flex; align-items: center; gap: 0.45em; font-weight: 700; font-size: 1.15em; letter-spacing: -0.02em; }
+.ms__logo i { width: 0.95em; height: 0.85em; background: #1d4ed8; clip-path: polygon(0 100%, 35% 20%, 55% 60%, 75% 0, 100% 100%); }
+.ms__links { display: flex; gap: 1.4em; margin-left: auto; color: #555; }
+.ms__links b { font-weight: 500; }
+.ms__cta { padding: 0.55em 0.95em; border-radius: 0.4em; background: #1d4ed8; color: #fff; font-weight: 600; }
+.ms__body { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.5em; padding: 1.4em 1.8em 0; align-items: center; }
+.ms__h { font-size: 2.7em; font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+.ms__h em { font-style: normal; color: #1d4ed8; }
+.ms__p { margin-top: 0.9em !important; color: #555; font-size: 1.05em; line-height: 1.45; max-width: 20em; }
+.ms__btns { display: flex; align-items: center; gap: 1.2em; margin-top: 1.4em; }
+.ms__btn { padding: 0.75em 1.1em; border-radius: 0.45em; background: #1d4ed8; color: #fff; font-weight: 600; font-size: 0.95em; }
+.ms__more { color: #1d4ed8; font-weight: 600; font-size: 0.95em; }
+.ms__img { position: relative; aspect-ratio: 0.82; border-radius: 0.8em; overflow: hidden; background: linear-gradient(180deg, #bcd3f5 0%, #e3ecf9 55%, #9fb6d8 100%); }
+.ms__tower { position: absolute; bottom: 0; left: 18%; width: 46%; height: 88%; background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 1px, transparent 1px 16%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.28) 0 1px, transparent 1px 7%),
+    linear-gradient(160deg, #3b6fd1 0%, #1e3f86 55%, #142b5c 100%);
+  clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%); }
+.ms__tower--b { left: 60%; width: 34%; height: 62%; filter: brightness(1.15) saturate(0.85); }
+.ms__trust { display: flex; align-items: center; gap: 1.4em; margin-top: 1.6em; padding: 1.3em 1.8em 1.6em; border-top: 1px solid #eee; }
+.ms__trust span { font-size: 0.68em; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #777; margin-right: auto; }
+.ms__trust i { width: 4.6em; height: 0.9em; border-radius: 0.3em; background: #e5e7eb; }
+
+/* --- WhatsApp agent ---------------------------------------------- */
+.mc { font-size: 4.3cqw; background: #efeae2; border-radius: 1em; overflow: hidden; display: flex; flex-direction: column; }
+.mc__head { display: flex; align-items: center; gap: 0.6em; padding: 0.9em 1em; background: #fff; line-height: 1.2; }
+.mc__head b { display: block; font-weight: 600; font-size: 1em; }
+.mc__head small { color: #667; font-size: 0.75em; }
+.mc__avatar { flex: none; width: 2.1em; height: 2.1em; border-radius: 50%; background: #1d4ed8; box-shadow: inset 0 0 0 0.55em #1d4ed8, inset 0 0 0 0.7em #fff; }
+.mc__thread { display: grid; gap: 0.55em; padding: 0.9em 0.8em; }
+.mc__msg { max-width: 82%; padding: 0.55em 0.75em 0.45em; border-radius: 0.75em; font-size: 0.86em; line-height: 1.35; background: #fff; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06); }
+.mc__msg small { display: block; text-align: right; margin-top: 0.2em; font-size: 0.72em; color: #8a8a8a; }
+.mc__msg--in { justify-self: start; border-top-left-radius: 0.2em; }
+.mc__msg--out { justify-self: end; background: #d9fdd3; border-top-right-radius: 0.2em; }
+.mc__msg--out small { color: #53bdeb; }
+.mc__input { display: flex; align-items: center; justify-content: space-between; margin: 0.2em 0.7em 0.8em; padding: 0.6em 0.9em; border-radius: 999px; background: #fff; color: #999; font-size: 0.8em; }
+.mc__input i { width: 1.1em; height: 1.1em; border-radius: 50%; background: #25d366; }
+
+/* --- Voice agent -------------------------------------------------- */
+.mv { font-size: 4.6cqw; background: #141416; color: #fff; border-radius: 1em; padding: 1.4em 1em 1.2em; text-align: center; }
+.mv__label { font-size: 0.72em; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+.mv__name { margin-top: 0.4em !important; font-weight: 600; font-size: 0.98em; }
+.mv__time { margin-top: 0.4em !important; font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, 0.7); font-size: 0.85em; }
+.mv__wave { display: flex; align-items: center; justify-content: center; gap: 0.16em; height: 5.2em; margin: 1.6em 0; }
+.mv__wave span { width: 0.22em; height: calc(var(--h) * 0.28em); border-radius: 0.2em; background: linear-gradient(180deg, #3366ff, #7a5cff 35%, #ff2db3 70%, #ff6b5e); transform-origin: center; animation: gw-wave 1.4s ease-in-out infinite; animation-delay: calc(var(--i) * -0.09s); }
+.mv__keys { display: flex; justify-content: space-around; font-size: 0.66em; color: rgba(255, 255, 255, 0.7); }
+.mv__keys span { display: grid; justify-items: center; gap: 0.45em; }
+.mv__keys i { width: 3.1em; height: 3.1em; border-radius: 50%; background: rgba(255, 255, 255, 0.12); position: relative; }
+.mv__keys .mv__mute::after { content: ""; position: absolute; inset: 30% 38%; border-radius: 0.6em; border: 0.18em solid #fff; }
+.mv__keys .mv__pad { background-image: radial-gradient(circle, #fff 0.17em, transparent 0.2em); background-size: 0.7em 0.7em; background-position: center; background-color: rgba(255, 255, 255, 0.12); }
+.mv__keys .mv__end { background: #ff3b30; }
+.mv__keys .mv__end::after { content: ""; position: absolute; left: 25%; right: 25%; top: 44%; height: 0.36em; border-radius: 0.3em; background: #fff; }
+@keyframes gw-wave { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+
+/* --- Content Console ---------------------------------------------- */
+.mo { font-size: 4.1cqw; background: #fff; border-radius: 1em; padding: 1.1em 1em 0.6em; }
+.mo__title { font-weight: 600; font-size: 1.05em; }
+.mo__tabs { display: flex; gap: 1.1em; margin: 0.9em 0 0.4em; font-size: 0.78em; color: #777; border-bottom: 1px solid #eee; }
+.mo__tabs b, .mo__tabs span { padding-bottom: 0.55em; }
+.mo__tabs b { color: #111; font-weight: 600; box-shadow: inset 0 -0.16em 0 #3366ff; }
+.mo__post { display: flex; gap: 0.7em; align-items: center; padding: 0.7em 0; border-bottom: 1px solid #f0f0f0; }
+.mo__post:last-child { border-bottom: 0; }
+.mo__thumb { flex: none; width: 3.6em; height: 3.6em; border-radius: 0.45em; }
+.mo__thumb--a { background: linear-gradient(135deg, #d9e2ec 0 40%, #8fa3b8 40% 55%, #e8edf2 55%); }
+.mo__thumb--b { background: linear-gradient(160deg, #cbd8e6 0%, #5d7895 60%, #2c3e55 100%); }
+.mo__thumb--c { background: linear-gradient(200deg, #b9cde6 0%, #6a8db6 45%, #f1f4f8 46% 60%, #3d5878 61%); }
+.mo__text { font-size: 0.8em; line-height: 1.35; }
+.mo__text small { display: block; margin-top: 0.3em; color: #888; font-size: 0.82em; }
+
+/* --- Brand guide --------------------------------------------------- */
+.mb { font-size: 3.6cqw; background: #fff; border-radius: 1em; padding: 1.2em 1.1em; }
+.mb__title { font-weight: 600; font-size: 1.05em; }
+.mb__row { display: flex; align-items: center; gap: 0.9em; margin-top: 0.9em; }
+.mb__aa { font-weight: 900; font-size: 3em; letter-spacing: -0.05em; line-height: 1; }
+.mb__type { display: grid; gap: 0.25em; font-size: 0.78em; }
+.mb__type b { font-weight: 600; }
+.mb__type small { color: #777; }
+.mb__swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.45em; margin-top: 1em; }
+.mb__swatches span { display: grid; gap: 0.3em; }
+.mb__swatches i { aspect-ratio: 1; border-radius: 0.4em; background: var(--c); }
+.mb__swatches small { font-size: 0.62em; color: #666; }
+.mb__rule { margin-top: 1em !important; padding-top: 0.8em; border-top: 1px solid #eee; font-size: 0.78em; color: #444; }
+
+/* --- Automation ---------------------------------------------------- */
+.mf { font-size: 3.7cqw; background: #fff; border-radius: 1em; padding: 1.2em 1.1em; }
+.mf__title { font-weight: 600; font-size: 1em; }
+.mf__steps { list-style: none; margin: 1em 0 0; padding: 0; display: grid; gap: 0.75em; }
+.mf__steps li { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 0.6em; padding: 0.7em 0.8em; border-radius: 0.6em; border: 1px solid #e6e6ea; font-size: 0.82em; }
+.mf__steps li:not(:last-child)::after { content: ""; position: absolute; left: 1.2em; top: 100%; height: 0.75em; border-left: 0.14em dashed #c9c9d1; }
+.mf__steps b { font-weight: 600; }
+.mf__steps small { color: #777; font-size: 0.85em; }
+.mf__steps li.is-last { border-color: transparent; background: linear-gradient(#fff, #fff) padding-box, linear-gradient(90deg, #3366ff, #7a5cff, #ff2db3, #ff6b5e) border-box; border: 0.14em solid transparent; }
+
+/* =========================================================
+   Hero deck: four mocks in a cascading stack, each with its
+   round product icon. Positions are percentages of the deck.
+   ========================================================= */
+.gw-pdeck { position: relative; container-type: inline-size; aspect-ratio: 1.22; perspective: 2200px; }
+.gw-pdeck__panel { position: absolute; transform: rotateY(-11deg) rotateX(2deg); transform-origin: 0 50%; }
+.gw-pdeck__lift { position: relative; filter: drop-shadow(0 2cqw 2.6cqw rgba(17, 17, 17, 0.15)) drop-shadow(0 0.25cqw 0.5cqw rgba(17, 17, 17, 0.08)); animation: gw-pdeck-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both, gw-pdeck-float 8s ease-in-out 1s infinite; animation-delay: calc(var(--i) * 0.12s), calc(1s + var(--i) * -2s); }
+.gw-pdeck__badge { position: absolute; z-index: 2; width: 9cqw; height: 9cqw; top: -3.8cqw; box-shadow: 0 0.6cqw 1.6cqw rgba(17, 17, 17, 0.22); }
+.gw-pdeck__panel--site { left: 2%; top: 9%; width: 62%; z-index: 1; }
+.gw-pdeck__panel--site .gw-pdeck__badge { left: -5.6cqw; top: -5cqw; }
+.gw-pdeck__panel--chat { left: 43%; top: 38%; width: 28%; z-index: 3; }
+.gw-pdeck__panel--call { left: 69%; top: 57%; width: 20%; z-index: 4; }
+.gw-pdeck__panel--console { left: 72%; top: 14%; width: 27%; z-index: 2; }
+.gw-pdeck__panel--chat .gw-pdeck__badge, .gw-pdeck__panel--call .gw-pdeck__badge, .gw-pdeck__panel--console .gw-pdeck__badge { right: -2.6cqw; }
+@keyframes gw-pdeck-in { from { opacity: 0; transform: translateY(6cqw); } to { opacity: 1; transform: none; } }
+@keyframes gw-pdeck-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.1cqw; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-pdeck__lift, .mv__wave span { animation: none !important; }
+}

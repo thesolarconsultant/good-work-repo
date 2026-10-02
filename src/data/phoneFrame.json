@@ -1,0 +1,12 @@
+{
+  "src": "/devices/phone-frame.webp",
+  "width": 537,
+  "height": 1086,
+  "screen": {
+    "left": 5.587,
+    "top": 1.565,
+    "width": 88.827,
+    "height": 96.409,
+    "radius": 11.732
+  }
+}

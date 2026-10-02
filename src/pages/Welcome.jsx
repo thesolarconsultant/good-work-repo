@@ -111,12 +111,23 @@ export default function Welcome() {
 
                 {state === "ready" && claim && (
                   <>
-                    <p className="gw-eyebrow gw-eyebrow--accent">Payment confirmed</p>
+                    <svg className="gw-tick" viewBox="0 0 64 64" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="gw-tick-g" x1="0" y1="1" x2="1" y2="0">
+                          <stop offset="0" stopColor="#3366ff" />
+                          <stop offset="0.35" stopColor="#7a5cff" />
+                          <stop offset="0.7" stopColor="#ff2db3" />
+                          <stop offset="1" stopColor="#ff6b5e" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M12 34 L26 48 L54 18" fill="none" stroke="url(#gw-tick-g)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <p className="gw-eyebrow gw-eyebrow--accent gw-mt-2">Payment confirmed</p>
                     <h2 className="gw-h3 gw-mt-2">
                       {first ? `Thanks, ${first}. ` : ""}
                       {product?.name || "Your purchase"} is yours.
                     </h2>
-                    <div className="gw-keybox">
+                    <div className="gw-keybox gw-keybox--grad">
                       <span className="gw-keybox__label" id="welcome-key-label">
                         Your access key
                       </span>

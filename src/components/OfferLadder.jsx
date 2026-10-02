@@ -1,101 +1,70 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import Price from "./Price";
 import Reveal from "./Reveal";
 import OfferIcon from "./OfferIcon";
-import { LADDER, OFFER, COMBINED } from "../data/offers";
+import { LADDER, OFFER } from "../data/offers";
 import { gbp, gbpRange, offerAmount } from "../lib/format";
 
-export function OfferCard({ offer, cta = "ladder", delay = 0 }) {
-  const action = cta === "primary" ? offer.primaryCta : offer.ladderCta;
+/**
+ * The four offers as a staircase: each step up is a bigger commitment and
+ * more done for you, so each card stands taller than the last. On narrow
+ * screens they become ordinary cards. The cards sit on CrmBand, which belongs
+ * directly beneath them, outside the container.
+ */
+export default function OfferLadder() {
   return (
-    <Reveal variant="rise" delay={delay} asChild>
-      <article className={`gw-offer${offer.badge ? " gw-offer--featured" : ""}`} aria-labelledby={`offer-${offer.id}`}>
-        <div className="gw-offer__top">
-          <span className="gw-offer__who">
-            <OfferIcon id={offer.id} />
-            {offer.who}
-          </span>
-          {offer.badge && <span className="gw-badge gw-badge--solid">{offer.badge}</span>}
-        </div>
-        <div>
-          <h3 className="gw-offer__name" id={`offer-${offer.id}`}>
-            {offer.short}
-          </h3>
-          <div className="gw-mt-2">
-            <Price amount={offer.price} to={offer.priceTo} billing={offer.billing} />
-          </div>
-          {offer.instalments && (
-            <p className="gw-offer__note gw-mt-1">
-              or {offer.instalments.count} payments of {gbp(offer.instalments.amount)}, {offer.instalments.note}
+    <div className="gw-stairs">
+      {LADDER.map((o, i) => (
+        <Reveal key={o.id} variant="rise" delay={i * 80} asChild>
+          <article className={`gw-stair${o.badge ? " gw-stair--featured" : ""}`} style={{ "--i": i }} aria-labelledby={`offer-${o.id}`}>
+            <OfferIcon id={o.id} className="gw-offer-icon--lg" />
+            <h3 className="gw-stair__name" id={`offer-${o.id}`}>
+              {o.short}
+            </h3>
+            <p className="gw-stair__price">
+              {offerAmount(o)}
+              <span className="gw-sr-only"> one-time</span>
             </p>
-          )}
-        </div>
-        <p className="gw-offer__copy">{offer.ladder}</p>
-        <div className="gw-offer__foot">
-          <Button to={action.to} variant={offer.badge ? "primary" : "secondary"} arrow>
-            {action.label}
-          </Button>
-          <Link to={offer.route} className="gw-small gw-link">
-            {offer.kind === "product" ? "What's included and excluded" : "Scope and exclusions"}
-          </Link>
-        </div>
-      </article>
-    </Reveal>
+            <p className="gw-stair__who">{o.who}</p>
+            {o.badge && <p className="gw-stair__tag">{o.badge}</p>}
+            {o.instalments && (
+              <p className="gw-stair__note">
+                or {o.instalments.count} payments of {gbp(o.instalments.amount)}
+              </p>
+            )}
+            <div className="gw-stair__foot">
+              <Button to={o.ladderCta.to} variant={o.badge ? "primary" : "secondary"} size="sm" arrow>
+                {o.ladderCta.label}
+              </Button>
+              <Link to={o.route} className="gw-small gw-link">
+                {o.kind === "product" ? "What's included" : "Scope and exclusions"}
+              </Link>
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
   );
 }
 
-/** The four primary cards, then the CRM as an add-on with the combined value. */
-export default function OfferLadder({ showAddon = true }) {
+/** The CRM, as a band under the staircase: the four brand colours, then black. */
+export function CrmBand() {
   const crm = OFFER.crm;
   return (
-    <>
-      <div className="gw-ladder">
-        {LADDER.map((o, i) => (
-          <OfferCard key={o.id} offer={o} delay={i * 70} />
-        ))}
+    <div className="gw-crmband">
+      <div className="gw-crmband__rule" aria-hidden="true" />
+      <div className="gw-crmband__body gw-ondark">
+        <div className="gw-container gw-crmband__row">
+          <OfferIcon id={crm.id} className="gw-offer-icon--lg" />
+          <p className="gw-crmband__text">
+            {crm.short}, {gbpRange(crm.price, crm.priceTo)}. Add it to any build.
+            <small>Standalone, or with Built by Goodwork. The server is expressly excluded.</small>
+          </p>
+          <Button to={crm.primaryCta.to} arrow>
+            {crm.primaryCta.label}
+          </Button>
+        </div>
       </div>
-      {showAddon && (
-        <Reveal variant="rise" className="gw-mt-3">
-          <div className="gw-addon">
-            <div>
-              <span className="gw-offer__who">
-                <OfferIcon id={crm.id} />
-                Powerful add-on · {crm.who}
-              </span>
-              <h3 className="gw-offer__name gw-mt-1">{crm.name}</h3>
-              <p className="gw-offer__copy gw-mt-2">{crm.outcome} Standalone, or added to Built by Goodwork. The server is expressly excluded.</p>
-            </div>
-            <div className="gw-sum" aria-label="Combined order value">
-              <div>
-                <span>{OFFER.built.name}</span>
-                <span>{gbp(OFFER.built.price)}</span>
-              </div>
-              <div>
-                <span>{crm.short}</span>
-                <span>{offerAmount(crm)}</span>
-              </div>
-              <div>
-                <span>
-                  {COMBINED.label}
-                  <br />
-                  <small>{COMBINED.note}</small>
-                </span>
-                <span>{gbpRange(COMBINED.total, COMBINED.totalTo)}</span>
-              </div>
-            </div>
-            <div className="gw-actions" style={{ flexDirection: "column", alignItems: "stretch" }}>
-              <Price amount={crm.price} to={crm.priceTo} billing={crm.billing} />
-              <Button to={crm.primaryCta.to} variant="secondary" arrow>
-                {crm.primaryCta.label}
-              </Button>
-              <Link to={crm.secondaryCta.to} className="gw-small gw-link">
-                {crm.secondaryCta.label}
-              </Link>
-            </div>
-          </div>
-        </Reveal>
-      )}
-    </>
+    </div>
   );
 }

@@ -328,6 +328,8 @@ export const MANAGED_PLANS = [
     name: "Complete + AI Content",
     price: 598,
     billing: "monthly",
+    featured: true,
+    tag: "Everything",
     for: "Everything in Complete, plus AI imagery and B-roll video.",
     includes: [
       "Everything in Complete Managed System",

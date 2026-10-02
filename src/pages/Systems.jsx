@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import PageHeader from "../components/PageHeader";
 import SectionHead from "../components/SectionHead";
-import Reveal from "../components/Reveal";
 import Button from "../components/Button";
 import SystemJourney from "../components/SystemJourney";
-import { SYSTEMS } from "../data/systems";
+import StudioBento from "../components/StudioBento";
 import { OFFER } from "../data/offers";
 import { breadcrumbs } from "../lib/schema";
 import { gbp } from "../lib/format";
@@ -27,26 +25,12 @@ export default function Systems() {
         </div>
       </PageHeader>
 
-      <section className="gw-section--tight" aria-labelledby="list-title">
+      <section className="gw-section gw-dark" aria-labelledby="list-title">
         <div className="gw-container">
           <h2 className="gw-sr-only" id="list-title">
             The systems
           </h2>
-          <div className="gw-grid gw-grid--2">
-            {SYSTEMS.map((s, i) => (
-              <Reveal key={s.slug} variant="rise" delay={i * 60} asChild>
-                <Link to={`/systems/${s.slug}`} className="gw-card gw-card--link" style={{ display: "grid", gap: "0.6rem" }}>
-                  <div className="gw-offer__top">
-                    <span className="gw-eyebrow">{s.eyebrow}</span>
-                    <span className="gw-badge gw-badge--studio">Included in Studio</span>
-                  </div>
-                  <h3 className="gw-h3">{s.name}</h3>
-                  <p className="gw-body">{s.outcome}</p>
-                  <span className="gw-feature__go">Read about the system →</span>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+          <StudioBento />
         </div>
       </section>
 
